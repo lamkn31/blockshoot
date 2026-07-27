@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -36,6 +38,9 @@ namespace Wayfu.Lamkn
         [SerializeField] private TMP_Text bulletLabel;
         [Tooltip("Material dùng khi gun ẨN chưa ra vị trí đầu (che màu thật). Bỏ trống thì gun ẩn vẫn hiện màu.")]
         [SerializeField] private Material hiddenMaterial;
+        [Tooltip("Các MeshRenderer cần tô màu theo TypeColor — kéo thả trong Inspector. Tô cho TẤT CẢ material " +
+                 "slot của mỗi renderer. Bỏ trống → tự gom mọi renderer trong children (trừ TMP_Text).")]
+        [SerializeField] private MeshRenderer[] colorRenderers;
 
         /// <summary>Arc-length hiện tại trên path — PathManager đọc để giữ khoảng cách giữa các gun.</summary>
         public float PathDistance => _follower != null ? _follower.CurrentDistance : 0f;
@@ -57,6 +62,8 @@ namespace Wayfu.Lamkn
         /// Một bên nòng. Mỗi bên có target + nhịp bắn RIÊNG và quạt hướng ra sườn gun (±X local), nên
         /// gun chạy dọc path là quét được cả 2 phía cùng lúc mà không phải quay mặt.
         /// </summary>
+        [Serializable]        
+        
         private class Barrel
         {
             public float Sign;        // +1 = phải (+X local), −1 = trái (−X local)
@@ -112,12 +119,17 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>
-        /// Gom MỌI renderer của model để tô màu theo TypeColor — trước đây chỉ lấy renderer ĐẦU TIÊN
-        /// (thân 'machine') nên nòng canon không bao giờ được tô.
-        /// Loại renderer của TMP_Text ra: nó dùng material font, đè material gun vào là mất chữ.
+        /// Nguồn renderer để tô màu theo TypeColor. Ưu tiên <see cref="colorRenderers"/> đã kéo thả trong
+        /// Inspector (chỉ định đúng renderer cần đổi). Bỏ trống thì tự gom MỌI renderer trong children —
+        /// loại renderer của TMP_Text ra: nó dùng material font, đè material gun vào là mất chữ.
         /// </summary>
         private void CollectRenderers()
         {
+            if (colorRenderers != null && colorRenderers.Length > 0)
+            {
+                _renderers = colorRenderers;
+                return;
+            }
             var list = new List<Renderer>();
             foreach (var r in GetComponentsInChildren<Renderer>(true))
                 if (r.GetComponent<TMP_Text>() == null) list.Add(r);
@@ -159,14 +171,22 @@ namespace Wayfu.Lamkn
         public void SetSlot(GunSlot s) => Slot = s;
 
         // Tô material cho gun: gun ẨN & CHƯA ra vị trí đầu → material 'hidden' (che màu); còn lại = màu thật.
+        // Tô cho TẤT CẢ material slot của mỗi renderer (không chỉ slot 0) — 'machine', body, eye... có nhiều
+        // slot, đè hết để cả khối đổi màu đồng nhất.
         private void ApplyColorVisual()
         {
             if (_renderers == null) CollectRenderers();
             Material mat = Data != null && Data.Hidden && !_atFront && hiddenMaterial != null
                 ? hiddenMaterial
                 : GlobalConfigManager.MaterialOf(Data != null ? Data.Color : TypeColor.None, TypeObject.Gun);
-            if (mat != null)
-                foreach (var r in _renderers) if (r != null) r.sharedMaterial = mat;
+            if (mat == null) return;
+            foreach (var r in _renderers)
+            {
+                if (r == null) continue;
+                var mats = r.sharedMaterials;
+                for (int i = 0; i < mats.Length; i++) mats[i] = mat;
+                r.sharedMaterials = mats;
+            }
         }
 
         /// <summary>Slot báo gun này có đang ở VỊ TRÍ ĐẦU (index 0) không → gun ẩn lộ/che màu theo đó.</summary>
@@ -248,13 +268,17 @@ namespace Wayfu.Lamkn
                 b.TargetGen = 0;
                 b.FiredAtTarget = false;
 
+                // Quét target trong tầm TRƯỚC. Nếu có mà nòng đang KHÓA (đã hết lượt của vòng này) thì MỞ
+                // KHÓA NGAY — khỏi chờ gun chạy hết 1 vòng path mới bắt được cell đã vào range từ lâu.
+                var cand = GridBlockManager.Instance?.FindTargetCell(
+                    Data.Color, transform.position, transform.forward, b.Sign, _fire.Range, _fire.Angle,
+                    other.Target);
+                if (cand != null && !b.Armed) { b.Armed = true; b.HadTarget = false; b.IdleTimer = 0f; }
+
                 if (b.Armed)
                 {
                     // Quạt CHỈ lọc lúc CHỌN target (bộ lọc nằm trong FindTargetCell). Đã chốt được cell
                     // thì bắn DỨT ĐIỂM hết stack, kể cả khi gun đã trôi qua và cell ra ngoài quạt.
-                    var cand = GridBlockManager.Instance?.FindTargetCell(
-                        Data.Color, transform.position, transform.forward, b.Sign, _fire.Range, _fire.Angle,
-                        other.Target);
                     bool sawCell = cand != null;
 
                     // NHƯỜNG ĐẠN: nòng kia đang bám cell thì phải chừa đủ đạn cho nó bắn dứt điểm cell đó.
@@ -504,11 +528,11 @@ namespace Wayfu.Lamkn
             if (_state == GunState.Dead) return;
 
             //DrawBarrelArc(_right);
-            //DrawBarrelArc(_left);
+            DrawBarrelArc(_left);
 
             if (_state != GunState.OnPath) return;
             //DrawTargetLine(_right, "R");
-            //DrawTargetLine(_left, "L");
+            DrawTargetLine(_left, "L");
         }
 
         private void DrawBarrelArc(Barrel b)

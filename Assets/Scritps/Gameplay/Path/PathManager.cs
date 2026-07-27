@@ -31,6 +31,14 @@ namespace Wayfu.Lamkn
         [Tooltip("Thời gian (giây) gun bay từ slot ra chỗ đứng chờ ở điểm vào path (pos 0).")]
         [SerializeField] private float queueMoveDuration = 0.15f;
 
+        [Header("Nước chảy")]
+        [Tooltip("Tốc độ cuộn UV material mặt đường để tạo hiệu ứng nước chảy. X = dọc theo path (chiều " +
+                 "chảy), Y = ngang. (0,0) = tắt hiệu ứng. Đảo dấu X để chảy ngược.")]
+        [SerializeField] private Vector2 waterScrollSpeed = new Vector2(-0.5f, 0f);
+        [Tooltip("Các texture property được cuộn offset. Shader TCP2/URP dùng _BaseMap; Built-in/Legacy " +
+                 "dùng _MainTex — để cả 2 cho chắc, property nào material không có sẽ tự bỏ qua.")]
+        [SerializeField] private string[] waterScrollTextures = { "_BaseMap", "_MainTex" };
+
         private RoundedPolylinePath _path;
         private GameObject _tunnelIn, _tunnelOut;
         private readonly List<Gun> _guns = new List<Gun>();    // [0] = gun vào trước nhất
@@ -39,6 +47,13 @@ namespace Wayfu.Lamkn
         private float _minGunGap = 1.2f;     // khoảng cách arc-length tối thiểu giữa 2 gun
         private float _frontStationDistance; // điểm VÀO path của mọi gun (0 = đầu path)
         private int _maxGunOnPath = 5;
+
+        // Nước chảy: bản sao material của pathLine để cuộn UV runtime (không dirty asset .mat). Giữ offset
+        // gốc từng texture để cộng dồn scroll lên trên, không đè mất offset đã set trong material.
+        private Material _waterMat;
+        private string[] _waterProps;
+        private Vector2[] _waterBaseOffset;
+        private Vector2 _waterScroll;
 
         /// <summary>Gun đang chờ cũng chiếm chỗ — không cho click quá sức chứa của path.</summary>
         private int Reserved => _guns.Count + _queue.Count;
@@ -139,12 +154,54 @@ namespace Wayfu.Lamkn
             pathLine.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             if (pathMaterial != null) pathLine.sharedMaterial = pathMaterial;
 
+            SetupWaterFlow();
+
             if (path != null && path.samples != null && path.samples.Length >= 2)
             {
                 pathLine.positionCount = path.samples.Length;
                 pathLine.SetPositions(path.samples);
             }
             else pathLine.positionCount = 0;
+        }
+
+        /// <summary>
+        /// Chuẩn bị cuộn UV cho hiệu ứng nước chảy: lấy MỘT bản sao material của pathLine (pathLine.material
+        /// tự clone sharedMaterial nên không ghi vào asset .mat), rồi ghi nhớ offset gốc của từng texture để
+        /// mỗi frame cộng dồn scroll lên trên. Speed = 0 hoặc không có texture khớp thì tắt hẳn (đỡ tốn frame).
+        /// </summary>
+        private void SetupWaterFlow()
+        {
+            // Build mới: bỏ bản sao cũ đi (mỗi lần .material lại clone thêm 1 cái, không dọn là rò rỉ).
+            if (_waterMat != null) { Destroy(_waterMat); _waterMat = null; }
+            _waterProps = null;
+            _waterBaseOffset = null;
+            _waterScroll = Vector2.zero;
+
+            if (pathLine == null || waterScrollSpeed == Vector2.zero || waterScrollTextures == null) return;
+
+            var mat = pathLine.material; // clone → chỉ ảnh hưởng line này, không dirty asset dùng chung
+            var props = new List<string>();
+            var offs = new List<Vector2>();
+            foreach (var p in waterScrollTextures)
+                if (!string.IsNullOrEmpty(p) && mat.HasProperty(p))
+                {
+                    props.Add(p);
+                    offs.Add(mat.GetTextureOffset(p));
+                }
+
+            if (props.Count == 0) { Destroy(mat); return; } // material không có texture nào khớp → khỏi giữ
+            _waterMat = mat;
+            _waterProps = props.ToArray();
+            _waterBaseOffset = offs.ToArray();
+        }
+
+        /// <summary>Cuộn UV material mặt đường mỗi frame — texture Tile lặp lại + trôi dọc path = nước chảy.</summary>
+        private void ScrollWater()
+        {
+            if (_waterMat == null) return;
+            _waterScroll += waterScrollSpeed * Time.deltaTime;
+            for (int i = 0; i < _waterProps.Length; i++)
+                _waterMat.SetTextureOffset(_waterProps[i], _waterBaseOffset[i] + _waterScroll);
         }
 
         /// <summary>Chỉnh độ rộng mặt đường (world units). Gọi được lúc runtime để tinh chỉnh.</summary>
@@ -172,6 +229,8 @@ namespace Wayfu.Lamkn
 
         private void Update()
         {
+            ScrollWater();
+
             if (_queue.Count == 0 || !IsEntryClear()) return;
 
             // Mỗi frame chỉ thả 1 gun: gun vừa vào đứng ngay điểm đầu nên IsEntryClear() lập tức false.
@@ -249,6 +308,7 @@ namespace Wayfu.Lamkn
             _queue.Clear();
             // pathLine nằm trên scene (không bị destroy cùng GunPath) → phải xoá điểm của level cũ.
             if (pathLine != null) pathLine.positionCount = 0;
+            if (_waterMat != null) { Destroy(_waterMat); _waterMat = null; }
             if (_path != null) { Destroy(_path.gameObject); _path = null; }
             // Tunnel là con của PathManager (không phải của GunPath) → phải tự dọn, không thì level sau
             // chồng thêm 1 cặp nữa.

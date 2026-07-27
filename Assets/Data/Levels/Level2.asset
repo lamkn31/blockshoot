@@ -24,27 +24,14 @@ MonoBehaviour:
   - {x: 6.625215, y: 0, z: -14.381767}
   - {x: -6.438647, y: 0, z: -13.899517}
   IsClosed: 0
+  PathStyle: 0
   CornerRadius: 1
   PathWidth: 1.5
-  Slots:
-  - Guns:
-    - Color: 2
-      CountBullet: 120
-    - Color: 1
-      CountBullet: 30
-  - Guns:
-    - Color: 1
-      CountBullet: 30
-    - Color: 3
-      CountBullet: 30
-  - Guns:
-    - Color: 3
-      CountBullet: 120
-    - Color: 2
-      CountBullet: 30
+  Slots: []
   HoleCapacity: 3
   Grids:
   - Shape: 1
+    Side: 0
     Center: {x: -0.61839, y: 0, z: -20.997915}
     Rotation: 0.8837391
     BaseRadius: 0.8478818
@@ -56,8 +43,12 @@ MonoBehaviour:
     BlockWidth: 0
     Spacing: 1
     CellScale: {x: 1, y: 1, z: 1}
-    StackSpacing: 0
     Layout: 0
+    ShootableEdges: 0
+    SplineWaypoints: []
+    SplineClosed: 0
+    SplineStyle: 0
+    SplineCornerRadius: 1
     Cells:
     - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
@@ -421,6 +412,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 247.21085
     PendingRefill: []
   - Shape: 1
+    Side: 0
     Center: {x: 1.4527693, y: 0, z: -12.715378}
     Rotation: 4.064062
     BaseRadius: 0.8478818
@@ -432,8 +424,12 @@ MonoBehaviour:
     BlockWidth: 0
     Spacing: 1
     CellScale: {x: 1, y: 1, z: 1}
-    StackSpacing: 0
     Layout: 0
+    ShootableEdges: 0
+    SplineWaypoints: []
+    SplineClosed: 0
+    SplineStyle: 0
+    SplineCornerRadius: 1
     Cells:
     - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
@@ -797,6 +793,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 247.21085
     PendingRefill: []
   - Shape: 1
+    Side: 0
     Center: {x: -1.0959836, y: 0, z: -28.857279}
     Rotation: 8.2456255
     BaseRadius: 0.8478818
@@ -808,8 +805,12 @@ MonoBehaviour:
     BlockWidth: 0
     Spacing: 1
     CellScale: {x: 1, y: 1, z: 1}
-    StackSpacing: 0
     Layout: 0
+    ShootableEdges: 0
+    SplineWaypoints: []
+    SplineClosed: 0
+    SplineStyle: 0
+    SplineCornerRadius: 1
     Cells:
     - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
