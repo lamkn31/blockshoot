@@ -867,6 +867,14 @@ namespace Wayfu.Lamkn
                         GridHandle(gi, 1, Proj(grid.CellPos(0, 0)), area);                             // trái
                         GridHandle(gi, 2, Proj(grid.CellPos(0, grid.ElementsInRow(0) - 1)), area);     // phải
                     }
+                    // Rect: thêm 2 handle GÓC SAU (hàng cuối) — kéo để chỉnh SỐ HÀNG (theo chiều sâu) +
+                    // SỐ CỘT (theo bề ngang), khỏi nhập tay.
+                    if (grid.Shape == BlockGridShape.Rect)
+                    {
+                        int lastR = Mathf.Max(0, grid.Rows - 1);
+                        GridHandle(gi, 4, Proj(grid.CellPos(lastR, 0)), area);
+                        GridHandle(gi, 5, Proj(grid.CellPos(lastR, grid.ElementsInRow(lastR) - 1)), area);
+                    }
 
                     // Handle xoay: nằm trên hướng "sâu dần" của grid, ra ngoài hàng cuối 1 bậc.
                     Vector3 rotW = grid.Center + grid.Forward *
@@ -1290,7 +1298,8 @@ namespace Wayfu.Lamkn
             bool active = _dragGrid == gi && _dragHandle == hid;
             Color col = hid == 0 ? new Color(1f, 0.5f, 0.9f, 0.9f)          // tâm: hồng
                       : hid == 3 ? new Color(0.3f, 1f, 0.4f, 0.9f)          // xoay: xanh lá
-                                 : new Color(0.3f, 0.9f, 1f, 0.9f);         // đầu cạnh: xanh dương
+                      : hid >= 4 ? new Color(0.3f, 1f, 0.9f, 0.95f)         // góc sau: teal (số hàng/cột)
+                                 : new Color(0.3f, 0.9f, 1f, 0.9f);         // đầu cạnh trước: xanh dương
             EditorGUI.DrawRect(hrect, active ? Color.yellow : col);
             EditorGUIUtility.AddCursorRect(hrect, hid == 3 ? MouseCursor.RotateArrow : MouseCursor.MoveArrow);
             var e = Event.current;
@@ -1338,6 +1347,18 @@ namespace Wayfu.Lamkn
                         g.FindPropertyRelative("Rotation").floatValue =
                             Mathf.Repeat(Mathf.Atan2(v.x, v.z) * Mathf.Rad2Deg, 360f);
                 }
+                else if (_dragHandle >= 4)
+                {
+                    // Rect — góc SAU (hàng cuối): CHỈ đổi SỐ HÀNG theo chiều SÂU (trục Z) — GIỮ nguyên số cột.
+                    Vector3 center = g.FindPropertyRelative("Center").vector3Value;
+                    Vector3 v = nw - center; v.y = 0f;
+                    v = Quaternion.Euler(0f, -g.FindPropertyRelative("Rotation").floatValue, 0f) * v; // hệ local
+                    float rowSpacing = Mathf.Max(0.01f, g.FindPropertyRelative("RowSpacing").floatValue);
+                    float baseRadius = g.FindPropertyRelative("BaseRadius").floatValue;
+                    // Hàng cuối ở Z = BaseRadius + (Rows-1)*RowSpacing → Rows = round((|v.z|−BaseRadius)/RowSpacing)+1.
+                    g.FindPropertyRelative("Rows").intValue =
+                        Mathf.Clamp(Mathf.RoundToInt((Mathf.Abs(v.z) - baseRadius) / rowSpacing) + 1, 1, 64);
+                }
                 else
                 {
                     Vector3 center = g.FindPropertyRelative("Center").vector3Value;
@@ -1346,8 +1367,7 @@ namespace Wayfu.Lamkn
                     v = Quaternion.Euler(0f, -g.FindPropertyRelative("Rotation").floatValue, 0f) * v;
                     if (g.FindPropertyRelative("Shape").enumValueIndex == (int)BlockGridShape.Rect)
                     {
-                        // Rect: đầu cạnh đặt khoảng cách tới hàng 0 (trục Z) + số cột (trục X).
-                        g.FindPropertyRelative("BaseRadius").floatValue = Mathf.Max(0.1f, Mathf.Abs(v.z));
+                        // Rect: đầu cạnh TRƯỚC CHỈ đổi SỐ CỘT (trục X) — GIỮ nguyên khoảng cách row 0 (BaseRadius).
                         float step = Mathf.Max(0.01f, g.FindPropertyRelative("BlockWidth").floatValue
                                                     + g.FindPropertyRelative("Spacing").floatValue);
                         g.FindPropertyRelative("Columns").intValue =
@@ -1767,8 +1787,8 @@ namespace Wayfu.Lamkn
                 }
             }
 
-            // Waypoint spline (kéo chỉnh đường) — mặc định ẨN, bật ở mục SPLINE để sửa.
-            if (!_showSplineWaypoints) return;
+            // Waypoint spline (ô vuông tím) LUÔN hiện trong khung giữa để kéo thả chỉnh đường. (Mũi tên
+            // foldout ở panel phải chỉ ẩn/hiện DANH SÁCH waypoint, không ẩn ô kéo ở đây.)
             var e = Event.current;
             for (int i = 0; i < g.SplineWaypoints.Count; i++)
             {
@@ -2605,7 +2625,7 @@ namespace Wayfu.Lamkn
             if (GUILayout.Button("+ Grid", GUILayout.Width(58))) AddGrid(grids);
             EditorGUILayout.EndHorizontal();
             if (!_foldGrids) return;
-            EditorGUILayout.HelpBox("Chọn loại grid (Rect = lưới chữ nhật, Spline = dải uốn lượn) rồi bấm + Grid.\nKhung giữa: kéo TÂM (hồng) · 2 ĐẦU CẠNH (xanh dương) · XOAY grid (xanh lá). Row 0 = hàng gần path.\nClick ô cell = tô màu đang chọn ở Paint Color · kéo đầu mũi tên = xoay hướng cell.", MessageType.None);
+            EditorGUILayout.HelpBox("Chọn loại grid (Rect = lưới chữ nhật, Spline = dải uốn lượn) rồi bấm + Grid.\nRect — mỗi handle chỉ đổi 1 trục: TÂM (hồng) di chuyển · 2 ĐẦU CẠNH TRƯỚC (xanh dương) kéo NGANG = SỐ CỘT · 2 GÓC SAU (teal) kéo SÂU = SỐ HÀNG · XOAY (xanh lá). Row 0 = hàng gần path.\nClick ô cell = tô màu đang chọn ở Paint Color · kéo đầu mũi tên = xoay hướng cell.", MessageType.None);
 
             EditorGUILayout.BeginHorizontal();
             _genColor = (TypeColor)EditorGUILayout.EnumPopup("Gen Color", _genColor);
@@ -2726,8 +2746,8 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("SplineCornerRadius"),
                     new GUIContent("Corner Radius"));
 
-            // Mũi tên (foldout) ẩn/hiện — mặc định ẨN. Mở "Đường spline" = vẽ đường tim trong khung giữa;
-            // mở "Waypoints" = hiện danh sách waypoint ở đây + ô vuông tím kéo chỉnh trong khung giữa.
+            // Mũi tên (foldout) ẩn/hiện Ở PANEL NÀY. "Đường spline" gate vẽ đường tim trong khung giữa; "Waypoints"
+            // chỉ ẩn/hiện DANH SÁCH toạ độ ở đây — ô vuông tím kéo thả trong khung giữa LUÔN hiện.
             _showSplineLine = EditorGUILayout.Foldout(_showSplineLine, "Đường spline (đường grid bám theo)", true);
             if (_showSplineLine)
                 EditorGUILayout.HelpBox("Đang HIỆN đường tim spline (tím) trong khung giữa. Bấm mũi tên để ẩn.",

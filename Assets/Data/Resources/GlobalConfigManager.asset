@@ -15,58 +15,58 @@ MonoBehaviour:
   listColor:
   - typeColor: 1
     color: {r: 1, g: 0, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: b68986854468e8c448b0afa2fe535aa5, type: 2}
-    matGun: {fileID: 2100000, guid: 576fdb6a4016d1f4593e9d19e250d56c, type: 2}
+    matBlock: {fileID: 2100000, guid: 27fb9725d89e7d947b26343840d8cbf4, type: 2}
+    matGun: {fileID: 2100000, guid: 279475f5af9008b4e9a42441a0c72b2f, type: 2}
   - typeColor: 2
-    color: {r: 0.04830408, g: 1, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: b28663055948f93498e799677866e5b6, type: 2}
-    matGun: {fileID: 2100000, guid: ec1d04ab215cb62428b7f53870a78591, type: 2}
+    color: {r: 0.21176471, g: 0.8117647, b: 0.02745098, a: 1}
+    matBlock: {fileID: 2100000, guid: 623fe9112029abd44bd4878a62625237, type: 2}
+    matGun: {fileID: 2100000, guid: 79ce7f6b885b77848bc6c18b15ec8c6d, type: 2}
   - typeColor: 3
-    color: {r: 0, g: 0.19427729, b: 1, a: 1}
-    matBlock: {fileID: 2100000, guid: e9883398ee14092429bfe97265ee62cf, type: 2}
-    matGun: {fileID: 2100000, guid: 4b4ecf105c7173148bcded2f10e65271, type: 2}
+    color: {r: 0, g: 0.4392157, b: 1, a: 1}
+    matBlock: {fileID: 2100000, guid: 54ab5e97d9856514bbf0ec2028517a66, type: 2}
+    matGun: {fileID: 2100000, guid: 5b2f4b2051c81834a8b63013cff2718a, type: 2}
   - typeColor: 4
-    color: {r: 0.98765564, g: 1, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: 80078617fac04a448bc3247e3efeb1ef, type: 2}
-    matGun: {fileID: 2100000, guid: a993f14ef089980469dd5c18fb617f7f, type: 2}
+    color: {r: 1, g: 0.7764706, b: 0, a: 1}
+    matBlock: {fileID: 2100000, guid: e99be3d96b4fca04180fb044480df50a, type: 2}
+    matGun: {fileID: 2100000, guid: f1f348da4d075ea448dbe609ac501581, type: 2}
   - typeColor: 5
-    color: {r: 0.47564507, g: 0, b: 1, a: 1}
-    matBlock: {fileID: 2100000, guid: 99f5b205fb1844a40b6c215756cd49c9, type: 2}
-    matGun: {fileID: 2100000, guid: 1985a94ca42de9e47bb0bc454cc33066, type: 2}
+    color: {r: 0.5803922, g: 0.23137255, b: 1, a: 1}
+    matBlock: {fileID: 2100000, guid: 8c25305f5e84db5448d3ae0c1ec12867, type: 2}
+    matGun: {fileID: 2100000, guid: 5559c1a2c6267d94baafea145bfeb80b, type: 2}
   - typeColor: 6
-    color: {r: 0, g: 0.8865156, b: 1, a: 1}
-    matBlock: {fileID: 2100000, guid: 827055d7991a35c49bbdf82969603046, type: 2}
-    matGun: {fileID: 2100000, guid: 705082a9734c42246ad8f600d4180eed, type: 2}
+    color: {r: 0, g: 0.7490196, b: 1, a: 1}
+    matBlock: {fileID: 2100000, guid: 8c195cf806f6ee341ba0a48f672c5bcc, type: 2}
+    matGun: {fileID: 2100000, guid: bad9620c91fcb0043a53a14eb2e1fa28, type: 2}
   - typeColor: 7
-    color: {r: 1, g: 0.6443302, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: 86361b1828704c04cb9372e7982da32a, type: 2}
-    matGun: {fileID: 2100000, guid: 8280f793e5103114a8bd19b2c5e1757d, type: 2}
+    color: {r: 1, g: 0.44705883, b: 0, a: 1}
+    matBlock: {fileID: 2100000, guid: a6f8ecdceddf30640a85cc8b5fc7ab01, type: 2}
+    matGun: {fileID: 2100000, guid: 3f2e1b131b4e2604dbb1317608104a68, type: 2}
   - typeColor: 8
-    color: {r: 0.9681535, g: 0, b: 1, a: 1}
-    matBlock: {fileID: 2100000, guid: 62798a727d376064fbe6c82e315bdfb6, type: 2}
-    matGun: {fileID: 2100000, guid: c3a436be84156eb488387abf07dd12af, type: 2}
+    color: {r: 0.8745098, g: 0, b: 0.8901961, a: 1}
+    matBlock: {fileID: 2100000, guid: dc95a8dc1497c124b85d03ed88b8e9fd, type: 2}
+    matGun: {fileID: 2100000, guid: 536fc24cf8b35e24ab0abdd61d583800, type: 2}
   - typeColor: 9
-    color: {r: 0.6320754, g: 0.36492825, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: 68c7587e1de5ddd4b92c78f0e64a0a43, type: 2}
-    matGun: {fileID: 2100000, guid: b32164f2529cde549a1ccea53ea01db7, type: 2}
+    color: {r: 0.54901963, g: 0.23529412, b: 0.08235294, a: 1}
+    matBlock: {fileID: 2100000, guid: 6ab1a3f4bdf546142930ad4d895aabf6, type: 2}
+    matGun: {fileID: 2100000, guid: b7b90a44b50eb654bb24199411b4c8cd, type: 2}
   - typeColor: 10
-    color: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
-    matBlock: {fileID: 2100000, guid: de0e8faa9373fc24baf222cff624c434, type: 2}
-    matGun: {fileID: 2100000, guid: 78275c5bdf13fd44b8b4af7f0c9ddb94, type: 2}
+    color: {r: 0.59607846, g: 0.59607846, b: 0.59607846, a: 1}
+    matBlock: {fileID: 2100000, guid: 1c994c096979323418c30df06802716f, type: 2}
+    matGun: {fileID: 2100000, guid: 7b8c11e79fdcc644aa96d932b2e081dd, type: 2}
   - typeColor: 11
     color: {r: 0, g: 0, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: 76c5175fb3f253e40a441cefd7e5caf9, type: 2}
-    matGun: {fileID: 2100000, guid: 68435d06caba6c246b1ff5de78a826f6, type: 2}
+    matBlock: {fileID: 2100000, guid: 44e7360b01a1468438a6df46b0a92dd0, type: 2}
+    matGun: {fileID: 2100000, guid: 883215e44aa1abb49b7aa3e5a0331ce8, type: 2}
   - typeColor: 12
     color: {r: 1, g: 1, b: 1, a: 1}
-    matBlock: {fileID: 2100000, guid: baf83e164a3bf8b41b0b4a79ae97a67d, type: 2}
-    matGun: {fileID: 2100000, guid: ef89b244588da6f4d9a25f5f88bab37f, type: 2}
+    matBlock: {fileID: 2100000, guid: 08fb6b1cb37f1cb4f85dea13e20869a3, type: 2}
+    matGun: {fileID: 2100000, guid: 03d3959c0119e4b46b29cdc9cd5c08ea, type: 2}
   - typeColor: 13
-    color: {r: 1, g: 0, b: 0.48377466, a: 1}
-    matBlock: {fileID: 2100000, guid: 2a74f2728193a534c8445431322968be, type: 2}
-    matGun: {fileID: 2100000, guid: 14fcdb5f0baa76b488a51fd8032d5fb9, type: 2}
+    color: {r: 0.9529412, g: 0.31764707, b: 0.4745098, a: 1}
+    matBlock: {fileID: 2100000, guid: d36f3a3bfd13a584da7458c4fd4df821, type: 2}
+    matGun: {fileID: 2100000, guid: 72c1a06031f13fa41a10a862304d68d8, type: 2}
   - typeColor: 14
-    color: {r: 0.051057402, g: 0.41509432, b: 0, a: 1}
-    matBlock: {fileID: 2100000, guid: 853656053e8401f428295febf18373e1, type: 2}
-    matGun: {fileID: 2100000, guid: 23189abdbdde7324daf4652182447413, type: 2}
+    color: {r: 0.011764706, g: 0.5647059, b: 0, a: 1}
+    matBlock: {fileID: 2100000, guid: a7aa6e7bb3aae5445a1cf7818b8ec06b, type: 2}
+    matGun: {fileID: 2100000, guid: b93952e4633aeb243a0593186248fbd2, type: 2}
   listEnviroment: []
