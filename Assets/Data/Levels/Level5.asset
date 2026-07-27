@@ -17,7 +17,7 @@ MonoBehaviour:
   NumberOfColors: 0
   MechanicNames: []
   PathWaypoints:
-  - {x: 0.2313122, y: 0, z: -28.113447}
+  - {x: 0.3899306, y: 0, z: -33.08081}
   - {x: 0.2313122, y: 0, z: -21.32557}
   - {x: 0.2313122, y: 0, z: -13.222599}
   - {x: 0.23131217, y: 0, z: -5.7165604}
@@ -30,26 +30,33 @@ MonoBehaviour:
     - Color: 7
       CountBullet: 40
       Hidden: 0
+      ConnectGroup: 0
     - Color: 7
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 1
       CountBullet: 5
       Hidden: 0
+      ConnectGroup: 0
     - Color: 2
       CountBullet: 20
       Hidden: 0
+      ConnectGroup: 0
     - Color: 1
       CountBullet: 5
       Hidden: 0
+      ConnectGroup: 0
   - Guns:
     - Color: 1
       CountBullet: 5
       Hidden: 0
+      ConnectGroup: 0
   - Guns:
     - Color: 1
       CountBullet: 5
       Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids:
   - Shape: 1
@@ -79,7 +86,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -92,7 +99,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -257,7 +264,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -270,7 +277,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -435,7 +442,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -448,7 +455,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -461,7 +468,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -474,7 +481,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -769,7 +776,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -782,7 +789,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -795,7 +802,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -808,7 +815,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1103,7 +1110,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1116,7 +1123,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1129,7 +1136,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1142,7 +1149,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1437,7 +1444,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1450,7 +1457,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1463,7 +1470,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1476,7 +1483,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1771,7 +1778,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1784,7 +1791,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1797,7 +1804,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -1810,7 +1817,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -2105,7 +2112,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -2118,7 +2125,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -2131,7 +2138,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []
@@ -2144,7 +2151,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 0
+      Shootable: 1
       Type: 0
       SpawnerReach: 0
       Queue: []

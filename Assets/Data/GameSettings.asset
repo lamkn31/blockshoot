@@ -16,7 +16,7 @@ MonoBehaviour:
   SlotGunSpacing: 3
   PathWidth: 2.5
   MaxGunOnPath: 5
-  GunSpeed: 12
+  GunSpeed: 15
   GunSpacing: 3
   FireInterval: 0.02
   FireMode: 1

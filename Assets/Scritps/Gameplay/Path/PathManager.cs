@@ -144,7 +144,7 @@ namespace Wayfu.Lamkn
 
             // Trục Z của LineRenderer phải chỉ LÊN vì dùng LineAlignment.TransformZ — không thì mặt đường
             // dựng đứng. useWorldSpace nên transform chỉ ảnh hưởng hướng mặt, không ảnh hưởng toạ độ điểm.
-            pathLine.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
+            pathLine.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             pathLine.alignment = LineAlignment.TransformZ;
             pathLine.useWorldSpace = true;
             pathLine.loop = false; // samples đã tự khép kín khi IsClosed → bật loop sẽ nối thừa 1 đoạn

@@ -67,6 +67,18 @@ namespace Wayfu.Lamkn
         private readonly List<GridRuntime> _grids = new List<GridRuntime>();
         private bool _everHadBlocks;
 
+        // Wall/obstacle chắn tia bắn: collider của các obstacle sinh theo level (LevelController đăng ký sau
+        // khi spawn). Gun không được CHỐT cell nếu đường thẳng gun→cell bị 1 obstacle nào cắt ngang (LOS).
+        private readonly List<Collider> _obstacles = new List<Collider>();
+
+        /// <summary>LevelController gọi sau khi Instantiate 1 obstacle: gom mọi collider của nó để chặn tia.</summary>
+        public void RegisterObstacle(GameObject obstacle)
+        {
+            if (obstacle == null) return;
+            foreach (var col in obstacle.GetComponentsInChildren<Collider>(true))
+                if (col != null && !col.isTrigger) _obstacles.Add(col);
+        }
+
         public void Build(LevelData level)
         {
             Clear();
@@ -187,6 +199,7 @@ namespace Wayfu.Lamkn
         {
             for (int i = transform.childCount - 1; i >= 0; i--) Destroy(transform.GetChild(i).gameObject);
             _grids.Clear();
+            _obstacles.Clear(); // obstacle của level cũ bị Destroy cùng "Obstacles" root — bỏ ref chết
             _everHadBlocks = false;
         }
 
@@ -337,6 +350,8 @@ namespace Wayfu.Lamkn
                             if (!sideLocked && Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
                             if (Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
                         }
+                        // Wall/obstacle chắn giữa gun và cell → không CHỐT cell này (không bắn xuyên tường).
+                        if (IsLineBlockedByObstacle(from, cell.transform.position)) continue;
                         // NearestCell: gần nhất thắng. FrontRowFirst: cell có Depth GỐC nhỏ thắng trước
                         // (cell sinh ở hàng 0 = Depth 0, chưa bị bắn), cùng Depth mới xét gần nhất. Dùng
                         // Depth chứ KHÔNG dùng row runtime: cell sập xuống dồn ra hàng 0 vẫn giữ Depth cũ
@@ -350,6 +365,62 @@ namespace Wayfu.Lamkn
                 }
             }
             return best;
+        }
+
+        /// <summary>
+        /// Có obstacle nào cắt đoạn thẳng from→to không (line-of-sight). Đo trên sàn XZ như toàn bộ logic
+        /// ngắm bắn: obstacle coi như tường CAO vô hạn theo footprint của nó, khỏi lệ thuộc chênh Y giữa
+        /// gun/cell/tường. Với BoxCollider tính chính xác theo OBB (đã gồm xoay + scale); collider khác thì
+        /// xấp xỉ bằng world-bounds AABB.
+        /// </summary>
+        private bool IsLineBlockedByObstacle(Vector3 from, Vector3 to)
+        {
+            if (_obstacles.Count == 0) return false;
+            for (int i = 0; i < _obstacles.Count; i++)
+            {
+                var col = _obstacles[i];
+                if (col == null || !col.enabled || !col.gameObject.activeInHierarchy) continue;
+
+                if (col is BoxCollider bc)
+                {
+                    // Đưa 2 đầu đoạn về local space của box: ô hộp thành AABB [center±size/2]; xoay/scale đã
+                    // gộp trong InverseTransformPoint. Bỏ trục Y (index 1) → xét footprint XZ.
+                    Vector3 la = col.transform.InverseTransformPoint(from);
+                    Vector3 lb = col.transform.InverseTransformPoint(to);
+                    Vector3 half = bc.size * 0.5f;
+                    if (SegmentHitsBoxXZ(la, lb, bc.center - half, bc.center + half)) return true;
+                }
+                else
+                {
+                    var b = col.bounds; // world AABB, bỏ trục Y
+                    if (SegmentHitsBoxXZ(from, to, b.min, b.max)) return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Đoạn a→b có cắt hình chữ nhật [min,max] trên mặt phẳng XZ không (slab test, bỏ trục Y = tường cao vô hạn).</summary>
+        private static bool SegmentHitsBoxXZ(Vector3 a, Vector3 b, Vector3 min, Vector3 max)
+        {
+            Vector3 d = b - a;
+            float tmin = 0f, tmax = 1f;
+            // Chỉ xét trục X và Z; trục Y bỏ qua. Hot path (per candidate × per obstacle) nên không alloc.
+            if (!ClipSlab(a.x, d.x, min.x, max.x, ref tmin, ref tmax)) return false;
+            if (!ClipSlab(a.z, d.z, min.z, max.z, ref tmin, ref tmax)) return false;
+            return true;
+        }
+
+        // Cắt tham số t của đoạn theo 1 dải [mn,mx] trên 1 trục; false = đã chắc chắn không giao.
+        private static bool ClipSlab(float a, float d, float mn, float mx, ref float tmin, ref float tmax)
+        {
+            if (Mathf.Abs(d) < 1e-8f) return a >= mn && a <= mx; // song song trục: chỉ giao nếu nằm trong dải
+            float inv = 1f / d;
+            float t1 = (mn - a) * inv;
+            float t2 = (mx - a) * inv;
+            if (t1 > t2) { float tmp = t1; t1 = t2; t2 = tmp; }
+            if (t1 > tmin) tmin = t1;
+            if (t2 < tmax) tmax = t2;
+            return tmin <= tmax;
         }
 
         public bool HasFrontCellOfColor(TypeColor color)

@@ -186,6 +186,8 @@ namespace Wayfu.Lamkn
                 var go = Instantiate(o.Prefab, o.Pos, Quaternion.Euler(0f, o.RotationY, 0f), _obstaclesRoot);
                 Vector3 s = o.Scale == Vector3.zero ? Vector3.one : o.Scale;
                 go.transform.localScale = Vector3.Scale(go.transform.localScale, s);
+                // Đăng ký collider để gun không bắn xuyên obstacle (LOS trong GridBlockManager.FindTargetCell).
+                GridBlockManager.Instance?.RegisterObstacle(go);
             }
         }
 

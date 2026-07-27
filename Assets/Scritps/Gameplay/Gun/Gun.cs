@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System;
+using System.Threading;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -62,6 +64,8 @@ namespace Wayfu.Lamkn
         /// Một bên nòng. Mỗi bên có target + nhịp bắn RIÊNG và quạt hướng ra sườn gun (±X local), nên
         /// gun chạy dọc path là quét được cả 2 phía cùng lúc mà không phải quay mặt.
         /// </summary>
+        /// 
+        private Barrel barrel = null;
         [Serializable]        
         
         private class Barrel
@@ -548,6 +552,7 @@ namespace Wayfu.Lamkn
         private void DrawTargetLine(Barrel b, string label)
         {
             if (b.Target == null) return;
+            barrel = b;
             Vector3 to = b.Target.transform.position;
 
             Color col = !b.FiredAtTarget ? UnityEngine.Color.white
