@@ -1004,10 +1004,11 @@ namespace Wayfu.Lamkn
                         if (!Front(wp)) continue;
                         Vector2 gp = Proj(wp); float sz = PixSize(wp, 0.6f);
                         var gunRect = new Rect(gp.x - sz / 2, gp.y - sz / 2, sz, sz);
-                        // Gun ẨN & CHƯA ở vị trí đầu (index 0) → vẽ xám (che màu) như lúc chơi.
+                        // Gun ẨN & CHƯA ở vị trí đầu (index 0) → vẽ xám (che màu) như lúc chơi, NHƯNG vẫn
+                        // hiện SỐ LƯỢNG đạn (thay vì "?") để tool đọc được cấu hình.
                         bool hiddenNow = g.Hidden && i != 0;
                         FillRect(gunRect, hiddenNow ? new Color(0.45f, 0.45f, 0.48f) : GlobalConfigManager.ColorOf(g.Color));
-                        if (area.Contains(gp)) GUI.Label(gunRect, hiddenNow ? "?" : g.CountBullet.ToString(), lbl);
+                        if (area.Contains(gp)) GUI.Label(gunRect, g.CountBullet.ToString(), lbl);
                         if (_selSlot == si && _selGun == i) DrawOutline(gunRect, Color.yellow, area);
                         // Vùng click gun — chọn xử lý ở HandleMarquee (click ngắn = chọn 1 gun).
                         if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp)
