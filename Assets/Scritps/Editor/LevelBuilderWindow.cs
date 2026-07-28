@@ -145,6 +145,9 @@ namespace Wayfu.Lamkn
         private readonly List<int> _selWaypoints = new List<int>();
         private readonly List<(Rect rect, int index)> _hitWaypoints = new List<(Rect, int)>();
 
+        // Grid đang quét chọn (quét qua ≥2 grid → căn thẳng Center dọc/ngang).
+        private readonly List<int> _selGrids = new List<int>();
+
         private bool IsCellSelected(int gi, int flat) => _selCells.Contains((gi, flat));
 
         private void SelectGun(int si, int gi) { _selSlot = si; _selGun = gi; _selCells.Clear(); ClearQueueSel(); }
@@ -945,6 +948,13 @@ namespace Wayfu.Lamkn
                     // đầu cạnh (chúng chỉnh BaseRadius/ArcAngle, vô nghĩa ở đây).
                     if (grid.Shape == BlockGridShape.Spline) DrawSplineHandles(gi, grid, area, Proj, Line);
 
+                    // Grid đang quét chọn (để căn thẳng) → viền vàng quanh tâm cho dễ nhận.
+                    if (_selGrids.Contains(gi))
+                    {
+                        Vector2 gc = Proj(grid.Center); float sz = PixSize(grid.Center, 1f);
+                        DrawOutline(new Rect(gc.x - sz / 2f, gc.y - sz / 2f, sz, sz), Color.yellow, area);
+                    }
+
                     // Handle: tâm + 2 đầu cạnh + xoay (kéo được).
                     GridHandle(gi, 0, Proj(grid.Center), area);
                     if (grid.Shape != BlockGridShape.Spline)
@@ -1130,7 +1140,7 @@ namespace Wayfu.Lamkn
             foreach (var h in _hitGuns)
                 if (h.rect.Contains(pos)) { SelectGun(h.slot, h.gun); return; }
             // click ra chỗ trống = bỏ chọn
-            if (!additive) { _selCells.Clear(); _selSlot = -1; _selGun = -1; ClearQueueSel(); _selWaypoints.Clear(); }
+            if (!additive) { _selCells.Clear(); _selSlot = -1; _selGun = -1; ClearQueueSel(); _selWaypoints.Clear(); _selGrids.Clear(); }
         }
 
         private int QueueSize(int gi, int flat)
@@ -1243,13 +1253,15 @@ namespace Wayfu.Lamkn
         // Quét: mọi cell có ô GIAO với vùng quét đều được chọn.
         private void RectSelect(Rect r, bool additive)
         {
-            if (!additive) { _selCells.Clear(); _selWaypoints.Clear(); }
+            if (!additive) { _selCells.Clear(); _selWaypoints.Clear(); _selGrids.Clear(); }
             _selSlot = -1; _selGun = -1;
             foreach (var h in _hitCells)
             {
                 var ir = RectIntersect(h.rect, r);
                 if (ir.width <= 0f || ir.height <= 0f) continue;
                 if (!_selCells.Contains((h.grid, h.flat))) _selCells.Add((h.grid, h.flat));
+                // Quét trúng cell của grid nào → grid đó vào danh sách chọn (để căn thẳng nhiều grid).
+                if (!_selGrids.Contains(h.grid)) _selGrids.Add(h.grid);
             }
             // Quét cả waypoint path (để căn thẳng dọc/ngang).
             if (_showPath)
@@ -2070,6 +2082,33 @@ namespace Wayfu.Lamkn
             }
         }
 
+        // Căn thẳng TÂM (Center) của các grid đang chọn: vertical = cùng X (xếp dọc), ngang = cùng Z.
+        // Lấy trung bình toạ độ tương ứng rồi gán về mọi grid. Xong thì tính lại Left/Right theo path.
+        private void AlignGrids(bool vertical)
+        {
+            var grids = _so.FindProperty("Grids");
+            if (grids == null) return;
+            var idx = new List<int>();
+            foreach (var i in _selGrids) if (i >= 0 && i < grids.arraySize) idx.Add(i);
+            if (idx.Count < 2) return;
+
+            float sum = 0f;
+            foreach (var i in idx)
+            {
+                var c = grids.GetArrayElementAtIndex(i).FindPropertyRelative("Center").vector3Value;
+                sum += vertical ? c.x : c.z;
+            }
+            float avg = sum / idx.Count;
+            foreach (var i in idx)
+            {
+                var cp = grids.GetArrayElementAtIndex(i).FindPropertyRelative("Center");
+                var c = cp.vector3Value;
+                if (vertical) c.x = avg; else c.z = avg;
+                cp.vector3Value = c;
+            }
+            _recomputeGridSides = true; // grid vừa dời tâm → cập nhật Left/Right theo path
+        }
+
         private void HandleZoomPan(Rect area, Vector2 center)
         {
             var e = Event.current;
@@ -2812,6 +2851,19 @@ namespace Wayfu.Lamkn
             EditorGUILayout.EndHorizontal();
             if (!_foldGrids) return;
             EditorGUILayout.HelpBox("Chọn loại grid (Rect = lưới chữ nhật, Spline = dải uốn lượn) rồi bấm + Grid.\nRect — mỗi handle chỉ đổi 1 trục: TÂM (hồng) di chuyển · 2 ĐẦU CẠNH TRƯỚC (xanh dương) kéo NGANG = SỐ CỘT · 2 GÓC SAU (teal) kéo SÂU = SỐ HÀNG · XOAY (xanh lá). Row 0 = hàng gần path.\nClick ô cell = tô màu đang chọn ở Paint Color · kéo đầu mũi tên = xoay hướng cell.", MessageType.None);
+
+            // Quét (marquee) qua ≥2 grid trong khung giữa → CĂN thẳng tâm dọc/ngang cho các grid đó.
+            if (_selGrids.Count >= 2)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"Đã chọn {_selGrids.Count} grid — căn:", GUILayout.Width(160));
+                if (GUILayout.Button(new GUIContent("Dọc |", "Cùng X → tâm các grid xếp thành đường DỌC (thẳng đứng).")))
+                    AlignGrids(true);
+                if (GUILayout.Button(new GUIContent("Ngang —", "Cùng Z → tâm các grid xếp thành đường NGANG.")))
+                    AlignGrids(false);
+                if (GUILayout.Button("✕", BtnW)) _selGrids.Clear();
+                EditorGUILayout.EndHorizontal();
+            }
 
             EditorGUILayout.BeginHorizontal();
             _genColor = (TypeColor)EditorGUILayout.EnumPopup("Gen Color", _genColor);
