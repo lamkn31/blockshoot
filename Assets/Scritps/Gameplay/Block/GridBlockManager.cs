@@ -406,6 +406,17 @@ namespace Wayfu.Lamkn
         /// <para>Lưu ý BlockWidth trong data có thể = 0 (khoảng cách thật nằm ở Spacing/RowSpacing) nên
         /// KHÔNG được suy footprint từ mình BlockWidth — phải dùng pitch.</para>
         /// </summary>
+        /// <summary>
+        /// Kiểm lại LOS cho 1 target ĐÃ chốt (laser gọi mỗi frame): có cell khác chắn giữa <paramref name="from"/>
+        /// (muzzle) và target không. Gun di chuyển làm cell lọt vào giữa thì trả true → gun buông target,
+        /// không bắn xuyên. Dùng tâm cell làm điểm ngắm (ô kề sát target đã được loại trong IsLineBlockedByCell).
+        /// </summary>
+        public bool IsCellBlockedFrom(Vector3 from, BlockCell target)
+        {
+            if (target == null) return false;
+            return IsLineBlockedByCell(from, target, target.transform.position);
+        }
+
         private bool IsLineBlockedByCell(Vector3 from, BlockCell target, Vector3 targetPos)
         {
             foreach (var gr in _grids)
