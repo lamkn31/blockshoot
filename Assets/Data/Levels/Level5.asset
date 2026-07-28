@@ -24,7 +24,7 @@ MonoBehaviour:
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 2
-  SlotCount: 3
+  SlotCount: 2
   Slots:
   - Guns:
     - Color: 7
@@ -35,32 +35,39 @@ MonoBehaviour:
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 1
-      CountBullet: 5
-      Hidden: 0
+    - Color: 3
+      CountBullet: 40
+      Hidden: 1
       ConnectGroup: 0
     - Color: 2
       CountBullet: 20
       Hidden: 0
       ConnectGroup: 0
-    - Color: 1
-      CountBullet: 5
+  - Guns:
+    - Color: 3
+      CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-  - Guns:
-    - Color: 1
-      CountBullet: 5
+    - Color: 2
+      CountBullet: 40
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 3
+      CountBullet: 60
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-  - Guns:
-    - Color: 1
+    - Color: 2
       CountBullet: 5
       Hidden: 0
       ConnectGroup: 0
   HoleCapacity: 3
   Grids:
   - Shape: 1
-    Side: 0
+    Side: 1
     Center: {x: -2.2743409, y: 0, z: -26.837477}
     Rotation: 270.21017
     BaseRadius: 0
@@ -238,7 +245,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 2
     Center: {x: 2.45269, y: 0, z: -26.808743}
     Rotation: 90.01201
     BaseRadius: 0
@@ -258,7 +265,7 @@ MonoBehaviour:
     SplineStyle: 0
     SplineCornerRadius: 5
     Cells:
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -271,7 +278,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -284,7 +291,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -297,7 +304,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -310,7 +317,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -323,7 +330,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -336,7 +343,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -349,7 +356,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -362,7 +369,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -375,7 +382,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -388,7 +395,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -401,7 +408,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -416,7 +423,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 2
     Center: {x: 2.6485596, y: 0, z: -22.043474}
     Rotation: 90.01286
     BaseRadius: 0
@@ -750,7 +757,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 2
     Center: {x: 2.8419003, y: 0, z: -15.85326}
     Rotation: 90.01286
     BaseRadius: 0
@@ -1084,7 +1091,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 2
     Center: {x: 2.8909519, y: 0, z: -9.02475}
     Rotation: 90.01286
     BaseRadius: 0
@@ -1418,7 +1425,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 1
     Center: {x: -2.6199946, y: 0, z: -15.824123}
     Rotation: 270.21405
     BaseRadius: 0
@@ -1752,7 +1759,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 1
     Center: {x: -2.4234455, y: 0, z: -22.137388}
     Rotation: 270.21405
     BaseRadius: 0
@@ -2086,7 +2093,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 1
     Center: {x: -2.4687462, y: 0, z: -9.086182}
     Rotation: 270.21405
     BaseRadius: 0
