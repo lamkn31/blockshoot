@@ -29,11 +29,81 @@ MonoBehaviour:
   PathStyle: 0
   CornerRadius: 3
   SlotCount: 2
-  Slots: []
+  Slots:
+  - Guns:
+    - Color: 6
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 9
+      CountBullet: 60
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 40
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 4
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 7
+      CountBullet: 90
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 9
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 14
+      CountBullet: 30
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 14
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 4
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+  - Guns:
+    - Color: 14
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 4
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 4
+      CountBullet: 60
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 9
+      CountBullet: 90
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 7
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 50
+      Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids:
   - Shape: 1
-    Side: 0
+    Side: 1
     Center: {x: -5.206492, y: 0, z: -15.096527}
     Rotation: 90.51881
     BaseRadius: 0.31375948
@@ -820,12 +890,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 9
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 20
       SpawnerDepth: 1
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -1152,9 +1222,17 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1165,9 +1243,11 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1178,9 +1258,13 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1191,9 +1275,11 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1204,9 +1290,11 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1217,9 +1305,11 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1230,9 +1320,11 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1243,9 +1335,11 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1256,9 +1350,13 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1269,9 +1367,13 @@ MonoBehaviour:
       SpawnerDepth: 2
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -1288,12 +1390,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 17
       SpawnerDepth: 2
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -1301,12 +1403,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 18
       SpawnerDepth: 2
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -1756,25 +1858,31 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 14
       SpawnerDepth: 3
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 15
       SpawnerDepth: 3
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -1782,12 +1890,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 16
       SpawnerDepth: 3
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -2237,12 +2345,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 12
       SpawnerDepth: 4
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -2250,12 +2358,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 13
       SpawnerDepth: 4
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -2263,12 +2371,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 14
       SpawnerDepth: 4
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -2718,12 +2826,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 10
       SpawnerDepth: 5
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -2731,12 +2839,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 11
       SpawnerDepth: 5
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -2744,7 +2852,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 12
@@ -3128,9 +3236,11 @@ MonoBehaviour:
       SpawnerDepth: 6
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 2
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -3199,12 +3309,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 8
       SpawnerDepth: 6
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -3212,12 +3322,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 9
       SpawnerDepth: 6
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -3225,7 +3335,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 10
@@ -3609,9 +3719,11 @@ MonoBehaviour:
       SpawnerDepth: 7
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 2
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -3680,12 +3792,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 6
       SpawnerDepth: 7
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -3693,12 +3805,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 7
       SpawnerDepth: 7
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -3706,7 +3818,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 8
@@ -4092,7 +4204,9 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 9
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -4161,12 +4275,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 4
       SpawnerDepth: 8
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -4174,12 +4288,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 5
       SpawnerDepth: 8
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -4573,7 +4687,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
@@ -4642,12 +4760,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 2
       SpawnerDepth: 9
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -4655,12 +4773,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 3
       SpawnerDepth: 9
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -5115,6 +5233,513 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 38
       SpawnerDepth: 9
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 6
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 6
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 9
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 9
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 9
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 20
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 21
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 22
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 23
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 24
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 25
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 26
+      SpawnerDepth: 10
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 27
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 28
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 4
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 29
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 9
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 30
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 31
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 9
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 32
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 4
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 33
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 4
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 34
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 4
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 35
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 9
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 36
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 6
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 37
+      SpawnerDepth: 10
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 270
+      Iced: 0
+      IceThreshold: 0
+    - Color: 6
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 38
+      SpawnerDepth: 10
       BlockStackCt: 3
       Shootable: 1
       Type: 0
@@ -5127,513 +5752,6 @@ MonoBehaviour:
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 1
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 2
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 3
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 9
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 4
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 9
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 5
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 9
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 6
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 7
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 8
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 9
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 10
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 11
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 12
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 13
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 14
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 15
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 16
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 17
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 18
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 19
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 20
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 21
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 22
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 23
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 24
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 25
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 26
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 7
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 27
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 14
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 28
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 4
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 29
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 9
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 30
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 7
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 31
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 9
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 32
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 4
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 33
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 4
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 34
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 4
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 35
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 9
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 36
-      SpawnerDepth: 10
-      BlockStackCt: 3
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 37
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 38
-      SpawnerDepth: 10
-      BlockStackCt: 0
-      Shootable: 1
-      Type: 0
-      SpawnerReach: 0
-      Queue: []
-      SpawnerDirectionAngleZ: 270
-      Iced: 0
-      IceThreshold: 0
-    - Color: 1
-      CellPos: {x: 0, y: 0, z: 0}
-      CellScale: {x: 1, y: 1, z: 1}
-      BlockCol: 0
       SpawnerDepth: 11
       BlockStackCt: 0
       Shootable: 1
@@ -6098,12 +6216,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 36
       SpawnerDepth: 11
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -6111,12 +6229,12 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 270
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 6
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 37
       SpawnerDepth: 11
-      BlockStackCt: 0
+      BlockStackCt: 3
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9678,7 +9796,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 38
       SpawnerDepth: 18
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9691,7 +9809,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9704,7 +9822,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9717,7 +9835,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 2
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9730,7 +9848,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 3
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9743,7 +9861,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 4
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9756,7 +9874,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 5
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9769,7 +9887,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 6
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9782,7 +9900,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 7
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9795,7 +9913,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 8
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9808,7 +9926,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 9
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9821,7 +9939,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 10
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9834,7 +9952,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 11
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9847,7 +9965,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 12
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9860,7 +9978,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 13
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9873,7 +9991,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 14
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9886,7 +10004,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 15
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9899,7 +10017,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 16
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9912,7 +10030,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 17
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9925,7 +10043,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 18
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9938,7 +10056,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 19
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9951,7 +10069,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 20
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9964,7 +10082,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 21
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9977,7 +10095,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 22
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -9990,7 +10108,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 23
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10003,7 +10121,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 24
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10016,7 +10134,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 25
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10029,7 +10147,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 26
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10042,7 +10160,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 27
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10055,7 +10173,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 28
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10068,7 +10186,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 29
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10081,7 +10199,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 30
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10094,7 +10212,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 31
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10107,7 +10225,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 32
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10120,7 +10238,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 33
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10133,7 +10251,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 34
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10146,7 +10264,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 35
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10159,7 +10277,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 36
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10172,7 +10290,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 37
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10185,7 +10303,7 @@ MonoBehaviour:
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 38
       SpawnerDepth: 19
-      BlockStackCt: 3
+      BlockStackCt: 0
       Shootable: 1
       Type: 0
       SpawnerReach: 0
@@ -10195,7 +10313,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 1
     Center: {x: 0.5565581, y: 0, z: -24.966991}
     Rotation: -90
     BaseRadius: 0
