@@ -297,10 +297,15 @@ namespace Wayfu.Lamkn
         /// sang sườn của nòng đúng <paramref name="spreadAngle"/> độ.
         /// <paramref name="side"/>: +1 = nòng phải, −1 = nòng trái.
         /// <paramref name="exclude"/>: target của nòng bên kia — để 2 nòng không bắn trùng 1 cell.
+        /// <paramref name="losFrom"/>: gốc tia để xét CELL KHÁC chắn đường (vị trí NÒNG của bên đang
+        /// quét). Cell chắn chỉ chặn nòng có tia bị cắt — nòng bên kia không vướng vẫn bắn bình thường.
+        /// Bỏ trống thì dùng <paramref name="from"/> (tâm gun).
         /// </summary>
         public BlockCell FindTargetCell(TypeColor color, Vector3 from, Vector3 forward, float side,
-                                        float detectRange, float spreadAngle, BlockCell exclude = null)
+                                        float detectRange, float spreadAngle, BlockCell exclude = null,
+                                        Vector3? losFrom = null)
         {
+            Vector3 losOrigin = losFrom ?? from;
             BlockCell best = null;
             int bestDepth = int.MaxValue;   // chỉ dùng khi _frontRowFirst; theo Depth GỐC, không phải row runtime
             float bestSqr = float.MaxValue;
@@ -350,8 +355,6 @@ namespace Wayfu.Lamkn
                             if (!sideLocked && Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
                             if (Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
                         }
-                        // Wall/obstacle chắn giữa gun và cell → không CHỐT cell này (không bắn xuyên tường).
-                        if (IsLineBlockedByObstacle(from, cell.transform.position)) continue;
                         // NearestCell: gần nhất thắng. FrontRowFirst: cell có Depth GỐC nhỏ thắng trước
                         // (cell sinh ở hàng 0 = Depth 0, chưa bị bắn), cùng Depth mới xét gần nhất. Dùng
                         // Depth chứ KHÔNG dùng row runtime: cell sập xuống dồn ra hàng 0 vẫn giữ Depth cũ
@@ -360,7 +363,13 @@ namespace Wayfu.Lamkn
                         bool better = _frontRowFirst
                             ? (depth < bestDepth || (depth == bestDepth && sqr < bestSqr))
                             : (sqr < bestSqr);
-                        if (better) { bestDepth = depth; bestSqr = sqr; best = cell; }
+                        if (!better) continue;
+                        // CELL KHÁC chắn giữa NÒNG và cell này → KHÔNG chốt (không bắn xuyên qua cell đứng
+                        // trước). Chỉ xét khi cell đã thắng best hiện tại → LOS chạy tối đa 1 lần/lần cải
+                        // thiện thay vì mọi ứng viên. Đo từ losOrigin (muzzle bên đang quét) chứ không phải
+                        // tâm gun: cell chắn bên nào chỉ chặn nòng bên đó. (Obstacle/wall KHÔNG còn chặn.)
+                        if (IsLineBlockedByCell(losOrigin, cell)) continue;
+                        bestDepth = depth; bestSqr = sqr; best = cell;
                     }
                 }
             }
@@ -368,10 +377,52 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>
+        /// Có CELL nào khác đứng chắn đoạn từ NÒNG (from) tới target không (line-of-sight, đo trên sàn XZ
+        /// như toàn bộ logic ngắm bắn). Mỗi cell chắn coi như 1 HỘP đúng bằng PITCH của grid nó
+        /// (BlockWidth+Spacing theo ngang, RowSpacing theo dọc) — các hộp phủ liền nhau nên vùng cell đặc
+        /// chặn chắc chắn, tia KHÔNG luồn qua kẽ. Dùng chính transform của cell (đã xoay theo hướng dồn)
+        /// để hộp thẳng hàng với lưới. Xét cell của MỌI grid: gun đứng giữa 2 grid không bắn xuyên grid
+        /// này sang grid kia.
+        /// <para>Lưu ý BlockWidth trong data có thể = 0 (khoảng cách thật nằm ở Spacing/RowSpacing) nên
+        /// KHÔNG được suy footprint từ mình BlockWidth — phải dùng pitch.</para>
+        /// </summary>
+        private bool IsLineBlockedByCell(Vector3 from, BlockCell target)
+        {
+            foreach (var gr in _grids)
+            {
+                // Pitch = khoảng cách tâm-tới-tâm giữa 2 cell (xem CellPosAt: bước ngang = BlockWidth+Spacing,
+                // bước dọc = RowSpacing). Hộp = nửa pitch mỗi bên → 2 hộp cạnh nhau chạm mép, không hở.
+                float halfX = 0.5f * Mathf.Max(0.01f, gr.Data.BlockWidth + gr.Data.Spacing);
+                float halfZ = 0.5f * Mathf.Max(0.01f, gr.Data.RowSpacing);
+
+                for (int r = 0; r < gr.Rows.Count; r++)
+                {
+                    var row = gr.Rows[r];
+                    for (int e = 0; e < row.Length; e++)
+                    {
+                        var c = row[e];
+                        // IsEmpty = block đã bị đạn đang bay đặt chỗ hết → cell sắp biến mất, coi như
+                        // không còn chắn (không thì cell chết dở khoá tia thêm vài frame vô ích).
+                        if (c == null || c == target || c.IsEmpty) continue;
+                        // Đưa 2 đầu đoạn về local space của cell (chỉ xoay quanh Y, scale = 1) rồi test
+                        // đoạn↔hộp trên XZ — hộp cao vô hạn theo Y nên bỏ qua chênh lệch độ cao.
+                        Vector3 la = c.transform.InverseTransformPoint(from);
+                        Vector3 lb = c.transform.InverseTransformPoint(target.transform.position);
+                        if (SegmentHitsBoxXZ(la, lb, new Vector3(-halfX, 0f, -halfZ), new Vector3(halfX, 0f, halfZ)))
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Có obstacle nào cắt đoạn thẳng from→to không (line-of-sight). Đo trên sàn XZ như toàn bộ logic
         /// ngắm bắn: obstacle coi như tường CAO vô hạn theo footprint của nó, khỏi lệ thuộc chênh Y giữa
         /// gun/cell/tường. Với BoxCollider tính chính xác theo OBB (đã gồm xoay + scale); collider khác thì
         /// xấp xỉ bằng world-bounds AABB.
+        /// <para>KHÔNG còn dùng để gate chọn target (đã đổi sang <see cref="IsLineBlockedByCell"/> theo
+        /// yêu cầu) — giữ lại phòng khi cần bật lại chặn bằng wall.</para>
         /// </summary>
         private bool IsLineBlockedByObstacle(Vector3 from, Vector3 to)
         {

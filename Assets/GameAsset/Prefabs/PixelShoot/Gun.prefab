@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2012749845227565244}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 2.218, y: 1.793, z: 0.188}
+  m_LocalPosition: {x: 1.5, y: 1.793, z: 0.188}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -174,8 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381ec074b9a3398449a76d6d9d04d53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzleRight: {fileID: 1202087861788072616}
-  muzzleLeft: {fileID: 9123826817185035384}
+  muzzleRight: {fileID: 8630668012078110896}
+  muzzleLeft: {fileID: 2632459358349998965}
   targetLostGrace: 0.4
   bulletLabel: {fileID: 985889518328377816}
   hiddenMaterial: {fileID: 2100000, guid: 68435d06caba6c246b1ff5de78a826f6, type: 2}
@@ -211,7 +211,7 @@ Transform:
   m_GameObject: {fileID: 3603481449382502788}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -2.218, y: 1.793, z: 0.188}
+  m_LocalPosition: {x: -1.5, y: 1.793, z: 0.188}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

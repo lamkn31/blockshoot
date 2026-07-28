@@ -274,9 +274,11 @@ namespace Wayfu.Lamkn
 
                 // Quét target trong tầm TRƯỚC. Nếu có mà nòng đang KHÓA (đã hết lượt của vòng này) thì MỞ
                 // KHÓA NGAY — khỏi chờ gun chạy hết 1 vòng path mới bắt được cell đã vào range từ lâu.
+                // losFrom = vị trí NÒNG bên này: CELL KHÁC đứng chắn chỉ chặn nòng có tia muzzle→cell
+                // bị cắt, nòng bên kia không vướng vẫn bắn được (range/quạt vẫn tính từ tâm gun như cũ).
                 var cand = GridBlockManager.Instance?.FindTargetCell(
                     Data.Color, transform.position, transform.forward, b.Sign, _fire.Range, _fire.Angle,
-                    other.Target);
+                    other.Target, b.Muzzle != null ? b.Muzzle.position : (Vector3?)null);
                 if (cand != null && !b.Armed) { b.Armed = true; b.HadTarget = false; b.IdleTimer = 0f; }
 
                 if (b.Armed)
@@ -531,11 +533,11 @@ namespace Wayfu.Lamkn
         {
             if (_state == GunState.Dead) return;
 
-            //DrawBarrelArc(_right);
+            DrawBarrelArc(_right);
             DrawBarrelArc(_left);
 
             if (_state != GunState.OnPath) return;
-            //DrawTargetLine(_right, "R");
+            DrawTargetLine(_right, "R");
             DrawTargetLine(_left, "L");
         }
 
