@@ -116,7 +116,7 @@ MonoBehaviour:
     Spacing: 0.72
     CellScale: {x: 0.75, y: 0.75, z: 0.75}
     Layout: 0
-    ShootableEdges: 0
+    ShootableEdges: 5
     Collapse2D: 0
     SplineWaypoints: []
     SplineClosed: 0

@@ -25,12 +25,59 @@ MonoBehaviour:
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 2
-  SlotCount: 2
-  Slots: []
+  SlotCount: 3
+  Slots:
+  - Guns:
+    - Color: 6
+      CountBullet: 90
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 7
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+  - Guns:
+    - Color: 2
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 7
+      CountBullet: 60
+      Hidden: 1
+      ConnectGroup: 0
+  - Guns:
+    - Color: 7
+      CountBullet: 90
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 7
+      CountBullet: 60
+      Hidden: 1
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids:
   - Shape: 2
-    Side: 0
+    Side: 1
     Center: {x: -2.924942, y: 0, z: -25.77782}
     Rotation: 178.10922
     BaseRadius: 0
@@ -709,9 +756,13 @@ MonoBehaviour:
       SpawnerDepth: 10
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 7
+        BlockStackCt: 3
+      - Color: 7
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.34275454
       Iced: 0
       IceThreshold: 0
@@ -722,9 +773,13 @@ MonoBehaviour:
       SpawnerDepth: 10
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 7
+        BlockStackCt: 3
+      - Color: 7
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.34275454
       Iced: 0
       IceThreshold: 0
@@ -735,9 +790,15 @@ MonoBehaviour:
       SpawnerDepth: 10
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 7
+        BlockStackCt: 3
+      - Color: 7
+        BlockStackCt: 3
+      - Color: 7
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.34003437
       Iced: 0
       IceThreshold: 0
@@ -748,9 +809,11 @@ MonoBehaviour:
       SpawnerDepth: 10
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.34003437
       Iced: 0
       IceThreshold: 0
@@ -761,15 +824,19 @@ MonoBehaviour:
       SpawnerDepth: 10
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.34275454
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
   - Shape: 2
-    Side: 0
+    Side: 2
     Center: {x: 0.9708885, y: 0, z: -23.8685}
     Rotation: 270.2344
     BaseRadius: 0
@@ -1344,9 +1411,15 @@ MonoBehaviour:
       SpawnerDepth: 6
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0
       Iced: 0
       IceThreshold: 0
@@ -1357,9 +1430,15 @@ MonoBehaviour:
       SpawnerDepth: 6
       BlockStackCt: 3
       Shootable: 1
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 0
       Iced: 0
       IceThreshold: 0
@@ -1430,7 +1509,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 2
-    Side: 0
+    Side: 1
     Center: {x: -2.3669136, y: 0, z: -13.550278}
     Rotation: 179.78009
     BaseRadius: 0
