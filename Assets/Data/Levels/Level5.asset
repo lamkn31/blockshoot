@@ -24,7 +24,7 @@ MonoBehaviour:
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 2
-  SlotCount: 2
+  SlotCount: 3
   Slots:
   - Guns:
     - Color: 7
@@ -35,7 +35,7 @@ MonoBehaviour:
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 3
+    - Color: 2
       CountBullet: 40
       Hidden: 1
       ConnectGroup: 0
@@ -60,9 +60,18 @@ MonoBehaviour:
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-    - Color: 2
-      CountBullet: 5
+  - Guns:
+    - Color: 7
+      CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
+    - Color: 7
+      CountBullet: 80
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 50
+      Hidden: 1
       ConnectGroup: 0
   HoleCapacity: 3
   Grids:
@@ -224,9 +233,15 @@ MonoBehaviour:
       SpawnerDepth: 5
       BlockStackCt: 3
       Shootable: 0
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
@@ -237,9 +252,15 @@ MonoBehaviour:
       SpawnerDepth: 5
       BlockStackCt: 3
       Shootable: 0
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
@@ -402,9 +423,15 @@ MonoBehaviour:
       SpawnerDepth: 5
       BlockStackCt: 3
       Shootable: 0
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
@@ -415,9 +442,15 @@ MonoBehaviour:
       SpawnerDepth: 5
       BlockStackCt: 3
       Shootable: 0
-      Type: 0
+      Type: 1
       SpawnerReach: 0
-      Queue: []
+      Queue:
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
+      - Color: 2
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
