@@ -44,6 +44,18 @@ namespace Wayfu.Lamkn
                  "slot của mỗi renderer. Bỏ trống → tự gom mọi renderer trong children (trừ TMP_Text).")]
         [SerializeField] private MeshRenderer[] colorRenderers;
 
+        [Header("Laser (chỉ dùng khi FireMode = Laser)")]
+        [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
+        [SerializeField] private Material laserMaterial;
+        [Tooltip("Độ dày tia laser (world units).")]
+        [SerializeField] private float laserWidth = 0.15f;
+        [Tooltip("Nâng điểm cuối tia lên so với gốc cell (world units) — ngắm vào thân stack cho đẹp.")]
+        [SerializeField] private float laserAimHeight = 0.25f;
+        [Tooltip("Giữ tia thêm ngần này (giây) sau khi cell vỡ, trong lúc chờ chốt cell kế → tia NỐI LIỀN, " +
+                 "không chớp tắt giữa 2 cell. Nên ≥ 2-3 frame (~0.05). Quá lớn thì tia còn treo khi thật " +
+                 "sự hết target.")]
+        [SerializeField] private float laserLinger = 0.06f;
+
         /// <summary>Arc-length hiện tại trên path — PathManager đọc để giữ khoảng cách giữa các gun.</summary>
         public float PathDistance => _follower != null ? _follower.CurrentDistance : 0f;
         public bool IsOnPath => _state == GunState.OnPath;
@@ -82,6 +94,9 @@ namespace Wayfu.Lamkn
                                        // "bắn dở" (phải bắn hết) với cell mới chỉ CHỐT (qua vòng là bỏ)
             public bool MultiSide;    // target hiện/vừa rồi thuộc grid bị path bao nhiều mặt → gun đang đi
                                       // vòng quanh nó, KHÔNG tự khoá "1 lượt/vòng" mà bắt tiếp mặt kế
+            public LineRenderer Beam; // tia laser của nòng (mode Laser) — tạo lười, tái dùng theo item pool
+            public Vector3 BeamTo;    // điểm cuối tia lần vẽ gần nhất — giữ trong lúc linger (chuyển cell)
+            public float BeamHold;    // còn giữ tia bao lâu dù đã mất target (bắc cầu qua lúc chốt cell kế)
         }
 
         private readonly Barrel _right = new Barrel { Sign = 1f };
@@ -242,7 +257,13 @@ namespace Wayfu.Lamkn
 
         private void Update()
         {
-            if (_state != GunState.OnPath) return;
+            if (_state != GunState.OnPath)
+            {
+                // Không trên path (trong slot / chờ / chết) → tắt tia nếu đang bật.
+                DisableBeam(_right);
+                DisableBeam(_left);
+                return;
+            }
 
             // Mỗi vòng path, MỖI NÒNG chỉ được 1 lượt bắn. Về tới pos 0 (xong 1 vòng) = mở khoá lượt mới.
             int lap = _follower != null ? _follower.LapCount : 0;
@@ -253,6 +274,10 @@ namespace Wayfu.Lamkn
             TickBarrel(_right, _left);
             if (_state != GunState.OnPath) return; // hết đạn giữa chừng → Die() đã despawn gun
             TickBarrel(_left, _right);
+
+            // Vẽ tia laser SAU khi 2 nòng đã cập nhật target (mode Laser); mode khác thì tia luôn tắt.
+            UpdateBeam(_right);
+            UpdateBeam(_left);
         }
 
         /// <summary>Số đạn nòng này còn cần để bắn dứt điểm cell đang bám. 0 = đang rảnh.</summary>
@@ -328,7 +353,8 @@ namespace Wayfu.Lamkn
             // cell lộ ra thoáng qua lúc dồn hàng (transient) sẽ bị thay ở frame sau → không phí đạn bắn nhầm.
             if (b.Target != null && !justAcquired && b.FireTimer <= 0f && b.Target.Available > 0)
             {
-                Fire(b);
+                if (_fire.Mode == GunFireMode.Laser) LaserHit(b); // tia gặm 1 block, không sinh viên đạn
+                else Fire(b);
                 b.FireTimer = _fire.Interval;
             }
         }
@@ -343,6 +369,7 @@ namespace Wayfu.Lamkn
             b.IdleTimer = 0f;
             b.FiredAtTarget = false;
             b.MultiSide = false;
+            b.BeamHold = 0f; // gun tái dùng: không treo tia laser của lượt trước
         }
 
         /// <summary>
@@ -471,9 +498,95 @@ namespace Wayfu.Lamkn
             }
         }
 
+        /// <summary>
+        /// 1 nhịp laser: gặm NGAY 1 block của cell đang bám (không sinh viên, tia chạm tức thì). Cell vỡ
+        /// hết thì frame sau TickBarrel tự chốt cell kế trong tầm → tia nối liền sang, nhìn không ngắt.
+        /// Mỗi block vẫn trừ 1 CountBullet như đạn thường; hết đạn thì gun rời/huỷ như cũ.
+        /// </summary>
+        private void LaserHit(Barrel b)
+        {
+            b.FiredAtTarget = true;
+            Data.CountBullet--;
+            b.Target.ApplyHit(); // không ReserveHit: tia không có thời gian bay nên phá thẳng
+            GameController.Instance?.OnBoardChanged();
+            UpdateLabel();
+            if (Data.CountBullet <= 0) OnEmptied();
+        }
+
+        /// <summary>
+        /// Vẽ tia laser của nòng: từ muzzle (điểm left/right) tới cell đang bám. Chỉ hiện khi mode = Laser,
+        /// gun trên path và nòng có target sống; ngoài ra tắt. Màu tia theo TypeColor gun (như đạn) nếu
+        /// không gán laserMaterial riêng.
+        /// </summary>
+        private void UpdateBeam(Barrel b)
+        {
+            if (_fire.Mode != GunFireMode.Laser || _state != GunState.OnPath)
+            {
+                DisableBeam(b);
+                return;
+            }
+            Vector3 from = b.Muzzle != null ? b.Muzzle.position : transform.position;
+
+            if (HasLiveTarget(b))
+            {
+                // Có target → vẽ tia tới cell và NẠP LẠI linger. Điểm cuối lưu lại để lúc mất target
+                // (cell vừa vỡ, chưa kịp chốt cell kế) vẫn giữ được tia bắc cầu qua.
+                b.BeamTo = b.Target.transform.position + Vector3.up * laserAimHeight;
+                b.BeamHold = laserLinger;
+            }
+            else if (b.BeamHold > 0f)
+            {
+                // Mất target trong khoảnh khắc chuyển cell → GIỮ tia (điểm cuối cũ) tới khi hết linger,
+                // gốc tia vẫn bám muzzle nên nhìn như tia liền mạch đang quét sang, không chớp tắt.
+                b.BeamHold -= Time.deltaTime;
+            }
+            else
+            {
+                DisableBeam(b);
+                return;
+            }
+
+            EnsureBeam(b);
+            var mat = laserMaterial != null
+                ? laserMaterial
+                : GlobalConfigManager.MaterialOf(Data.Color, TypeObject.Bullet);
+            if (mat != null && b.Beam.sharedMaterial != mat) b.Beam.sharedMaterial = mat;
+            b.Beam.enabled = true;
+            b.Beam.SetPosition(0, from);
+            b.Beam.SetPosition(1, b.BeamTo);
+        }
+
+        private void DisableBeam(Barrel b)
+        {
+            if (b.Beam != null && b.Beam.enabled) b.Beam.enabled = false;
+        }
+
+        // Tạo LineRenderer 1 lần cho nòng (item pooled tái dùng lại). Toạ độ world nên không lệ thuộc scale
+        // gun; parent vào gun để tự dọn khi gun despawn.
+        private void EnsureBeam(Barrel b)
+        {
+            if (b.Beam != null) return;
+            var go = new GameObject("LaserBeam");
+            go.transform.SetParent(transform, false);
+            var lr = go.AddComponent<LineRenderer>();
+            lr.useWorldSpace = true;
+            lr.positionCount = 2;
+            lr.widthMultiplier = laserWidth;
+            lr.numCapVertices = 4;
+            lr.numCornerVertices = 0;
+            lr.textureMode = LineTextureMode.Stretch;
+            lr.alignment = LineAlignment.View;
+            lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            lr.receiveShadows = false;
+            lr.enabled = false;
+            b.Beam = lr;
+        }
+
         private void Die()
         {
             _state = GunState.Dead;
+            DisableBeam(_right); // tắt tia trước khi trả gun về pool (item pooled tái dùng)
+            DisableBeam(_left);
             PathManager.Instance?.RemoveGun(this);
             GameController.Instance?.OnBoardChanged();
             Despawn();

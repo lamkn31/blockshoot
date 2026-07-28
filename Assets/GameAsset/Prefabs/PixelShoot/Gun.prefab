@@ -183,6 +183,10 @@ MonoBehaviour:
   - {fileID: 5995491535134932642}
   - {fileID: 3191768697407145497}
   - {fileID: 8313694814993965416}
+  laserMaterial: {fileID: 2100000, guid: 1255821fc076ad943979a92690b2088c, type: 2}
+  laserWidth: 0.4
+  laserAimHeight: 0.25
+  laserLinger: 0.01
 --- !u!1 &3603481449382502788
 GameObject:
   m_ObjectHideFlags: 0

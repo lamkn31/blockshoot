@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Wayfu.Lamkn
@@ -21,6 +22,9 @@ namespace Wayfu.Lamkn
         private SerializedObject _so;
         private SerializedObject _gsSO;
         private SerializedObject _listSO;
+        private ReorderableList _levelReorder;       // list level gộp: kéo thả sort + Play/Dup/Delete
+        private LevelData _pendingPlay, _pendingDelete; // thao tác ghi trong lúc vẽ dòng, xử lý sau vòng vẽ
+        private int _pendingDup = -1;
 
         private string _levelsFolder = "Assets";
         private readonly List<LevelData> _levels = new List<LevelData>();
@@ -339,38 +343,22 @@ namespace Wayfu.Lamkn
 
             EditorGUILayout.Space(4);
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("+ Level")) CreateNewLevel();
             if (GUILayout.Button("Reload")) RefreshLevels();
             EditorGUILayout.EndHorizontal();
             if (GUILayout.Button("Create Scene Slots (0-4)")) CreateSceneSlots();
             if (GUILayout.Button("Create MapController")) CreateMapController();
             if (GUILayout.Button("Create IceController")) CreateIceController();
 
-            EditorGUILayout.Space(4);
-            EditorGUILayout.LabelField($"Levels ({_levels.Count})", EditorStyles.boldLabel);
-            for (int i = 0; i < _levels.Count; i++)
-            {
-                var lv = _levels[i];
-                if (lv == null) continue;
-                EditorGUILayout.BeginHorizontal();
-                bool sel = lv == _target;
-                if (GUILayout.Toggle(sel, $"{i}. {lv.name}", "Button") && !sel) Select(lv);
-                // ▶ = chơi thẳng level này (trước đây chỉ Add Preview — trùng nút trên toolbar).
-                if (GUILayout.Button(new GUIContent("▶", "Chơi level này ngay (tự vào Play mode nếu đang tắt)."), BtnW))
-                { Select(lv); PlayLevel(lv); GUIUtility.ExitGUI(); }
-                if (GUILayout.Button("X", BtnW)) { DeleteLevel(lv); GUIUtility.ExitGUI(); }
-                EditorGUILayout.EndHorizontal();
-            }
-
             EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
         }
 
         // Thứ tự chơi: LevelController lấy level theo index trong asset này (UserProgress.currentLevelIndex).
+        // LIST DUY NHẤT quản lý level: kéo thả để sắp xếp; mỗi dòng có Play / Duplicate / Delete.
         private void DrawLevelList()
         {
             EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("LEVEL LIST (thứ tự chơi)", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("LEVEL LIST — kéo thả để sắp xếp", EditorStyles.boldLabel);
 
             var list = LevelList.Instance;
             EditorGUILayout.ObjectField("Asset", list, typeof(LevelList), false);
@@ -383,52 +371,137 @@ namespace Wayfu.Lamkn
                 return;
             }
 
-            if (_listSO == null || _listSO.targetObject != list) _listSO = new SerializedObject(list);
+            if (_listSO == null || _listSO.targetObject != list) { _listSO = new SerializedObject(list); _levelReorder = null; }
             _listSO.Update();
             var levels = _listSO.FindProperty("Levels");
+            if (_levelReorder == null) BuildLevelReorder(_listSO, levels);
 
             EditorGUILayout.HelpBox($"{list.Count} level. Index 0 = level đầu. Chơi hết list thì LẶP LẠI, "
                 + "bỏ qua level có bật Skip Level Loop (level tutorial chỉ chơi 1 lần).", MessageType.None);
 
-            int pend = -1; ListOp op = ListOp.None;
-            for (int i = 0; i < levels.arraySize; i++)
+            // Reset cờ thao tác mỗi frame; nút trong dòng chỉ GHI cờ, xử lý SAU khi vẽ xong list để không
+            // sửa mảng giữa lúc layout (tránh lỗi GUI khi số phần tử đổi).
+            _pendingPlay = null; _pendingDelete = null; _pendingDup = -1;
+            _levelReorder.DoLayoutList();
+            _listSO.ApplyModifiedProperties();
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(new GUIContent("+ New Level", "Tạo asset LevelData mới và thêm vào cuối list.")))
+                { CreateNewLevel(); GUIUtility.ExitGUI(); }
+            using (new EditorGUI.DisabledScope(_target == null || list.IndexOf(_target) >= 0))
+                if (GUILayout.Button(new GUIContent("+ Level đang mở", "Thêm level đang mở vào cuối list.")))
+                { AddLevelToList(list, _target); GUIUtility.ExitGUI(); }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(new GUIContent("Fill from folder",
+                "Nạp mọi LevelData trong Levels Folder theo thứ tự tên, ghi đè list hiện tại.")))
+                { FillLevelListFromFolder(levels); _listSO.ApplyModifiedProperties(); }
+            if (GUILayout.Button("Clear")) { levels.arraySize = 0; _listSO.ApplyModifiedProperties(); }
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.EndVertical();
+
+            // Áp thao tác đã ghi cờ (ngoài vòng vẽ list).
+            if (_pendingDup >= 0) { DuplicateLevelInList(list, _pendingDup); GUIUtility.ExitGUI(); }
+            else if (_pendingDelete != null) { DeleteLevelAndUnlist(list, _pendingDelete); GUIUtility.ExitGUI(); }
+            else if (_pendingPlay != null) { Select(_pendingPlay); PlayLevel(_pendingPlay); GUIUtility.ExitGUI(); }
+        }
+
+        // Dựng ReorderableList cho LevelList.Levels: kéo thả sắp xếp (draggable), mỗi dòng tự vẽ tên +
+        // 3 nút Play/Duplicate/Delete. Không hiện nút +/− mặc định của ReorderableList (dùng nút riêng bên
+        // dưới để kèm thao tác tạo/nhân bản asset thật).
+        private void BuildLevelReorder(SerializedObject so, SerializedProperty levels)
+        {
+            _levelReorder = new ReorderableList(so, levels, true, false, false, false)
             {
-                var el = levels.GetArrayElementAtIndex(i);
+                elementHeight = EditorGUIUtility.singleLineHeight + 6f,
+            };
+            _levelReorder.drawElementCallback = (rect, index, active, focused) =>
+            {
+                if (index < 0 || index >= levels.arraySize) return;
+                var el = levels.GetArrayElementAtIndex(index);
                 var lv = el.objectReferenceValue as LevelData;
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(i.ToString(), GUILayout.Width(18));
-                // Bấm tên = mở level đó trong tool; ô trống thì gán bằng ObjectField.
+                rect.y += 3f; rect.height = EditorGUIUtility.singleLineHeight;
+
+                const float bw = 26f, gap = 2f, idxW = 22f;
+                float right = rect.xMax;
+                var rDel = new Rect(right - bw, rect.y, bw, rect.height); right -= bw + gap;
+                var rDup = new Rect(right - bw, rect.y, bw, rect.height); right -= bw + gap;
+                var rPlay = new Rect(right - bw, rect.y, bw, rect.height); right -= bw + gap;
+                var rIdx = new Rect(rect.x, rect.y, idxW, rect.height);
+                var rName = new Rect(rect.x + idxW, rect.y, right - rect.x - idxW - gap, rect.height);
+
+                EditorGUI.LabelField(rIdx, index.ToString());
                 if (lv != null)
                 {
                     bool sel = lv == _target;
                     string tag = lv.SkipLevelLoop ? " (skip loop)" : "";
-                    if (GUILayout.Toggle(sel, lv.name + tag, "Button") && !sel) Select(lv);
+                    if (GUI.Toggle(rName, sel, new GUIContent(lv.name + tag, "Bấm để mở level này trong tool."), "Button") && !sel)
+                        Select(lv);
                 }
-                else el.objectReferenceValue = EditorGUILayout.ObjectField(null, typeof(LevelData), false);
-                var o = MiniButtons(i, levels.arraySize);
-                if (o != ListOp.None) { pend = i; op = o; }
-                EditorGUILayout.EndHorizontal();
+                else el.objectReferenceValue = EditorGUI.ObjectField(rName, null, typeof(LevelData), false);
+
+                using (new EditorGUI.DisabledScope(lv == null))
+                {
+                    if (GUI.Button(rPlay, new GUIContent("▶", "Chơi level này ngay (tự vào Play mode nếu đang tắt).")))
+                        _pendingPlay = lv;
+                    if (GUI.Button(rDup, new GUIContent("⧉", "Nhân bản asset và chèn ngay sau dòng này.")))
+                        _pendingDup = index;
+                    if (GUI.Button(rDel, new GUIContent("✕", "Xoá asset và gỡ khỏi list.")))
+                        _pendingDelete = lv;
+                }
+            };
+        }
+
+        // Thêm 1 level vào cuối LevelList (không trùng lặp), ghi undo + dirty.
+        private void AddLevelToList(LevelList list, LevelData lv)
+        {
+            if (list == null || lv == null || list.Levels.Contains(lv)) return;
+            Undo.RecordObject(list, "Add Level");
+            list.Levels.Add(lv);
+            EditorUtility.SetDirty(list);
+            AssetDatabase.SaveAssets();
+            _listSO = null; // buộc dựng lại SerializedObject + ReorderableList ở frame sau
+        }
+
+        // Nhân bản asset của level ở index rồi chèn ngay sau nó trong list.
+        private void DuplicateLevelInList(LevelList list, int index)
+        {
+            if (list == null || index < 0 || index >= list.Levels.Count) return;
+            var src = list.Levels[index];
+            if (src == null) return;
+            string srcPath = AssetDatabase.GetAssetPath(src);
+            string newPath = AssetDatabase.GenerateUniqueAssetPath(srcPath);
+            if (!AssetDatabase.CopyAsset(srcPath, newPath)) return;
+            var dup = AssetDatabase.LoadAssetAtPath<LevelData>(newPath);
+            Undo.RecordObject(list, "Duplicate Level");
+            list.Levels.Insert(index + 1, dup);
+            EditorUtility.SetDirty(list);
+            AssetDatabase.SaveAssets();
+            _listSO = null;
+            RefreshLevels();
+            Select(dup);
+        }
+
+        // Xoá asset level và gỡ MỌI tham chiếu tới nó khỏi list (có hỏi xác nhận).
+        private void DeleteLevelAndUnlist(LevelList list, LevelData lv)
+        {
+            if (lv == null) return;
+            if (!EditorUtility.DisplayDialog("Delete Level", $"Xoá asset '{lv.name}' và gỡ khỏi list?", "Delete", "Cancel"))
+                return;
+            if (list != null)
+            {
+                Undo.RecordObject(list, "Delete Level");
+                list.Levels.RemoveAll(x => x == lv);
+                EditorUtility.SetDirty(list);
             }
-
-            EditorGUILayout.BeginHorizontal();
-            using (new EditorGUI.DisabledScope(_target == null || list.IndexOf(_target) >= 0))
-                if (GUILayout.Button("+ Level đang mở")) levels.GetArrayElementAtIndex(AddArray(levels)).objectReferenceValue = _target;
-            if (GUILayout.Button(new GUIContent("Fill from folder",
-                "Nạp mọi LevelData trong Levels Folder theo thứ tự tên, ghi đè list hiện tại.")))
-                FillLevelListFromFolder(levels);
-            if (GUILayout.Button("Clear")) levels.arraySize = 0;
-            EditorGUILayout.EndHorizontal();
-
-            if (pend >= 0) ApplyOp(levels, pend, op);
-            _listSO.ApplyModifiedProperties();
-
-            // Nhảy thẳng tới level đang mở, không cần đợi thắng từng màn để tiến trình bò tới đó.
-            using (new EditorGUI.DisabledScope(_target == null))
-                if (GUILayout.Button(new GUIContent("▶ Play level đang mở",
-                    "Chơi đúng level này, bỏ qua tiến trình đã lưu. Đang tắt Play thì tự vào Play mode.")))
-                { PlayLevel(_target); GUIUtility.ExitGUI(); }
-
-            EditorGUILayout.EndVertical();
+            string path = AssetDatabase.GetAssetPath(lv);
+            if (_target == lv) { _target = null; _so = null; }
+            AssetDatabase.DeleteAsset(path);
+            AssetDatabase.SaveAssets();
+            _listSO = null;
+            RefreshLevels();
         }
 
         private void CreateLevelList()
@@ -3026,16 +3099,11 @@ namespace Wayfu.Lamkn
             var asset = CreateInstance<LevelData>();
             asset.GunPrefab = _defaultGunPrefab; asset.BlockPrefab = _defaultBlockPrefab;
             AssetDatabase.CreateAsset(asset, path); AssetDatabase.SaveAssets();
+            // Tự thêm vào LevelList để level mới hiện luôn trong list gộp (không phải Fill from folder lại).
+            var list = LevelList.Instance;
+            if (list != null) { Undo.RecordObject(list, "Add Level"); list.Levels.Add(asset); EditorUtility.SetDirty(list); AssetDatabase.SaveAssets(); }
+            _listSO = null;
             RefreshLevels(); Select(asset);
-        }
-
-        private void DeleteLevel(LevelData lv)
-        {
-            if (lv == null) return;
-            if (!EditorUtility.DisplayDialog("Delete Level", $"Xoá asset '{lv.name}'?", "Delete", "Cancel")) return;
-            string path = AssetDatabase.GetAssetPath(lv);
-            if (_target == lv) { _target = null; _so = null; }
-            AssetDatabase.DeleteAsset(path); RefreshLevels();
         }
 
         private void AddPreviewToScene()

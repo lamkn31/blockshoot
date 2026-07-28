@@ -36,8 +36,11 @@ namespace Wayfu.Lamkn
     /// <para><b>Single</b>: mỗi nhịp FireInterval nhả 1 viên, gặm dần cho tới khi cell sạch.</para>
     /// <para><b>BurstPerCell</b>: chốt cell xong nhả LUÔN 1 loạt đúng bằng số block còn lại của cell,
     /// mỗi viên bay tới 1 block trong stack → cả cell vỡ trong 1 lượt.</para>
+    /// <para><b>Laser</b>: KHÔNG bắn viên đạn — vẽ 1 TIA liền mạch từ nòng (left/right) tới cell đang
+    /// bám, gặm block liên tục theo FireInterval. Cell vỡ xong tia NỐI LIỀN sang cell kế trong tầm nên
+    /// nhìn không ngắt quãng (xem Gun.UpdateBeam / LaserHit).</para>
     /// </summary>
-    public enum GunFireMode { Single, BurstPerCell }
+    public enum GunFireMode { Single, BurstPerCell, Laser }
 
     /// <summary>
     /// Bó config bắn của gun: đọc 1 lần từ <see cref="GameSettings"/> rồi truyền xuống slot → gun.

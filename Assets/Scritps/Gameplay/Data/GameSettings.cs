@@ -30,7 +30,9 @@ namespace Wayfu.Lamkn
         [Tooltip("Single = mỗi nhịp FireInterval nhả 1 viên, gặm dần cho tới khi cell sạch.\n" +
                  "BurstPerCell = chốt cell xong nhả LUÔN cả loạt đúng bằng số block còn lại của cell, mỗi " +
                  "viên bay tới 1 block trong stack → cả cell vỡ trong 1 lượt. FireInterval khi đó chỉ là " +
-                 "nhịp nghỉ giữa 2 CELL, không phải giữa 2 viên.")]
+                 "nhịp nghỉ giữa 2 CELL, không phải giữa 2 viên.\n" +
+                 "Laser = KHÔNG bắn viên; vẽ tia liền mạch từ nòng tới cell, gặm 1 block mỗi FireInterval, " +
+                 "cell vỡ xong tia nối liền sang cell kế (nhìn không ngắt quãng).")]
         public GunFireMode FireMode = GunFireMode.Single;
         [Tooltip("CHỈ dùng khi FireMode = BurstPerCell.\n" +
                  "Tắt = cả loạt sinh CHỤM tại 1 điểm ở nòng rồi toả ra từng block.\n" +
