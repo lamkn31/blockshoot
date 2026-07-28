@@ -96,6 +96,14 @@ namespace Wayfu.Lamkn
             if (indicatorRenderer != null) _defaultIndicatorSprite = indicatorRenderer.sprite;
         }
 
+        /// <summary>
+        /// Thời điểm (Time.time) cell này SẬP/XUẤT HIỆN gần nhất — đặt khi bắt đầu trượt (MoveTo). Cell dựng
+        /// lúc build = 0 (đã đứng sẵn từ đầu màn). Gun dùng để phân biệt PER-GUN: cell có SettleStamp SAU
+        /// mốc bắt đầu lap của gun = "vừa sập trong lap này" → ưu tiên bắn SAU cell đã đứng sẵn. Lap mới thì
+        /// mốc của gun tiến lên nên cell sập lap trước lại thành "ready".
+        /// </summary>
+        public float SettleStamp { get; private set; }
+
         public int StackCount => _blocks.Count;
 
         /// <summary>
@@ -122,6 +130,7 @@ namespace Wayfu.Lamkn
             IceThreshold = data.IceThreshold;
             _pendingHits = 0;
             Generation++;                    // object pool tái dùng → đây là 1 cell MỚI
+            SettleStamp = 0f;                // cell dựng lúc build = đã đứng sẵn từ đầu (không tính "vừa sập")
             PendingEntry = false;            // reset cho item pooled; MoveTo tự bật khi cell trượt
             ReleaseBlocks();                 // item pooled tái dùng: dọn stack cũ trước
             ShowSpawnerIndicator(false);
@@ -220,6 +229,7 @@ namespace Wayfu.Lamkn
         public void MoveTo(Vector3 target, float duration)
         {
             if (_moveRoutine != null) StopCoroutine(_moveRoutine);
+            SettleStamp = Time.time; // cell vừa SẬP/dời chỗ ở thời điểm này (gun dùng để xếp ưu tiên sau)
             if (!gameObject.activeInHierarchy || duration <= 0f)
             {
                 transform.position = target;

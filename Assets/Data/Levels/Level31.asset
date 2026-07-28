@@ -55,7 +55,7 @@ MonoBehaviour:
     Collapse2D: 0
     SplineWaypoints:
     - {x: 7.503222, y: 0, z: -16.495699}
-    - {x: -5.328049, y: 0, z: -16.035858}
+    - {x: -5.3829584, y: 0, z: -16.07354}
     - {x: -7.619218, y: 0, z: -23.378027}
     SplineClosed: 0
     SplineStyle: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31628
+      SpawnerDirectionAngleZ: 178.15051
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -84,7 +84,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31628
+      SpawnerDirectionAngleZ: 178.1508
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -110,7 +110,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -123,7 +123,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -136,7 +136,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31628
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -149,7 +149,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.1508
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -162,7 +162,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31628
+      SpawnerDirectionAngleZ: 178.1508
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -175,7 +175,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.15051
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -188,7 +188,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 177.78204
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -201,7 +201,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 167.54616
+      SpawnerDirectionAngleZ: 178.15051
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -214,7 +214,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 153.53185
+      SpawnerDirectionAngleZ: 175.00375
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -227,7 +227,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.19792
+      SpawnerDirectionAngleZ: 166.5576
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -240,7 +240,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 125.1489
+      SpawnerDirectionAngleZ: 156.43802
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -253,7 +253,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 110.91089
+      SpawnerDirectionAngleZ: 146.65053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -266,7 +266,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 97.50288
+      SpawnerDirectionAngleZ: 136.60274
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -279,7 +279,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466385
+      SpawnerDirectionAngleZ: 126.23236
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -292,7 +292,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466446
+      SpawnerDirectionAngleZ: 115.77672
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -305,7 +305,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466385
+      SpawnerDirectionAngleZ: 107.363045
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -318,7 +318,59 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46649
+      SpawnerDirectionAngleZ: 103.29614
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 20
+      SpawnerDepth: 0
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29621
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 21
+      SpawnerDepth: 0
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29608
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 22
+      SpawnerDepth: 0
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29615
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 23
+      SpawnerDepth: 0
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296074
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -331,7 +383,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15091
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -344,7 +396,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -357,7 +409,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -370,7 +422,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15063
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -383,7 +435,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -396,7 +448,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15063
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -409,7 +461,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -422,7 +474,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15063
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -435,7 +487,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15038
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -448,7 +500,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15063
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -461,7 +513,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 172.61734
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -474,7 +526,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 161.67572
+      SpawnerDirectionAngleZ: 174.39119
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -487,7 +539,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.22166
+      SpawnerDirectionAngleZ: 166.75716
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -500,7 +552,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 138.76709
+      SpawnerDirectionAngleZ: 157.3683
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -513,7 +565,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 128.4674
+      SpawnerDirectionAngleZ: 148.57173
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -526,7 +578,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 118.38424
+      SpawnerDirectionAngleZ: 141.23927
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -539,7 +591,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 106.9895
+      SpawnerDirectionAngleZ: 133.54333
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -552,7 +604,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 96.74783
+      SpawnerDirectionAngleZ: 124.712685
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -565,7 +617,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.4664
+      SpawnerDirectionAngleZ: 115.16404
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -578,7 +630,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46646
+      SpawnerDirectionAngleZ: 107.42942
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -591,7 +643,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466385
+      SpawnerDirectionAngleZ: 103.40144
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -604,7 +656,46 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466385
+      SpawnerDirectionAngleZ: 103.296104
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 22
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296104
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 23
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29605
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 24
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296104
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -617,7 +708,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15079
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -630,7 +721,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -643,7 +734,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.3163
+      SpawnerDirectionAngleZ: 178.15079
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -656,7 +747,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.3163
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -669,7 +760,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15079
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -682,7 +773,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.3163
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -695,7 +786,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -708,7 +799,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.3163
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -721,7 +812,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -734,7 +825,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.3163
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -747,7 +838,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 174.60301
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -760,7 +851,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 166.43057
+      SpawnerDirectionAngleZ: 175.51028
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -773,7 +864,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 157.36618
+      SpawnerDirectionAngleZ: 168.53128
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -786,7 +877,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 149.38857
+      SpawnerDirectionAngleZ: 161.56544
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -799,7 +890,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.21309
+      SpawnerDirectionAngleZ: 154.79349
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -812,7 +903,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 131.84386
+      SpawnerDirectionAngleZ: 147.53682
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -825,7 +916,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 122.148865
+      SpawnerDirectionAngleZ: 141.84639
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -838,7 +929,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.18593
+      SpawnerDirectionAngleZ: 135.35878
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -851,7 +942,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 105.08382
+      SpawnerDirectionAngleZ: 126.70949
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -864,7 +955,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 96.25568
+      SpawnerDirectionAngleZ: 122.220215
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -877,7 +968,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46636
+      SpawnerDirectionAngleZ: 112.97764
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -890,7 +981,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46636
+      SpawnerDirectionAngleZ: 106.6919
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -903,7 +994,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46636
+      SpawnerDirectionAngleZ: 103.29592
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -916,7 +1007,46 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46623
+      SpawnerDirectionAngleZ: 103.296104
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 24
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296104
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 25
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296036
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 26
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296036
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -929,7 +1059,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -942,7 +1072,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.15057
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -955,7 +1085,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -968,7 +1098,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -981,7 +1111,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -994,7 +1124,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15057
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1007,7 +1137,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31595
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1020,7 +1150,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15057
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1033,7 +1163,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15057
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1046,7 +1176,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31647
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1059,7 +1189,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 175.57365
+      SpawnerDirectionAngleZ: 178.15047
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1072,7 +1202,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 167.56201
+      SpawnerDirectionAngleZ: 175.91188
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1085,7 +1215,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.81096
+      SpawnerDirectionAngleZ: 170.5708
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1098,7 +1228,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 152.34036
+      SpawnerDirectionAngleZ: 166.7812
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1111,7 +1241,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 147.54225
+      SpawnerDirectionAngleZ: 159.5995
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1124,7 +1254,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.48471
+      SpawnerDirectionAngleZ: 154.44844
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1137,7 +1267,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 132.73355
+      SpawnerDirectionAngleZ: 146.53932
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1150,7 +1280,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 122.40944
+      SpawnerDirectionAngleZ: 142.29938
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1163,7 +1293,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 116.695915
+      SpawnerDirectionAngleZ: 136.13318
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1176,7 +1306,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 110.5246
+      SpawnerDirectionAngleZ: 128.63443
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1189,7 +1319,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 103.709885
+      SpawnerDirectionAngleZ: 123.462585
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1202,7 +1332,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 96.19582
+      SpawnerDirectionAngleZ: 117.77564
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1215,7 +1345,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466324
+      SpawnerDirectionAngleZ: 112.66726
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1228,7 +1358,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466446
+      SpawnerDirectionAngleZ: 106.08442
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1241,7 +1371,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466324
+      SpawnerDirectionAngleZ: 103.296036
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1254,7 +1384,46 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466576
+      SpawnerDirectionAngleZ: 103.29615
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 26
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29615
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 27
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29615
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 28
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29609
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1267,7 +1436,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31615
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1280,7 +1449,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.1505
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1293,7 +1462,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1306,7 +1475,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1319,7 +1488,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31615
+      SpawnerDirectionAngleZ: 178.15073
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1332,7 +1501,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31615
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1345,7 +1514,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31615
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1358,7 +1527,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15073
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1371,7 +1540,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1384,7 +1553,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15073
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1397,7 +1566,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 175.90271
+      SpawnerDirectionAngleZ: 178.1506
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1410,7 +1579,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 168.44165
+      SpawnerDirectionAngleZ: 175.92859
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1423,7 +1592,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 164.03406
+      SpawnerDirectionAngleZ: 169.44855
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1436,7 +1605,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 159.68121
+      SpawnerDirectionAngleZ: 166.90048
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1449,7 +1618,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.12921
+      SpawnerDirectionAngleZ: 159.88193
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1462,7 +1631,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 145.35612
+      SpawnerDirectionAngleZ: 154.26424
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1475,7 +1644,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.66786
+      SpawnerDirectionAngleZ: 148.55894
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1488,7 +1657,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 132.47942
+      SpawnerDirectionAngleZ: 145.23055
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1501,7 +1670,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 124.44919
+      SpawnerDirectionAngleZ: 137.16084
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1514,7 +1683,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.578354
+      SpawnerDirectionAngleZ: 134.24854
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1527,7 +1696,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.55708
+      SpawnerDirectionAngleZ: 127.163055
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1540,7 +1709,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 105.768776
+      SpawnerDirectionAngleZ: 121.54518
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1553,7 +1722,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 101.64922
+      SpawnerDirectionAngleZ: 116.36096
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1566,7 +1735,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 96.08062
+      SpawnerDirectionAngleZ: 112.511894
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1579,7 +1748,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466385
+      SpawnerDirectionAngleZ: 106.13047
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1592,7 +1761,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46651
+      SpawnerDirectionAngleZ: 103.311264
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1605,7 +1774,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46651
+      SpawnerDirectionAngleZ: 103.29614
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1618,7 +1787,33 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46637
+      SpawnerDirectionAngleZ: 103.296036
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 28
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29614
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 29
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29614
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1631,7 +1826,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31609
+      SpawnerDirectionAngleZ: 178.15076
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1644,7 +1839,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1657,7 +1852,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31609
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1670,7 +1865,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1683,7 +1878,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.3161
+      SpawnerDirectionAngleZ: 178.15076
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1696,7 +1891,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15054
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1709,7 +1904,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1722,7 +1917,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1735,7 +1930,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1748,7 +1943,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1761,7 +1956,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 175.9089
+      SpawnerDirectionAngleZ: 178.15045
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1774,7 +1969,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 170.57475
+      SpawnerDirectionAngleZ: 175.94218
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1787,7 +1982,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 167.93459
+      SpawnerDirectionAngleZ: 171.80136
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1800,7 +1995,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.43166
+      SpawnerDirectionAngleZ: 169.03331
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1813,7 +2008,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 154.86783
+      SpawnerDirectionAngleZ: 161.70212
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1826,7 +2021,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.1156
+      SpawnerDirectionAngleZ: 159.2131
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1839,7 +2034,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 142.86417
+      SpawnerDirectionAngleZ: 154.12732
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1852,7 +2047,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.79951
+      SpawnerDirectionAngleZ: 147.43288
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1865,7 +2060,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 132.29662
+      SpawnerDirectionAngleZ: 145.18571
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1878,7 +2073,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 127.546814
+      SpawnerDirectionAngleZ: 137.646
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1891,7 +2086,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.98058
+      SpawnerDirectionAngleZ: 135.76985
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1904,7 +2099,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 115.12711
+      SpawnerDirectionAngleZ: 127.52268
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1917,7 +2112,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.664505
+      SpawnerDirectionAngleZ: 124.95771
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1930,7 +2125,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 104.161705
+      SpawnerDirectionAngleZ: 121.33789
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1943,7 +2138,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 100.06231
+      SpawnerDirectionAngleZ: 113.53578
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1956,7 +2151,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 95.81704
+      SpawnerDirectionAngleZ: 111.90775
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1969,7 +2164,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46641
+      SpawnerDirectionAngleZ: 105.62551
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1982,7 +2177,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466515
+      SpawnerDirectionAngleZ: 103.29618
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1995,7 +2190,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46643
+      SpawnerDirectionAngleZ: 103.296036
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2008,7 +2203,33 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466225
+      SpawnerDirectionAngleZ: 103.296036
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 30
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296234
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 31
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29608
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2021,7 +2242,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31606
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2034,7 +2255,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15048
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2047,7 +2268,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31616
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2060,7 +2281,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15048
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2073,7 +2294,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31616
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2086,7 +2307,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15059
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2099,7 +2320,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2112,7 +2333,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31638
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2125,7 +2346,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2138,7 +2359,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.1507
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2151,7 +2372,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 176.02473
+      SpawnerDirectionAngleZ: 178.15048
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2164,7 +2385,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 172.43578
+      SpawnerDirectionAngleZ: 176.31685
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2177,7 +2398,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 168.05203
+      SpawnerDirectionAngleZ: 174.04666
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2190,7 +2411,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 161.34808
+      SpawnerDirectionAngleZ: 169.12447
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2203,7 +2424,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.312
+      SpawnerDirectionAngleZ: 166.4254
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2216,7 +2437,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.99547
+      SpawnerDirectionAngleZ: 160.25397
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2229,7 +2450,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.10547
+      SpawnerDirectionAngleZ: 155.84572
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2242,7 +2463,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 141.2494
+      SpawnerDirectionAngleZ: 154.02164
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2255,7 +2476,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.89888
+      SpawnerDirectionAngleZ: 146.4862
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2268,7 +2489,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 132.15869
+      SpawnerDirectionAngleZ: 145.15108
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2281,7 +2502,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 129.9645
+      SpawnerDirectionAngleZ: 138.02892
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2294,7 +2515,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.95225
+      SpawnerDirectionAngleZ: 136.28065
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2307,7 +2528,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 120.34087
+      SpawnerDirectionAngleZ: 129.62732
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2320,7 +2541,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.74549
+      SpawnerDirectionAngleZ: 127.41002
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2333,7 +2554,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 109.65568
+      SpawnerDirectionAngleZ: 121.17768
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2346,7 +2567,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 104.005554
+      SpawnerDirectionAngleZ: 118.88342
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2359,7 +2580,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 98.353355
+      SpawnerDirectionAngleZ: 112.30722
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2372,7 +2593,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 95.60965
+      SpawnerDirectionAngleZ: 110.49247
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2385,7 +2606,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466446
+      SpawnerDirectionAngleZ: 105.48218
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2398,7 +2619,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466446
+      SpawnerDirectionAngleZ: 103.29613
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2411,7 +2632,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.466354
+      SpawnerDirectionAngleZ: 103.29613
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2424,7 +2645,33 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46624
+      SpawnerDirectionAngleZ: 103.29598
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 32
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29613
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 33
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29613
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2437,7 +2684,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2450,7 +2697,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2463,7 +2710,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31602
+      SpawnerDirectionAngleZ: 178.15073
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2476,7 +2723,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2489,7 +2736,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2502,7 +2749,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31621
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2515,7 +2762,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2528,7 +2775,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2541,7 +2788,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31612
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2554,7 +2801,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15073
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2567,7 +2814,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 175.91782
+      SpawnerDirectionAngleZ: 178.15044
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2580,7 +2827,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 170.77675
+      SpawnerDirectionAngleZ: 175.9627
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2593,7 +2840,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 168.14378
+      SpawnerDirectionAngleZ: 172.83768
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2606,7 +2853,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 161.17087
+      SpawnerDirectionAngleZ: 169.19696
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2619,7 +2866,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.21872
+      SpawnerDirectionAngleZ: 166.67657
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2632,7 +2879,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 151.97021
+      SpawnerDirectionAngleZ: 160.38292
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2645,7 +2892,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.09752
+      SpawnerDirectionAngleZ: 157.42995
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2658,7 +2905,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 143.83057
+      SpawnerDirectionAngleZ: 153.93753
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2671,7 +2918,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 139.9762
+      SpawnerDirectionAngleZ: 148.65741
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2684,7 +2931,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 134.609
+      SpawnerDirectionAngleZ: 145.12369
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2697,7 +2944,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 132.05124
+      SpawnerDirectionAngleZ: 142.21356
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2710,7 +2957,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 124.675026
+      SpawnerDirectionAngleZ: 136.3097
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2723,7 +2970,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.93004
+      SpawnerDirectionAngleZ: 134.7145
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2736,7 +2983,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 117.63974
+      SpawnerDirectionAngleZ: 127.4957
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2749,7 +2996,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.8087
+      SpawnerDirectionAngleZ: 126.492195
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2762,7 +3009,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 108.04901
+      SpawnerDirectionAngleZ: 121.05017
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2775,7 +3022,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 103.88372
+      SpawnerDirectionAngleZ: 117.823456
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2788,7 +3035,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 98.707405
+      SpawnerDirectionAngleZ: 112.23624
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2801,7 +3048,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 95.9354
+      SpawnerDirectionAngleZ: 110.52229
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2814,7 +3061,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46636
+      SpawnerDirectionAngleZ: 105.47373
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2827,7 +3074,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46636
+      SpawnerDirectionAngleZ: 103.31057
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2840,7 +3087,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46636
+      SpawnerDirectionAngleZ: 103.29613
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2853,7 +3100,33 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46647
+      SpawnerDirectionAngleZ: 103.29613
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 33
+      SpawnerDepth: 7
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29613
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 34
+      SpawnerDepth: 7
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29609
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2866,7 +3139,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31618
+      SpawnerDirectionAngleZ: 178.15076
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2879,7 +3152,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31618
+      SpawnerDirectionAngleZ: 178.15048
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2892,7 +3165,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31609
+      SpawnerDirectionAngleZ: 178.15067
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2905,7 +3178,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15059
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2918,7 +3191,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31618
+      SpawnerDirectionAngleZ: 178.15067
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2931,7 +3204,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31618
+      SpawnerDirectionAngleZ: 178.15059
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2944,7 +3217,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31618
+      SpawnerDirectionAngleZ: 178.15059
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2957,7 +3230,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15057
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2970,7 +3243,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31618
+      SpawnerDirectionAngleZ: 178.15067
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2983,7 +3256,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31627
+      SpawnerDirectionAngleZ: 178.15067
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2996,7 +3269,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 175.92122
+      SpawnerDirectionAngleZ: 178.15048
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3009,7 +3282,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 172.5734
+      SpawnerDirectionAngleZ: 176.24461
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3022,7 +3295,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 168.21735
+      SpawnerDirectionAngleZ: 174.75645
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3035,7 +3308,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 165.92288
+      SpawnerDirectionAngleZ: 169.25594
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3048,7 +3321,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.14384
+      SpawnerDirectionAngleZ: 168.91884
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3061,7 +3334,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 158.42694
+      SpawnerDirectionAngleZ: 161.49557
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3074,7 +3347,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.09108
+      SpawnerDirectionAngleZ: 160.4881
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3087,7 +3360,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.09108
+      SpawnerDirectionAngleZ: 154.11092
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3100,7 +3373,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 142.14653
+      SpawnerDirectionAngleZ: 153.86911
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3113,7 +3386,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 140.03838
+      SpawnerDirectionAngleZ: 147.29172
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3126,7 +3399,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 134.91403
+      SpawnerDirectionAngleZ: 145.10123
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3139,7 +3412,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 131.96486
+      SpawnerDirectionAngleZ: 142.4652
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3152,7 +3425,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 128.02808
+      SpawnerDirectionAngleZ: 136.3334
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3165,7 +3438,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.91221
+      SpawnerDirectionAngleZ: 136.00836
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3178,7 +3451,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.468376
+      SpawnerDirectionAngleZ: 128.56087
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3191,7 +3464,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 112.11464
+      SpawnerDirectionAngleZ: 127.565384
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3204,7 +3477,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.85935
+      SpawnerDirectionAngleZ: 121.26205
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3217,7 +3490,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 103.91031
+      SpawnerDirectionAngleZ: 120.94626
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3230,7 +3503,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 103.78603
+      SpawnerDirectionAngleZ: 114.21779
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3243,7 +3516,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 97.31058
+      SpawnerDirectionAngleZ: 112.17851
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3256,7 +3529,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 95.7422
+      SpawnerDirectionAngleZ: 109.38862
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3269,7 +3542,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46631
+      SpawnerDirectionAngleZ: 105.46637
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3282,7 +3555,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46642
+      SpawnerDirectionAngleZ: 103.29612
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3295,7 +3568,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.4665
+      SpawnerDirectionAngleZ: 103.29608
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3308,7 +3581,33 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.4665
+      SpawnerDirectionAngleZ: 103.29612
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 35
+      SpawnerDepth: 8
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29608
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 36
+      SpawnerDepth: 8
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.29622
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3321,7 +3620,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31615
+      SpawnerDirectionAngleZ: 178.15071
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3334,7 +3633,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31622
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3347,7 +3646,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31615
+      SpawnerDirectionAngleZ: 178.15071
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3360,7 +3659,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31622
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3373,7 +3672,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31622
+      SpawnerDirectionAngleZ: 178.15071
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3386,7 +3685,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31622
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3399,7 +3698,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31622
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3412,7 +3711,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3425,7 +3724,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31622
+      SpawnerDirectionAngleZ: 178.15062
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3438,7 +3737,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 178.31633
+      SpawnerDirectionAngleZ: 178.15071
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3451,7 +3750,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 175.92401
+      SpawnerDirectionAngleZ: 178.15053
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3464,7 +3763,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 174.39946
+      SpawnerDirectionAngleZ: 175.97754
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3477,7 +3776,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 168.27776
+      SpawnerDirectionAngleZ: 174.0796
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3490,7 +3789,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 168.27776
+      SpawnerDirectionAngleZ: 169.305
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3503,7 +3802,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.08241
+      SpawnerDirectionAngleZ: 169.1191
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3516,7 +3815,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 160.0824
+      SpawnerDirectionAngleZ: 161.83148
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3529,7 +3828,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 153.87059
+      SpawnerDirectionAngleZ: 160.57532
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3542,7 +3841,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 150.08594
+      SpawnerDirectionAngleZ: 155.75021
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3555,7 +3854,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 149.8401
+      SpawnerDirectionAngleZ: 153.81223
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3568,7 +3867,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 140.82338
+      SpawnerDirectionAngleZ: 150.50441
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3581,7 +3880,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 140.0893
+      SpawnerDirectionAngleZ: 145.08264
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3594,7 +3893,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 135.17316
+      SpawnerDirectionAngleZ: 145.0826
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3607,7 +3906,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 131.89412
+      SpawnerDirectionAngleZ: 137.723
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3620,7 +3919,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 130.049
+      SpawnerDirectionAngleZ: 136.35301
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3633,7 +3932,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.89758
+      SpawnerDirectionAngleZ: 133.80125
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3646,7 +3945,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 121.89747
+      SpawnerDirectionAngleZ: 127.6234
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3659,7 +3958,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 116.00321
+      SpawnerDirectionAngleZ: 127.62333
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3672,7 +3971,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.90095
+      SpawnerDirectionAngleZ: 120.86008
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3685,7 +3984,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 111.51385
+      SpawnerDirectionAngleZ: 120.86002
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3698,7 +3997,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 103.70574
+      SpawnerDirectionAngleZ: 113.51665
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3711,7 +4010,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 103.70587
+      SpawnerDirectionAngleZ: 112.13051
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3724,7 +4023,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 96.89851
+      SpawnerDirectionAngleZ: 109.42194
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3737,7 +4036,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 95.5831
+      SpawnerDirectionAngleZ: 105.46026
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3750,7 +4049,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46634
+      SpawnerDirectionAngleZ: 103.434555
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3763,7 +4062,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46643
+      SpawnerDirectionAngleZ: 103.296165
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3776,7 +4075,7 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46651
+      SpawnerDirectionAngleZ: 103.296165
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3789,7 +4088,20 @@ MonoBehaviour:
       Type: 0
       SpawnerReach: 0
       Queue: []
-      SpawnerDirectionAngleZ: 93.46651
+      SpawnerDirectionAngleZ: 103.296036
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 37
+      SpawnerDepth: 9
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 103.296165
       Iced: 0
       IceThreshold: 0
     PendingRefill: []

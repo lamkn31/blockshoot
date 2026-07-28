@@ -78,7 +78,7 @@ MonoBehaviour:
   Grids:
   - Shape: 1
     Side: 0
-    Center: {x: 3.1851308, y: 0, z: -13.267887}
+    Center: {x: 0.12795037, y: 0, z: -14.01516}
     Rotation: 90
     BaseRadius: 2.2961743
     Columns: 10
@@ -1200,7 +1200,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 0
-    Center: {x: -1.5727047, y: 0, z: -13.996731}
+    Center: {x: 0.10481866, y: 0, z: -13.989548}
     Rotation: -90
     BaseRadius: 2.81
     Columns: 10

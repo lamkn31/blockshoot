@@ -19,7 +19,7 @@ MonoBehaviour:
   GunSpeed: 15
   GunSpacing: 3
   FireInterval: 0.02
-  FireMode: 1
+  FireMode: 2
   BurstSpawnStacked: 1
   BurstRowLead: 0.2
   GunFireRange: 10

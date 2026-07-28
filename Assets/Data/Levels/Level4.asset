@@ -9703,9 +9703,9 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 6001335565754704171, guid: 16cb283e4fdfb3c4990a186cd1cc3154,
       type: 3}
-    Pos: {x: 1.9857233, y: 0, z: -25.57109}
+    Pos: {x: 1.9978118, y: 0, z: -25.559456}
     RotationY: 0
-    Scale: {x: 32.95195, y: 1, z: 0.7604752}
+    Scale: {x: 32.88479, y: 1, z: 0.73720556}
     TargetCellIndex: -1
     Strength: 1
   GunPrefab: {fileID: 0}

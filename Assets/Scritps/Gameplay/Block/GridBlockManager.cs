@@ -301,13 +301,19 @@ namespace Wayfu.Lamkn
         /// quét). Cell chắn chỉ chặn nòng có tia bị cắt — nòng bên kia không vướng vẫn bắn bình thường.
         /// Bỏ trống thì dùng <paramref name="from"/> (tâm gun).
         /// </summary>
+        /// <paramref name="readyBefore"/>: ≥0 bật chế độ ưu tiên PER-GUN (dùng cho LASER) — cell có
+        /// <see cref="BlockCell.SettleStamp"/> ≤ mốc này (= đã đứng sẵn từ đầu lap của gun) được ưu tiên
+        /// hơn cell vừa SẬP trong lap (SettleStamp &gt; mốc); cùng nhóm mới xét gần nhất. &lt;0 = tắt, dùng
+        /// CoreType (NearestCell / FrontRowFirst) như đạn thường.
         public BlockCell FindTargetCell(TypeColor color, Vector3 from, Vector3 forward, float side,
                                         float detectRange, float spreadAngle, BlockCell exclude = null,
-                                        Vector3? losFrom = null)
+                                        Vector3? losFrom = null, float readyBefore = -1f)
         {
             Vector3 losOrigin = losFrom ?? from;
+            bool useReady = readyBefore >= 0f;   // laser: ưu tiên theo lúc cell sập (per-gun), không theo Depth
             BlockCell best = null;
             int bestDepth = int.MaxValue;   // chỉ dùng khi _frontRowFirst; theo Depth GỐC, không phải row runtime
+            bool bestFell = true;           // chỉ dùng khi useReady; true = "vừa sập" (kém ưu tiên nhất)
             float bestSqr = float.MaxValue;
             float detectSqr = detectRange * detectRange;
 
@@ -360,9 +366,17 @@ namespace Wayfu.Lamkn
                         // Depth chứ KHÔNG dùng row runtime: cell sập xuống dồn ra hàng 0 vẫn giữ Depth cũ
                         // (≥1) nên luôn thua cell front gốc dù đã ngang hàng row 0 và ở gần hơn.
                         int depth = cell.Depth;
-                        bool better = _frontRowFirst
-                            ? (depth < bestDepth || (depth == bestDepth && sqr < bestSqr))
-                            : (sqr < bestSqr);
+                        // Laser (useReady): cell "đã đứng sẵn từ đầu lap" (fell=false) luôn thắng cell
+                        // "vừa sập trong lap" (fell=true); cùng nhóm mới xét gần nhất. Đạn thường thì theo
+                        // CoreType (FrontRowFirst dùng Depth, còn lại dùng gần nhất).
+                        bool fell = useReady && cell.SettleStamp > readyBefore;
+                        bool better;
+                        if (useReady)
+                            better = (!fell && bestFell) || (fell == bestFell && sqr < bestSqr);
+                        else if (_frontRowFirst)
+                            better = depth < bestDepth || (depth == bestDepth && sqr < bestSqr);
+                        else
+                            better = sqr < bestSqr;
                         if (!better) continue;
                         // CELL KHÁC chắn giữa NÒNG và cell này → KHÔNG chốt (không bắn xuyên qua cell đứng
                         // trước). Chỉ xét khi cell đã thắng best hiện tại → LOS chạy tối đa 1 lần/lần cải
@@ -374,7 +388,7 @@ namespace Wayfu.Lamkn
                         Vector3 aimPoint = cell.transform.position
                             + cell.transform.forward * (0.5f * Mathf.Max(0.01f, gr.Data.RowSpacing));
                         if (IsLineBlockedByCell(losOrigin, cell, aimPoint)) continue;
-                        bestDepth = depth; bestSqr = sqr; best = cell;
+                        bestDepth = depth; bestSqr = sqr; bestFell = fell; best = cell;
                     }
                 }
             }

@@ -63,6 +63,7 @@ namespace Wayfu.Lamkn
         private int _dragWaypoint = -1;
         private int _dragGrid = -1, _dragHandle = -1; // handle: 0=Center, 1=Left tip, 2=Right tip
         private Vector3 _dragGridStart;               // Center lúc bắt đầu kéo — để giữ Shift khóa trục
+        private bool _recomputeGridSides;             // đặt khi tạo/di chuyển grid → cuối OnGUI tự tính lại Side
         private int _dragCellGrid = -1, _dragCellIndex = -1; // xoay hướng 1 cell
         private Vector3 _dragCellCenter;
         private int _dragSplineGrid = -1, _dragSplineWp = -1; // kéo waypoint của Spline grid
@@ -234,6 +235,11 @@ namespace Wayfu.Lamkn
             EditorGUILayout.EndHorizontal();
 
             if (_target != null && _so != null && _so.ApplyModifiedProperties()) _liveDirty = true;
+
+            // Sau khi serialized đã áp vào object: tính lại Left/Right của grid theo path (nếu vừa
+            // tạo/di chuyển). Làm ở đây để đọc geometry THẬT của grid (CellPos) sau thay đổi.
+            if (_recomputeGridSides) { RecomputeGridSides(); _recomputeGridSides = false; }
+
             TryLiveRebuild();
         }
 
@@ -310,7 +316,13 @@ namespace Wayfu.Lamkn
                 "Chỉ chạy khi LevelController đang gán ĐÚNG level đang mở."), EditorStyles.toolbarButton);
             if (GUILayout.Button("Fit", EditorStyles.toolbarButton)) { _zoom = 1f; _pan = Vector2.zero; Repaint(); }
             if (GUILayout.Button("Add Preview", EditorStyles.toolbarButton) && _target != null) AddPreviewToScene();
-            if (GUILayout.Button("Save", EditorStyles.toolbarButton)) AssetDatabase.SaveAssets();
+            if (GUILayout.Button("Save", EditorStyles.toolbarButton))
+            {
+                // Áp thay đổi đang chờ rồi tính lại Left/Right của MỌI grid trước khi ghi xuống đĩa.
+                if (_target != null && _so != null) _so.ApplyModifiedProperties();
+                RecomputeGridSides();
+                AssetDatabase.SaveAssets();
+            }
             EditorGUILayout.EndHorizontal();
         }
 
@@ -1456,7 +1468,101 @@ namespace Wayfu.Lamkn
                 }
                 e.Use(); Repaint();
             }
-            else if (e.type == EventType.MouseUp) { _dragGrid = -1; _dragHandle = -1; e.Use(); }
+            else if (e.type == EventType.MouseUp)
+            {
+                _dragGrid = -1; _dragHandle = -1;
+                _recomputeGridSides = true; // grid vừa dời/đổi kích thước → tính lại Left/Right theo path
+                e.Use();
+            }
+        }
+
+        /// <summary>
+        /// Tính lại <see cref="BlockGridData.Side"/> (Left/Right) cho MỌI grid theo path: grid nằm bên
+        /// TRÁI hay PHẢI của hướng đi path (pos0 → posN). Gọi khi tạo/di chuyển grid hoặc lúc Save.
+        /// Ghi thẳng lên object (đã áp serialized) rồi SetDirty + _so.Update() để view khớp.
+        /// </summary>
+        private void RecomputeGridSides()
+        {
+            if (_target == null || _target.Grids == null) return;
+            var wps = _target.PathWaypoints;
+            bool changed = false;
+            for (int gi = 0; gi < _target.Grids.Count; gi++)
+            {
+                var g = _target.Grids[gi];
+                if (g == null) continue;
+                var side = ComputeGridSide(g, wps, _target.IsClosed);
+                if (side != g.Side) { g.Side = side; changed = true; }
+            }
+            if (changed)
+            {
+                EditorUtility.SetDirty(_target);
+                _so?.Update();
+            }
+        }
+
+        /// <summary>
+        /// Grid nằm bên nào của path: lấy CELL của grid GẦN path nhất (điểm ngoài cùng gần path), tìm điểm
+        /// gần nhất trên polyline path + tiếp tuyến theo hướng pos0→posN, rồi xét dấu tích chéo để ra
+        /// TRÁI/PHẢI. Không đủ path (&lt;2 waypoint) hoặc cell nằm ngay trên path → giữ Side cũ.
+        /// </summary>
+        private static GridSide ComputeGridSide(BlockGridData grid, List<Vector3> wps, bool closed)
+        {
+            if (grid == null || wps == null || wps.Count < 2) return grid != null ? grid.Side : GridSide.Any;
+            // Grid bị path bao NHIỀU MẶT (ShootableEdges) cần cả 2 nòng bắn từng mặt → không ép 1 bên,
+            // giữ nguyên Side (thường là Any) do người thiết kế đặt.
+            if (grid.ShootableEdges != GridEdges.None) return grid.Side;
+
+            float best = float.MaxValue;
+            Vector3 bestP = Vector3.zero, bestQ = Vector3.zero, bestT = Vector3.forward;
+            int rows = Mathf.Max(1, grid.Rows);
+            for (int r = 0; r < rows; r++)
+            {
+                int cnt = grid.ElementsInRow(r);
+                for (int e = 0; e < cnt; e++)
+                {
+                    Vector3 p = grid.CellPos(r, e);
+                    float d = NearestOnPolyline(p, wps, closed, out var q, out var t);
+                    if (d < best) { best = d; bestP = p; bestQ = q; bestT = t; }
+                }
+            }
+            if (best == float.MaxValue) return grid.Side;
+
+            Vector3 v = bestP - bestQ; v.y = 0f;
+            Vector3 tg = bestT; tg.y = 0f;
+            // Tích chéo (tiếp tuyến × vector tới grid) trên XZ: >0 = bên PHẢI hướng đi, <0 = TRÁI.
+            // Khớp gameplay: nòng phải (Sign +1) = transform.right = Cross(up, forward).
+            float s = tg.z * v.x - tg.x * v.z;
+            if (Mathf.Abs(s) < 1e-4f) return grid.Side; // cell nằm ngay trên path → không đổi
+            return s > 0f ? GridSide.Right : GridSide.Left;
+        }
+
+        /// <summary>Khoảng cách bình phương (XZ) từ p tới polyline; trả điểm gần nhất q và tiếp tuyến đoạn
+        /// (chuẩn hoá, theo chiều index tăng = pos0→posN).</summary>
+        private static float NearestOnPolyline(Vector3 p, List<Vector3> wps, bool closed,
+                                               out Vector3 q, out Vector3 tangent)
+        {
+            q = p; tangent = Vector3.forward;
+            int n = wps.Count;
+            int segs = closed ? n : n - 1;
+            Vector3 pp = p; pp.y = 0f;
+            float best = float.MaxValue;
+            for (int i = 0; i < segs; i++)
+            {
+                Vector3 a = wps[i]; a.y = 0f;
+                Vector3 b = wps[(i + 1) % n]; b.y = 0f;
+                Vector3 ab = b - a;
+                float len2 = ab.sqrMagnitude;
+                float t = len2 > 1e-8f ? Mathf.Clamp01(Vector3.Dot(pp - a, ab) / len2) : 0f;
+                Vector3 proj = a + ab * t;
+                float d = (pp - proj).sqrMagnitude;
+                if (d < best)
+                {
+                    best = d;
+                    q = proj;
+                    tangent = len2 > 1e-8f ? ab / Mathf.Sqrt(len2) : Vector3.forward;
+                }
+            }
+            return best;
         }
 
         private static readonly Color ObstacleCol = new Color(0.9f, 0.55f, 0.2f, 1f);
@@ -1899,7 +2005,7 @@ namespace Wayfu.Lamkn
                 prop.vector3Value = new Vector3(local.x, prop.vector3Value.y, local.z);
                 e.Use(); Repaint();
             }
-            else if (e.type == EventType.MouseUp) { _dragSplineGrid = -1; _dragSplineWp = -1; e.Use(); }
+            else if (e.type == EventType.MouseUp) { _dragSplineGrid = -1; _dragSplineWp = -1; _recomputeGridSides = true; e.Use(); }
         }
 
         private void HandleWaypointDrag(System.Func<Vector3, Vector2> V, Rect area)
@@ -2893,6 +2999,8 @@ namespace Wayfu.Lamkn
                     wp.GetArrayElementAtIndex(1).vector3Value = new Vector3(4f, 0f, 0f);
                 }
             }
+
+            _recomputeGridSides = true; // grid mới → tính Left/Right theo path ngay khi serialized được áp
         }
 
         // Hàng đợi SPAWNER refill: mỗi mục = 1 stack (màu + số block) sẽ được nhả bù ở ring ngoài cùng

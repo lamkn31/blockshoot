@@ -55,6 +55,9 @@ namespace Wayfu.Lamkn
                  "không chớp tắt giữa 2 cell. Nên ≥ 2-3 frame (~0.05). Quá lớn thì tia còn treo khi thật " +
                  "sự hết target.")]
         [SerializeField] private float laserLinger = 0.06f;
+        [Tooltip("Thời gian CỐ ĐỊNH (giây) để laser nổ HẾT 1 cell, chia đều cho số block trong cell → cell " +
+                 "cao hay thấp đều nổ trong ngần này (thay cho FireInterval mỗi block). Nhỏ = nổ nhanh.")]
+        [SerializeField] private float laserCellTime = 0.15f;
 
         /// <summary>Arc-length hiện tại trên path — PathManager đọc để giữ khoảng cách giữa các gun.</summary>
         public float PathDistance => _follower != null ? _follower.CurrentDistance : 0f;
@@ -70,6 +73,9 @@ namespace Wayfu.Lamkn
         private Pooler<Gun> _pool;
         private RoundedPolylineFollower _follower;
         private int _lastLap;             // vòng path đã chạy, mốc để mở khoá bắn
+        private float _lapStartStamp;     // Time.time lúc bắt đầu lap hiện tại — mốc PER-GUN phân biệt cell
+                                          // "đã đứng sẵn" (SettleStamp ≤ mốc) vs "vừa sập trong lap này". Reset
+                                          // mỗi lap → cell sập lap trước thành ready. (dùng cho laser readyBefore)
         private bool _atFront;            // gun đang ở VỊ TRÍ ĐẦU (index 0) của slot → gun ẩn lộ màu thật
 
         /// <summary>
@@ -97,6 +103,7 @@ namespace Wayfu.Lamkn
             public LineRenderer Beam; // tia laser của nòng (mode Laser) — tạo lười, tái dùng theo item pool
             public Vector3 BeamTo;    // điểm cuối tia lần vẽ gần nhất — giữ trong lúc linger (chuyển cell)
             public float BeamHold;    // còn giữ tia bao lâu dù đã mất target (bắc cầu qua lúc chốt cell kế)
+            public float LaserInterval; // nhịp gặm/block của cell ĐANG bám = laserCellTime / số block lúc chốt
         }
 
         private readonly Barrel _right = new Barrel { Sign = 1f };
@@ -250,6 +257,7 @@ namespace Wayfu.Lamkn
         public void DeployOnPath(RoundedPolylinePath path, float startDistance, float speed)
         {
             _lastLap = 0;   // follower.Init đưa LapCount về 0 — mốc đếm vòng bắt đầu từ đây
+            _lapStartStamp = Time.time; // mốc "ready" ban đầu: mọi cell đang có coi như đã đứng sẵn
             ArmForNewLap(); // vào path tại pos 0 = bắt đầu lượt bắn đầu tiên
             if (_follower != null) { _follower.Init(path, startDistance, speed); _follower.enabled = true; }
             else if (path != null) transform.position = path.GetPointAtDistance(startDistance); // gun ko có follower
@@ -267,7 +275,13 @@ namespace Wayfu.Lamkn
 
             // Mỗi vòng path, MỖI NÒNG chỉ được 1 lượt bắn. Về tới pos 0 (xong 1 vòng) = mở khoá lượt mới.
             int lap = _follower != null ? _follower.LapCount : 0;
-            if (lap != _lastLap) { _lastLap = lap; ArmForNewLap(); }
+            if (lap != _lastLap)
+            {
+                _lastLap = lap;
+                _lapStartStamp = Time.time; // gun đi hết path vòng lại → RESET mốc ready: cell sập lap trước
+                                            // giờ tính là đã đứng sẵn (ưu tiên như thường trở lại)
+                ArmForNewLap();
+            }
 
             // Nòng phải chạy trước, rồi tới nòng trái — mỗi bên nhận nòng kia để vừa loại trừ target
             // trùng, vừa chừa đủ đạn cho nó (xem TickBarrel).
@@ -301,9 +315,14 @@ namespace Wayfu.Lamkn
                 // KHÓA NGAY — khỏi chờ gun chạy hết 1 vòng path mới bắt được cell đã vào range từ lâu.
                 // losFrom = vị trí NÒNG bên này: CELL KHÁC đứng chắn chỉ chặn nòng có tia muzzle→cell
                 // bị cắt, nòng bên kia không vướng vẫn bắn được (range/quạt vẫn tính từ tâm gun như cũ).
+                // Laser: ưu tiên cell đã đứng sẵn TỪ ĐẦU LAP của gun này (SettleStamp ≤ _lapStartStamp),
+                // cell vừa sập trong lap này bắn sau. readyBefore = -1 (tắt) cho mode đạn. PER-GUN + reset
+                // mỗi lap: xem _lapStartStamp.
+                float readyBefore = _fire.Mode == GunFireMode.Laser ? _lapStartStamp : -1f;
                 var cand = GridBlockManager.Instance?.FindTargetCell(
                     Data.Color, transform.position, transform.forward, b.Sign, _fire.Range, _fire.Angle,
-                    other.Target, b.Muzzle != null ? b.Muzzle.position : (Vector3?)null);
+                    other.Target, b.Muzzle != null ? b.Muzzle.position : (Vector3?)null,
+                    readyBefore);
                 if (cand != null && !b.Armed) { b.Armed = true; b.HadTarget = false; b.IdleTimer = 0f; }
 
                 if (b.Armed)
@@ -324,6 +343,14 @@ namespace Wayfu.Lamkn
                     b.TargetGen = cand != null ? cand.Generation : 0;
                     justAcquired = cand != null;
                     if (cand != null) b.MultiSide = cand.MultiSideGrid;
+
+                    // Laser: chốt cell mới → chia thời gian nổ CỐ ĐỊNH (laserCellTime) đều cho số block
+                    // của cell lúc này, ra nhịp gặm/block. Cell cao/thấp đều nổ trong laserCellTime.
+                    if (cand != null && _fire.Mode == GunFireMode.Laser)
+                    {
+                        b.LaserInterval = laserCellTime / Mathf.Max(1, cand.StackCount);
+                        b.FireTimer = 0f; // bắn phát đầu ngay frame kế (không dính nhịp cell trước)
+                    }
 
                     // sawCell (không phải b.Target): nòng nhường đạn vẫn coi như "còn thấy grid" → không
                     // tính là hết lượt, để khi nòng kia bắn xong và đạn rảnh ra thì nó vào cuộc được ngay.
@@ -353,9 +380,16 @@ namespace Wayfu.Lamkn
             // cell lộ ra thoáng qua lúc dồn hàng (transient) sẽ bị thay ở frame sau → không phí đạn bắn nhầm.
             if (b.Target != null && !justAcquired && b.FireTimer <= 0f && b.Target.Available > 0)
             {
-                if (_fire.Mode == GunFireMode.Laser) LaserHit(b); // tia gặm 1 block, không sinh viên đạn
-                else Fire(b);
-                b.FireTimer = _fire.Interval;
+                if (_fire.Mode == GunFireMode.Laser)
+                {
+                    LaserHit(b);                 // tia gặm 1 block, không sinh viên đạn
+                    b.FireTimer = b.LaserInterval; // nhịp = laserCellTime / số block → cả cell nổ đúng laserCellTime
+                }
+                else
+                {
+                    Fire(b);
+                    b.FireTimer = _fire.Interval;
+                }
             }
         }
 
@@ -370,6 +404,7 @@ namespace Wayfu.Lamkn
             b.FiredAtTarget = false;
             b.MultiSide = false;
             b.BeamHold = 0f; // gun tái dùng: không treo tia laser của lượt trước
+            b.LaserInterval = 0f;
         }
 
         /// <summary>

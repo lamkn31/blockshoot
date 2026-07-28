@@ -27,12 +27,26 @@ MonoBehaviour:
   PathStyle: 0
   CornerRadius: 1
   SlotCount: 2
-  Slots: []
+  Slots:
+  - Guns:
+    - Color: 1
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 3
+      CountBullet: 150
+      Hidden: 0
+      ConnectGroup: 0
+  - Guns:
+    - Color: 2
+      CountBullet: 150
+      Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids:
   - Shape: 1
-    Side: 0
-    Center: {x: -0.61839, y: 0, z: -20.997915}
+    Side: 1
+    Center: {x: -1.0094839, y: 0, z: -20.442818}
     Rotation: 0.8837391
     BaseRadius: 0.8478818
     Columns: 10
@@ -573,7 +587,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
+    Side: 2
     Center: {x: 1.4527693, y: 0, z: -12.715378}
     Rotation: 4.064062
     BaseRadius: 0.8478818
@@ -1115,8 +1129,8 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 0
-    Center: {x: -1.0959836, y: 0, z: -28.857279}
+    Side: 2
+    Center: {x: -0.7797805, y: 0, z: -28.338333}
     Rotation: 8.2456255
     BaseRadius: 0.8478818
     Columns: 10
