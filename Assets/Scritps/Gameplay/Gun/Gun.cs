@@ -382,10 +382,12 @@ namespace Wayfu.Lamkn
                 }
             }
 
-            // LASER: kiểm LOS lại MỖI FRAME (LOS chỉ được kiểm lúc CHỌN target; gun di chuyển làm cell khác
-            // lọt vào giữa muzzle↔target). Bị chắn → BUÔNG target (không bắn xuyên qua cell) và tắt tia ngay
-            // (BeamHold=0, khỏi linger vẽ tia xuyên tới chỗ bị che); frame sau chọn lại cell nhìn thấy trực tiếp.
-            if (_fire.Mode == GunFireMode.Laser && b.Target != null && GridBlockManager.Instance != null
+            // LASER: kiểm LOS lại — CHỈ khi CHƯA bắn phát nào (!FiredAtTarget). Bị chắn thì buông để không
+            // BẮT ĐẦU bắn xuyên qua cell; frame sau chọn cell nhìn thấy trực tiếp.
+            // Đã bắn ÍT NHẤT 1 phát rồi thì PHẢI phá TRỌN cell (không phá lẻ) — không buông giữa chừng dù
+            // gun di chuyển làm cell khác lọt vào giữa. laserCellTime ngắn nên cửa sổ bị che giữa chừng rất nhỏ.
+            if (_fire.Mode == GunFireMode.Laser && b.Target != null && !b.FiredAtTarget
+                && GridBlockManager.Instance != null
                 && GridBlockManager.Instance.IsCellBlockedFrom(
                     b.Muzzle != null ? b.Muzzle.position : transform.position, b.Target))
             {
