@@ -449,6 +449,7 @@ namespace Wayfu.Lamkn
             // chọn lại từ đầu theo range.
             if (!HasLiveTarget(b) || !b.FiredAtTarget)
             {
+                if (b.Target != null) b.Target.ReleaseClaim(b); // nhả claim cell chưa bắn dở khi sang lap mới
                 b.Target = null;
                 b.TargetGen = 0;
                 b.FiredAtTarget = false;
