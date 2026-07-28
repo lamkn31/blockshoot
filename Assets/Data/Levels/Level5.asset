@@ -34,27 +34,55 @@ MonoBehaviour:
     - Color: 7
       CountBullet: 60
       Hidden: 0
+<<<<<<< HEAD
+    - Color: 2
+      CountBullet: 40
+=======
       ConnectGroup: 0
     - Color: 1
       CountBullet: 5
+>>>>>>> 3a856f72924e1fba4348459f425f81755808fbcd
       Hidden: 0
       ConnectGroup: 0
     - Color: 2
       CountBullet: 20
       Hidden: 0
+<<<<<<< HEAD
+  - Guns:
+    - Color: 3
+      CountBullet: 60
+      Hidden: 0
+    - Color: 2
+      CountBullet: 40
+      Hidden: 0
+    - Color: 3
+      CountBullet: 60
+      Hidden: 0
+    - Color: 2
+      CountBullet: 30
+=======
       ConnectGroup: 0
     - Color: 1
       CountBullet: 5
+>>>>>>> 3a856f72924e1fba4348459f425f81755808fbcd
       Hidden: 0
+      ConnectGroup: 0
+  - Guns:
+    - Color: 7
+      CountBullet: 60
+      Hidden: 0
+<<<<<<< HEAD
+    - Color: 7
+      CountBullet: 80
+      Hidden: 0
+    - Color: 2
+      CountBullet: 50
+=======
       ConnectGroup: 0
   - Guns:
     - Color: 1
       CountBullet: 5
-      Hidden: 0
-      ConnectGroup: 0
-  - Guns:
-    - Color: 1
-      CountBullet: 5
+>>>>>>> 3a856f72924e1fba4348459f425f81755808fbcd
       Hidden: 0
       ConnectGroup: 0
   HoleCapacity: 3
@@ -258,7 +286,7 @@ MonoBehaviour:
     SplineStyle: 0
     SplineCornerRadius: 5
     Cells:
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -271,7 +299,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -284,7 +312,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -297,7 +325,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -310,7 +338,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -323,7 +351,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -336,7 +364,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -349,7 +377,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -362,7 +390,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 3
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -375,7 +403,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -388,7 +416,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -401,7 +429,7 @@ MonoBehaviour:
       SpawnerDirectionAngleZ: 180
       Iced: 0
       IceThreshold: 0
-    - Color: 1
+    - Color: 7
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
