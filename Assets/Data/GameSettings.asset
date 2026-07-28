@@ -22,7 +22,7 @@ MonoBehaviour:
   FireMode: 1
   BurstSpawnStacked: 1
   BurstRowLead: 0.2
-  GunFireRange: 12
+  GunFireRange: 10
   GunFireAngle: 60
   FrontStationDistance: 0
   BulletSpeed: 100

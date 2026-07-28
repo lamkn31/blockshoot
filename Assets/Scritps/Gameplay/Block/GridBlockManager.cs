@@ -368,7 +368,12 @@ namespace Wayfu.Lamkn
                         // trước). Chỉ xét khi cell đã thắng best hiện tại → LOS chạy tối đa 1 lần/lần cải
                         // thiện thay vì mọi ứng viên. Đo từ losOrigin (muzzle bên đang quét) chứ không phải
                         // tâm gun: cell chắn bên nào chỉ chặn nòng bên đó. (Obstacle/wall KHÔNG còn chặn.)
-                        if (IsLineBlockedByCell(losOrigin, cell)) continue;
+                        // Endpoint = ĐIỂM NGOÀI CÙNG của cell (mặt gần path nhất) = tâm + forward × nửa sâu:
+                        // cell.forward chỉ về phía path (hướng dồn). Bắn tới mặt trước nên không bị chính
+                        // phần thân cell che, và khớp với chỗ đạn thật sự chạm.
+                        Vector3 aimPoint = cell.transform.position
+                            + cell.transform.forward * (0.5f * Mathf.Max(0.01f, gr.Data.RowSpacing));
+                        if (IsLineBlockedByCell(losOrigin, cell, aimPoint)) continue;
                         bestDepth = depth; bestSqr = sqr; best = cell;
                     }
                 }
@@ -377,16 +382,17 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>
-        /// Có CELL nào khác đứng chắn đoạn từ NÒNG (from) tới target không (line-of-sight, đo trên sàn XZ
-        /// như toàn bộ logic ngắm bắn). Mỗi cell chắn coi như 1 HỘP đúng bằng PITCH của grid nó
-        /// (BlockWidth+Spacing theo ngang, RowSpacing theo dọc) — các hộp phủ liền nhau nên vùng cell đặc
-        /// chặn chắc chắn, tia KHÔNG luồn qua kẽ. Dùng chính transform của cell (đã xoay theo hướng dồn)
-        /// để hộp thẳng hàng với lưới. Xét cell của MỌI grid: gun đứng giữa 2 grid không bắn xuyên grid
-        /// này sang grid kia.
+        /// Có CELL nào khác đứng chắn đoạn từ NÒNG (<paramref name="from"/> = muzzle left/right) tới ĐIỂM
+        /// NGẮM của target (<paramref name="targetPos"/> = điểm ngoài cùng gần path của target, không phải
+        /// tâm) không — line-of-sight đo trên sàn XZ như toàn bộ logic ngắm bắn. Mỗi cell chắn coi như 1
+        /// HỘP đúng bằng PITCH của grid nó (BlockWidth+Spacing theo ngang, RowSpacing theo dọc) — các hộp
+        /// phủ liền nhau nên vùng cell đặc chặn chắc chắn, tia KHÔNG luồn qua kẽ. Dùng chính transform của
+        /// cell (đã xoay theo hướng dồn) để hộp thẳng hàng với lưới. Xét cell của MỌI grid: gun đứng giữa 2
+        /// grid không bắn xuyên grid này sang grid kia.
         /// <para>Lưu ý BlockWidth trong data có thể = 0 (khoảng cách thật nằm ở Spacing/RowSpacing) nên
         /// KHÔNG được suy footprint từ mình BlockWidth — phải dùng pitch.</para>
         /// </summary>
-        private bool IsLineBlockedByCell(Vector3 from, BlockCell target)
+        private bool IsLineBlockedByCell(Vector3 from, BlockCell target, Vector3 targetPos)
         {
             foreach (var gr in _grids)
             {
@@ -394,6 +400,12 @@ namespace Wayfu.Lamkn
                 // bước dọc = RowSpacing). Hộp = nửa pitch mỗi bên → 2 hộp cạnh nhau chạm mép, không hở.
                 float halfX = 0.5f * Mathf.Max(0.01f, gr.Data.BlockWidth + gr.Data.Spacing);
                 float halfZ = 0.5f * Mathf.Max(0.01f, gr.Data.RowSpacing);
+
+                // Bỏ qua cell KỀ SÁT target (vòng trong, kể cả ô chéo). Cell cạnh bên target không phải
+                // vật che — nó chỉ NẰM CẠNH; nhưng khi gun bắn CHÉO, tia tới target quẹt qua hộp nó và bị
+                // chặn oan (cell gần path nhất không bắn được). Ô cách target ≥ 2 pitch mới tính là che thật.
+                // Ngưỡng = 1.2 × đường chéo pitch: loại đủ 8 ô quanh (kể cả chéo ~1.28), giữ ô cách ≥ 2 (~1.6).
+                float nearSqr = 1.2f * 1.2f * (4f * halfX * halfX + 4f * halfZ * halfZ);
 
                 for (int r = 0; r < gr.Rows.Count; r++)
                 {
@@ -404,10 +416,12 @@ namespace Wayfu.Lamkn
                         // IsEmpty = block đã bị đạn đang bay đặt chỗ hết → cell sắp biến mất, coi như
                         // không còn chắn (không thì cell chết dở khoá tia thêm vài frame vô ích).
                         if (c == null || c == target || c.IsEmpty) continue;
+                        Vector3 off = c.transform.position - targetPos; off.y = 0f;
+                        if (off.sqrMagnitude < nearSqr) continue; // ô kề sát target → không tính chắn
                         // Đưa 2 đầu đoạn về local space của cell (chỉ xoay quanh Y, scale = 1) rồi test
                         // đoạn↔hộp trên XZ — hộp cao vô hạn theo Y nên bỏ qua chênh lệch độ cao.
                         Vector3 la = c.transform.InverseTransformPoint(from);
-                        Vector3 lb = c.transform.InverseTransformPoint(target.transform.position);
+                        Vector3 lb = c.transform.InverseTransformPoint(targetPos);
                         if (SegmentHitsBoxXZ(la, lb, new Vector3(-halfX, 0f, -halfZ), new Vector3(halfX, 0f, halfZ)))
                             return true;
                     }
