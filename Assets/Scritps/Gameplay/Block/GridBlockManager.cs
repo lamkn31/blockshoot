@@ -305,9 +305,11 @@ namespace Wayfu.Lamkn
         /// <see cref="BlockCell.SettleStamp"/> ≤ mốc này (= đã đứng sẵn từ đầu lap của gun) được ưu tiên
         /// hơn cell vừa SẬP trong lap (SettleStamp &gt; mốc); cùng nhóm mới xét gần nhất. &lt;0 = tắt, dùng
         /// CoreType (NearestCell / FrontRowFirst) như đạn thường.
+        /// <paramref name="claimant"/>: token của NÒNG đang hỏi — bỏ qua cell đã bị nòng KHÁC (gun nào
+        /// cũng vậy) chốt, để 2 gun không cùng bắn 1 cell (đổ đạn trùng → số đạn bị lẻ). null = không xét.
         public BlockCell FindTargetCell(TypeColor color, Vector3 from, Vector3 forward, float side,
                                         float detectRange, float spreadAngle, BlockCell exclude = null,
-                                        Vector3? losFrom = null, float readyBefore = -1f)
+                                        Vector3? losFrom = null, float readyBefore = -1f, object claimant = null)
         {
             Vector3 losOrigin = losFrom ?? from;
             bool useReady = readyBefore >= 0f;   // laser: ưu tiên theo lúc cell sập (per-gun), không theo Depth
@@ -346,6 +348,7 @@ namespace Wayfu.Lamkn
                         if (cell.Indestructible) continue; // Spawner8 ở giữa: không bao giờ bị ngắm
                         if (cell.Frozen) continue;         // cell băng: chưa tan thì không bắn được
                         if (cell == exclude) continue;  // nòng bên kia đang bắn cell này → không bắn trùng
+                        if (claimant != null && !cell.ClaimFreeFor(claimant)) continue; // nòng KHÁC đã chốt
                         if (cell.PendingEntry) continue; // đang TRƯỢT (nhả mới / dồn hàng) → chưa cho ngắm
                         if (!IsShootableFromGun(gr, r, e, from)) continue;
                         Vector3 d = cell.transform.position - from; d.y = 0f;

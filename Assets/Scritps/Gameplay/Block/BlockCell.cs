@@ -104,6 +104,21 @@ namespace Wayfu.Lamkn
         /// </summary>
         public float SettleStamp { get; private set; }
 
+        // Nòng (của BẤT KỲ gun nào) đang CHỐT cell này làm target. Chống 2 gun cùng bắn 1 cell → đổ đạn
+        // trùng, số đạn bị lẻ/phân mảnh. Reset khi Build (item pooled tái dùng). Token là object nòng.
+        private object _claim;
+        /// <summary>Cell còn trống claim hoặc do chính <paramref name="by"/> giữ → nòng khác không chốt được.</summary>
+        public bool ClaimFreeFor(object by) => _claim == null || ReferenceEquals(_claim, by);
+        /// <summary>Chốt claim nếu đang trống (hoặc của chính mình). Thua race (nòng khác giữ) → false.</summary>
+        public bool TryClaim(object by)
+        {
+            if (_claim != null && !ReferenceEquals(_claim, by)) return false;
+            _claim = by;
+            return true;
+        }
+        /// <summary>Nhả claim — chỉ khi ĐANG do <paramref name="by"/> giữ (tránh xoá claim của nòng khác).</summary>
+        public void ReleaseClaim(object by) { if (ReferenceEquals(_claim, by)) _claim = null; }
+
         public int StackCount => _blocks.Count;
 
         /// <summary>
@@ -129,6 +144,7 @@ namespace Wayfu.Lamkn
             Frozen = data.Iced && data.IceThreshold > 0; // băng ngưỡng 0 = tan ngay, coi như không băng
             IceThreshold = data.IceThreshold;
             _pendingHits = 0;
+            _claim = null;                   // item pooled tái dùng → xoá claim của cell cũ
             Generation++;                    // object pool tái dùng → đây là 1 cell MỚI
             SettleStamp = 0f;                // cell dựng lúc build = đã đứng sẵn từ đầu (không tính "vừa sập")
             PendingEntry = false;            // reset cho item pooled; MoveTo tự bật khi cell trượt

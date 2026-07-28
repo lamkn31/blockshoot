@@ -578,6 +578,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6630907078228376898, guid: 3e26a1cf0b592074db846574e0d6ebf7,
+        type: 3}
+      propertyPath: levelOverride
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8763046310201374150, guid: 3e26a1cf0b592074db846574e0d6ebf7,
         type: 3}
       propertyPath: m_LocalPosition.x

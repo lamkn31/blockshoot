@@ -307,6 +307,7 @@ namespace Wayfu.Lamkn
             // được bắn nốt ở khối dưới; bắn xong thì target tự về null và nòng im tới khi qua vòng mới.
             if (!HasLiveTarget(b))
             {
+                if (b.Target != null) b.Target.ReleaseClaim(b); // nhả claim cell cũ để gun khác chốt được
                 b.Target = null;
                 b.TargetGen = 0;
                 b.FiredAtTarget = false;
@@ -322,7 +323,7 @@ namespace Wayfu.Lamkn
                 var cand = GridBlockManager.Instance?.FindTargetCell(
                     Data.Color, transform.position, transform.forward, b.Sign, _fire.Range, _fire.Angle,
                     other.Target, b.Muzzle != null ? b.Muzzle.position : (Vector3?)null,
-                    readyBefore);
+                    readyBefore, b /*claimant: cell nòng khác đã chốt thì bỏ*/);
                 if (cand != null && !b.Armed) { b.Armed = true; b.HadTarget = false; b.IdleTimer = 0f; }
 
                 if (b.Armed)
@@ -334,10 +335,17 @@ namespace Wayfu.Lamkn
                     // NHƯỜNG ĐẠN: nòng kia đang bám cell thì phải chừa đủ đạn cho nó bắn dứt điểm cell đó.
                     // Phần còn lại không đủ nuốt trọn cell này thì THÔI CHỐT — 2 nòng cùng bắn dở 2 cell
                     // rồi hết đạn thì chẳng cell nào vỡ, cell dở còn chặn luôn cell phía sau.
-                    // Chỉ chặn khi nòng kia ĐANG bận (need > 0): nó rảnh mà cũng chặn thì mấy viên đạn
-                    // cuối không nòng nào dám bắn, gun chết với đạn còn nguyên.
+                    // ĐẠN thường: chỉ chặn khi nòng kia ĐANG bận (need > 0) — nó rảnh mà cũng chặn thì mấy
+                    // viên đạn cuối không nòng nào dám bắn, gun chết với đạn còn nguyên.
+                    // LASER: LUÔN đòi đủ đạn nuốt TRỌN cell mới chốt (kể cả khi nòng kia rảnh) → không bắn
+                    // lẻ 2 cell 1 lúc; thiếu đạn thì thà không chốt còn hơn để lại cell dở chặn cột.
                     int reserved = NeedOf(other);
-                    if (cand != null && reserved > 0 && cand.Available > Data.CountBullet - reserved) cand = null;
+                    bool requireFull = _fire.Mode == GunFireMode.Laser || reserved > 0;
+                    if (cand != null && requireFull && cand.Available > Data.CountBullet - reserved) cand = null;
+
+                    // CHỐT CLAIM (atomic): nòng khác cùng frame vừa giật mất cell → TryClaim thất bại → bỏ,
+                    // frame sau chọn cell khác. Nhờ vậy 2 gun không bao giờ cùng đổ đạn 1 cell.
+                    if (cand != null && !cand.TryClaim(b)) cand = null;
 
                     b.Target = cand;
                     b.TargetGen = cand != null ? cand.Generation : 0;
@@ -381,6 +389,7 @@ namespace Wayfu.Lamkn
                 && GridBlockManager.Instance.IsCellBlockedFrom(
                     b.Muzzle != null ? b.Muzzle.position : transform.position, b.Target))
             {
+                b.Target.ReleaseClaim(b); // nhả claim để gun/nòng khác nhìn thấy cell này thì chốt được
                 b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false; b.BeamHold = 0f;
             }
 
@@ -405,6 +414,7 @@ namespace Wayfu.Lamkn
 
         private static void ResetBarrel(Barrel b)
         {
+            if (b.Target != null) b.Target.ReleaseClaim(b); // nhả claim trước khi bỏ target (gun despawn/queue/deploy)
             b.Target = null;
             b.TargetGen = 0;
             b.FireTimer = 0f;
