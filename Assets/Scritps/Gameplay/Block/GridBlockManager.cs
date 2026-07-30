@@ -370,7 +370,11 @@ namespace Wayfu.Lamkn
                         if (hasDir && sqr > 1e-6f)
                         {
                             if (!sideLocked && Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
-                            if (Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
+                            // A grid assigned to a barrel side is already gated by
+                            // IsShootableFromGun's exposed physical face. Let that
+                            // barrel shoot cells directly beside the path as well;
+                            // the forward fan only applies to unassigned grids.
+                            if (!sideLocked && Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
                         }
                         // NearestCell: gần nhất thắng. FrontRowFirst: cell có Depth GỐC nhỏ thắng trước
                         // (cell sinh ở hàng 0 = Depth 0, chưa bị bắn), cùng Depth mới xét gần nhất. Dùng
