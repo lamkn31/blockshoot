@@ -17,6 +17,15 @@ namespace Wayfu.Lamkn
         [SerializeField] private LineRenderer pathLine;
         [Tooltip("Material mặt đường. Bỏ trống thì giữ material đang gán trên LineRenderer.")]
         [SerializeField] private Material pathMaterial;
+        [Tooltip("Material hiệu ứng chảy phủ lên mặt đường. PathManager tự tạo một LineRenderer thứ hai dùng chung các điểm path.")]
+        [SerializeField] private Material pathFlowMaterial;
+        [Tooltip("Nâng lớp dòng chảy lên khỏi mặt nước để tránh z-fighting.")]
+        [Min(0f)] [SerializeField] private float flowSurfaceOffset = 0.01f;
+        [Header("Bọt nổi")]
+        [SerializeField] private bool spawnBubbles = true;
+        [SerializeField] private float bubbleSpawnInterval = 0.8f;
+        [SerializeField] private float bubbleSize = 0.22f;
+        [SerializeField] private float bubbleRiseSpeed = 0.7f;
 
         [Header("Tunnel (chỉ path HỞ)")]
         [Tooltip("Prefab cửa hầm ở ĐẦU path — nơi gun đi ra. Chỉ sinh khi LevelData.IsClosed = false.")]
@@ -35,9 +44,6 @@ namespace Wayfu.Lamkn
         [Tooltip("Tốc độ cuộn UV material mặt đường để tạo hiệu ứng nước chảy. X = dọc theo path (chiều " +
                  "chảy), Y = ngang. (0,0) = tắt hiệu ứng. Đảo dấu X để chảy ngược.")]
         [SerializeField] private Vector2 waterScrollSpeed = new Vector2(-0.5f, 0f);
-        [Tooltip("Các texture property được cuộn offset. Shader TCP2/URP dùng _BaseMap; Built-in/Legacy " +
-                 "dùng _MainTex — để cả 2 cho chắc, property nào material không có sẽ tự bỏ qua.")]
-        [SerializeField] private string[] waterScrollTextures = { "_BaseMap", "_MainTex" };
 
         private RoundedPolylinePath _path;
         private GameObject _tunnelIn, _tunnelOut;
@@ -48,12 +54,12 @@ namespace Wayfu.Lamkn
         private float _frontStationDistance; // điểm VÀO path của mọi gun (0 = đầu path)
         private int _maxGunOnPath = 5;
 
-        // Nước chảy: bản sao material của pathLine để cuộn UV runtime (không dirty asset .mat). Giữ offset
-        // gốc từng texture để cộng dồn scroll lên trên, không đè mất offset đã set trong material.
-        private Material _waterMat;
-        private string[] _waterProps;
-        private Vector2[] _waterBaseOffset;
-        private Vector2 _waterScroll;
+        private LineRenderer _flowLine;
+        private Material _baseMaterialInstance;
+        private Material _flowMaterialInstance;
+        private Material _bubbleMaterial;
+        private readonly List<Transform> _bubbles = new List<Transform>();
+        private float _bubbleTimer;
 
         /// <summary>Gun đang chờ cũng chiếm chỗ — không cho click quá sức chứa của path.</summary>
         private int Reserved => _guns.Count + _queue.Count;
@@ -154,54 +160,105 @@ namespace Wayfu.Lamkn
             pathLine.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             if (pathMaterial != null) pathLine.sharedMaterial = pathMaterial;
 
-            SetupWaterFlow();
+            SetupWaterFlow(path);
 
             if (path != null && path.samples != null && path.samples.Length >= 2)
             {
                 pathLine.positionCount = path.samples.Length;
                 pathLine.SetPositions(path.samples);
+
+                if (_flowLine != null)
+                {
+                    var flowPositions = new Vector3[path.samples.Length];
+                    for (int i = 0; i < flowPositions.Length; i++)
+                        flowPositions[i] = path.samples[i] + Vector3.up * flowSurfaceOffset;
+                    _flowLine.positionCount = flowPositions.Length;
+                    _flowLine.SetPositions(flowPositions);
+                }
             }
-            else pathLine.positionCount = 0;
+            else
+            {
+                pathLine.positionCount = 0;
+                if (_flowLine != null) _flowLine.positionCount = 0;
+            }
         }
 
         /// <summary>
-        /// Chuẩn bị cuộn UV cho hiệu ứng nước chảy: lấy MỘT bản sao material của pathLine (pathLine.material
-        /// tự clone sharedMaterial nên không ghi vào asset .mat), rồi ghi nhớ offset gốc của từng texture để
-        /// mỗi frame cộng dồn scroll lên trên. Speed = 0 hoặc không có texture khớp thì tắt hẳn (đỡ tốn frame).
+        /// Tạo lớp LineRenderer trong suốt phủ lên mặt nước. LineRenderer Tile quy ước UV.x chạy dọc path,
+        /// vì vậy waterScrollSpeed.x được truyền thẳng cho shader và luôn bám theo mọi khúc cua.
         /// </summary>
-        private void SetupWaterFlow()
+        private void SetupWaterFlow(RoundedPolylinePath path)
         {
-            // Build mới: bỏ bản sao cũ đi (mỗi lần .material lại clone thêm 1 cái, không dọn là rò rỉ).
-            if (_waterMat != null) { Destroy(_waterMat); _waterMat = null; }
-            _waterProps = null;
-            _waterBaseOffset = null;
-            _waterScroll = Vector2.zero;
+            if (_baseMaterialInstance != null)
+            {
+                Destroy(_baseMaterialInstance);
+                _baseMaterialInstance = null;
+            }
+            if (_flowMaterialInstance != null)
+            {
+                Destroy(_flowMaterialInstance);
+                _flowMaterialInstance = null;
+            }
 
-            if (pathLine == null || waterScrollSpeed == Vector2.zero || waterScrollTextures == null) return;
+            if (pathLine != null && pathLine.sharedMaterial != null)
+            {
+                _baseMaterialInstance = pathLine.material;
+                ApplyPathDirection(_baseMaterialInstance, "_EdgeWaveSpeed");
+                if (_baseMaterialInstance.HasProperty("_PathLength"))
+                    _baseMaterialInstance.SetFloat("_PathLength", path != null ? path.TotalLength : 1f);
+                if (_baseMaterialInstance.HasProperty("_PathClosed"))
+                    _baseMaterialInstance.SetFloat("_PathClosed", path != null && path.isClosed ? 1f : 0f);
+            }
 
-            var mat = pathLine.material; // clone → chỉ ảnh hưởng line này, không dirty asset dùng chung
-            var props = new List<string>();
-            var offs = new List<Vector2>();
-            foreach (var p in waterScrollTextures)
-                if (!string.IsNullOrEmpty(p) && mat.HasProperty(p))
-                {
-                    props.Add(p);
-                    offs.Add(mat.GetTextureOffset(p));
-                }
+            if (pathLine == null || pathFlowMaterial == null)
+            {
+                if (_flowLine != null) _flowLine.enabled = false;
+                return;
+            }
 
-            if (props.Count == 0) { Destroy(mat); return; } // material không có texture nào khớp → khỏi giữ
-            _waterMat = mat;
-            _waterProps = props.ToArray();
-            _waterBaseOffset = offs.ToArray();
+            if (_flowLine == null)
+            {
+                var go = new GameObject("WaterFlowLine");
+                go.transform.SetParent(pathLine.transform, false);
+                _flowLine = go.AddComponent<LineRenderer>();
+            }
+
+            CopyLineSettings(pathLine, _flowLine);
+            _flowLine.enabled = pathLine.enabled;
+            _flowLine.sharedMaterial = pathFlowMaterial;
+
+            _flowMaterialInstance = _flowLine.material;
+            if (_flowMaterialInstance.HasProperty("_FlowSpeed"))
+                _flowMaterialInstance.SetVector("_FlowSpeed", waterScrollSpeed);
+            if (_flowMaterialInstance.HasProperty("_SecondFlowSpeed"))
+                _flowMaterialInstance.SetVector("_SecondFlowSpeed", waterScrollSpeed * 0.55f);
+            if (_flowMaterialInstance.HasProperty("_BubbleSpeed"))
+                _flowMaterialInstance.SetVector("_BubbleSpeed", -waterScrollSpeed * 0.35f);
         }
 
-        /// <summary>Cuộn UV material mặt đường mỗi frame — texture Tile lặp lại + trôi dọc path = nước chảy.</summary>
-        private void ScrollWater()
+        private void ApplyPathDirection(Material material, string speedProperty)
         {
-            if (_waterMat == null) return;
-            _waterScroll += waterScrollSpeed * Time.deltaTime;
-            for (int i = 0; i < _waterProps.Length; i++)
-                _waterMat.SetTextureOffset(_waterProps[i], _waterBaseOffset[i] + _waterScroll);
+            if (material == null || !material.HasProperty(speedProperty)) return;
+            float speed = Mathf.Abs(material.GetFloat(speedProperty));
+            if (Mathf.Approximately(waterScrollSpeed.x, 0f))
+                material.SetFloat(speedProperty, 0f);
+            else
+                material.SetFloat(speedProperty, speed * Mathf.Sign(waterScrollSpeed.x));
+        }
+
+        private static void CopyLineSettings(LineRenderer source, LineRenderer target)
+        {
+            target.alignment = source.alignment;
+            target.useWorldSpace = source.useWorldSpace;
+            target.loop = source.loop;
+            target.numCornerVertices = source.numCornerVertices;
+            target.numCapVertices = source.numCapVertices;
+            target.textureMode = LineTextureMode.Tile;
+            target.widthCurve = source.widthCurve;
+            target.widthMultiplier = source.widthMultiplier;
+            target.colorGradient = source.colorGradient;
+            target.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            target.receiveShadows = false;
         }
 
         /// <summary>Chỉnh độ rộng mặt đường (world units). Gọi được lúc runtime để tinh chỉnh.</summary>
@@ -210,12 +267,76 @@ namespace Wayfu.Lamkn
             if (pathLine == null) return;
             pathLine.enabled = width > 0f;
             pathLine.widthMultiplier = Mathf.Max(0f, width);
+            if (_baseMaterialInstance != null && _baseMaterialInstance.HasProperty("_PathWidth"))
+                _baseMaterialInstance.SetFloat("_PathWidth", pathLine.widthMultiplier);
+            if (_flowLine != null)
+            {
+                _flowLine.enabled = pathLine.enabled && pathFlowMaterial != null;
+                _flowLine.widthMultiplier = pathLine.widthMultiplier;
+            }
         }
 
         /// <summary>
         /// Gun vừa rời slot: vào path ngay nếu điểm đầu còn trống, không thì xếp hàng chờ.
         /// Queue là FIFO — hàng chờ còn người thì gun mới luôn phải đứng sau, kể cả lúc đầu path trống.
         /// </summary>
+        private void SetupBubbles()
+        {
+            if (!spawnBubbles || pathMaterial == null) return;
+            var texture = pathMaterial.HasProperty("_BubbleMap") ? pathMaterial.GetTexture("_BubbleMap") : null;
+            var shader = Shader.Find("WaterFlow/2D/Bubble Overlay");
+            if (texture == null || shader == null) return;
+            if (_bubbleMaterial != null) Destroy(_bubbleMaterial);
+            _bubbleMaterial = new Material(shader);
+            _bubbleMaterial.SetTexture("_BubbleMap", texture);
+        }
+
+        private void UpdateBubbles()
+        {
+            if (_bubbleMaterial == null || _path == null || _path.samples == null) return;
+            _bubbleTimer -= Time.deltaTime;
+            if (_bubbleTimer <= 0f)
+            {
+                var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                Destroy(go.GetComponent<Collider>());
+                go.name = "WaterBubble";
+                go.transform.SetParent(transform);
+                go.transform.SetPositionAndRotation(_path.GetPointAtDistance(Random.value * _path.TotalLength) + Vector3.up * (flowSurfaceOffset + 0.03f), Quaternion.Euler(90f, 0f, 0f));
+                float s = bubbleSize * Random.Range(0.7f, 1.25f);
+                go.transform.localScale = new Vector3(s, s, s);
+                go.GetComponent<MeshRenderer>().sharedMaterial = _bubbleMaterial;
+                _bubbles.Add(go.transform);
+                _bubbleTimer = bubbleSpawnInterval * Random.Range(0.7f, 1.3f);
+            }
+            var cam = Camera.main;
+            Vector3 up = cam != null ? Vector3.ProjectOnPlane(cam.transform.up, Vector3.up) : Vector3.forward;
+            if (up.sqrMagnitude < 1e-5f) up = Vector3.forward;
+            up.Normalize();
+            float limit = Mathf.Max(0f, pathLine.widthMultiplier * 0.5f - bubbleSize * 0.5f);
+            for (int i = _bubbles.Count - 1; i >= 0; i--)
+            {
+                var b = _bubbles[i];
+                if (b == null) { _bubbles.RemoveAt(i); continue; }
+                b.position += up * bubbleRiseSpeed * Time.deltaTime;
+                if (DistanceToPath(b.position) > limit) { Destroy(b.gameObject); _bubbles.RemoveAt(i); }
+            }
+        }
+
+        private float DistanceToPath(Vector3 point)
+        {
+            float best = float.MaxValue;
+            for (int i = 1; i < _path.samples.Length; i++)
+            {
+                Vector3 a = _path.samples[i - 1]; a.y = 0f;
+                Vector3 b = _path.samples[i]; b.y = 0f;
+                Vector3 p = point; p.y = 0f;
+                Vector3 ab = b - a;
+                float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector3.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+                best = Mathf.Min(best, Vector3.Distance(p, a + ab * t));
+            }
+            return best;
+        }
+
         public void RequestDeploy(Gun gun)
         {
             if (gun == null) return;
@@ -229,8 +350,6 @@ namespace Wayfu.Lamkn
 
         private void Update()
         {
-            ScrollWater();
-
             if (_queue.Count == 0 || !IsEntryClear()) return;
 
             // Mỗi frame chỉ thả 1 gun: gun vừa vào đứng ngay điểm đầu nên IsEntryClear() lập tức false.
@@ -308,7 +427,12 @@ namespace Wayfu.Lamkn
             _queue.Clear();
             // pathLine nằm trên scene (không bị destroy cùng GunPath) → phải xoá điểm của level cũ.
             if (pathLine != null) pathLine.positionCount = 0;
-            if (_waterMat != null) { Destroy(_waterMat); _waterMat = null; }
+            if (_flowLine != null) _flowLine.positionCount = 0;
+            foreach (var bubble in _bubbles) if (bubble != null) Destroy(bubble.gameObject);
+            _bubbles.Clear();
+            if (_bubbleMaterial != null) { Destroy(_bubbleMaterial); _bubbleMaterial = null; }
+            if (_baseMaterialInstance != null) { Destroy(_baseMaterialInstance); _baseMaterialInstance = null; }
+            if (_flowMaterialInstance != null) { Destroy(_flowMaterialInstance); _flowMaterialInstance = null; }
             if (_path != null) { Destroy(_path.gameObject); _path = null; }
             // Tunnel là con của PathManager (không phải của GunPath) → phải tự dọn, không thì level sau
             // chồng thêm 1 cặp nữa.

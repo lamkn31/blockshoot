@@ -276,7 +276,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathLine: {fileID: 3237678676309291126}
-  pathMaterial: {fileID: 2100000, guid: aafb08edd25bc144ca5aa7c78d034077, type: 2}
+  pathMaterial: {fileID: 2100000, guid: 472ae31d65a74b345893967a425bfcf4, type: 2}
+  pathFlowMaterial: {fileID: 2100000, guid: e9e7a5861caa7f84b89d692a10e0c9ba, type: 2}
+  flowSurfaceOffset: 0.01
+  waterScrollSpeed: {x: -0.5, y: 0}
   tunnelInPrefab: {fileID: 0}
   tunnelOutPrefab: {fileID: 0}
   tunnelFaceDistance: 1
