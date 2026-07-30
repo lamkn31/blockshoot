@@ -239,6 +239,11 @@ namespace Wayfu.Lamkn
             var cell = gr.Rows[r][e];
             if (cell != null && cell.Indestructible) return false;
 
+            // A designer-assigned side already declares which barrel/path side
+            // owns this grid. Do not reject that barrel again based on a fragile
+            // world-position edge test while the path curves around the grid.
+            if (gr.Data.Side != GridSide.Any) return IsShootable(gr, r, e);
+
             var edges = gr.Data.ShootableEdges;
             if (edges == GridEdges.None) return IsShootableLegacy(gr, r, e);
 
@@ -261,12 +266,13 @@ namespace Wayfu.Lamkn
         // hợp cả grid cột lệch (Arc-ArcLength) lẫn cột thẳng (Rect/Uniform).
         private static bool ExposedAlongRows(GridRuntime gr, int r, int e, int dir)
         {
-            for (int rr = r + dir; rr >= 0 && rr < gr.Rows.Count; rr += dir)
-            {
-                int idx = Mathf.Min(e, gr.Rows[rr].Length - 1);
-                if (idx >= 0 && gr.Rows[rr][idx] != null) return false;
-            }
-            return true;
+            int rr = r + dir;
+            if (rr < 0 || rr >= gr.Rows.Count) return true;
+            int idx = Mathf.Min(e, gr.Rows[rr].Length - 1);
+            // A blank adjacent row separates two independent collapse segments.
+            // Do not let cells from an older segment farther along the same column
+            // keep this segment hidden.
+            return idx < 0 || gr.Rows[rr][idx] == null;
         }
 
         // Lộ ra theo HÀNG (Left/Right): mọi cell giữa (r,e) và mép hàng đã trống chưa.
@@ -677,6 +683,10 @@ namespace Wayfu.Lamkn
                 }
                 else if (src.EightWay)
                 {
+                    // One-direction grids only let Spawner8 feed toward the
+                    // path: forward, forward-left and forward-right.
+                    if (!gr.Data.Collapse2D
+                        && (r != src.Row - 1 || Mathf.Abs(c - src.Col) > 1)) continue;
                     d = Mathf.Max(Mathf.Abs(src.Row - r), Mathf.Abs(src.Col - c));
                     if (d < 1 || (src.Reach > 0 && d > src.Reach)) continue;
                     kind = FillOwner.Eight;
@@ -1043,6 +1053,9 @@ namespace Wayfu.Lamkn
                 for (int k = 0; k < EightNeighbors.GetLength(0) && src.Queue.Count > 0; k++)
                 {
                     int dr = EightNeighbors[k, 0], dc = EightNeighbors[k, 1];
+                    // A one-direction grid never expands a Spawner8 sideways or
+                    // backwards: only its three forward neighbours are valid.
+                    if (!gr.Data.Collapse2D && dr != -1) continue;
                     int t = dr != 0 && dc != 0 ? 2 : dc == 0 ? 0 : 1; // dọc / ngang / chéo
                     if (t != tier) continue;                          // lượt này chỉ 1 tier hướng
 
