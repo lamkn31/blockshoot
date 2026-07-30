@@ -569,13 +569,19 @@ namespace Wayfu.Lamkn
                 bool moved = false, fed = false;
 
                 // Cấp 1
-                moved |= gr.Data.Collapse2D ? AdvanceCorner2D(gr) : AdvanceOnce(gr);
+                // Move each contiguous normal-cell segment by exactly one step.
+                // Do not repeat this pass: separated segments must not jump across
+                // their gap and merge in the same collapse event.
+                moved = gr.Data.Collapse2D ? AdvanceCorner2D(gr) : AdvanceOnce(gr);
+                if (moved) break;
                 fed |= FeedRegular(gr) | TryRefill(gr);
                 // Cấp 2 — SpawnerLine (dọc trước, ngang sau).
                 fed |= FeedLine(gr, verticalPass: true) | FeedLine(gr, verticalPass: false);
                 // Cấp 3 — Spawner8.
                 fed |= FeedEightWayAll(gr);
-                moved |= CascadeTowardSpawners(gr);
+                // One-dimensional grids may receive Spawner8 output, but their
+                // existing cells must never be pulled sideways or diagonally.
+                if (gr.Data.Collapse2D) moved |= CascadeTowardSpawners(gr);
 
                 if (!moved && !fed) break;
             }
@@ -723,8 +729,11 @@ namespace Wayfu.Lamkn
                     // Lỗ do designer xoá KHÔNG phải chỗ trống để dồn vào — grid 3x3 xoá ô (0,0) thì cột 0
                     // dừng ở hàng 1, không bao giờ lấp kín hàng 0.
                     int slot = -1;
-                    if (CanEnter(gr, r - 1, a, prev) && GravityMayFill(gr, r - 1, a)) slot = a;
-                    else if (CanEnter(gr, r - 1, b, prev) && GravityMayFill(gr, r - 1, b)) slot = b;
+                    // Existing grid cells always get first right to collapse into a
+                    // directly adjacent vacancy.  Spawner ownership applies only
+                    // when the sources refill after this normal collapse settles.
+                    if (CanEnter(gr, r - 1, a, prev)) slot = a;
+                    else if (CanEnter(gr, r - 1, b, prev)) slot = b;
                     if (slot < 0) continue; // ô trước còn cell / là lỗ → bị chặn, chưa dồn được
 
                     prev[slot] = cell;

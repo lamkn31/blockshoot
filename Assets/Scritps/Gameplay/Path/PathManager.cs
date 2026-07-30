@@ -319,10 +319,14 @@ namespace Wayfu.Lamkn
         /// <summary>Có gun nào trên path còn cell cùng màu để bắn không (check LOSE).</summary>
         public bool AnyGunHasTarget()
         {
-            if (GridBlockManager.Instance == null) return false;
+            var grid = GridBlockManager.Instance;
+            if (grid == null) return false;
+
             foreach (var g in _guns)
-                // Gun connect hết đạn còn đứng chờ trên path → KHÔNG tính là còn bắn được (nó không nhả đạn nữa).
-                if (g != null && g.HasBullets && GridBlockManager.Instance.HasFrontCellOfColor(g.Color)) return true;
+                // Lose is a board-level deadlock check, not a per-frame aiming
+                // check. If any shootable cell in any grid matches a gun that
+                // still has ammo, allow the gun to keep moving until it reaches it.
+                if (g != null && g.HasBullets && grid.HasFrontCellOfColor(g.Color)) return true;
             return false;
         }
     }

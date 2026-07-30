@@ -28,6 +28,7 @@ namespace Wayfu.Lamkn
 
         // Spine cảnh báo độ khó đang chờ loading đóng mới được diễn.
         private LevelDifficulty _pendingNotify;
+        private bool _loseCheckPending;
         private bool _waitingLoading;
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Wayfu.Lamkn
             IceController.Instance?.UpdateIce(destroyed);       // countdown + xoá Ice hình khi đủ ngưỡng
             Popup?.SetBlockProgress(destroyed, _blocksAtStart); // cập nhật thanh tiến trình phá block
             if (CheckWin()) return;
-            CheckLose();
+            RequestLoseCheck();
         }
 
         /// <summary>
@@ -66,6 +67,17 @@ namespace Wayfu.Lamkn
             if (State != GameState.Playing) return;
             var pm = PathManager.Instance;
             if (pm != null && pm.GunCount > 0 && !pm.AnyGunHasTarget()) Lose();
+        }
+
+        // Gun targeting runs in Update. A board change can happen before that
+        // Update, so check loss in LateUpdate after every gun has scanned.
+        private void RequestLoseCheck() => _loseCheckPending = true;
+
+        private void LateUpdate()
+        {
+            if (!_loseCheckPending || State != GameState.Playing) return;
+            _loseCheckPending = false;
+            CheckLose();
         }
 
         /// <summary>Chơi lại ĐÚNG màn hiện tại, không đụng tiến trình đã lưu.</summary>

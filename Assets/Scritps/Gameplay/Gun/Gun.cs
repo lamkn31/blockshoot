@@ -66,6 +66,39 @@ namespace Wayfu.Lamkn
         /// <summary>Số VÒNG đã chạy trên path (mốc để biết gun vừa lap qua điểm path0). 0 khi ở slot.</summary>
         public int LapCount => _follower != null ? _follower.LapCount : 0;
 
+        /// <summary>
+        /// Returns whether either barrel can currently acquire a real target.
+        /// This deliberately uses the same range/angle/side/occlusion rules as firing,
+        /// but does not claim or mutate any cell.
+        /// </summary>
+        public bool CanShootAnyCell()
+        {
+            if (_state != GunState.OnPath || Data == null || Data.CountBullet <= 0
+                || GridBlockManager.Instance == null) return false;
+
+            // A barrel that has already locked a live cell is actively able to
+            // shoot.  Do this before the query below: FindTargetCell excludes a
+            // cell claimed by another barrel, including the current target.
+            if (HasLiveTarget(_right) || HasLiveTarget(_left)) return true;
+
+            Vector3 from = transform.position;
+            Vector3 forward = transform.forward;
+            float range = _fire.Range;
+            float angle = _fire.Angle;
+
+            var right = GridBlockManager.Instance.FindTargetCell(
+                Data.Color, from, forward, _right.Sign, range, angle,
+                null, _right.Muzzle != null ? _right.Muzzle.position : (Vector3?)null,
+                -1f, this);
+            if (right != null) return true;
+
+            var left = GridBlockManager.Instance.FindTargetCell(
+                Data.Color, from, forward, _left.Sign, range, angle,
+                null, _left.Muzzle != null ? _left.Muzzle.position : (Vector3?)null,
+                -1f, this);
+            return left != null;
+        }
+
         private GunState _state = GunState.InSlot;
         private GunFireConfig _fire = GunFireConfig.FromSettings(null);
         private Renderer[] _renderers;
