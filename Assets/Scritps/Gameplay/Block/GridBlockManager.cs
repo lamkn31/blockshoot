@@ -573,7 +573,14 @@ namespace Wayfu.Lamkn
                 // Do not repeat this pass: separated segments must not jump across
                 // their gap and merge in the same collapse event.
                 moved = gr.Data.Collapse2D ? AdvanceCorner2D(gr) : AdvanceOnce(gr);
-                if (moved) break;
+                if (moved)
+                {
+                    // A regular spawner that just moved leaves its source cell
+                    // empty. Refill it in this same pass so even its final queued
+                    // block appears at that old spawner position without a gap.
+                    FeedRegular(gr);
+                    break;
+                }
                 fed |= FeedRegular(gr) | TryRefill(gr);
                 // Cấp 2 — SpawnerLine (dọc trước, ngang sau).
                 fed |= FeedLine(gr, verticalPass: true) | FeedLine(gr, verticalPass: false);
@@ -881,11 +888,21 @@ namespace Wayfu.Lamkn
                 var src = gr.Sources[i];
                 if (src.EightWay || src.Line) continue;
                 if (src.Row >= gr.Rows.Count || src.Col >= gr.Rows[src.Row].Length || src.Queue.Count == 0)
-                { gr.Sources.RemoveAt(i); continue; }
+                { ReleaseExhaustedSpawnerCell(gr, src); gr.Sources.RemoveAt(i); continue; }
                 int len = gr.Rows[src.Row].Length;
                 if (gr.Rows[src.Row][src.Col] == null)
-                    fed |= SpawnFromQueue(gr, src.Queue, src.Row, src.Col,
-                                          gr.Data.CellPosAt(src.Row + 1, src.Col, len), src.DirAngle);
+                {
+                    bool spawned = SpawnFromQueue(gr, src.Queue, src.Row, src.Col,
+                                                   gr.Data.CellPosAt(src.Row, src.Col, len), src.DirAngle);
+                    fed |= spawned;
+                    // The last emitted block is normal, so release the source
+                    // marker in this same collapse pass rather than leaving a gap.
+                    if (src.Queue.Count == 0)
+                    {
+                        ReleaseExhaustedSpawnerCell(gr, src);
+                        gr.Sources.RemoveAt(i);
+                    }
+                }
             }
             return fed;
         }
@@ -1044,6 +1061,7 @@ namespace Wayfu.Lamkn
             if (src.Queue.Count == 0)
             {
                 if (cell != null) { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
+                ReleaseExhaustedSpawnerCell(gr, src);
                 return;
             }
             if (cell == null) return;
@@ -1071,7 +1089,19 @@ namespace Wayfu.Lamkn
                 var cell = gr.Rows[src.Row][src.Col];
                 if (cell != null && cell.Indestructible) { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
             }
+            ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
+        }
+
+        // Once a source is empty, an interior source cell becomes a normal grid
+        // cell.  Keeping the marker would make CanEnter reject every collapse
+        // into that position forever.  The final row remains reserved because no
+        // normal cell exists behind it to feed the vacancy.
+        private static void ReleaseExhaustedSpawnerCell(GridRuntime gr, SpawnerSource src)
+        {
+            if (src.Row < 0 || src.Row >= gr.Rows.Count - 1 || src.Col < 0
+                || src.Col >= gr.SpawnerCells[src.Row].Length) return;
+            gr.SpawnerCells[src.Row][src.Col] = false;
         }
 
         // Cột kề của Spawner8: vòng KÍN thì nối vòng (cột cuối kề cột 0); vòng hở thì tràn mép = không có ô.

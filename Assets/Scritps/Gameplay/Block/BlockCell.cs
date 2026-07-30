@@ -274,7 +274,8 @@ namespace Wayfu.Lamkn
         {
             if (_moveRoutine != null) StopCoroutine(_moveRoutine);
             SettleStamp = Time.time; // cell vừa SẬP/dời chỗ ở thời điểm này (gun dùng để xếp ưu tiên sau)
-            if (!gameObject.activeInHierarchy || duration <= 0f)
+            if (!gameObject.activeInHierarchy || duration <= 0f
+                || (transform.position - target).sqrMagnitude <= 1e-6f)
             {
                 transform.position = target;
                 PendingEntry = false; // tới nơi ngay → cho ngắm
