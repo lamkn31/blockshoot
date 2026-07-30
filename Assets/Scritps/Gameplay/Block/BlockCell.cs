@@ -127,6 +127,14 @@ namespace Wayfu.Lamkn
         /// (xem Bullet.Update) chứ không nhắm vào 1 điểm chết trong không gian.
         /// </summary>
         public Vector3 StackOffset(int i) => Vector3.up * _stackSpacing * Mathf.Max(0, i);
+
+        /// <summary>Offset của block thấp nhất còn tồn tại, kể cả khi stack không dồn xuống.</summary>
+        public Vector3 BottomBlockOffset()
+        {
+            for (int i = 0; i < _blocks.Count; i++)
+                if (_blocks[i] != null) return _blocks[i].transform.position - transform.position;
+            return Vector3.zero;
+        }
         /// <summary>Số block chưa bị đạn "đặt chỗ" (đạn đang bay) — gun chỉ bắn khi còn &gt; 0.</summary>
         public int Available => _blocks.Count - _pendingHits;
         public bool IsEmpty => _blocks.Count == 0;
@@ -231,15 +239,8 @@ namespace Wayfu.Lamkn
 
         private void HitOnce()
         {
-            if (_blocks.Count == 0) return;
-
-            int last = _blocks.Count - 1;
-            var b = _blocks[last];
-            _blocks.RemoveAt(last);
-            if (b != null) b.Despawn(); // trả block về pool
-
-            if (_blocks.Count > 0) return;
-            if (_manager != null) _manager.OnCellCleared(this);
+            // Every caller follows the same order: bottom block first.
+            HitBottomOnce();
         }
 
         /// <summary>Như <see cref="ApplyHit"/> nhưng phá block ĐÁY (dưới cùng) — dùng cho đạn LẺ dồn vào
@@ -259,13 +260,6 @@ namespace Wayfu.Lamkn
             if (b != null) b.Despawn();
 
             // Dồn các block còn lại xuống: block ở list-index j nằm đúng độ cao j (stack liền từ đáy).
-            for (int j = 0; j < _blocks.Count; j++)
-            {
-                if (_blocks[j] == null) continue;
-                var lp = _blocks[j].transform.localPosition;
-                _blocks[j].transform.localPosition = new Vector3(lp.x, _stackSpacing * j, lp.z);
-            }
-
             if (_blocks.Count > 0) return;
             if (_manager != null) _manager.OnCellCleared(this);
         }

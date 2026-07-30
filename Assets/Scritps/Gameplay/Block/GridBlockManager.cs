@@ -244,20 +244,29 @@ namespace Wayfu.Lamkn
             {
                 Vector3 legacyCellPos = cell != null ? cell.transform.position : gr.Data.CellPos(r, e);
                 Vector3 legacyToGun = from - legacyCellPos; legacyToGun.y = 0f;
-                Vector3 legacyFwd = gr.Data.Forward; legacyFwd.y = 0f;
+                // Cell hướng vào phía trong grid.  Với Arc/Spline, hướng này khác
+                // nhau ở từng ô; dùng Grid.Forward chung sẽ đảo/sai mặt của các ô
+                // nằm ở đoạn cong và làm chúng không bao giờ được chọn.
+                Vector3 legacyFwd = cell != null ? cell.transform.forward : -gr.Data.Forward;
+                legacyFwd.y = 0f;
                 legacyFwd = legacyFwd.sqrMagnitude < 1e-6f ? Vector3.forward : legacyFwd.normalized;
-                return Vector3.Dot(legacyToGun, -legacyFwd) > 0f && IsShootableLegacy(gr, r, e);
+                // transform.forward là chiều cell trượt RA PATH, nên cũng chính là
+                // pháp tuyến của mặt trước mà gun phải đứng ở phía ngoài.
+                return Vector3.Dot(legacyToGun, legacyFwd) > 0f && IsShootableLegacy(gr, r, e);
             }
 
             Vector3 cellPos = cell != null ? cell.transform.position : gr.Data.CellPos(r, e);
-            Vector3 fwd = gr.Data.Forward; fwd.y = 0f;
+            // Cùng lý do: mặt Front/Back của spline/arc phải theo hướng cell,
+            // không phải một hướng cố định của toàn grid.
+            Vector3 fwd = cell != null ? cell.transform.forward : -gr.Data.Forward;
+            fwd.y = 0f;
             fwd = fwd.sqrMagnitude < 1e-6f ? Vector3.forward : fwd.normalized;
             Vector3 rgt = Vector3.Cross(Vector3.up, fwd);   // local +X trên sàn
             Vector3 toGun = from - cellPos; toGun.y = 0f;   // hướng từ cell ra gun
 
             // Lộ ra ở cạnh đang bật VÀ gun nằm về phía NGOÀI cạnh đó (dot với pháp tuyến ngoài > 0).
-            if ((edges & GridEdges.Front) != 0 && ExposedAlongRows(gr, r, e, -1) && Vector3.Dot(toGun, -fwd) > 0f) return true;
-            if ((edges & GridEdges.Back)  != 0 && ExposedAlongRows(gr, r, e, +1) && Vector3.Dot(toGun,  fwd) > 0f) return true;
+            if ((edges & GridEdges.Front) != 0 && ExposedAlongRows(gr, r, e, -1) && Vector3.Dot(toGun,  fwd) > 0f) return true;
+            if ((edges & GridEdges.Back)  != 0 && ExposedAlongRows(gr, r, e, +1) && Vector3.Dot(toGun, -fwd) > 0f) return true;
             if ((edges & GridEdges.Left)  != 0 && ExposedAlongRow(gr, r, e, -1) && Vector3.Dot(toGun, -rgt) > 0f) return true;
             if ((edges & GridEdges.Right) != 0 && ExposedAlongRow(gr, r, e, +1) && Vector3.Dot(toGun,  rgt) > 0f) return true;
             return false;
@@ -343,7 +352,9 @@ namespace Wayfu.Lamkn
                 // Khi đã khớp bên thì KHÔNG kiểm tra sườn hình học nữa (nó lật dấu khi path cong / grid chếch).
                 var gside = gr.Data.Side;
                 bool sideLocked = gside != GridSide.Any;
-                if (sideLocked && (gside == GridSide.Right) != (sideSign > 0f)) continue;
+                // Grid.Side is authoring metadata only.  The real barrel is
+                // determined below from the cell's position against the current
+                // path tangent; that remains correct on curved/reversed paths.
 
                 for (int r = 0; r < gr.Rows.Count; r++)
                 {
@@ -369,7 +380,9 @@ namespace Wayfu.Lamkn
                         // không bắn giật lùi vào grid đã đi qua.
                         if (hasDir && sqr > 1e-6f)
                         {
-                            if (!sideLocked && Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
+                            // Path tangent chooses the barrel side at this exact point:
+                            // right/left is measured from the current A -> B path direction.
+                            if (Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
                             // A grid assigned to a barrel side is already gated by
                             // IsShootableFromGun's exposed physical face. Let that
                             // barrel shoot cells directly beside the path as well;

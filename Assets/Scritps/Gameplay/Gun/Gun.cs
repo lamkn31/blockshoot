@@ -422,6 +422,15 @@ namespace Wayfu.Lamkn
             // BẮT ĐẦU bắn xuyên qua cell; frame sau chọn cell nhìn thấy trực tiếp.
             // Đã bắn ÍT NHẤT 1 phát rồi thì PHẢI phá TRỌN cell (không phá lẻ) — không buông giữa chừng dù
             // gun di chuyển làm cell khác lọt vào giữa. laserCellTime ngắn nên cửa sổ bị che giữa chừng rất nhỏ.
+            // A locked target is not allowed to survive after the gun has passed
+            // it on the current path segment, or after it leaves range.
+            if (b.Target != null && !CanKeepTarget(b.Target, b))
+            {
+                b.Target.ReleaseClaim(b);
+                b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false; b.BeamHold = 0f;
+                b.LeftoverDump = false;
+            }
+
             if (_fire.Mode == GunFireMode.Laser && b.Target != null && !b.FiredAtTarget
                 && GridBlockManager.Instance != null
                 && GridBlockManager.Instance.IsCellBlockedFrom(
@@ -435,7 +444,8 @@ namespace Wayfu.Lamkn
             // Bắn cell đang bám (kể cả khi đã hết lượt — cell dở phải được bắn hết). Chỉ bắn khi cell
             // còn block CHƯA bị đạn đang bay đặt chỗ (tránh bắn dư). KHÔNG bắn ở frame vừa chốt target:
             // cell lộ ra thoáng qua lúc dồn hàng (transient) sẽ bị thay ở frame sau → không phí đạn bắn nhầm.
-            if (b.Target != null && !justAcquired && b.FireTimer <= 0f && b.Target.Available > 0)
+            if (b.Target != null && !justAcquired && b.FireTimer <= 0f
+                && (_fire.Mode == GunFireMode.Laser ? b.Target.StackCount > 0 : b.Target.Available > 0))
             {
                 if (_fire.Mode == GunFireMode.Laser)
                 {
@@ -514,15 +524,27 @@ namespace Wayfu.Lamkn
             return Vector3.Dot(transform.forward, d) >= Mathf.Cos(Spread * Mathf.Deg2Rad) * Mathf.Sqrt(sqr);
         }
 
+        /// <summary>
+        /// A target beside a barrel is valid while the gun has not passed it.
+        /// It is released as soon as it is out of range, on the other barrel's
+        /// side, or behind the current path tangent, so the gun never turns back.
+        /// </summary>
+        private bool CanKeepTarget(BlockCell cell, Barrel b)
+        {
+            if (cell == null || cell.Generation != b.TargetGen) return false;
+            Vector3 d = cell.transform.position - transform.position; d.y = 0f;
+            if (d.sqrMagnitude > _fire.Range * _fire.Range) return false;
+            if (Vector3.Dot(transform.right, d) * b.Sign < 0f) return false;
+            return Vector3.Dot(transform.forward, d) >= -0.001f;
+        }
+
         private void Fire(Barrel b)
         {
             b.FiredAtTarget = true; // từ giờ cell này là "bắn dở" — phải bắn hết, không được bỏ giữa chừng
 
             // BurstPerCell: nhả TRỌN 1 loạt đúng bằng số block cell còn nợ (Available), mỗi viên nhắm 1
             // block trong stack → cả cell vỡ trong 1 lượt. Kẹp theo CountBullet phòng khi băng không đủ.
-            int shots = _fire.Mode == GunFireMode.BurstPerCell
-                ? Mathf.Min(b.Target.Available, Data.CountBullet)
-                : 1;
+            int shots = Mathf.Min(b.Target.Available, Data.CountBullet);
 
             if (b.LeftoverDump)
             {
@@ -581,10 +603,11 @@ namespace Wayfu.Lamkn
             // Re-evaluate after reserving this projectile.  If the remaining
             // bullets cannot clear the remaining stack, this is leftover ammo and
             // must always take the bottom block first.
-            bool hitBottom = b.LeftoverDump || Data.CountBullet < b.Target.Available;
+            // Every cell is destroyed from its bottom block upward.
+            bool hitBottom = true;
 
             var bullet = PoolManager.Instance != null ? PoolManager.Instance.GetBullet() : null;
-            Vector3 aim = b.Target.StackOffset(hitBottom ? 0 : blockIndex);
+            Vector3 aim = hitBottom ? b.Target.BottomBlockOffset() : b.Target.StackOffset(blockIndex);
             Vector3 from = b.Muzzle != null ? b.Muzzle.position : transform.position;
 
             // BurstSpawnStacked: sinh viên đạn sẵn ở ĐÚNG độ cao của block nó nhắm → cả loạt xếp thành
@@ -613,10 +636,15 @@ namespace Wayfu.Lamkn
         private void LaserHit(Barrel b)
         {
             b.FiredAtTarget = true;
-            bool hitBottom = b.LeftoverDump || Data.CountBullet < b.Target.Available;
-            Data.CountBullet--;
+            // Laser follows the same bottom-to-top destruction order as bullets.
+            // Do not use Available here: it includes pending projectile
+            // reservations, while a laser applies damage instantly.
+            while (b.Target.StackCount > 0 && Data.CountBullet > 0)
+            {
+                Data.CountBullet--;
+                b.Target.ApplyHitBottom();
+            }
             // Không ReserveHit: tia không có thời gian bay nên phá thẳng. Đạn lẻ → phá block ĐÁY.
-            if (hitBottom) b.Target.ApplyHitBottom(); else b.Target.ApplyHit();
             GameController.Instance?.OnBoardChanged();
             UpdateLabel();
             if (Data.CountBullet <= 0) OnEmptied();
@@ -640,7 +668,8 @@ namespace Wayfu.Lamkn
             {
                 // Có target → vẽ tia tới cell và NẠP LẠI linger. Điểm cuối lưu lại để lúc mất target
                 // (cell vừa vỡ, chưa kịp chốt cell kế) vẫn giữ được tia bắc cầu qua.
-                b.BeamTo = b.Target.transform.position + Vector3.up * laserAimHeight;
+                b.BeamTo = b.Target.transform.position + b.Target.BottomBlockOffset()
+                    + Vector3.up * laserAimHeight;
                 b.BeamHold = laserLinger;
             }
             else if (b.BeamHold > 0f)
