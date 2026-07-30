@@ -239,13 +239,15 @@ namespace Wayfu.Lamkn
             var cell = gr.Rows[r][e];
             if (cell != null && cell.Indestructible) return false;
 
-            // A designer-assigned side already declares which barrel/path side
-            // owns this grid. Do not reject that barrel again based on a fragile
-            // world-position edge test while the path curves around the grid.
-            if (gr.Data.Side != GridSide.Any) return IsShootable(gr, r, e);
-
             var edges = gr.Data.ShootableEdges;
-            if (edges == GridEdges.None) return IsShootableLegacy(gr, r, e);
+            if (edges == GridEdges.None)
+            {
+                Vector3 legacyCellPos = cell != null ? cell.transform.position : gr.Data.CellPos(r, e);
+                Vector3 legacyToGun = from - legacyCellPos; legacyToGun.y = 0f;
+                Vector3 legacyFwd = gr.Data.Forward; legacyFwd.y = 0f;
+                legacyFwd = legacyFwd.sqrMagnitude < 1e-6f ? Vector3.forward : legacyFwd.normalized;
+                return Vector3.Dot(legacyToGun, -legacyFwd) > 0f && IsShootableLegacy(gr, r, e);
+            }
 
             Vector3 cellPos = cell != null ? cell.transform.position : gr.Data.CellPos(r, e);
             Vector3 fwd = gr.Data.Forward; fwd.y = 0f;
