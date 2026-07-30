@@ -578,10 +578,13 @@ namespace Wayfu.Lamkn
         {
             Data.CountBullet--;
             b.Target.ReserveHit();
-            bool hitBottom = b.LeftoverDump; // đạn lẻ → phá block đáy (khớp với hướng nhắm block i)
+            // Re-evaluate after reserving this projectile.  If the remaining
+            // bullets cannot clear the remaining stack, this is leftover ammo and
+            // must always take the bottom block first.
+            bool hitBottom = b.LeftoverDump || Data.CountBullet < b.Target.Available;
 
             var bullet = PoolManager.Instance != null ? PoolManager.Instance.GetBullet() : null;
-            Vector3 aim = b.Target.StackOffset(blockIndex);        // lệch tới block trong stack
+            Vector3 aim = b.Target.StackOffset(hitBottom ? 0 : blockIndex);
             Vector3 from = b.Muzzle != null ? b.Muzzle.position : transform.position;
 
             // BurstSpawnStacked: sinh viên đạn sẵn ở ĐÚNG độ cao của block nó nhắm → cả loạt xếp thành
@@ -610,9 +613,10 @@ namespace Wayfu.Lamkn
         private void LaserHit(Barrel b)
         {
             b.FiredAtTarget = true;
+            bool hitBottom = b.LeftoverDump || Data.CountBullet < b.Target.Available;
             Data.CountBullet--;
             // Không ReserveHit: tia không có thời gian bay nên phá thẳng. Đạn lẻ → phá block ĐÁY.
-            if (b.LeftoverDump) b.Target.ApplyHitBottom(); else b.Target.ApplyHit();
+            if (hitBottom) b.Target.ApplyHitBottom(); else b.Target.ApplyHit();
             GameController.Instance?.OnBoardChanged();
             UpdateLabel();
             if (Data.CountBullet <= 0) OnEmptied();

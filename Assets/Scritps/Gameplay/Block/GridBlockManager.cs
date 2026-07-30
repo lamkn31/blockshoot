@@ -579,6 +579,12 @@ namespace Wayfu.Lamkn
                     // empty. Refill it in this same pass so even its final queued
                     // block appears at that old spawner position without a gap.
                     FeedRegular(gr);
+                    // The same rule applies to a SpawnerLine: if its first cell
+                    // on the configured line just moved, advance the conveyor and
+                    // emit from the source in this same collapse pass.
+                    FeedLineFrontGaps(gr);
+                    FeedLine(gr, verticalPass: true);
+                    FeedLine(gr, verticalPass: false);
                     break;
                 }
                 fed |= FeedRegular(gr) | TryRefill(gr);
@@ -923,6 +929,36 @@ namespace Wayfu.Lamkn
         // được nhả bù từ queue (màu hiện tại trước). Quét từ XA về GẦN nên mỗi cell chỉ nhích 1 ô/lượt →
         // qua guard-loop thành 1 băng chuyền chạy dần. Tối đa Reach ô (0 = tới mép grid).
         // verticalPass: true = nguồn DỌC (StepCol==0); false = NGANG/chéo (StepCol!=0).
+        // A line source also participates in the grid's normal forward collapse.
+        // Its configured line may be diagonal, but when the directly-front cell
+        // opens, the source must immediately emit into that gap rather than leave
+        // it empty waiting for a diagonal line position to open.
+        private bool FeedLineFrontGaps(GridRuntime gr)
+        {
+            bool fed = false;
+            for (int i = gr.Sources.Count - 1; i >= 0; i--)
+            {
+                var src = gr.Sources[i];
+                if (!src.Line) continue;
+                if (src.Row < 0 || src.Row >= gr.Rows.Count || src.Col < 0
+                    || src.Col >= gr.Rows[src.Row].Length || src.Queue.Count == 0)
+                { RemoveStaticSource(gr, i); continue; }
+
+                int frontRow = src.Row - 1;
+                if (frontRow < 0 || src.Col >= gr.Rows[frontRow].Length) continue;
+                if (!CanEnter(gr, frontRow, src.Col, gr.Rows[frontRow])) continue;
+
+                Vector3 origin = gr.Data.CellPosAt(src.Row, src.Col, gr.Rows[src.Row].Length);
+                if (EmitHead(gr, src, frontRow, src.Col, origin))
+                {
+                    fed = true;
+                    UpdateStaticSourceDisplay(gr, src);
+                    if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
+                }
+            }
+            return fed;
+        }
+
         private bool FeedLine(GridRuntime gr, bool verticalPass)
         {
             bool changed = false;
