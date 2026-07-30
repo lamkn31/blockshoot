@@ -424,7 +424,9 @@ namespace Wayfu.Lamkn
             // gun di chuyển làm cell khác lọt vào giữa. laserCellTime ngắn nên cửa sổ bị che giữa chừng rất nhỏ.
             // A locked target is not allowed to survive after the gun has passed
             // it on the current path segment, or after it leaves range.
-            if (b.Target != null && !CanKeepTarget(b.Target, b))
+            // A target not hit yet must stay in the current range/forward zone.
+            // Once one block was hit, finish this cell even after passing it.
+            if (b.Target != null && !b.FiredAtTarget && !CanKeepTarget(b.Target, b))
             {
                 b.Target.ReleaseClaim(b);
                 b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false; b.BeamHold = 0f;
@@ -637,13 +639,14 @@ namespace Wayfu.Lamkn
         {
             b.FiredAtTarget = true;
             // Laser follows the same bottom-to-top destruction order as bullets.
-            // Do not use Available here: it includes pending projectile
-            // reservations, while a laser applies damage instantly.
-            while (b.Target.StackCount > 0 && Data.CountBullet > 0)
-            {
-                Data.CountBullet--;
-                b.Target.ApplyHitBottom();
-            }
+            // Same policy as BurstPerCell: if this gun can clear the whole
+            // cell, fire all required hits in one laser pulse.  Otherwise keep
+            // the partial-cell case as individual bottom-block hits.
+            // One laser tick consumes one bullet and one block.  The interval is
+            // assigned on acquisition as laserCellTime / block count, so the
+            // inspector's laserCellTime controls the full, smooth cell clear.
+            Data.CountBullet--;
+            b.Target.ApplyHitBottom();
             // Không ReserveHit: tia không có thời gian bay nên phá thẳng. Đạn lẻ → phá block ĐÁY.
             GameController.Instance?.OnBoardChanged();
             UpdateLabel();
