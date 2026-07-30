@@ -367,6 +367,20 @@ namespace Wayfu.Lamkn
             if (_gamePlay != null) _gamePlay.Hide();
         }
 
+        /// <summary>Đẩy tiến trình "block đã phá / tổng" lên HUD gameplay (nếu đang có).</summary>
+        public void SetBlockProgress(int destroyed, int total)
+        {
+            if (_gamePlay != null) _gamePlay.SetBlockProgress(destroyed, total);
+        }
+
+        /// <summary>Diễn bảng LÝ DO THUA trên HUD rồi gọi onComplete (thường là ShowLose). Không có HUD
+        /// thì gọi thẳng onComplete.</summary>
+        public void ShowReasonLose(string reason, Action onComplete)
+        {
+            if (_gamePlay != null) _gamePlay.ShowReasonLose(reason, onComplete);
+            else onComplete?.Invoke();
+        }
+
         #endregion
 
         #region Difficulty Notification API

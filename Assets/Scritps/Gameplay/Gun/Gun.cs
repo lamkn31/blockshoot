@@ -104,6 +104,7 @@ namespace Wayfu.Lamkn
             public Vector3 BeamTo;    // điểm cuối tia lần vẽ gần nhất — giữ trong lúc linger (chuyển cell)
             public float BeamHold;    // còn giữ tia bao lâu dù đã mất target (bắc cầu qua lúc chốt cell kế)
             public float LaserInterval; // nhịp gặm/block của cell ĐANG bám = laserCellTime / số block lúc chốt
+            public bool LeftoverDump;   // cell hiện KHÔNG đủ đạn phá hết → dồn đạn lẻ vào, phá từ block ĐÁY
         }
 
         private readonly Barrel _right = new Barrel { Sign = 1f };
@@ -333,19 +334,21 @@ namespace Wayfu.Lamkn
                     bool sawCell = cand != null;
 
                     // NHƯỜNG ĐẠN: nòng kia đang bám cell thì phải chừa đủ đạn cho nó bắn dứt điểm cell đó.
-                    // Phần còn lại không đủ nuốt trọn cell này thì THÔI CHỐT — 2 nòng cùng bắn dở 2 cell
-                    // rồi hết đạn thì chẳng cell nào vỡ, cell dở còn chặn luôn cell phía sau.
-                    // ĐẠN thường: chỉ chặn khi nòng kia ĐANG bận (need > 0) — nó rảnh mà cũng chặn thì mấy
-                    // viên đạn cuối không nòng nào dám bắn, gun chết với đạn còn nguyên.
-                    // LASER: LUÔN đòi đủ đạn nuốt TRỌN cell mới chốt (kể cả khi nòng kia rảnh) → không bắn
-                    // lẻ 2 cell 1 lúc; thiếu đạn thì thà không chốt còn hơn để lại cell dở chặn cột.
+                    // Không đủ đạn nuốt TRỌN cell này thì:
+                    //  • Nòng kia ĐANG bận (reserved>0): THÔI CHỐT — chừa đạn cho nó, tránh 2 nòng cùng bắn
+                    //    lẻ 2 cell rồi chẳng cell nào vỡ (áp dụng cả đạn lẫn laser).
+                    //  • Nòng kia RẢNH (reserved==0): VẪN chốt và dồn nốt số đạn LẺ còn lại vào cell gần nhất
+                    //    (vd còn 1 mà cell 3 block thì bắn 1 vào đó) — bắn dở còn hơn gun chết với đạn thừa.
                     int reserved = NeedOf(other);
-                    bool requireFull = _fire.Mode == GunFireMode.Laser || reserved > 0;
-                    if (cand != null && requireFull && cand.Available > Data.CountBullet - reserved) cand = null;
+                    if (cand != null && reserved > 0 && cand.Available > Data.CountBullet - reserved) cand = null;
 
                     // CHỐT CLAIM (atomic): nòng khác cùng frame vừa giật mất cell → TryClaim thất bại → bỏ,
                     // frame sau chọn cell khác. Nhờ vậy 2 gun không bao giờ cùng đổ đạn 1 cell.
                     if (cand != null && !cand.TryClaim(b)) cand = null;
+
+                    // Cell còn nhiều block hơn số đạn còn lại (chỉ xảy ra khi nòng kia rảnh, reserved==0) →
+                    // đây là ĐẠN LẺ: dồn vào cell nhưng phá từ block ĐÁY (xem Fire/LaserHit).
+                    b.LeftoverDump = cand != null && cand.Available > Data.CountBullet - reserved;
 
                     b.Target = cand;
                     b.TargetGen = cand != null ? cand.Generation : 0;
@@ -427,6 +430,7 @@ namespace Wayfu.Lamkn
             b.MultiSide = false;
             b.BeamHold = 0f; // gun tái dùng: không treo tia laser của lượt trước
             b.LaserInterval = 0f;
+            b.LeftoverDump = false;
         }
 
         /// <summary>
@@ -487,10 +491,18 @@ namespace Wayfu.Lamkn
                 ? Mathf.Min(b.Target.Available, Data.CountBullet)
                 : 1;
 
-            // Block bị phá từ TRÊN xuống (xem BlockCell.HitOnce) → viên đầu nhắm block trên cùng, viên sau
-            // lùi dần xuống. Chốt 'top' trước vòng lặp: ReserveHit không đổi StackCount nên nó đứng yên.
-            int top = Mathf.Max(0, b.Target.StackCount - 1);
-            for (int i = 0; i < shots; i++) FireOne(b, Mathf.Max(0, top - i));
+            if (b.LeftoverDump)
+            {
+                // ĐẠN LẺ không đủ phá hết cell → bắn vào block ĐÁY (dưới cùng lên): viên i nhắm block i.
+                for (int i = 0; i < shots; i++) FireOne(b, i);
+            }
+            else
+            {
+                // Block bị phá từ TRÊN xuống (xem BlockCell.HitOnce) → viên đầu nhắm block trên cùng, viên
+                // sau lùi dần xuống. Chốt 'top' trước vòng lặp: ReserveHit không đổi StackCount nên đứng yên.
+                int top = Mathf.Max(0, b.Target.StackCount - 1);
+                for (int i = 0; i < shots; i++) FireOne(b, Mathf.Max(0, top - i));
+            }
 
             UpdateLabel();
             if (Data.CountBullet <= 0) OnEmptied();
@@ -533,6 +545,7 @@ namespace Wayfu.Lamkn
         {
             Data.CountBullet--;
             b.Target.ReserveHit();
+            bool hitBottom = b.LeftoverDump; // đạn lẻ → phá block đáy (khớp với hướng nhắm block i)
 
             var bullet = PoolManager.Instance != null ? PoolManager.Instance.GetBullet() : null;
             Vector3 aim = b.Target.StackOffset(blockIndex);        // lệch tới block trong stack
@@ -548,10 +561,10 @@ namespace Wayfu.Lamkn
             }
 
             if (bullet != null)
-                bullet.Launch(from, b.Target, _fire.BulletSpeed, Data.Color, aim);
+                bullet.Launch(from, b.Target, _fire.BulletSpeed, Data.Color, aim, hitBottom);
             else
             {
-                b.Target.ApplyHit(); // fallback không có pool
+                if (hitBottom) b.Target.ApplyHitBottom(); else b.Target.ApplyHit(); // fallback không có pool
                 GameController.Instance?.OnBoardChanged();
             }
         }
@@ -565,7 +578,8 @@ namespace Wayfu.Lamkn
         {
             b.FiredAtTarget = true;
             Data.CountBullet--;
-            b.Target.ApplyHit(); // không ReserveHit: tia không có thời gian bay nên phá thẳng
+            // Không ReserveHit: tia không có thời gian bay nên phá thẳng. Đạn lẻ → phá block ĐÁY.
+            if (b.LeftoverDump) b.Target.ApplyHitBottom(); else b.Target.ApplyHit();
             GameController.Instance?.OnBoardChanged();
             UpdateLabel();
             if (Data.CountBullet <= 0) OnEmptied();

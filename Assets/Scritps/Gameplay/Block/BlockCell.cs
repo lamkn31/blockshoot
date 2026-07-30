@@ -242,6 +242,34 @@ namespace Wayfu.Lamkn
             if (_manager != null) _manager.OnCellCleared(this);
         }
 
+        /// <summary>Như <see cref="ApplyHit"/> nhưng phá block ĐÁY (dưới cùng) — dùng cho đạn LẺ dồn vào
+        /// cell không đủ phá hết. Các block trên tụt xuống 1 bậc để stack vẫn liền từ đáy.</summary>
+        public void ApplyHitBottom()
+        {
+            if (_pendingHits > 0) _pendingHits--;
+            HitBottomOnce();
+        }
+
+        private void HitBottomOnce()
+        {
+            if (_blocks.Count == 0) return;
+
+            var b = _blocks[0];
+            _blocks.RemoveAt(0);
+            if (b != null) b.Despawn();
+
+            // Dồn các block còn lại xuống: block ở list-index j nằm đúng độ cao j (stack liền từ đáy).
+            for (int j = 0; j < _blocks.Count; j++)
+            {
+                if (_blocks[j] == null) continue;
+                var lp = _blocks[j].transform.localPosition;
+                _blocks[j].transform.localPosition = new Vector3(lp.x, _stackSpacing * j, lp.z);
+            }
+
+            if (_blocks.Count > 0) return;
+            if (_manager != null) _manager.OnCellCleared(this);
+        }
+
         public void MoveTo(Vector3 target, float duration)
         {
             if (_moveRoutine != null) StopCoroutine(_moveRoutine);

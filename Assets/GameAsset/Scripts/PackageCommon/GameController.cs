@@ -40,6 +40,7 @@ namespace Wayfu.Lamkn
             // Chốt tổng block NGAY sau khi dựng: lúc này RemainingBlocks đang là 100%.
             _blocksAtStart = GridBlockManager.Instance != null ? GridBlockManager.Instance.RemainingBlocks : 0;
             ShowGamePlayHud();
+            Popup?.SetBlockProgress(0, _blocksAtStart); // thanh tiến trình phá block về 0/total
         }
 
         /// <summary>Gọi sau mỗi thay đổi bàn chơi (deploy gun / bắn / cột bị phá).</summary>
@@ -51,6 +52,7 @@ namespace Wayfu.Lamkn
             int destroyed = Mathf.Max(0, _blocksAtStart - left);
             GridBlockManager.Instance?.UpdateIce(destroyed);   // tan trạng thái băng của cell (cho bắn được)
             IceController.Instance?.UpdateIce(destroyed);       // countdown + xoá Ice hình khi đủ ngưỡng
+            Popup?.SetBlockProgress(destroyed, _blocksAtStart); // cập nhật thanh tiến trình phá block
             if (CheckWin()) return;
             CheckLose();
         }
@@ -105,8 +107,13 @@ namespace Wayfu.Lamkn
 
             // % block đã phá, để popup Lose cho thấy còn thiếu bao nhiêu.
             int left = GridBlockManager.Instance != null ? GridBlockManager.Instance.RemainingBlocks : 0;
-            float done = _blocksAtStart > 0 ? 1f - (float)left / _blocksAtStart : 0f;
-            Popup?.ShowLose($"LEVEL {DisplayLevel}", Retry, null, Mathf.Clamp01(done));
+            float done = Mathf.Clamp01(_blocksAtStart > 0 ? 1f - (float)left / _blocksAtStart : 0f);
+            string title = $"LEVEL {DisplayLevel}";
+
+            // Diễn bảng LÝ DO THUA ("Out of moves!") trên HUD rồi mới bật popup Lose. Không có HUD thì
+            // ShowReasonLose gọi thẳng onComplete.
+            var pc = Popup;
+            if (pc != null) pc.ShowReasonLose("Out of moves!", () => pc.ShowLose(title, Retry, null, done));
         }
 
         private void ShowGamePlayHud()

@@ -20,6 +20,10 @@ namespace Wayfu.Lamkn
         [Tooltip("Object hiển thị thanh fill khi tiến độ ĐÃ đầy (current >= max).")]
         [SerializeField] private GameObject fillRed;
 
+        [Header("Block Progress (tiến trình phá block)")]
+        [Tooltip("Slider thể hiện số block ĐÃ phá (value = đã phá, max = tổng block đầu màn).")]
+        [SerializeField] private Slider blockProgressSlider;
+
         [Header("Difficulty")]
         [Tooltip("Index 0 = Easy, 1 = Normal, 2 = Hard. Object at the matching index is enabled, others disabled.")]
         [SerializeField] private GameObject[] difficultyObjects = new GameObject[3];
@@ -138,6 +142,21 @@ namespace Wayfu.Lamkn
                 UpdateFillState(getCurrentPathCount != null ? getCurrentPathCount() : 0);
             }
             base.Show();
+        }
+
+        /// <summary>Cập nhật thanh tiến trình "block đã phá / tổng block" trên HUD gameplay.
+        /// GameController gọi lúc vào màn (0) và mỗi lần bàn chơi đổi.</summary>
+        public void SetBlockProgress(int destroyed, int total)
+        {
+            destroyed = Mathf.Clamp(destroyed, 0, Mathf.Max(0, total));
+            if (blockProgressSlider != null)
+            {
+                // Chạy theo GIÁ TRỊ THẬT (0..tổng block), value = số đã phá — không phải phân số/phần trăm.
+                blockProgressSlider.wholeNumbers = true;
+                blockProgressSlider.minValue = 0;
+                blockProgressSlider.maxValue = Mathf.Max(0, total);
+                blockProgressSlider.value = destroyed;
+            }
         }
 
         private void UpdateFillState(int current)

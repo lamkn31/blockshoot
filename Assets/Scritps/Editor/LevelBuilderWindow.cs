@@ -148,6 +148,32 @@ namespace Wayfu.Lamkn
         // Grid đang quét chọn (quét qua ≥2 grid → căn thẳng Center dọc/ngang).
         private readonly List<int> _selGrids = new List<int>();
 
+        // Spawner đang FOCUS (chọn đúng 1 cell spawner) → dim cell/queue khác. (-1 = không focus.)
+        private int _focusGi = -1, _focusFlat = -1;
+        private bool HasSpawnerFocus => _focusGi >= 0;
+        // Cell/queue thuộc spawner đang focus? (queue con dùng flat của cell cha nên cùng điều kiện.)
+        private bool IsFocusTarget(int gi, int flat) => _focusGi == gi && _focusFlat == flat;
+
+        // Xét _selCells: chọn đúng 1 cell và nó là spawner → ghi (gi,flat) focus, else (-1,-1).
+        private void ComputeSpawnerFocus()
+        {
+            _focusGi = -1; _focusFlat = -1;
+            if (_selCells.Count != 1 || _target?.Grids == null) return;
+            var (gi, flat) = _selCells[0];
+            if (gi < 0 || gi >= _target.Grids.Count) return;
+            var cells = _target.Grids[gi]?.Cells;
+            if (cells == null || flat < 0 || flat >= cells.Count) return;
+            var c = cells[flat];
+            if (c != null && c.Type.IsSpawner()) { _focusGi = gi; _focusFlat = flat; }
+        }
+
+        // Làm mờ màu khi đang focus spawner và ô này KHÔNG thuộc spawner đó.
+        private Color DimIfUnfocused(Color col, int gi, int flat)
+        {
+            if (HasSpawnerFocus && !IsFocusTarget(gi, flat)) col.a *= 0.2f;
+            return col;
+        }
+
         private bool IsCellSelected(int gi, int flat) => _selCells.Contains((gi, flat));
 
         private void SelectGun(int si, int gi) { _selSlot = si; _selGun = gi; _selCells.Clear(); ClearQueueSel(); }
@@ -785,6 +811,9 @@ namespace Wayfu.Lamkn
                 _hitCells.Clear();
                 _hitQueue.Clear();
 
+                // Focus spawner: chọn ĐÚNG 1 cell spawner → làm MỜ mọi cell/queue KHÁC cho nổi nhóm của nó.
+                ComputeSpawnerFocus();
+
                 // Grid active trỏ ra ngoài danh sách (vừa xoá grid) → về -1, không thì khóa sạch mọi grid.
                 if (_activeGrid >= _target.Grids.Count) _activeGrid = -1;
 
@@ -845,6 +874,7 @@ namespace Wayfu.Lamkn
                             bool isSpawner = cell.Type.IsSpawner();
                             var cellCol = GlobalConfigManager.ColorOf(cell.Color);
                             if (!editable) cellCol.a *= 0.22f; // grid bị khóa → làm MỜ HẲN để nổi grid active
+                            cellCol = DimIfUnfocused(cellCol, gi, flatIdx); // focus spawner → mờ cell khác
                             FillRect(cellRect, cellCol);
                             // Cell KHÔNG bắn được: gạch chéo X + viền đen để phân biệt.
                             if (!cell.Shootable)
@@ -862,7 +892,7 @@ namespace Wayfu.Lamkn
                             }
                             // Viền vàng = cell đang chọn; viền cam = cell Spawner (còn hàng đợi phía sau).
                             if (IsCellSelected(gi, flatIdx)) DrawOutline(cellRect, Color.yellow, area);
-                            else if (isSpawner) DrawOutline(cellRect, SpawnerCol, area);
+                            else if (isSpawner) DrawOutline(cellRect, DimIfUnfocused(SpawnerCol, gi, flatIdx), area);
                             // Số block trong stack (giống nhãn số đạn của gun).
                             if (sz >= 10f && area.Contains(bp))
                                 GUI.Label(new Rect(bp.x - sz / 2, bp.y - sz / 2, sz, sz), cell.BlockStackCt.ToString(), blockLbl);
@@ -1789,6 +1819,9 @@ namespace Wayfu.Lamkn
             int slots = _paintColor != TypeColor.None ? qn + 1 : qn; // slot dư = ô "+"
             if (slots == 0) return;
 
+            // Click vào cell SPAWNER (cha) → highlight TẤT CẢ queue con của nó cho dễ nhìn nhóm.
+            bool parentSelected = IsCellSelected(gi, flatIdx);
+
             float step = Mathf.Max(0.3f, (grid.BlockWidth + grid.Spacing) * 0.75f);
             for (int qi = 0; qi < slots; qi++)
             {
@@ -1803,11 +1836,13 @@ namespace Wayfu.Lamkn
                     var q = cell.Queue[qi];
                     var col = GlobalConfigManager.ColorOf(q != null ? q.Color : TypeColor.None);
                     col.a = 0.5f; // mờ = block chưa nhả ra, phân biệt với cell thật
+                    col = DimIfUnfocused(col, gi, flatIdx); // focus spawner → mờ queue của spawner khác
                     var ir = RectIntersect(qr, area);
                     if (ir.width > 0f && ir.height > 0f) EditorGUI.DrawRect(ir, col);
-                    DrawOutline(qr, IsQueueSelected(gi, flatIdx, qi) ? Color.yellow : SpawnerCol, area);
+                    bool hi = parentSelected || IsQueueSelected(gi, flatIdx, qi);
+                    DrawOutline(qr, hi ? Color.yellow : DimIfUnfocused(SpawnerCol, gi, flatIdx), area);
                 }
-                else DrawOutline(qr, new Color(1f, 0.6f, 0.1f, 0.5f), area); // ô "+" rỗng
+                else DrawOutline(qr, DimIfUnfocused(new Color(1f, 0.6f, 0.1f, 0.5f), gi, flatIdx), area); // ô "+" rỗng
 
                 _hitQueue.Add((qr, gi, flatIdx, qi));
             }

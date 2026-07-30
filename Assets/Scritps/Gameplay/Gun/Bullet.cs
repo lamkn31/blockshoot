@@ -18,6 +18,7 @@ namespace Wayfu.Lamkn
         private Renderer _renderer;
         private TrailRenderer _trail;
         private Vector3 _aimOffset; // lệch so với TÂM cell → nhắm đúng 1 block trong stack (bắn loạt)
+        private bool _hitBottom;    // đạn LẺ dồn vào cell không đủ phá → phá block ĐÁY thay vì đỉnh
 
         public void OnInitializedInPool(Pooler<Bullet> pool) => _pool = pool;
 
@@ -44,10 +45,11 @@ namespace Wayfu.Lamkn
         /// <param name="aimOffset">Lệch so với tâm cell — bắn loạt thì mỗi viên nhắm 1 block trong stack.
         /// Là OFFSET chứ không phải điểm world: cell còn trượt lúc dồn hàng, đạn phải bám theo cell.</param>
         public void Launch(Vector3 start, BlockCell target, float speed, TypeColor color,
-                           Vector3 aimOffset = default)
+                           Vector3 aimOffset = default, bool hitBottom = false)
         {
             transform.position = start;
             _aimOffset = aimOffset;
+            _hitBottom = hitBottom;
 
             // Bullet là item POOLED: TrailRenderer giữ nguyên các điểm của lượt bắn TRƯỚC khi object bị
             // tắt/bật lại. Pool bật đạn ở vị trí cũ (chỗ block vừa bị phá) rồi Launch mới teleport nó về
@@ -79,7 +81,7 @@ namespace Wayfu.Lamkn
             if ((transform.position - target).sqrMagnitude <= HitDist * HitDist)
             {
                 _active = false;
-                _cell.ApplyHit(); // trừ 1 block + huỷ pending
+                if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
                 Despawn();
             }
