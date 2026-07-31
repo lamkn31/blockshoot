@@ -12,7 +12,7 @@ namespace Wayfu.Lamkn
     /// </summary>
     public class LevelBuilderWindow : EditorWindow
     {
-        private enum ListOp { None, MoveUp, MoveDown, Duplicate, Delete }
+        private enum ListOp { None, MoveUp, MoveDown, Duplicate, DuplicateFlipX, DuplicateFlipY, Delete }
 
         private const string FolderPrefKey = "Wayfu.LevelTool.Folder";
         private const float Pad = 24f;
@@ -61,6 +61,8 @@ namespace Wayfu.Lamkn
 
         // Kéo.
         private int _dragWaypoint = -1;
+        private Vector3 _dragWaypointMouseStart;
+        private readonly List<Vector3> _dragWaypointStarts = new List<Vector3>();
         private int _dragGrid = -1, _dragHandle = -1; // handle: 0=Center, 1=Left tip, 2=Right tip
         private Vector3 _dragGridStart;               // Center lúc bắt đầu kéo — để giữ Shift khóa trục
         private bool _recomputeGridSides;             // đặt khi tạo/di chuyển grid → cuối OnGUI tự tính lại Side
@@ -945,7 +947,7 @@ namespace Wayfu.Lamkn
                                 // SpawnerLine: hướng nhả do NGƯỜI DÙNG đặt (kéo xoay), kể cả trên Rect/Spline
                                 // vốn auto-hướng. Còn lại: Rect/Spline auto theo grid, Arc đọc data.
                                 bool autoDir = grid.CellAngleFromShape && cell.Type != BlockCellType.SpawnerLine;
-                                float baseAng = autoDir ? grid.DefaultCellAngle(r, e) : cell.SpawnerDirectionAngleZ;
+                                float baseAng = autoDir ? grid.DefaultCellAngle(r, e) : cell.SpawnerDirectionAngleZ + grid.CellDirectionOffset;
                                 if (cell.Type == BlockCellType.Spawner8)
                                 {
                                     // Spawner8: 8 mũi tên ngắn toả đều — nhả ra mọi ô trống, không có 1 hướng để kéo.
@@ -1808,7 +1810,7 @@ namespace Wayfu.Lamkn
             // đường. Spawner thường/Spawner8: xếp về phía SAU (hàng sâu hơn) như cũ.
             Vector3 back;
             if (cell.Type == BlockCellType.SpawnerLine)
-                back = Quaternion.Euler(0f, cell.SpawnerDirectionAngleZ, 0f) * Vector3.forward;
+                back = Quaternion.Euler(0f, cell.SpawnerDirectionAngleZ + grid.CellDirectionOffset, 0f) * Vector3.forward;
             else
                 back = grid.CellPosAt(r + 1, e, count) - wp;
             back.y = 0f;
@@ -2079,19 +2081,30 @@ namespace Wayfu.Lamkn
                     : sel ? new Color(1f, 0.6f, 0.1f, 0.95f) : new Color(1, 1, 1, 0.85f));
                 EditorGUIUtility.AddCursorRect(hrect, MouseCursor.MoveArrow);
                 _hitWaypoints.Add((hrect, i)); // để marquee quét chọn
-                if (e.type == EventType.MouseDown && e.button == 0 && !e.alt && hrect.Contains(e.mousePosition)) { _dragWaypoint = i; e.Use(); }
+                if (e.type == EventType.MouseDown && e.button == 0 && !e.alt && hrect.Contains(e.mousePosition))
+                {
+                    if (!_selWaypoints.Contains(i)) { _selWaypoints.Clear(); _selWaypoints.Add(i); }
+                    _dragWaypoint = i;
+                    _dragWaypointMouseStart = InverseV(e.mousePosition);
+                    _dragWaypointStarts.Clear();
+                    for (int j = 0; j < wp.arraySize; j++) _dragWaypointStarts.Add(wp.GetArrayElementAtIndex(j).vector3Value);
+                    e.Use();
+                }
             }
             if (_dragWaypoint >= 0 && _dragWaypoint < wp.arraySize)
             {
                 if (e.type == EventType.MouseDrag)
                 {
-                    Vector3 nw = InverseV(e.mousePosition);
-                    var prop = wp.GetArrayElementAtIndex(_dragWaypoint);
-                    Vector3 old = prop.vector3Value;
-                    prop.vector3Value = new Vector3(nw.x, old.y, nw.z);
+                    Vector3 delta = InverseV(e.mousePosition) - _dragWaypointMouseStart;
+                    foreach (int index in _selWaypoints)
+                    {
+                        if (index < 0 || index >= wp.arraySize || index >= _dragWaypointStarts.Count) continue;
+                        Vector3 start = _dragWaypointStarts[index];
+                        wp.GetArrayElementAtIndex(index).vector3Value = new Vector3(start.x + delta.x, start.y, start.z + delta.z);
+                    }
                     e.Use(); Repaint();
                 }
-                else if (e.type == EventType.MouseUp) { _dragWaypoint = -1; e.Use(); }
+                else if (e.type == EventType.MouseUp) { _dragWaypoint = -1; _dragWaypointStarts.Clear(); e.Use(); }
             }
         }
 
@@ -2931,7 +2944,7 @@ namespace Wayfu.Lamkn
                     "Bấm lại để bỏ (cho sửa mọi grid)."), EditorStyles.miniButton, GUILayout.Width(24));
                 GUI.backgroundColor = bg;
                 if (nowActive != wasActive) _activeGrid = nowActive ? i : -1;
-                var o = MiniButtons(i, grids.arraySize);
+                var o = GridMiniButtons(i);
                 if (o != ListOp.None) { pend = i; op = o; }
                 EditorGUILayout.EndHorizontal();
                 if (!openGrid) { EditorGUILayout.EndVertical(); continue; }
@@ -2969,6 +2982,12 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Rotation"),
                     new GUIContent("Rotation (Y°)", "Xoay cả grid quanh trục Y. Kéo handle XANH LÁ trong khung giữa."));
                 EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(grid.FindPropertyRelative("CellDirectionOffset"),
+                    new GUIContent("Cell Direction Offset", "Góc cộng thêm cho hướng của tất cả cell trong grid."));
+                if (GUILayout.Button(new GUIContent("Flip X", "Đảo nội dung cell trái/phải trong grid."), GUILayout.Width(58))) FlipGrid(grid, true);
+                if (GUILayout.Button(new GUIContent("Flip Y", "Đảo nội dung cell trên/dưới trong grid."), GUILayout.Width(58))) FlipGrid(grid, false);
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("BaseRadius"),
                     new GUIContent(isRect ? "Dist Row 0" : isSpline ? "Lệch Row 0" : "Base Radius",
                         isSpline ? "Khoảng cách từ đường spline tới hàng 0, theo pháp tuyến." : null));
@@ -2999,12 +3018,100 @@ namespace Wayfu.Lamkn
                 DrawRefillQueue(grid, i);
                 EditorGUILayout.EndVertical();
             }
-            if (pend >= 0) ApplyOp(grids, pend, op);
+            if (pend >= 0)
+            {
+                if (op == ListOp.Duplicate) DuplicateGrid(grids, pend);
+                else if (op == ListOp.DuplicateFlipX) DuplicateGrid(grids, pend, true);
+                else if (op == ListOp.DuplicateFlipY) DuplicateGrid(grids, pend, false);
+                else ApplyOp(grids, pend, op);
+            }
         }
 
         #endregion
 
         #region Grid ops
+
+        // Thêm bản sao vào CUỐI danh sách; bản sao bắt đầu tại gốc world để dễ bố trí lại.
+        private static void DuplicateGrid(SerializedProperty grids, int sourceIndex, bool? flipX = null)
+        {
+            if (sourceIndex < 0 || sourceIndex >= grids.arraySize) return;
+
+            // Insert tại source sẽ clone đúng grid đó. Sau đó đưa bản clone xuống CUỐI danh sách,
+            // thay vì chèn vào giữa và làm đổi index các grid đang có.
+            grids.InsertArrayElementAtIndex(sourceIndex);
+            int copyIndex = grids.arraySize - 1;
+            grids.MoveArrayElement(sourceIndex, copyIndex);
+
+            var copy = grids.GetArrayElementAtIndex(copyIndex);
+            var center = copy.FindPropertyRelative("Center");
+            // Bản sao bắt đầu từ gốc để người dùng đặt lại chính xác trong Level Tool.
+            center.vector3Value = Vector3.zero;
+            if (flipX.HasValue) FlipGrid(copy, flipX.Value);
+        }
+
+        // Lật NỘI DUNG cell tại chỗ: màu/type/stack/queue đổi sang ô đối xứng, còn hình và vị trí grid giữ nguyên.
+        private static void FlipGrid(SerializedProperty grid, bool flipX)
+        {
+            int rows = Mathf.Max(1, grid.FindPropertyRelative("Rows").intValue);
+            var cells = grid.FindPropertyRelative("Cells");
+            if (!TryGetCellRows(cells, rows, out int[] rowStart, out int[] rowCount)) return;
+
+            if (flipX)
+            {
+                // Mirror trái/phải trong từng hàng.
+                for (int row = 0; row < rows; row++) ReverseCellRange(cells, rowStart[row], rowCount[row]);
+            }
+            else
+            {
+                // Mirror trên/dưới: đảo toàn bộ rồi đảo trái/phải từng hàng để giữ nguyên thứ tự cột.
+                for (int row = 0; row < rows; row++)
+                    if (rowCount[row] != rowCount[rows - 1 - row]) return; // hàng không đối xứng thì không thể map 1:1.
+                ReverseCellRange(cells, 0, cells.arraySize);
+                for (int row = 0; row < rows; row++) ReverseCellRange(cells, rowStart[row], rowCount[row]);
+            }
+
+            float offset = grid.FindPropertyRelative("CellDirectionOffset").floatValue;
+            for (int i = 0; i < cells.arraySize; i++)
+            {
+                var angle = cells.GetArrayElementAtIndex(i).FindPropertyRelative("SpawnerDirectionAngleZ");
+                float finalAngle = angle.floatValue + offset;
+                angle.floatValue = Mathf.Repeat((flipX ? -finalAngle : 180f - finalAngle) - offset, 360f);
+            }
+
+            // Cell data mang tọa độ grid cũ; đồng bộ lại theo vị trí mới sau khi đổi chỗ.
+            for (int row = 0, i = 0; row < rows; row++)
+            {
+                for (int col = 0; col < rowCount[row]; col++, i++)
+                {
+                    var cell = cells.GetArrayElementAtIndex(i);
+                    cell.FindPropertyRelative("BlockCol").intValue = col;
+                    cell.FindPropertyRelative("SpawnerDepth").intValue = row;
+                }
+            }
+        }
+
+        private static void ReverseCellRange(SerializedProperty cells, int start, int length)
+        {
+            for (int i = 1; i < length; i++) cells.MoveArrayElement(start + i, start);
+        }
+
+        // Cells được lưu theo từng hàng liên tiếp. Đọc trực tiếp SpawnerDepth để hỗ trợ cả Rect lẫn Spline.
+        private static bool TryGetCellRows(SerializedProperty cells, int rows, out int[] starts, out int[] counts)
+        {
+            starts = new int[rows]; counts = new int[rows];
+            int index = 0;
+            for (int row = 0; row < rows; row++)
+            {
+                starts[row] = index;
+                while (index < cells.arraySize &&
+                       cells.GetArrayElementAtIndex(index).FindPropertyRelative("SpawnerDepth").intValue == row)
+                {
+                    counts[row]++; index++;
+                }
+                if (counts[row] == 0) return false;
+            }
+            return index == cells.arraySize;
+        }
 
         // Đường uốn lượn mà Spline grid bám theo. Waypoint là toạ độ LOCAL so với Center + Rotation.
         private void DrawSplineSection(SerializedProperty grid, int gridIndex)
@@ -3272,7 +3379,8 @@ namespace Wayfu.Lamkn
                     // BlockCellData → không set thì cả grid vừa Generate lại thành "không bắn được".
                     c.FindPropertyRelative("Shootable").boolValue = true;
                     // Hướng dồn: Rect = mọi cell chung 1 hướng của grid; Arc = từng cell về tâm.
-                    c.FindPropertyRelative("SpawnerDirectionAngleZ").floatValue = grid.DefaultCellAngle(r, el);
+                    c.FindPropertyRelative("SpawnerDirectionAngleZ").floatValue =
+                        Mathf.Repeat(grid.DefaultCellAngle(r, el) - grid.CellDirectionOffset, 360f);
                 }
             }
         }
@@ -3404,6 +3512,16 @@ namespace Wayfu.Lamkn
             if (GUILayout.Button("⧉", BtnW)) op = ListOp.Duplicate;
             if (GUILayout.Button("✕", BtnW)) op = ListOp.Delete;
             return op;
+        }
+
+        // Grid không cần sort bằng nút: thay ↑/↓ bằng thao tác tạo nhanh bản sao đã lật.
+        private ListOp GridMiniButtons(int index)
+        {
+            if (GUILayout.Button(new GUIContent("⧉X", "Duplicate grid và Flip X."), GUILayout.Width(28))) return ListOp.DuplicateFlipX;
+            if (GUILayout.Button(new GUIContent("⧉Y", "Duplicate grid và Flip Y."), GUILayout.Width(28))) return ListOp.DuplicateFlipY;
+            if (GUILayout.Button("⧉", BtnW)) return ListOp.Duplicate;
+            if (GUILayout.Button("✕", BtnW)) return ListOp.Delete;
+            return ListOp.None;
         }
 
         private void ApplyOp(SerializedProperty list, int i, ListOp op)

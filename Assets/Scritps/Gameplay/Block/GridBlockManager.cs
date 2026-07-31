@@ -138,12 +138,12 @@ namespace Wayfu.Lamkn
                         var srcObj = new SpawnerSource
                         {
                             Row = r, Col = e, Queue = q,
-                            DirAngle = cellData.SpawnerDirectionAngleZ,
+                            DirAngle = cellData.SpawnerDirectionAngleZ + grid.CellDirectionOffset,
                             EightWay = eight,
                             Line = line,
                             Reach = cellData.SpawnerReach,
                         };
-                        if (line) LineStep(grid, cellData.SpawnerDirectionAngleZ, out srcObj.StepRow, out srcObj.StepCol);
+                        if (line) LineStep(grid, srcObj.DirAngle, out srcObj.StepRow, out srcObj.StepCol);
                         gr.Sources.Add(srcObj);
                     }
                     gr.Rows.Add(row);
@@ -193,7 +193,7 @@ namespace Wayfu.Lamkn
                 // Rect không phụ thuộc row/e, nhưng Spline thì MỖI cell 1 pháp tuyến → phải truyền đúng
                 // ô của nó (SpawnerDepth = row, BlockCol = index trong hàng).
                 ? gr.Data.DefaultCellAngle(data.SpawnerDepth, data.BlockCol)
-                : data.SpawnerDirectionAngleZ;
+                : data.SpawnerDirectionAngleZ + gr.Data.CellDirectionOffset;
 
         public void Clear()
         {
@@ -1112,7 +1112,7 @@ namespace Wayfu.Lamkn
                 BlockStackCt = head.BlockStackCt,
                 BlockCol = c,
                 SpawnerDepth = r,
-                SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(r, c),
+                SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(r, c) - gr.Data.CellDirectionOffset,
             };
             var row = gr.Rows[r];
             var cell = CreateCell(gr, $"Cell_spawn_r{r}_e{c}", spawnPos, data);
@@ -1208,7 +1208,7 @@ namespace Wayfu.Lamkn
                 BlockStackCt = p.BlockStackCt,
                 BlockCol = col,
                 SpawnerDepth = row,
-                SpawnerDirectionAngleZ = dirAngle,
+                SpawnerDirectionAngleZ = dirAngle - gr.Data.CellDirectionOffset,
             };
             var row_ = gr.Rows[row];
             var cell = CreateCell(gr, $"Cell_spawn_r{row}_e{col}", spawnPos, data);
@@ -1245,7 +1245,7 @@ namespace Wayfu.Lamkn
                     BlockStackCt = p.BlockStackCt,
                     BlockCol = e,
                     SpawnerDepth = rowIndex,
-                    SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(rowIndex, e),
+                    SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(rowIndex, e) - gr.Data.CellDirectionOffset,
                 };
 
                 row[e] = CreateCell(gr, $"Cell_refill_r{rowIndex}_e{e}", spawnPos, data);
