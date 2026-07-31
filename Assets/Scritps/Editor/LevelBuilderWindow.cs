@@ -2984,8 +2984,10 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("CellDirectionOffset"),
                     new GUIContent("Cell Direction Offset", "Góc cộng thêm cho hướng của tất cả cell trong grid."));
-                if (GUILayout.Button(new GUIContent("Flip X", "Đảo nội dung cell trái/phải trong grid."), GUILayout.Width(58))) FlipGrid(grid, true);
-                if (GUILayout.Button(new GUIContent("Flip Y", "Đảo nội dung cell trên/dưới trong grid."), GUILayout.Width(58))) FlipGrid(grid, false);
+                if (GUILayout.Button(new GUIContent("Flip X", "Đảo đối xứng trái/phải cả shape và cell."), GUILayout.Width(58)))
+                { FlipGridData(i, true); GUIUtility.ExitGUI(); }
+                if (GUILayout.Button(new GUIContent("Flip Y", "Đảo đối xứng trên/dưới cả shape và cell."), GUILayout.Width(58)))
+                { FlipGridData(i, false); GUIUtility.ExitGUI(); }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("BaseRadius"),
@@ -3032,7 +3034,7 @@ namespace Wayfu.Lamkn
         #region Grid ops
 
         // Thêm bản sao vào CUỐI danh sách; bản sao bắt đầu tại gốc world để dễ bố trí lại.
-        private static void DuplicateGrid(SerializedProperty grids, int sourceIndex, bool? flipX = null)
+        private void DuplicateGrid(SerializedProperty grids, int sourceIndex, bool? flipX = null)
         {
             if (sourceIndex < 0 || sourceIndex >= grids.arraySize) return;
 
@@ -3046,7 +3048,76 @@ namespace Wayfu.Lamkn
             var center = copy.FindPropertyRelative("Center");
             // Bản sao bắt đầu từ gốc để người dùng đặt lại chính xác trong Level Tool.
             center.vector3Value = Vector3.zero;
-            if (flipX.HasValue) FlipGrid(copy, flipX.Value);
+            if (flipX.HasValue)
+            {
+                _so.ApplyModifiedProperties();
+                FlipGridData(copyIndex, flipX.Value);
+                _so.Update();
+            }
+        }
+
+        private void FlipGridData(int gridIndex, bool flipX)
+        {
+            _so.ApplyModifiedProperties();
+            if (_target?.Grids == null || gridIndex < 0 || gridIndex >= _target.Grids.Count) return;
+            var grid = _target.Grids[gridIndex];
+            if (grid?.Cells == null) return;
+
+            // Không suy số cell theo Rows/Columns: level cũ có thể đã xoá cell khỏi list hoặc đổi shape.
+            // SpawnerDepth/BlockCol là mapping thực tế duy nhất còn lại để giữ các hole đúng vị trí.
+            var rows = new SortedDictionary<int, List<BlockCellData>>();
+            foreach (var cell in grid.Cells)
+            {
+                if (cell == null) continue;
+                if (!rows.TryGetValue(cell.SpawnerDepth, out var row)) rows[cell.SpawnerDepth] = row = new List<BlockCellData>();
+                row.Add(cell);
+            }
+            if (rows.Count == 0) return;
+            var rowKeys = new List<int>(rows.Keys);
+            var flipped = new List<BlockCellData>(grid.Cells.Count);
+            if (flipX)
+            {
+                foreach (int rowKey in rowKeys)
+                {
+                    var row = rows[rowKey];
+                    row.Sort((a, b) => a.BlockCol.CompareTo(b.BlockCol));
+                    for (int e = row.Count - 1; e >= 0; e--) flipped.Add(row[e]);
+                }
+            }
+            else
+            {
+                for (int r = rowKeys.Count - 1; r >= 0; r--)
+                {
+                    var row = rows[rowKeys[r]];
+                    row.Sort((a, b) => a.BlockCol.CompareTo(b.BlockCol));
+                    flipped.AddRange(row);
+                }
+            }
+
+            grid.Cells = flipped; // đổi cả những cell stack=0 (ô đã xoá) sang vị trí đối xứng.
+            int index = 0;
+            for (int row = 0; row < rowKeys.Count; row++)
+                for (int col = 0; col < rows[rowKeys[row]].Count; col++, index++)
+                {
+                    var cell = grid.Cells[index];
+                    cell.BlockCol = col;
+                    cell.SpawnerDepth = rowKeys[row];
+                    float finalAngle = cell.SpawnerDirectionAngleZ + grid.CellDirectionOffset;
+                    cell.SpawnerDirectionAngleZ = Mathf.Repeat((flipX ? -finalAngle : 180f - finalAngle) - grid.CellDirectionOffset, 360f);
+                }
+
+            // Spline cũng phải mirror để hình grid (và các hole) đối xứng, không chỉ đổi màu.
+            if (grid.Shape == BlockGridShape.Spline && grid.SplineWaypoints != null)
+                for (int i = 0; i < grid.SplineWaypoints.Count; i++)
+                {
+                    var p = grid.SplineWaypoints[i];
+                    if (flipX) p.x = -p.x; else p.z = -p.z;
+                    grid.SplineWaypoints[i] = p;
+                }
+
+            EditorUtility.SetDirty(_target);
+            _liveDirty = true;
+            _so.Update();
         }
 
         // Lật NỘI DUNG cell tại chỗ: màu/type/stack/queue đổi sang ô đối xứng, còn hình và vị trí grid giữ nguyên.
