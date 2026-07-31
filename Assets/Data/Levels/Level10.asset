@@ -95,10 +95,10 @@ MonoBehaviour:
   HoleCapacity: 3
   Grids:
   - Shape: 1
-    Side: 1
+    Side: 2
     Center: {x: -0.47182977, y: 0, z: -0.7510147}
     Rotation: 179.40944
-    CellDirectionOffset: 0
+    CellDirectionOffset: 180
     BaseRadius: 0
     Columns: 19
     RowSpacing: 1
@@ -3653,7 +3653,7 @@ MonoBehaviour:
     Side: 2
     Center: {x: 0.06758219, y: 0, z: -26.475626}
     Rotation: 0
-    CellDirectionOffset: 0
+    CellDirectionOffset: 90
     BaseRadius: 0
     Columns: 18
     RowSpacing: 1
