@@ -24,6 +24,7 @@ namespace Wayfu.Lamkn
             public Queue<PendingBlockData> Queue;
             public float DirAngle;
             public bool EightWay; // Spawner8: nhả vào ô trống ở 8 ô quanh ô gốc
+            public Spawner8Directions EightDirections;
             public bool Line;     // SpawnerLine: nhả theo 1 đường (StepRow,StepCol) tới Reach ô
             public int Reach;     // SpawnerLine: số ô tối đa (0 = tới mép grid)
             public int StepRow, StepCol; // SpawnerLine: bước đi 1 ô theo hướng nhả
@@ -140,6 +141,9 @@ namespace Wayfu.Lamkn
                             Row = r, Col = e, Queue = q,
                             DirAngle = cellData.SpawnerDirectionAngleZ + grid.CellDirectionOffset,
                             EightWay = eight,
+                            // Asset cũ chưa có field này deserialize về None → giữ tương thích như Spawner8 8 hướng.
+                            EightDirections = cellData.Spawner8Directions == Spawner8Directions.None
+                                ? Spawner8Directions.All : cellData.Spawner8Directions,
                             Line = line,
                             Reach = cellData.SpawnerReach,
                         };
@@ -1126,6 +1130,7 @@ namespace Wayfu.Lamkn
                 for (int k = 0; k < EightNeighbors.GetLength(0) && src.Queue.Count > 0; k++)
                 {
                     int dr = EightNeighbors[k, 0], dc = EightNeighbors[k, 1];
+                    if ((src.EightDirections & Spawner8DirectionFor(k)) == 0) continue;
                     // A one-direction grid never expands a Spawner8 sideways or
                     // backwards: only its three forward neighbours are valid.
                     if (!gr.Data.Collapse2D && dr != -1) continue;
@@ -1146,6 +1151,21 @@ namespace Wayfu.Lamkn
                 if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
             }
             return fed;
+        }
+
+        private static Spawner8Directions Spawner8DirectionFor(int neighborIndex)
+        {
+            switch (neighborIndex)
+            {
+                case 0: return Spawner8Directions.Front;
+                case 1: return Spawner8Directions.Back;
+                case 2: return Spawner8Directions.Left;
+                case 3: return Spawner8Directions.Right;
+                case 4: return Spawner8Directions.FrontLeft;
+                case 5: return Spawner8Directions.FrontRight;
+                case 6: return Spawner8Directions.BackLeft;
+                default: return Spawner8Directions.BackRight;
+            }
         }
 
         // Nhả màu ĐẦU Queue (màu ô gốc đang hiển thị) ra ô (r,c): dựng cell ở ô gốc rồi trượt sang, và

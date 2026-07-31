@@ -96,6 +96,14 @@ namespace Wayfu.Lamkn
     /// </summary>
     public enum BlockCellType { Normal, Spawner, Spawner8, SpawnerLine }
 
+    [Flags]
+    public enum Spawner8Directions
+    {
+        None = 0, Front = 1, Back = 2, Left = 4, Right = 8,
+        FrontLeft = 16, FrontRight = 32, BackLeft = 64, BackRight = 128,
+        All = Front | Back | Left | Right | FrontLeft | FrontRight | BackLeft | BackRight
+    }
+
     public static class BlockCellTypeExt
     {
         /// <summary>Cell có hàng đợi nhả thêm không (gom mọi loại spawner) — mọi chỗ xử lý "cell có Queue"
@@ -636,6 +644,8 @@ namespace Wayfu.Lamkn
         public BlockCellType Type = BlockCellType.Normal;
         [Tooltip("CHỈ dùng cho SpawnerLine: số ô tối đa nhả ra dọc theo hướng, tính từ ô gốc (0 = không giới hạn).")]
         [Min(0)] public int SpawnerReach = 0;
+        [Tooltip("CHỈ dùng cho Spawner8: các hướng được phép nhả cell.")]
+        public Spawner8Directions Spawner8Directions = Spawner8Directions.All;
         [Tooltip("CHỈ dùng cho Spawner/Spawner8/SpawnerLine: các cell PHÍA SAU, đẩy ra lần lượt khi có ô trống để nhả.")]
         public List<PendingBlockData> Queue = new List<PendingBlockData>();
         [Tooltip("Hướng dồn/spawn của cell trên sàn ngang XZ, tính bằng độ quanh trục Y (0° = +Z).")]

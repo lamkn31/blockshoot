@@ -954,6 +954,7 @@ namespace Wayfu.Lamkn
                                     Handles.color = SpawnerCol;
                                     for (int k = 0; k < 8; k++)
                                     {
+                                        if ((cell.Spawner8Directions & (Spawner8Directions)(1 << k)) == 0) continue;
                                         Vector3 v8 = Quaternion.Euler(0f, baseAng + k * 45f, 0f) * Vector3.forward;
                                         Vector3 tip8 = wp + v8 * 0.6f;
                                         if (!Front(tip8)) continue;
@@ -2526,6 +2527,9 @@ namespace Wayfu.Lamkn
                         ? "Số ô TỐI ĐA lan ra mỗi hướng (Chebyshev) từ ô gốc (0 = tới mép grid)."
                         : "Số ô tối đa nhả ra dọc theo hướng mũi tên (0 = tới mép grid)."));
             // SpawnerLine: nhập chính xác hướng nhả (hoặc kéo mũi tên trong khung giữa).
+            if (cellType == BlockCellType.Spawner8)
+                EditorGUILayout.PropertyField(c.FindPropertyRelative("Spawner8Directions"),
+                    new GUIContent("Spawn Directions", "Choose the directions this Spawner8 may spawn into."));
             if (cellType == BlockCellType.SpawnerLine)
                 EditorGUILayout.PropertyField(c.FindPropertyRelative("SpawnerDirectionAngleZ"),
                     new GUIContent("Hướng nhả (°)", "Góc quanh Y: 0=+Z, 90=+X, 180=−Z, 270=−X. Hoặc kéo đầu mũi tên."));

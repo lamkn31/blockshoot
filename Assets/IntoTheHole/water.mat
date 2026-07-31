@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: water
+  m_Shader: {fileID: -6465566751694194690, guid: afbd5254a1c406e438c2efb00d534848,
+    type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: _Caustic_Edge_Color
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Caustic_Edge_Texture:
+        m_Texture: {fileID: 2800000, guid: 681603fc226cfc747a2bbc2b23e9da45, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Caustic_Texture:
+        m_Texture: {fileID: 2800000, guid: 3082451d3bfbca848b4dc105d0778979, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_1926223d95894b81a4a16bced106ad24_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: dfaef3f68bd0bec4fac217999b5b34e4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_5debf05c49744343a655e11dc5092d65_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 681603fc226cfc747a2bbc2b23e9da45, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_6f4e622ccc214c6ebf8e831518ce32b0_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 42dcc7e4f53027f4f87d7115534d69fa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_76fd7890824f45c2ae1d4c03cdbb9a3a_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 3082451d3bfbca848b4dc105d0778979, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_8315e5652fd74a589940ac841e216e72_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: bf2f87980f0be694dbfa1ebda2e16d36, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_e462cb7f6c374baeb0b734d0a04907be_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 3082451d3bfbca848b4dc105d0778979, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _edge_alpha:
+        m_Texture: {fileID: 2800000, guid: dfaef3f68bd0bec4fac217999b5b34e4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Caustic_Alpha: 0.459
+    - _Caustic_Blur: 2
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Water_Alpha: 0.415
+    - _caustic_random: 0.5
+    m_Colors:
+    - _Caustic_Color: {r: 0.5707547, g: 0.9957969, b: 1, a: 0}
+    - _Caustic_Color_1: {r: 0, g: 0.4847312, b: 1, a: 0}
+    - _Caustic_Color_2: {r: 0.6745283, g: 0.9711973, b: 1, a: 0}
+    - _Caustic_Edge_Color: {r: 0.514151, g: 0.9762287, b: 1, a: 0}
+    - _Caustic_Edge_Speed: {r: -0.2, g: 0, b: 0, a: 0}
+    - _Caustic_Speed: {r: -0.1, g: 0.1, b: 0, a: 0}
+    - _Caustic_Speed_2: {r: -0.3, g: 0.4, b: 0, a: 0}
+    - _Edge_Speed: {r: -0.2, g: 0, b: 0, a: 0}
+    - _Water_Center_Color: {r: 0.15312386, g: 0.19265357, b: 0.8773585, a: 0}
+    - _Water_Color: {r: 0.09803921, g: 0.72965527, b: 1, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &2489318993705090563
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
+--- !u!114 &4055918883533598746
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
