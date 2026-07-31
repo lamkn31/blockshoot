@@ -2982,8 +2982,11 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Rotation"),
                     new GUIContent("Rotation (Y°)", "Xoay cả grid quanh trục Y. Kéo handle XANH LÁ trong khung giữa."));
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(grid.FindPropertyRelative("CellDirectionOffset"),
+                var directionOffset = grid.FindPropertyRelative("CellDirectionOffset");
+                EditorGUILayout.PropertyField(directionOffset,
                     new GUIContent("Cell Direction Offset", "Góc cộng thêm cho hướng của tất cả cell trong grid."));
+                if (GUILayout.Button(new GUIContent("Reverse 180°", "Đảo đồng loạt hướng dồn và mũi tên của tất cả cell sang phía đối diện."), GUILayout.Width(92)))
+                    directionOffset.floatValue = Mathf.Repeat(directionOffset.floatValue + 180f, 360f);
                 if (GUILayout.Button(new GUIContent("Flip X", "Đảo đối xứng trái/phải cả shape và cell."), GUILayout.Width(58)))
                 { FlipGridData(i, true); GUIUtility.ExitGUI(); }
                 if (GUILayout.Button(new GUIContent("Flip Y", "Đảo đối xứng trên/dưới cả shape và cell."), GUILayout.Width(58)))

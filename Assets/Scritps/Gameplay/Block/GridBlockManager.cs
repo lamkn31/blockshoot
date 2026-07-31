@@ -189,11 +189,9 @@ namespace Wayfu.Lamkn
         /// mỗi cell 1 góc, và người dùng kéo mũi tên chỉnh tay được.
         /// </summary>
         private static float CellAngle(GridRuntime gr, BlockCellData data) =>
-            gr.Data.CellAngleFromShape
-                // Rect không phụ thuộc row/e, nhưng Spline thì MỖI cell 1 pháp tuyến → phải truyền đúng
-                // ô của nó (SpawnerDepth = row, BlockCol = index trong hàng).
-                ? gr.Data.DefaultCellAngle(data.SpawnerDepth, data.BlockCol)
-                : data.SpawnerDirectionAngleZ + gr.Data.CellDirectionOffset;
+            // Hướng custom của từng cell là nguồn duy nhất. Generate Cells đã ghi hướng mặc định
+            // vào data, nên Rect/Spline vẫn giữ hướng cũ nếu người dùng chưa chỉnh.
+            data.SpawnerDirectionAngleZ + gr.Data.CellDirectionOffset;
 
         public void Clear()
         {
@@ -206,6 +204,8 @@ namespace Wayfu.Lamkn
         // Mặc định cũ: cell (r,e) bắn được khi MỌI cell chặn nó ở hàng trước đã bị phá. Row 0 luôn bắn được.
         private static bool IsShootableLegacy(GridRuntime gr, int r, int e)
         {
+            if (ReverseGridDirection(gr))
+                return ExposedAlongRows(gr, r, e, +1); // offset 180° → mặt sau/hàng cuối là mặt bắn
             if (r <= 0) return true;
             var prev = gr.Rows[r - 1];
             BlockGridData.FrontIndices(gr.Rows[r].Length, prev.Length, e, out int a, out int b);
@@ -756,6 +756,7 @@ namespace Wayfu.Lamkn
         // để dồn lên (vd index 1 của hàng 5 dồn được lên index 0 hoặc 1 của hàng 4); 2 ô ngoài cùng khớp 1:1.
         private bool AdvanceOnce(GridRuntime gr)
         {
+            if (ReverseGridDirection(gr)) return AdvanceBackwardOnce(gr);
             bool moved = false;
             for (int r = 1; r < gr.Rows.Count; r++)
             {
@@ -789,14 +790,67 @@ namespace Wayfu.Lamkn
             return moved;
         }
 
+        // Dồn về hàng cuối khi toàn grid bị đảo 180°. Tìm mọi ô hàng sau nhận được từ ô hiện tại,
+        // vì Arc/Spline có thể số cell mỗi hàng khác nhau.
+        private bool AdvanceBackwardOnce(GridRuntime gr)
+        {
+            bool moved = false;
+            for (int r = gr.Rows.Count - 2; r >= 0; r--)
+            {
+                var cur = gr.Rows[r]; var next = gr.Rows[r + 1];
+                for (int e = 0; e < cur.Length; e++)
+                {
+                    var cell = cur[e];
+                    if (cell == null || cell.Indestructible) continue;
+                    int slot = -1;
+                    for (int n = 0; n < next.Length; n++)
+                    {
+                        BlockGridData.FrontIndices(next.Length, cur.Length, n, out int a, out int b);
+                        if ((a == e || b == e) && CanEnter(gr, r + 1, n, next)) { slot = n; break; }
+                    }
+                    if (slot < 0) continue;
+                    next[slot] = cell; cur[e] = null; cell.SetColumn(slot);
+                    cell.MoveTo(gr.Data.CellPosAt(r + 1, slot, next.Length), _collapseDuration);
+                    moved = true;
+                }
+            }
+            return moved;
+        }
+
         // Dồn 2 chiều về GÓC (hàng 0, index 0) với ƯU TIÊN TUYỆT ĐỐI: VÉT CẠN dồn DỌC toàn grid trước, rồi
         // mới NGANG. Trả về ngay sau hướng đầu tiên còn dồn được → guard-loop lặp lại sẽ tiếp tục dọc cho tới
         // hết mới sang ngang. KHÔNG dồn CHÉO — chéo là việc của riêng Spawner8 (nhả 8 hướng trong Reach).
         private bool AdvanceCorner2D(GridRuntime gr)
         {
-            if (AdvanceDir(gr, 1, 0)) return true; // 1. DỌC: kéo từ ô ngay trên (r+1, e)
-            if (AdvanceDir(gr, 0, 1)) return true; // 2. NGANG: kéo từ ô bên phải (r, e+1)
+            int dr = ReverseGridDirection(gr) ? -1 : 1;
+            if (AdvanceDir(gr, dr, 0)) return true; // 1. DỌC
+            int dc = HorizontalCollapseStep(gr);
+            if (AdvanceDir(gr, 0, dc)) return true; // 2. NGANG: ưu tiên hướng mũi tên của cell
             return false;
+        }
+
+        private static bool ReverseGridDirection(GridRuntime gr)
+        {
+            float offset = Mathf.Repeat(gr.Data.CellDirectionOffset, 360f);
+            return offset > 90f && offset < 270f;
+        }
+
+        // dc=+1: ô bên phải kéo sang trái (hướng mặc định); dc=-1: ô bên trái kéo sang phải.
+        private static int HorizontalCollapseStep(GridRuntime gr)
+        {
+            Vector3 right = Vector3.Cross(Vector3.up, gr.Data.Forward).normalized;
+            int score = 0;
+            foreach (var row in gr.Rows)
+                foreach (var cell in row)
+                {
+                    if (cell == null || cell.Indestructible) continue;
+                    float dot = Vector3.Dot(cell.transform.forward, right);
+                    if (dot > 0.5f) score++;
+                    else if (dot < -0.5f) score--;
+                }
+            if (score > 0) return -1; // cell quay phải → dồn sang phải
+            if (score < 0) return 1;  // cell quay trái → dồn sang trái
+            return 1;
         }
 
         // 1 lượt kéo lấp theo 1 hướng (dr,dc): mỗi ô trống kéo cell từ ô nguồn (r+dr, e+dc) vào.
