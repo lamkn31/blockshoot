@@ -138,12 +138,12 @@ namespace Wayfu.Lamkn
                         var srcObj = new SpawnerSource
                         {
                             Row = r, Col = e, Queue = q,
-                            DirAngle = cellData.SpawnerDirectionAngleZ,
+                            DirAngle = cellData.SpawnerDirectionAngleZ + grid.CellDirectionOffset,
                             EightWay = eight,
                             Line = line,
                             Reach = cellData.SpawnerReach,
                         };
-                        if (line) LineStep(grid, cellData.SpawnerDirectionAngleZ, out srcObj.StepRow, out srcObj.StepCol);
+                        if (line) LineStep(grid, srcObj.DirAngle, out srcObj.StepRow, out srcObj.StepCol);
                         gr.Sources.Add(srcObj);
                     }
                     gr.Rows.Add(row);
@@ -193,7 +193,7 @@ namespace Wayfu.Lamkn
                 // Rect không phụ thuộc row/e, nhưng Spline thì MỖI cell 1 pháp tuyến → phải truyền đúng
                 // ô của nó (SpawnerDepth = row, BlockCol = index trong hàng).
                 ? gr.Data.DefaultCellAngle(data.SpawnerDepth, data.BlockCol)
-                : data.SpawnerDirectionAngleZ;
+                : data.SpawnerDirectionAngleZ + gr.Data.CellDirectionOffset;
 
         public void Clear()
         {
@@ -240,17 +240,33 @@ namespace Wayfu.Lamkn
             if (cell != null && cell.Indestructible) return false;
 
             var edges = gr.Data.ShootableEdges;
-            if (edges == GridEdges.None) return IsShootableLegacy(gr, r, e);
+            if (edges == GridEdges.None)
+            {
+                Vector3 legacyCellPos = cell != null ? cell.transform.position : gr.Data.CellPos(r, e);
+                Vector3 legacyToGun = from - legacyCellPos; legacyToGun.y = 0f;
+                // Cell hướng vào phía trong grid.  Với Arc/Spline, hướng này khác
+                // nhau ở từng ô; dùng Grid.Forward chung sẽ đảo/sai mặt của các ô
+                // nằm ở đoạn cong và làm chúng không bao giờ được chọn.
+                Vector3 legacyFwd = cell != null ? cell.transform.forward : -gr.Data.Forward;
+                legacyFwd.y = 0f;
+                legacyFwd = legacyFwd.sqrMagnitude < 1e-6f ? Vector3.forward : legacyFwd.normalized;
+                // transform.forward là chiều cell trượt RA PATH, nên cũng chính là
+                // pháp tuyến của mặt trước mà gun phải đứng ở phía ngoài.
+                return Vector3.Dot(legacyToGun, legacyFwd) > 0f && IsShootableLegacy(gr, r, e);
+            }
 
             Vector3 cellPos = cell != null ? cell.transform.position : gr.Data.CellPos(r, e);
-            Vector3 fwd = gr.Data.Forward; fwd.y = 0f;
+            // Cùng lý do: mặt Front/Back của spline/arc phải theo hướng cell,
+            // không phải một hướng cố định của toàn grid.
+            Vector3 fwd = cell != null ? cell.transform.forward : -gr.Data.Forward;
+            fwd.y = 0f;
             fwd = fwd.sqrMagnitude < 1e-6f ? Vector3.forward : fwd.normalized;
             Vector3 rgt = Vector3.Cross(Vector3.up, fwd);   // local +X trên sàn
             Vector3 toGun = from - cellPos; toGun.y = 0f;   // hướng từ cell ra gun
 
             // Lộ ra ở cạnh đang bật VÀ gun nằm về phía NGOÀI cạnh đó (dot với pháp tuyến ngoài > 0).
-            if ((edges & GridEdges.Front) != 0 && ExposedAlongRows(gr, r, e, -1) && Vector3.Dot(toGun, -fwd) > 0f) return true;
-            if ((edges & GridEdges.Back)  != 0 && ExposedAlongRows(gr, r, e, +1) && Vector3.Dot(toGun,  fwd) > 0f) return true;
+            if ((edges & GridEdges.Front) != 0 && ExposedAlongRows(gr, r, e, -1) && Vector3.Dot(toGun,  fwd) > 0f) return true;
+            if ((edges & GridEdges.Back)  != 0 && ExposedAlongRows(gr, r, e, +1) && Vector3.Dot(toGun, -fwd) > 0f) return true;
             if ((edges & GridEdges.Left)  != 0 && ExposedAlongRow(gr, r, e, -1) && Vector3.Dot(toGun, -rgt) > 0f) return true;
             if ((edges & GridEdges.Right) != 0 && ExposedAlongRow(gr, r, e, +1) && Vector3.Dot(toGun,  rgt) > 0f) return true;
             return false;
@@ -261,12 +277,13 @@ namespace Wayfu.Lamkn
         // hợp cả grid cột lệch (Arc-ArcLength) lẫn cột thẳng (Rect/Uniform).
         private static bool ExposedAlongRows(GridRuntime gr, int r, int e, int dir)
         {
-            for (int rr = r + dir; rr >= 0 && rr < gr.Rows.Count; rr += dir)
-            {
-                int idx = Mathf.Min(e, gr.Rows[rr].Length - 1);
-                if (idx >= 0 && gr.Rows[rr][idx] != null) return false;
-            }
-            return true;
+            int rr = r + dir;
+            if (rr < 0 || rr >= gr.Rows.Count) return true;
+            int idx = Mathf.Min(e, gr.Rows[rr].Length - 1);
+            // A blank adjacent row separates two independent collapse segments.
+            // Do not let cells from an older segment farther along the same column
+            // keep this segment hidden.
+            return idx < 0 || gr.Rows[rr][idx] == null;
         }
 
         // Lộ ra theo HÀNG (Left/Right): mọi cell giữa (r,e) và mép hàng đã trống chưa.
@@ -335,7 +352,9 @@ namespace Wayfu.Lamkn
                 // Khi đã khớp bên thì KHÔNG kiểm tra sườn hình học nữa (nó lật dấu khi path cong / grid chếch).
                 var gside = gr.Data.Side;
                 bool sideLocked = gside != GridSide.Any;
-                if (sideLocked && (gside == GridSide.Right) != (sideSign > 0f)) continue;
+                // Grid.Side is authoring metadata only.  The real barrel is
+                // determined below from the cell's position against the current
+                // path tangent; that remains correct on curved/reversed paths.
 
                 for (int r = 0; r < gr.Rows.Count; r++)
                 {
@@ -361,8 +380,14 @@ namespace Wayfu.Lamkn
                         // không bắn giật lùi vào grid đã đi qua.
                         if (hasDir && sqr > 1e-6f)
                         {
-                            if (!sideLocked && Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
-                            if (Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
+                            // Path tangent chooses the barrel side at this exact point:
+                            // right/left is measured from the current A -> B path direction.
+                            if (Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
+                            // A grid assigned to a barrel side is already gated by
+                            // IsShootableFromGun's exposed physical face. Let that
+                            // barrel shoot cells directly beside the path as well;
+                            // the forward fan only applies to unassigned grids.
+                            if (!sideLocked && Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
                         }
                         // NearestCell: gần nhất thắng. FrontRowFirst: cell có Depth GỐC nhỏ thắng trước
                         // (cell sinh ở hàng 0 = Depth 0, chưa bị bắn), cùng Depth mới xét gần nhất. Dùng
@@ -569,13 +594,32 @@ namespace Wayfu.Lamkn
                 bool moved = false, fed = false;
 
                 // Cấp 1
-                moved |= gr.Data.Collapse2D ? AdvanceCorner2D(gr) : AdvanceOnce(gr);
+                // Move each contiguous normal-cell segment by exactly one step.
+                // Do not repeat this pass: separated segments must not jump across
+                // their gap and merge in the same collapse event.
+                moved = gr.Data.Collapse2D ? AdvanceCorner2D(gr) : AdvanceOnce(gr);
+                if (moved)
+                {
+                    // A regular spawner that just moved leaves its source cell
+                    // empty. Refill it in this same pass so even its final queued
+                    // block appears at that old spawner position without a gap.
+                    FeedRegular(gr);
+                    // The same rule applies to a SpawnerLine: if its first cell
+                    // on the configured line just moved, advance the conveyor and
+                    // emit from the source in this same collapse pass.
+                    FeedLineFrontGaps(gr);
+                    FeedLine(gr, verticalPass: true);
+                    FeedLine(gr, verticalPass: false);
+                    break;
+                }
                 fed |= FeedRegular(gr) | TryRefill(gr);
                 // Cấp 2 — SpawnerLine (dọc trước, ngang sau).
                 fed |= FeedLine(gr, verticalPass: true) | FeedLine(gr, verticalPass: false);
                 // Cấp 3 — Spawner8.
                 fed |= FeedEightWayAll(gr);
-                moved |= CascadeTowardSpawners(gr);
+                // One-dimensional grids may receive Spawner8 output, but their
+                // existing cells must never be pulled sideways or diagonally.
+                if (gr.Data.Collapse2D) moved |= CascadeTowardSpawners(gr);
 
                 if (!moved && !fed) break;
             }
@@ -658,6 +702,10 @@ namespace Wayfu.Lamkn
                 }
                 else if (src.EightWay)
                 {
+                    // One-direction grids only let Spawner8 feed toward the
+                    // path: forward, forward-left and forward-right.
+                    if (!gr.Data.Collapse2D
+                        && (r != src.Row - 1 || Mathf.Abs(c - src.Col) > 1)) continue;
                     d = Mathf.Max(Mathf.Abs(src.Row - r), Mathf.Abs(src.Col - c));
                     if (d < 1 || (src.Reach > 0 && d > src.Reach)) continue;
                     kind = FillOwner.Eight;
@@ -723,8 +771,11 @@ namespace Wayfu.Lamkn
                     // Lỗ do designer xoá KHÔNG phải chỗ trống để dồn vào — grid 3x3 xoá ô (0,0) thì cột 0
                     // dừng ở hàng 1, không bao giờ lấp kín hàng 0.
                     int slot = -1;
-                    if (CanEnter(gr, r - 1, a, prev) && GravityMayFill(gr, r - 1, a)) slot = a;
-                    else if (CanEnter(gr, r - 1, b, prev) && GravityMayFill(gr, r - 1, b)) slot = b;
+                    // Existing grid cells always get first right to collapse into a
+                    // directly adjacent vacancy.  Spawner ownership applies only
+                    // when the sources refill after this normal collapse settles.
+                    if (CanEnter(gr, r - 1, a, prev)) slot = a;
+                    else if (CanEnter(gr, r - 1, b, prev)) slot = b;
                     if (slot < 0) continue; // ô trước còn cell / là lỗ → bị chặn, chưa dồn được
 
                     prev[slot] = cell;
@@ -872,11 +923,21 @@ namespace Wayfu.Lamkn
                 var src = gr.Sources[i];
                 if (src.EightWay || src.Line) continue;
                 if (src.Row >= gr.Rows.Count || src.Col >= gr.Rows[src.Row].Length || src.Queue.Count == 0)
-                { gr.Sources.RemoveAt(i); continue; }
+                { ReleaseExhaustedSpawnerCell(gr, src); gr.Sources.RemoveAt(i); continue; }
                 int len = gr.Rows[src.Row].Length;
                 if (gr.Rows[src.Row][src.Col] == null)
-                    fed |= SpawnFromQueue(gr, src.Queue, src.Row, src.Col,
-                                          gr.Data.CellPosAt(src.Row + 1, src.Col, len), src.DirAngle);
+                {
+                    bool spawned = SpawnFromQueue(gr, src.Queue, src.Row, src.Col,
+                                                   gr.Data.CellPosAt(src.Row, src.Col, len), src.DirAngle);
+                    fed |= spawned;
+                    // The last emitted block is normal, so release the source
+                    // marker in this same collapse pass rather than leaving a gap.
+                    if (src.Queue.Count == 0)
+                    {
+                        ReleaseExhaustedSpawnerCell(gr, src);
+                        gr.Sources.RemoveAt(i);
+                    }
+                }
             }
             return fed;
         }
@@ -897,6 +958,36 @@ namespace Wayfu.Lamkn
         // được nhả bù từ queue (màu hiện tại trước). Quét từ XA về GẦN nên mỗi cell chỉ nhích 1 ô/lượt →
         // qua guard-loop thành 1 băng chuyền chạy dần. Tối đa Reach ô (0 = tới mép grid).
         // verticalPass: true = nguồn DỌC (StepCol==0); false = NGANG/chéo (StepCol!=0).
+        // A line source also participates in the grid's normal forward collapse.
+        // Its configured line may be diagonal, but when the directly-front cell
+        // opens, the source must immediately emit into that gap rather than leave
+        // it empty waiting for a diagonal line position to open.
+        private bool FeedLineFrontGaps(GridRuntime gr)
+        {
+            bool fed = false;
+            for (int i = gr.Sources.Count - 1; i >= 0; i--)
+            {
+                var src = gr.Sources[i];
+                if (!src.Line) continue;
+                if (src.Row < 0 || src.Row >= gr.Rows.Count || src.Col < 0
+                    || src.Col >= gr.Rows[src.Row].Length || src.Queue.Count == 0)
+                { RemoveStaticSource(gr, i); continue; }
+
+                int frontRow = src.Row - 1;
+                if (frontRow < 0 || src.Col >= gr.Rows[frontRow].Length) continue;
+                if (!CanEnter(gr, frontRow, src.Col, gr.Rows[frontRow])) continue;
+
+                Vector3 origin = gr.Data.CellPosAt(src.Row, src.Col, gr.Rows[src.Row].Length);
+                if (EmitHead(gr, src, frontRow, src.Col, origin))
+                {
+                    fed = true;
+                    UpdateStaticSourceDisplay(gr, src);
+                    if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
+                }
+            }
+            return fed;
+        }
+
         private bool FeedLine(GridRuntime gr, bool verticalPass)
         {
             bool changed = false;
@@ -981,6 +1072,9 @@ namespace Wayfu.Lamkn
                 for (int k = 0; k < EightNeighbors.GetLength(0) && src.Queue.Count > 0; k++)
                 {
                     int dr = EightNeighbors[k, 0], dc = EightNeighbors[k, 1];
+                    // A one-direction grid never expands a Spawner8 sideways or
+                    // backwards: only its three forward neighbours are valid.
+                    if (!gr.Data.Collapse2D && dr != -1) continue;
                     int t = dr != 0 && dc != 0 ? 2 : dc == 0 ? 0 : 1; // dọc / ngang / chéo
                     if (t != tier) continue;                          // lượt này chỉ 1 tier hướng
 
@@ -1018,7 +1112,7 @@ namespace Wayfu.Lamkn
                 BlockStackCt = head.BlockStackCt,
                 BlockCol = c,
                 SpawnerDepth = r,
-                SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(r, c),
+                SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(r, c) - gr.Data.CellDirectionOffset,
             };
             var row = gr.Rows[r];
             var cell = CreateCell(gr, $"Cell_spawn_r{r}_e{c}", spawnPos, data);
@@ -1035,6 +1129,7 @@ namespace Wayfu.Lamkn
             if (src.Queue.Count == 0)
             {
                 if (cell != null) { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
+                ReleaseExhaustedSpawnerCell(gr, src);
                 return;
             }
             if (cell == null) return;
@@ -1062,7 +1157,19 @@ namespace Wayfu.Lamkn
                 var cell = gr.Rows[src.Row][src.Col];
                 if (cell != null && cell.Indestructible) { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
             }
+            ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
+        }
+
+        // Once a source is empty, an interior source cell becomes a normal grid
+        // cell.  Keeping the marker would make CanEnter reject every collapse
+        // into that position forever.  The final row remains reserved because no
+        // normal cell exists behind it to feed the vacancy.
+        private static void ReleaseExhaustedSpawnerCell(GridRuntime gr, SpawnerSource src)
+        {
+            if (src.Row < 0 || src.Row >= gr.Rows.Count - 1 || src.Col < 0
+                || src.Col >= gr.SpawnerCells[src.Row].Length) return;
+            gr.SpawnerCells[src.Row][src.Col] = false;
         }
 
         // Cột kề của Spawner8: vòng KÍN thì nối vòng (cột cuối kề cột 0); vòng hở thì tràn mép = không có ô.
@@ -1101,7 +1208,7 @@ namespace Wayfu.Lamkn
                 BlockStackCt = p.BlockStackCt,
                 BlockCol = col,
                 SpawnerDepth = row,
-                SpawnerDirectionAngleZ = dirAngle,
+                SpawnerDirectionAngleZ = dirAngle - gr.Data.CellDirectionOffset,
             };
             var row_ = gr.Rows[row];
             var cell = CreateCell(gr, $"Cell_spawn_r{row}_e{col}", spawnPos, data);
@@ -1138,7 +1245,7 @@ namespace Wayfu.Lamkn
                     BlockStackCt = p.BlockStackCt,
                     BlockCol = e,
                     SpawnerDepth = rowIndex,
-                    SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(rowIndex, e),
+                    SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(rowIndex, e) - gr.Data.CellDirectionOffset,
                 };
 
                 row[e] = CreateCell(gr, $"Cell_refill_r{rowIndex}_e{e}", spawnPos, data);

@@ -177,6 +177,8 @@ namespace Wayfu.Lamkn
         public Vector3 Center;
         [Tooltip("Xoay cả grid quanh trục Y (độ). 0 = grid mở/sâu dần về +Z.")]
         public float Rotation;
+        [Tooltip("Góc cộng thêm cho hướng của mọi cell trong grid (độ).")]
+        public float CellDirectionOffset;
         [Tooltip("Arc: bán kính hàng đầu. Rect: khoảng cách từ Center tới hàng đầu (row 0, gần path).")]
         public float BaseRadius = 3f;
         [Tooltip("CHỈ dùng cho Rect: số cell mỗi hàng (mọi hàng bằng nhau → cột thẳng).")]
@@ -267,7 +269,8 @@ namespace Wayfu.Lamkn
             else if (Shape == BlockGridShape.Spline) v = SplineInward(row, e);
             else v = Center - CellPos(row, e); // Arc: hướng về tâm vốn đã vuông góc với cung
             v.y = 0f;
-            return v.sqrMagnitude > 1e-6f ? Mathf.Repeat(Mathf.Atan2(v.x, v.z) * Mathf.Rad2Deg, 360f) : 0f;
+            float angle = v.sqrMagnitude > 1e-6f ? Mathf.Atan2(v.x, v.z) * Mathf.Rad2Deg : 0f;
+            return Mathf.Repeat(angle + CellDirectionOffset, 360f);
         }
 
         /// <summary>

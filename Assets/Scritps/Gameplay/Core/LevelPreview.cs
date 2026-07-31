@@ -85,7 +85,7 @@ namespace Wayfu.Lamkn
                             Gizmos.color = Color.white;
                             Vector3 dirV = grid.CellAngleFromShape
                                 ? Quaternion.Euler(0f, grid.DefaultCellAngle(r, e), 0f) * Vector3.forward
-                                : cell.DirectionVector;
+                                : Quaternion.Euler(0f, cell.SpawnerDirectionAngleZ + grid.CellDirectionOffset, 0f) * Vector3.forward;
                             Gizmos.DrawLine(pos, pos + dirV * 0.55f);
                         }
                     }

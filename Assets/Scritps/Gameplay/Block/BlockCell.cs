@@ -127,6 +127,14 @@ namespace Wayfu.Lamkn
         /// (xem Bullet.Update) chứ không nhắm vào 1 điểm chết trong không gian.
         /// </summary>
         public Vector3 StackOffset(int i) => Vector3.up * _stackSpacing * Mathf.Max(0, i);
+
+        /// <summary>Offset của block thấp nhất còn tồn tại, kể cả khi stack không dồn xuống.</summary>
+        public Vector3 BottomBlockOffset()
+        {
+            for (int i = 0; i < _blocks.Count; i++)
+                if (_blocks[i] != null) return _blocks[i].transform.position - transform.position;
+            return Vector3.zero;
+        }
         /// <summary>Số block chưa bị đạn "đặt chỗ" (đạn đang bay) — gun chỉ bắn khi còn &gt; 0.</summary>
         public int Available => _blocks.Count - _pendingHits;
         public bool IsEmpty => _blocks.Count == 0;
@@ -231,13 +239,27 @@ namespace Wayfu.Lamkn
 
         private void HitOnce()
         {
+            // Every caller follows the same order: bottom block first.
+            HitBottomOnce();
+        }
+
+        /// <summary>Như <see cref="ApplyHit"/> nhưng phá block ĐÁY (dưới cùng) — dùng cho đạn LẺ dồn vào
+        /// cell không đủ phá hết. Các block trên tụt xuống 1 bậc để stack vẫn liền từ đáy.</summary>
+        public void ApplyHitBottom()
+        {
+            if (_pendingHits > 0) _pendingHits--;
+            HitBottomOnce();
+        }
+
+        private void HitBottomOnce()
+        {
             if (_blocks.Count == 0) return;
 
-            int last = _blocks.Count - 1;
-            var b = _blocks[last];
-            _blocks.RemoveAt(last);
-            if (b != null) b.Despawn(); // trả block về pool
+            var b = _blocks[0];
+            _blocks.RemoveAt(0);
+            if (b != null) b.Despawn();
 
+            // Dồn các block còn lại xuống: block ở list-index j nằm đúng độ cao j (stack liền từ đáy).
             if (_blocks.Count > 0) return;
             if (_manager != null) _manager.OnCellCleared(this);
         }
@@ -246,7 +268,8 @@ namespace Wayfu.Lamkn
         {
             if (_moveRoutine != null) StopCoroutine(_moveRoutine);
             SettleStamp = Time.time; // cell vừa SẬP/dời chỗ ở thời điểm này (gun dùng để xếp ưu tiên sau)
-            if (!gameObject.activeInHierarchy || duration <= 0f)
+            if (!gameObject.activeInHierarchy || duration <= 0f
+                || (transform.position - target).sqrMagnitude <= 1e-6f)
             {
                 transform.position = target;
                 PendingEntry = false; // tới nơi ngay → cho ngắm

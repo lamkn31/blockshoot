@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Water
+  m_Shader: {fileID: 4800000, guid: 496813c63e059944390734d47dacbae9, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BubbleMap:
+        m_Texture: {fileID: 2800000, guid: e353ba5139701984eb861f236503f339, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: a81552df3f6dff349aa566236fc1df5b, type: 3}
+        m_Scale: {x: 0.3, y: 0.3}
+        m_Offset: {x: -0.2, y: -0.1}
+    - _NormalWater:
+        m_Texture: {fileID: 2800000, guid: b5b5857d1d704024eb9bef9259eb217d, type: 3}
+        m_Scale: {x: 0.3, y: 0.3}
+        m_Offset: {x: 0.5, y: 0.3}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BubbleAlpha: 0.8
+    - _BubbleCapFade: 0.01
+    - _BubbleDrift: 0
+    - _BubbleDriftSpeed: 0.56
+    - _BubbleSize: 1.65
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Contrast: 0.25
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _Distortion: 0
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EdgeAlpha: 0.92
+    - _EdgeBubbleSpeed: 0.47
+    - _EdgeBubbleStrength: 1
+    - _EdgeBubbleTiling: 25
+    - _EdgeFade: 1
+    - _EdgeInset: 0
+    - _EdgeSoftness: 0.001
+    - _EdgeWaveAmount: 0.015
+    - _EdgeWaveFrequency: 1
+    - _EdgeWaveSpeed: 3
+    - _EdgeWidth: 0.15
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _PathClosed: 0
+    - _PathLength: 1
+    - _PathWidth: 1
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Base: {r: 0.011764707, g: 0.43529415, b: 0.7294118, a: 1}
+    - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _DetailSpeed: {r: -0.035, g: 0.025, b: 0, a: 0}
+    - _EdgeColor: {r: 0.14901961, g: 0.72156864, b: 0.91372555, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Highlight: {r: 0.18039216, g: 0.7607844, b: 0.9294118, a: 1}
+    - _NoiseSpeed: {r: 0.06, g: 0.015, b: 0, a: 0}
+    - _Shadow: {r: 0.007843138, g: 0.427451, b: 0.73333335, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []

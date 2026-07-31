@@ -103,7 +103,7 @@ MonoBehaviour:
   HoleCapacity: 3
   Grids:
   - Shape: 1
-    Side: 1
+    Side: 2
     Center: {x: -5.206492, y: 0, z: -15.096527}
     Rotation: 90.51881
     BaseRadius: 0.31375948
