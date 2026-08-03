@@ -91,7 +91,7 @@ Material:
     - _Caustic_Speed2: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _Caustic_Speed_2: {r: -0.3, g: 0.4, b: 0, a: 0}
     - _Edge_Speed: {r: -0.2, g: 0, b: 0, a: 0}
-    - _Water_Center_Color: {r: 0.10980392, g: 0.5529412, b: 1, a: 0}
+    - _Water_Center_Color: {r: 0.24056602, g: 0.6186103, b: 1, a: 0}
     - _Water_Color: {r: 0.09803921, g: 0.72965527, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2489318993705090563
