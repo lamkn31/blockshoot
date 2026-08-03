@@ -25,6 +25,6 @@ MonoBehaviour:
   GunFireRange: 10
   GunFireAngle: 60
   FrontStationDistance: 0
-  BulletSpeed: 25
+  BulletSpeed: 35
   BlockStackSpacing: 1
   BlockCollapseDuration: 0.2
