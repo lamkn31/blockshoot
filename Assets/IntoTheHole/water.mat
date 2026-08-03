@@ -78,18 +78,20 @@ Material:
     - _Caustic_Blur: 2
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Water_Alpha: 0.415
+    - _Water_Alpha: 1
     - _caustic_random: 0.5
     m_Colors:
     - _Caustic_Color: {r: 0.5707547, g: 0.9957969, b: 1, a: 0}
     - _Caustic_Color_1: {r: 0, g: 0.4847312, b: 1, a: 0}
     - _Caustic_Color_2: {r: 0.6745283, g: 0.9711973, b: 1, a: 0}
     - _Caustic_Edge_Color: {r: 0.514151, g: 0.9762287, b: 1, a: 0}
-    - _Caustic_Edge_Speed: {r: -0.2, g: 0, b: 0, a: 0}
-    - _Caustic_Speed: {r: -0.1, g: 0.1, b: 0, a: 0}
+    - _Caustic_Edge_Speed: {r: 0.8, g: 0, b: 0, a: 0}
+    - _Caustic_Scale: {r: 1, g: 1, b: 0, a: 0}
+    - _Caustic_Speed: {r: 0.5, g: 0.1, b: 0, a: 0}
+    - _Caustic_Speed2: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _Caustic_Speed_2: {r: -0.3, g: 0.4, b: 0, a: 0}
     - _Edge_Speed: {r: -0.2, g: 0, b: 0, a: 0}
-    - _Water_Center_Color: {r: 0.15312386, g: 0.19265357, b: 0.8773585, a: 0}
+    - _Water_Center_Color: {r: 0.10980392, g: 0.5529412, b: 1, a: 0}
     - _Water_Color: {r: 0.09803921, g: 0.72965527, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2489318993705090563
