@@ -42,7 +42,7 @@ namespace Wayfu.Lamkn
         [SerializeField] private Material hiddenMaterial;
         [Tooltip("Các MeshRenderer cần tô màu theo TypeColor — kéo thả trong Inspector. Tô cho TẤT CẢ material " +
                  "slot của mỗi renderer. Bỏ trống → tự gom mọi renderer trong children (trừ TMP_Text).")]
-        [SerializeField] private MeshRenderer[] colorRenderers;
+        [SerializeField] private Renderer[] colorRenderers;
 
         [Header("Laser (chỉ dùng khi FireMode = Laser)")]
         [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]

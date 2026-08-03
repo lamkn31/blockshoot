@@ -70,9 +70,7 @@ MonoBehaviour:
   bulletLabel: {fileID: 985889518328377816}
   hiddenMaterial: {fileID: 2100000, guid: 68435d06caba6c246b1ff5de78a826f6, type: 2}
   colorRenderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4654034432380433214}
   laserMaterial: {fileID: 2100000, guid: 1255821fc076ad943979a92690b2088c, type: 2}
   laserWidth: 0.4
   laserAimHeight: 0.25
@@ -401,6 +399,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b831e322868ec8b42b73998c4577ede4, type: 3}
+--- !u!137 &4654034432380433214 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5769924648142238124, guid: b831e322868ec8b42b73998c4577ede4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8033137171392036202}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7562061435261655681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b831e322868ec8b42b73998c4577ede4,
