@@ -43,6 +43,8 @@ namespace Wayfu.Lamkn
         [Tooltip("Các MeshRenderer cần tô màu theo TypeColor — kéo thả trong Inspector. Tô cho TẤT CẢ material " +
                  "slot của mỗi renderer. Bỏ trống → tự gom mọi renderer trong children (trừ TMP_Text).")]
         [SerializeField] private Renderer[] colorRenderers;
+        [Tooltip("Các object hiển thị sẽ tắt khi gun đang chuyển vào path. Root Gun không được đưa vào đây để follower vẫn chạy.")]
+        [SerializeField] private GameObject[] entryHiddenObjects;
 
         [Header("Laser (chỉ dùng khi FireMode = Laser)")]
         [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
@@ -219,6 +221,7 @@ namespace Wayfu.Lamkn
             // Material lấy từ GlobalConfigManager theo TypeColor (không tô material.color nữa).
             // sharedMaterial chỉ thay slot 0 — 'machine' có 2 slot, slot 1 (viền/chi tiết) giữ nguyên.
             ApplyColorVisual();
+            SetHiddenDuringPathEntry(false);
 
             EnsureLabel();
             UpdateLabel();
@@ -280,6 +283,22 @@ namespace Wayfu.Lamkn
         {
             OnQueued();
             if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
+        }
+
+        public void SetHiddenDuringPathEntry(bool hidden)
+        {
+            if (entryHiddenObjects != null && entryHiddenObjects.Length > 0)
+            {
+                foreach (var obj in entryHiddenObjects)
+                    if (obj != null && obj != gameObject) obj.SetActive(!hidden);
+                return;
+            }
+
+            // Fallback cho prefab chưa gán list: chỉ tắt Renderer, tuyệt đối không tắt root
+            // Gun vì RoundedPolylineFollower nằm trong hierarchy đó.
+            var renderers = GetComponentsInChildren<Renderer>(true);
+            foreach (var renderer in renderers)
+                if (renderer != null) renderer.enabled = !hidden;
         }
 
         public void OnDeployed()

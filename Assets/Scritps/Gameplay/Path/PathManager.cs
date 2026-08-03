@@ -25,6 +25,7 @@ namespace Wayfu.Lamkn
         [Tooltip("Chỉ pipe: lấy mỗi N mẫu cong để bo góc. Giá trị lớn hơn tạo ít vertices/triangles hơn.")]
         [Min(1)] [SerializeField] private int pipeCornerSampleStep = 4;
         [Min(0f)] [SerializeField] private float waterSurfaceOffset = 0.01f;
+        [Min(0f)] [SerializeField] private float entryRevealDistance = 0.2f;
         [Header("Bọt nổi")]
         [SerializeField] private bool spawnBubbles = true;
         [SerializeField] private float bubbleSpawnInterval = 0.8f;
@@ -427,7 +428,18 @@ namespace Wayfu.Lamkn
             // MỌI gun đều vào path từ ĐIỂM ĐẦU (distance = FrontStationDistance, mặc định 0 = pos 0 của
             // path) rồi chạy tới. Khoảng cách giữa các gun do IsEntryClear() bảo đảm, không cộng offset
             // theo lượt deploy nữa.
-            gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed); // follower chạy vòng liên tục
+            gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed);
+            if (entryRevealDistance <= 0f) gun.SetHiddenDuringPathEntry(false);
+            else StartCoroutine(RevealGunAfterEntry(gun, _frontStationDistance));
+        }
+
+        private System.Collections.IEnumerator RevealGunAfterEntry(Gun gun, float startDistance)
+        {
+            if (gun == null) yield break;
+            float revealAt = startDistance + entryRevealDistance;
+            while (gun != null && gun.IsOnPath && gun.LapCount == 0 && gun.PathDistance < revealAt)
+                yield return null;
+            if (gun != null) gun.SetHiddenDuringPathEntry(false);
         }
 
         /// <summary>Điểm vào path có gun nào đứng gần hơn _minGunGap không.</summary>

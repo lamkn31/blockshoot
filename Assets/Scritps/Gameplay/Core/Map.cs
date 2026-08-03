@@ -125,6 +125,9 @@ namespace Wayfu.Lamkn
                 }
                 gun.transform.position = target;
             }
+            // Ẩn trong lúc chuyển từ Pos End tới điểm 0 của path loop; PathManager sẽ bật lại
+            // đúng lúc bắt đầu staging/deploy.
+            gun?.SetHiddenDuringPathEntry(true);
             onComplete?.Invoke();
         }
 
