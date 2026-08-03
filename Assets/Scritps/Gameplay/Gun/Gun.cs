@@ -735,6 +735,11 @@ namespace Wayfu.Lamkn
         private void Die()
         {
             _state = GunState.Dead;
+            // Gun may run out of ammo after only partially clearing a cell.  That
+            // cell remains on the board, so release both barrel claims before
+            // pooling this gun; otherwise every later gun rejects it as claimed.
+            ResetBarrel(_right);
+            ResetBarrel(_left);
             DisableBeam(_right); // tắt tia trước khi trả gun về pool (item pooled tái dùng)
             DisableBeam(_left);
             PathManager.Instance?.RemoveGun(this);
