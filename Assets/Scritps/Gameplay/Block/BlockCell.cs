@@ -257,7 +257,7 @@ namespace Wayfu.Lamkn
 
             var b = _blocks[0];
             _blocks.RemoveAt(0);
-            if (b != null) b.Despawn();
+            if (b != null) b.HitDespawn(); // trúng đạn → THU NHỎ rồi biến mất (dọn cell thì Despawn tức thì)
 
             // Dồn các block còn lại xuống: block ở list-index j nằm đúng độ cao j (stack liền từ đáy).
             if (_blocks.Count > 0) return;
