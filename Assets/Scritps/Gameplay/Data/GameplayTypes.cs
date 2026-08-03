@@ -650,6 +650,8 @@ namespace Wayfu.Lamkn
         public List<PendingBlockData> Queue = new List<PendingBlockData>();
         [Tooltip("Hướng dồn/spawn của cell trên sàn ngang XZ, tính bằng độ quanh trục Y (0° = +Z).")]
         public float SpawnerDirectionAngleZ;
+        [Tooltip("Dùng hướng riêng của cell thay vì hướng tự động theo shape của grid. SpawnerLine luôn dùng hướng riêng.")]
+        public bool UseCustomDirection;
 
         [Tooltip("Cell bị BĂNG phủ: KHÔNG bắn được cho tới khi băng tan (phá đủ block). IceController tự sinh " +
                  "khối Ice phủ vùng cell băng liền kề khi Play.")]

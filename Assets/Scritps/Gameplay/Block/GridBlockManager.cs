@@ -23,6 +23,7 @@ namespace Wayfu.Lamkn
             public int Row, Col;
             public Queue<PendingBlockData> Queue;
             public float DirAngle;
+            public bool CustomDirection;
             public bool EightWay; // Spawner8: nhả vào ô trống ở 8 ô quanh ô gốc
             public Spawner8Directions EightDirections;
             public bool Line;     // SpawnerLine: nhả theo 1 đường (StepRow,StepCol) tới Reach ô
@@ -140,6 +141,7 @@ namespace Wayfu.Lamkn
                         {
                             Row = r, Col = e, Queue = q,
                             DirAngle = cellData.SpawnerDirectionAngleZ + grid.CellDirectionOffset,
+                            CustomDirection = cellData.UseCustomDirection || line,
                             EightWay = eight,
                             // Asset cũ chưa có field này deserialize về None → giữ tương thích như Spawner8 8 hướng.
                             EightDirections = cellData.Spawner8Directions == Spawner8Directions.None
@@ -193,9 +195,12 @@ namespace Wayfu.Lamkn
         /// mỗi cell 1 góc, và người dùng kéo mũi tên chỉnh tay được.
         /// </summary>
         private static float CellAngle(GridRuntime gr, BlockCellData data) =>
-            // Hướng custom của từng cell là nguồn duy nhất. Generate Cells đã ghi hướng mặc định
-            // vào data, nên Rect/Spline vẫn giữ hướng cũ nếu người dùng chưa chỉnh.
-            data.SpawnerDirectionAngleZ + gr.Data.CellDirectionOffset;
+            // Rect/Spline luôn theo shape để các cell đồng bộ khi grid bị xoay hoặc uốn lại.
+            // Chỉ cell được đánh dấu chỉnh hướng riêng (và SpawnerLine vốn phải nhả theo mũi tên)
+            // mới đọc góc đã lưu. Arc vẫn giữ góc riêng cho mỗi cell như trước.
+            gr.Data.CellAngleFromShape && !data.UseCustomDirection && data.Type != BlockCellType.SpawnerLine
+                ? gr.Data.DefaultCellAngle(data.SpawnerDepth, data.BlockCol)
+                : data.SpawnerDirectionAngleZ + gr.Data.CellDirectionOffset;
 
         public void Clear()
         {
@@ -656,7 +661,7 @@ namespace Wayfu.Lamkn
 
                 // SpawnerLine: hướng do NGƯỜI DÙNG đặt (src.DirAngle) kể cả trên Rect/Spline auto-hướng — mũi
                 // tên phải theo đúng hướng nhả. Còn lại: Rect/Spline auto theo grid, Arc dùng góc riêng.
-                float ang = (gr.Data.CellAngleFromShape && !src.Line)
+                float ang = (gr.Data.CellAngleFromShape && !src.CustomDirection)
                     ? gr.Data.DefaultCellAngle(src.Row, src.Col) : src.DirAngle;
                 row[src.Col].ShowSpawnerIndicator(true, ang, src.EightWay);
                 any = true;

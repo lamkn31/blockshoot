@@ -946,7 +946,8 @@ namespace Wayfu.Lamkn
                                 bool isSpawner = cell.Type.IsSpawner();
                                 // SpawnerLine: hướng nhả do NGƯỜI DÙNG đặt (kéo xoay), kể cả trên Rect/Spline
                                 // vốn auto-hướng. Còn lại: Rect/Spline auto theo grid, Arc đọc data.
-                                bool autoDir = grid.CellAngleFromShape && cell.Type != BlockCellType.SpawnerLine;
+                                bool autoDir = grid.CellAngleFromShape && !cell.UseCustomDirection &&
+                                               cell.Type != BlockCellType.SpawnerLine;
                                 float baseAng = autoDir ? grid.DefaultCellAngle(r, e) : cell.SpawnerDirectionAngleZ + grid.CellDirectionOffset;
                                 if (cell.Type == BlockCellType.Spawner8)
                                 {
@@ -1992,7 +1993,9 @@ namespace Wayfu.Lamkn
                 if (v.sqrMagnitude > 1e-6f)
                 {
                     float ang = Mathf.Repeat(Mathf.Atan2(v.x, v.z) * Mathf.Rad2Deg, 360f);
-                    cells.GetArrayElementAtIndex(_dragCellIndex).FindPropertyRelative("SpawnerDirectionAngleZ").floatValue = ang;
+                    var cell = cells.GetArrayElementAtIndex(_dragCellIndex);
+                    cell.FindPropertyRelative("SpawnerDirectionAngleZ").floatValue = ang;
+                    cell.FindPropertyRelative("UseCustomDirection").boolValue = true;
                 }
                 e.Use(); Repaint();
             }
@@ -2420,6 +2423,7 @@ namespace Wayfu.Lamkn
                 var cell = cells.GetArrayElementAtIndex(ci);
                 if ((BlockCellType)cell.FindPropertyRelative("Type").enumValueIndex != BlockCellType.SpawnerLine) continue;
                 cell.FindPropertyRelative("SpawnerDirectionAngleZ").floatValue = angle;
+                cell.FindPropertyRelative("UseCustomDirection").boolValue = true;
             }
         }
 
@@ -2530,7 +2534,11 @@ namespace Wayfu.Lamkn
             if (cellType == BlockCellType.Spawner8)
                 EditorGUILayout.PropertyField(c.FindPropertyRelative("Spawner8Directions"),
                     new GUIContent("Spawn Directions", "Choose the directions this Spawner8 may spawn into."));
-            if (cellType == BlockCellType.SpawnerLine)
+            var customDirection = c.FindPropertyRelative("UseCustomDirection");
+            if (cellType != BlockCellType.SpawnerLine)
+                EditorGUILayout.PropertyField(customDirection,
+                    new GUIContent("Custom Direction", "Bật để cell này giữ hướng riêng thay vì đồng bộ theo shape của grid."));
+            if (cellType == BlockCellType.SpawnerLine || customDirection.boolValue)
                 EditorGUILayout.PropertyField(c.FindPropertyRelative("SpawnerDirectionAngleZ"),
                     new GUIContent("Hướng nhả (°)", "Góc quanh Y: 0=+Z, 90=+X, 180=−Z, 270=−X. Hoặc kéo đầu mũi tên."));
             if (cellType.IsSpawner()) DrawCellQueue(c);
