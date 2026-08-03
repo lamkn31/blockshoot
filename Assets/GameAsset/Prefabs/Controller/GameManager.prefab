@@ -275,10 +275,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d8921682dc05440a30593e46fae72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathLine: {fileID: 3237678676309291126}
-  pathMaterial: {fileID: 2100000, guid: 472ae31d65a74b345893967a425bfcf4, type: 2}
-  pathFlowMaterial: {fileID: 2100000, guid: e9e7a5861caa7f84b89d692a10e0c9ba, type: 2}
-  flowSurfaceOffset: 0.01
+  tubeModel: {fileID: 100100000, guid: d694174db209e9f438104557184ba66a, type: 3}
+  pipeMeshName: pipe
+  waterMeshName: water
+  pipeMaterial: {fileID: 2100000, guid: aafb08edd25bc144ca5aa7c78d034077, type: 2}
+  waterMaterial: {fileID: 2100000, guid: 5ec9f197fa3d6714e94fdbd409f9141c, type: 2}
+  modelRotation: {x: 0, y: 0, z: 0}
+  meshLengthScale: 1
+  waterSurfaceOffset: 0.01
   waterScrollSpeed: {x: -0.5, y: 0}
   tunnelInPrefab: {fileID: 0}
   tunnelOutPrefab: {fileID: 0}
@@ -557,7 +561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4990336699868794448
 Transform:
   m_ObjectHideFlags: 0

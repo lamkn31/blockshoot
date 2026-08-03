@@ -635,9 +635,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9095252506902563192, guid: 3e26a1cf0b592074db846574e0d6ebf7,
         type: 3}
+      propertyPath: tubeModel
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: d694174db209e9f438104557184ba66a,
+        type: 3}
+    - target: {fileID: 9095252506902563192, guid: 3e26a1cf0b592074db846574e0d6ebf7,
+        type: 3}
       propertyPath: pathMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 472ae31d65a74b345893967a425bfcf4, type: 2}
+    - target: {fileID: 9095252506902563192, guid: 3e26a1cf0b592074db846574e0d6ebf7,
+        type: 3}
+      propertyPath: pipeMeshName
+      value: pipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 9095252506902563192, guid: 3e26a1cf0b592074db846574e0d6ebf7,
+        type: 3}
+      propertyPath: meshLengthScale
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 9095252506902563192, guid: 3e26a1cf0b592074db846574e0d6ebf7,
         type: 3}
       propertyPath: pathFlowMaterial

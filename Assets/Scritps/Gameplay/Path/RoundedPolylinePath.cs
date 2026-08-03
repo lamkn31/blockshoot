@@ -20,6 +20,25 @@ public class RoundedPolylinePath : MonoBehaviour
     [HideInInspector] public float[] sampleArc;
     public float TotalLength { get; private set; }
 
+    // Path-space sampling API used by mesh bending. Keeping position and tangent on the same
+    // normalized parameter guarantees adjacent mesh tiles share the exact same seam frame.
+    public Vector3 Evaluate(float t)
+    {
+        if (samples == null || samples.Length < 2 || TotalLength <= 1e-5f) return samples != null && samples.Length > 0 ? samples[0] : Vector3.zero;
+        t = isClosed ? Mathf.Repeat(t, 1f) : Mathf.Clamp01(t);
+        if (!isClosed && t >= 1f) return samples[samples.Length - 1];
+        return GetPointAtDistance(t * TotalLength);
+    }
+
+    public Quaternion Tangent(float t)
+    {
+        const float dt = 0.0005f;
+        Vector3 a = Evaluate(t - dt), b = Evaluate(t + dt);
+        Vector3 direction = b - a;
+        if (direction.sqrMagnitude < 1e-8f) direction = Vector3.forward;
+        return Quaternion.LookRotation(direction.normalized, Vector3.up);
+    }
+
     private void Awake()
     {
         GeneratePath();

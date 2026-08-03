@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Wayfu.Lamkn
 {
     /// <summary>
-    /// Dựng đường path (RoundedPolylinePath + mặt đường LineRenderer) từ LevelData và quản lý các gun
+    /// Dựng đường path (RoundedPolylinePath + pipe/water mesh uốn theo path) từ LevelData và quản lý các gun
     /// chạy trên đó. Mọi gun vào path tại ĐIỂM ĐẦU (FrontStationDistance, mặc định 0) rồi chạy loop liên
     /// tục bằng RoundedPolylineFollower. Gun chỉ được vào khi điểm đầu còn trống ít nhất
     /// GameSettings.GunSpacing; chưa đủ thì ĐỨNG CHỜ ngay tại điểm đầu (pos 0) cho tới lượt.
@@ -12,15 +12,17 @@ namespace Wayfu.Lamkn
     /// </summary>
     public class PathManager : Singleton<PathManager>
     {
-        [Header("Mặt đường")]
-        [Tooltip("LineRenderer vẽ mặt đường — gán sẵn trên scene. Bỏ trống thì không vẽ mặt đường.")]
-        [SerializeField] private LineRenderer pathLine;
-        [Tooltip("Material mặt đường. Bỏ trống thì giữ material đang gán trên LineRenderer.")]
-        [SerializeField] private Material pathMaterial;
-        [Tooltip("Material hiệu ứng chảy phủ lên mặt đường. PathManager tự tạo một LineRenderer thứ hai dùng chung các điểm path.")]
-        [SerializeField] private Material pathFlowMaterial;
-        [Tooltip("Nâng lớp dòng chảy lên khỏi mặt nước để tránh z-fighting.")]
-        [Min(0f)] [SerializeField] private float flowSurfaceOffset = 0.01f;
+        [Header("Path mesh")]
+        [Tooltip("FBX chứa hai child MeshFilter tên pipe và water. Cả hai được bẻ theo cùng một path.")]
+        [SerializeField] private GameObject tubeModel;
+        [SerializeField] private string pipeMeshName = "pipe";
+        [SerializeField] private string waterMeshName = "water";
+        [SerializeField] private Material pipeMaterial;
+        [SerializeField] private Material waterMaterial;
+        [Tooltip("Trục dài của piece trong FBX. tube_test được author theo Z.")]
+        [SerializeField] private Vector3 modelRotation = Vector3.zero;
+        [Min(0.001f)] [SerializeField] private float meshLengthScale = 1f;
+        [Min(0f)] [SerializeField] private float waterSurfaceOffset = 0.01f;
         [Header("Bọt nổi")]
         [SerializeField] private bool spawnBubbles = true;
         [SerializeField] private float bubbleSpawnInterval = 0.8f;
@@ -54,9 +56,14 @@ namespace Wayfu.Lamkn
         private float _frontStationDistance; // điểm VÀO path của mọi gun (0 = đầu path)
         private int _maxGunOnPath = 5;
 
-        private LineRenderer _flowLine;
-        private Material _baseMaterialInstance;
-        private Material _flowMaterialInstance;
+        private Mesh _pipePathMesh;
+        private Mesh _waterPathMesh;
+        private MeshFilter _pipeFilter;
+        private MeshFilter _waterFilter;
+        private MeshRenderer _pipeRenderer;
+        private MeshRenderer _waterRenderer;
+        private Material _waterMaterialInstance;
+        private float _pathWidth;
         private Material _bubbleMaterial;
         private readonly List<Transform> _bubbles = new List<Transform>();
         private float _bubbleTimer;
@@ -82,9 +89,10 @@ namespace Wayfu.Lamkn
             _maxGunOnPath = gs != null ? gs.MaxGunOnPath : 5;
             _frontStationDistance = gs != null ? gs.FrontStationDistance : 0f;
             _minGunGap = gs != null ? Mathf.Max(0f, gs.GunSpacing) : 1.2f;
+            _pathWidth = gs != null ? Mathf.Max(0f, gs.PathWidth) : 1.5f;
 
             _path = CreatePath(level);
-            ApplyPathLine(_path);
+            ApplyPathMeshes(_path);
             SetPathWidth(gs != null ? gs.PathWidth : 1.5f); // Path Width dùng chung từ GameSettings
             SpawnTunnels(level);
         }
@@ -143,97 +151,151 @@ namespace Wayfu.Lamkn
             return path;
         }
 
-        // Đổ đường bo góc vào LineRenderer đã gán sẵn trên scene.
-        private void ApplyPathLine(RoundedPolylinePath path)
+        // Bẻ từng mesh source thành các tile dọc theo path. Pipe và water dùng cùng samples,
+        // nhưng kết quả là hai MeshRenderer nên có material/shader hoàn toàn độc lập.
+        private void ApplyPathMeshes(RoundedPolylinePath path)
         {
-            if (pathLine == null) return;
+            EnsurePathRenderers();
+            if (path == null || path.samples == null || path.samples.Length < 2 || tubeModel == null) return;
 
-            // Trục Z của LineRenderer phải chỉ LÊN vì dùng LineAlignment.TransformZ — không thì mặt đường
-            // dựng đứng. useWorldSpace nên transform chỉ ảnh hưởng hướng mặt, không ảnh hưởng toạ độ điểm.
-            pathLine.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
-            pathLine.alignment = LineAlignment.TransformZ;
-            pathLine.useWorldSpace = true;
-            pathLine.loop = false; // samples đã tự khép kín khi IsClosed → bật loop sẽ nối thừa 1 đoạn
-            pathLine.numCornerVertices = 6;
-            pathLine.numCapVertices = 6;
-            pathLine.textureMode = LineTextureMode.Tile;
-            pathLine.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            if (pathMaterial != null) pathLine.sharedMaterial = pathMaterial;
-
-            SetupWaterFlow(path);
-
-            if (path != null && path.samples != null && path.samples.Length >= 2)
+            var pipeSource = FindSourceMesh(pipeMeshName);
+            var waterSource = FindSourceMesh(waterMeshName);
+            if (pipeSource == null || waterSource == null)
             {
-                pathLine.positionCount = path.samples.Length;
-                pathLine.SetPositions(path.samples);
-
-                if (_flowLine != null)
-                {
-                    var flowPositions = new Vector3[path.samples.Length];
-                    for (int i = 0; i < flowPositions.Length; i++)
-                        flowPositions[i] = path.samples[i] + Vector3.up * flowSurfaceOffset;
-                    _flowLine.positionCount = flowPositions.Length;
-                    _flowLine.SetPositions(flowPositions);
-                }
-            }
-            else
-            {
-                pathLine.positionCount = 0;
-                if (_flowLine != null) _flowLine.positionCount = 0;
-            }
-        }
-
-        /// <summary>
-        /// Tạo lớp LineRenderer trong suốt phủ lên mặt nước. LineRenderer Tile quy ước UV.x chạy dọc path,
-        /// vì vậy waterScrollSpeed.x được truyền thẳng cho shader và luôn bám theo mọi khúc cua.
-        /// </summary>
-        private void SetupWaterFlow(RoundedPolylinePath path)
-        {
-            if (_baseMaterialInstance != null)
-            {
-                Destroy(_baseMaterialInstance);
-                _baseMaterialInstance = null;
-            }
-            if (_flowMaterialInstance != null)
-            {
-                Destroy(_flowMaterialInstance);
-                _flowMaterialInstance = null;
-            }
-
-            if (pathLine != null && pathLine.sharedMaterial != null)
-            {
-                _baseMaterialInstance = pathLine.material;
-                ApplyPathDirection(_baseMaterialInstance, "_EdgeWaveSpeed");
-                if (_baseMaterialInstance.HasProperty("_PathLength"))
-                    _baseMaterialInstance.SetFloat("_PathLength", path != null ? path.TotalLength : 1f);
-                if (_baseMaterialInstance.HasProperty("_PathClosed"))
-                    _baseMaterialInstance.SetFloat("_PathClosed", path != null && path.isClosed ? 1f : 0f);
-            }
-
-            if (pathLine == null || pathFlowMaterial == null)
-            {
-                if (_flowLine != null) _flowLine.enabled = false;
+                Debug.LogWarning("[PathManager] tubeModel must contain MeshFilters named pipe and water.", this);
                 return;
             }
 
-            if (_flowLine == null)
+            DestroyPathMeshes();
+            _pipePathMesh = BuildBentMesh(path, pipeSource, "PathPipe");
+            _waterPathMesh = BuildBentMesh(path, waterSource, "PathWater", waterSurfaceOffset);
+            _pipeFilter.sharedMesh = _pipePathMesh;
+            _waterFilter.sharedMesh = _waterPathMesh;
+            _pipeRenderer.sharedMaterial = pipeMaterial != null ? pipeMaterial : pipeSource.GetComponent<MeshRenderer>()?.sharedMaterial;
+            _waterRenderer.sharedMaterial = waterMaterial != null ? waterMaterial : waterSource.GetComponent<MeshRenderer>()?.sharedMaterial;
+            SetupWaterFlow(path);
+        }
+
+        private void EnsurePathRenderers()
+        {
+            if (_pipeFilter == null) _pipeFilter = CreatePathRenderer("PathPipe", out _pipeRenderer);
+            if (_waterFilter == null) _waterFilter = CreatePathRenderer("PathWater", out _waterRenderer);
+        }
+
+        private MeshFilter CreatePathRenderer(string name, out MeshRenderer renderer)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(transform, false);
+            var filter = go.AddComponent<MeshFilter>();
+            renderer = go.AddComponent<MeshRenderer>();
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            return filter;
+        }
+
+        private MeshFilter FindSourceMesh(string meshName)
+        {
+            var filters = tubeModel.GetComponentsInChildren<MeshFilter>(true);
+            for (int i = 0; i < filters.Length; i++)
+                if (filters[i].sharedMesh != null && string.Equals(filters[i].name, meshName, System.StringComparison.OrdinalIgnoreCase)) return filters[i];
+            return null;
+        }
+
+        private Mesh BuildBentMesh(RoundedPolylinePath path, MeshFilter sourceFilter, string meshName, float yOffset = 0f)
+        {
+            Mesh source = sourceFilter != null ? sourceFilter.sharedMesh : null;
+            if (source == null) return null;
+            var sourceVertices = source.vertices;
+            var sourceNormals = source.normals;
+            var sourceUvs = source.uv;
+            // The FBX child nodes can carry their own import scale/rotation (tube_test does).
+            // Bake that node transform before bending so both pipe and water retain the authored profile.
+            Matrix4x4 sourceToModel = tubeModel.transform.worldToLocalMatrix * sourceFilter.transform.localToWorldMatrix;
+            // Normalize the authored piece to the same convention as the reference renderer:
+            // longest local axis = path direction (Z), shortest = up (Y).
+            Vector3 sourceSize = Vector3.zero;
+            Vector3 sourceMin = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+            Vector3 sourceMax = new Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity);
+            for (int i = 0; i < sourceVertices.Length; i++)
             {
-                var go = new GameObject("WaterFlowLine");
-                go.transform.SetParent(pathLine.transform, false);
-                _flowLine = go.AddComponent<LineRenderer>();
+                Vector3 p = sourceToModel.MultiplyPoint3x4(sourceVertices[i]);
+                sourceMin = Vector3.Min(sourceMin, p); sourceMax = Vector3.Max(sourceMax, p);
             }
+            sourceSize = sourceMax - sourceMin;
+            int longAxis = 0, shortAxis = 1;
+            if (sourceSize[1] > sourceSize[longAxis]) longAxis = 1;
+            if (sourceSize[2] > sourceSize[longAxis]) longAxis = 2;
+            if (sourceSize[2] < sourceSize[shortAxis]) shortAxis = 2;
+            if (sourceSize[0] < sourceSize[shortAxis]) shortAxis = 0;
+            Quaternion canonical = Quaternion.Inverse(Quaternion.LookRotation(AxisVector(longAxis), AxisVector(shortAxis)));
+            Quaternion sourceRotation = Quaternion.Euler(modelRotation) * canonical;
+            var vertices = new List<Vector3>(); var normals = new List<Vector3>(); var uvs = new List<Vector2>();
+            var triangles = new List<int>();
+            float minZ = float.PositiveInfinity, maxZ = float.NegativeInfinity;
+            float minX = float.PositiveInfinity, maxX = float.NegativeInfinity;
+            for (int i = 0; i < sourceVertices.Length; i++)
+            {
+                Vector3 p = sourceRotation * sourceToModel.MultiplyPoint3x4(sourceVertices[i]);
+                minZ = Mathf.Min(minZ, p.z); maxZ = Mathf.Max(maxZ, p.z);
+                minX = Mathf.Min(minX, p.x); maxX = Mathf.Max(maxX, p.x);
+            }
+            float pieceLength = Mathf.Max(0.0001f, (maxZ - minZ) * meshLengthScale);
+            float crossScale = _pathWidth > 0f ? _pathWidth / Mathf.Max(0.0001f, maxX - minX) : 1f;
+            // A source FBX often contains only two longitudinal rings.  If it is stretched over
+            // an entire corner, the result becomes a straight chord even though RoundedPolylinePath
+            // already contains the corner-radius samples.  At minimum stamp one tile per path
+            // sample interval, preserving the authored rounded-corner curve in the final mesh.
+            int curveTiles = path.samples != null ? Mathf.Max(1, path.samples.Length - 1) : 1;
+            int tiles = Mathf.Max(curveTiles, Mathf.CeilToInt(path.TotalLength / pieceLength));
+            float invRoot = 1f / Mathf.Max(0.0001f, maxZ - minZ);
+            for (int tile = 0; tile < tiles; tile++)
+            {
+                int baseIndex = vertices.Count;
+                float d0 = path.TotalLength * tile / tiles, d1 = path.TotalLength * (tile + 1) / tiles;
+                // Slightly overlap neighbouring stamps. This closes microscopic seams caused by
+                // independent floating-point interpolation/tangent evaluation at tile boundaries.
+                float overlap = Mathf.Min(path.TotalLength / tiles * 0.025f, 0.01f);
+                if (tile > 0) d0 -= overlap;
+                if (tile < tiles - 1) d1 += overlap;
+                for (int i = 0; i < sourceVertices.Length; i++)
+                {
+                    Vector3 local = sourceRotation * sourceToModel.MultiplyPoint3x4(sourceVertices[i]);
+                    float distance = Mathf.Lerp(d0, d1, (local.z - minZ) * invRoot);
+                    float t = path.TotalLength > 1e-5f ? distance / path.TotalLength : 0f;
+                    Vector3 center = path.Evaluate(t);
+                    Quaternion rotation = path.Tangent(t);
+                    vertices.Add(transform.InverseTransformPoint(center + rotation * new Vector3(local.x * crossScale, local.y + yOffset, 0f)));
+                    Vector3 normal = sourceNormals != null && sourceNormals.Length == sourceVertices.Length ? sourceRotation * sourceToModel.MultiplyVector(sourceNormals[i]) : Vector3.up;
+                    normals.Add(transform.InverseTransformDirection(rotation * normal).normalized);
+                    uvs.Add(sourceUvs != null && sourceUvs.Length == sourceVertices.Length ? sourceUvs[i] : Vector2.zero);
+                }
+                var sourceTriangles = source.triangles;
+                for (int i = 0; i < sourceTriangles.Length; i++) triangles.Add(baseIndex + sourceTriangles[i]);
+            }
+            var mesh = new Mesh { name = meshName, indexFormat = vertices.Count > 65535 ? UnityEngine.Rendering.IndexFormat.UInt32 : UnityEngine.Rendering.IndexFormat.UInt16 };
+            mesh.SetVertices(vertices); mesh.SetNormals(normals); mesh.SetUVs(0, uvs); mesh.SetTriangles(triangles, 0); mesh.RecalculateBounds();
+            return mesh;
+        }
 
-            CopyLineSettings(pathLine, _flowLine);
-            _flowLine.enabled = pathLine.enabled;
-            _flowLine.sharedMaterial = pathFlowMaterial;
+        private static Vector3 AxisVector(int axis) => axis == 0 ? Vector3.right : (axis == 1 ? Vector3.up : Vector3.forward);
 
-            _flowMaterialInstance = _flowLine.material;
-            if (_flowMaterialInstance.HasProperty("_FlowSpeed"))
-                _flowMaterialInstance.SetVector("_FlowSpeed", waterScrollSpeed);
-            if (_flowMaterialInstance.HasProperty("_SecondFlowSpeed"))
-                _flowMaterialInstance.SetVector("_SecondFlowSpeed", waterScrollSpeed * 0.55f);
-            if (_flowMaterialInstance.HasProperty("_BubbleSpeed"))
-                _flowMaterialInstance.SetVector("_BubbleSpeed", -waterScrollSpeed * 0.35f);
+        // Gun movement intentionally wraps even on an open path. Rendering must not: its last
+        // tile has to terminate at the last sample instead of bending back to sample zero.
+        private static Vector3 GetMeshPoint(RoundedPolylinePath path, float distance)
+        {
+            if (!path.isClosed && distance >= path.TotalLength) return path.samples[path.samples.Length - 1];
+            return path.GetPointAtDistance(distance);
+        }
+
+        private void SetupWaterFlow(RoundedPolylinePath path)
+        {
+            if (_waterMaterialInstance != null) Destroy(_waterMaterialInstance);
+            if (_waterRenderer == null || _waterRenderer.sharedMaterial == null) return;
+            _waterMaterialInstance = _waterRenderer.material;
+            ApplyPathDirection(_waterMaterialInstance, "_EdgeWaveSpeed");
+            if (_waterMaterialInstance.HasProperty("_FlowSpeed")) _waterMaterialInstance.SetVector("_FlowSpeed", waterScrollSpeed);
+            if (_waterMaterialInstance.HasProperty("_PathLength")) _waterMaterialInstance.SetFloat("_PathLength", path.TotalLength);
+            if (_waterMaterialInstance.HasProperty("_PathClosed")) _waterMaterialInstance.SetFloat("_PathClosed", path.isClosed ? 1f : 0f);
         }
 
         private void ApplyPathDirection(Material material, string speedProperty)
@@ -246,34 +308,17 @@ namespace Wayfu.Lamkn
                 material.SetFloat(speedProperty, speed * Mathf.Sign(waterScrollSpeed.x));
         }
 
-        private static void CopyLineSettings(LineRenderer source, LineRenderer target)
-        {
-            target.alignment = source.alignment;
-            target.useWorldSpace = source.useWorldSpace;
-            target.loop = source.loop;
-            target.numCornerVertices = source.numCornerVertices;
-            target.numCapVertices = source.numCapVertices;
-            target.textureMode = LineTextureMode.Tile;
-            target.widthCurve = source.widthCurve;
-            target.widthMultiplier = source.widthMultiplier;
-            target.colorGradient = source.colorGradient;
-            target.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            target.receiveShadows = false;
-        }
-
         /// <summary>Chỉnh độ rộng mặt đường (world units). Gọi được lúc runtime để tinh chỉnh.</summary>
         public void SetPathWidth(float width)
         {
-            if (pathLine == null) return;
-            pathLine.enabled = width > 0f;
-            pathLine.widthMultiplier = Mathf.Max(0f, width);
-            if (_baseMaterialInstance != null && _baseMaterialInstance.HasProperty("_PathWidth"))
-                _baseMaterialInstance.SetFloat("_PathWidth", pathLine.widthMultiplier);
-            if (_flowLine != null)
-            {
-                _flowLine.enabled = pathLine.enabled && pathFlowMaterial != null;
-                _flowLine.widthMultiplier = pathLine.widthMultiplier;
-            }
+            float newWidth = Mathf.Max(0f, width);
+            bool geometryChanged = !Mathf.Approximately(_pathWidth, newWidth);
+            _pathWidth = newWidth;
+            if (geometryChanged && _path != null) ApplyPathMeshes(_path);
+            if (_pipeRenderer != null) _pipeRenderer.enabled = _pathWidth > 0f;
+            if (_waterRenderer != null) _waterRenderer.enabled = _pathWidth > 0f;
+            if (_waterMaterialInstance != null && _waterMaterialInstance.HasProperty("_PathWidth"))
+                _waterMaterialInstance.SetFloat("_PathWidth", _pathWidth);
         }
 
         /// <summary>
@@ -282,8 +327,8 @@ namespace Wayfu.Lamkn
         /// </summary>
         private void SetupBubbles()
         {
-            if (!spawnBubbles || pathMaterial == null) return;
-            var texture = pathMaterial.HasProperty("_BubbleMap") ? pathMaterial.GetTexture("_BubbleMap") : null;
+            if (!spawnBubbles || _waterMaterialInstance == null) return;
+            var texture = _waterMaterialInstance.HasProperty("_BubbleMap") ? _waterMaterialInstance.GetTexture("_BubbleMap") : null;
             var shader = Shader.Find("WaterFlow/2D/Bubble Overlay");
             if (texture == null || shader == null) return;
             if (_bubbleMaterial != null) Destroy(_bubbleMaterial);
@@ -301,7 +346,7 @@ namespace Wayfu.Lamkn
                 Destroy(go.GetComponent<Collider>());
                 go.name = "WaterBubble";
                 go.transform.SetParent(transform);
-                go.transform.SetPositionAndRotation(_path.GetPointAtDistance(Random.value * _path.TotalLength) + Vector3.up * (flowSurfaceOffset + 0.03f), Quaternion.Euler(90f, 0f, 0f));
+                go.transform.SetPositionAndRotation(_path.GetPointAtDistance(Random.value * _path.TotalLength) + Vector3.up * (waterSurfaceOffset + 0.03f), Quaternion.Euler(90f, 0f, 0f));
                 float s = bubbleSize * Random.Range(0.7f, 1.25f);
                 go.transform.localScale = new Vector3(s, s, s);
                 go.GetComponent<MeshRenderer>().sharedMaterial = _bubbleMaterial;
@@ -312,7 +357,7 @@ namespace Wayfu.Lamkn
             Vector3 up = cam != null ? Vector3.ProjectOnPlane(cam.transform.up, Vector3.up) : Vector3.forward;
             if (up.sqrMagnitude < 1e-5f) up = Vector3.forward;
             up.Normalize();
-            float limit = Mathf.Max(0f, pathLine.widthMultiplier * 0.5f - bubbleSize * 0.5f);
+            float limit = Mathf.Max(0f, _pathWidth * 0.5f - bubbleSize * 0.5f);
             for (int i = _bubbles.Count - 1; i >= 0; i--)
             {
                 var b = _bubbles[i];
@@ -425,19 +470,24 @@ namespace Wayfu.Lamkn
         {
             _guns.Clear(); // gun trả về pool qua PoolManager.ReturnAll khi rebuild
             _queue.Clear();
-            // pathLine nằm trên scene (không bị destroy cùng GunPath) → phải xoá điểm của level cũ.
-            if (pathLine != null) pathLine.positionCount = 0;
-            if (_flowLine != null) _flowLine.positionCount = 0;
+            DestroyPathMeshes();
             foreach (var bubble in _bubbles) if (bubble != null) Destroy(bubble.gameObject);
             _bubbles.Clear();
             if (_bubbleMaterial != null) { Destroy(_bubbleMaterial); _bubbleMaterial = null; }
-            if (_baseMaterialInstance != null) { Destroy(_baseMaterialInstance); _baseMaterialInstance = null; }
-            if (_flowMaterialInstance != null) { Destroy(_flowMaterialInstance); _flowMaterialInstance = null; }
+            if (_waterMaterialInstance != null) { Destroy(_waterMaterialInstance); _waterMaterialInstance = null; }
             if (_path != null) { Destroy(_path.gameObject); _path = null; }
             // Tunnel là con của PathManager (không phải của GunPath) → phải tự dọn, không thì level sau
             // chồng thêm 1 cặp nữa.
             if (_tunnelIn != null) { Destroy(_tunnelIn); _tunnelIn = null; }
             if (_tunnelOut != null) { Destroy(_tunnelOut); _tunnelOut = null; }
+        }
+
+        private void DestroyPathMeshes()
+        {
+            if (_pipeFilter != null) _pipeFilter.sharedMesh = null;
+            if (_waterFilter != null) _waterFilter.sharedMesh = null;
+            if (_pipePathMesh != null) { Destroy(_pipePathMesh); _pipePathMesh = null; }
+            if (_waterPathMesh != null) { Destroy(_waterPathMesh); _waterPathMesh = null; }
         }
 
         /// <summary>Có gun nào trên path còn cell cùng màu để bắn không (check LOSE).</summary>
