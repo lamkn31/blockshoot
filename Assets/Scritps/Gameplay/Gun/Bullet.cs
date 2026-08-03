@@ -8,7 +8,10 @@ namespace Wayfu.Lamkn
     /// </summary>
     public class Bullet : MonoBehaviour, IItemPool<Bullet>
     {
-        private const float HitDist = 0.25f;
+        [Tooltip("Độ cao đỉnh vòng cung = quãng đường × tỉ lệ này (kẹp bởi Arc Max Height). 0 = bay thẳng.")]
+        [SerializeField] private float arcHeightRatio = 0.22f;
+        [Tooltip("Giới hạn độ cao đỉnh vòng cung (world units) để cú bắn xa không vọt quá cao.")]
+        [SerializeField] private float arcMaxHeight = 2.5f;
 
         private Pooler<Bullet> _pool;
         private BlockCell _cell;
@@ -19,6 +22,10 @@ namespace Wayfu.Lamkn
         private TrailRenderer _trail;
         private Vector3 _aimOffset; // lệch so với TÂM cell → nhắm đúng 1 block trong stack (bắn loạt)
         private bool _hitBottom;    // đạn LẺ dồn vào cell không đủ phá → phá block ĐÁY thay vì đỉnh
+        private Vector3 _start;     // điểm xuất phát (nòng) — mốc nội suy ngang của parabol
+        private float _duration;    // thời gian bay ≈ quãng đường / speed (chốt lúc Launch)
+        private float _elapsed;     // thời gian đã bay → t = _elapsed / _duration
+        private float _arcPeak;     // độ cao đỉnh vòng cung của cú bắn này
 
         public void OnInitializedInPool(Pooler<Bullet> pool) => _pool = pool;
 
@@ -48,8 +55,17 @@ namespace Wayfu.Lamkn
                            Vector3 aimOffset = default, bool hitBottom = false)
         {
             transform.position = start;
+            _start = start;
             _aimOffset = aimOffset;
             _hitBottom = hitBottom;
+
+            // Chốt thời gian bay + độ cao vòng cung theo quãng đường TỚI target lúc bắn. Target còn bám cell
+            // (có thể trượt) nhưng duration/peak giữ cố định là đủ cho hiệu ứng — t=1 luôn đáp đúng target.
+            Vector3 firstTarget = target != null ? target.transform.position + aimOffset : start;
+            float dist = Vector3.Distance(start, firstTarget);
+            _duration = Mathf.Max(0.0001f, dist / Mathf.Max(0.01f, speed));
+            _arcPeak = Mathf.Min(dist * arcHeightRatio, arcMaxHeight);
+            _elapsed = 0f;
 
             // Bullet là item POOLED: TrailRenderer giữ nguyên các điểm của lượt bắn TRƯỚC khi object bị
             // tắt/bật lại. Pool bật đạn ở vị trí cũ (chỗ block vừa bị phá) rồi Launch mới teleport nó về
@@ -75,16 +91,26 @@ namespace Wayfu.Lamkn
             // không bay đuổi theo cell mới ở vị trí khác.
             if (_cell == null || _cell.Generation != _cellGen) { Despawn(); return; }
 
-            Vector3 target = _cell.transform.position + _aimOffset;
-            transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
+            Vector3 target = _cell.transform.position + _aimOffset; // bám cell (cell có thể đang trượt)
 
-            if ((transform.position - target).sqrMagnitude <= HitDist * HitDist)
+            _elapsed += Time.deltaTime;
+            float t = _elapsed / _duration;
+            if (t >= 1f)
             {
+                // Tới đích: đáp đúng target rồi phá block.
+                transform.position = target;
                 _active = false;
                 if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
                 Despawn();
+                return;
             }
+
+            // Nội suy ngang start→target theo t, cộng vòng cung Y đỉnh giữa đường: 4t(1−t) = 1 khi t=0.5,
+            // = 0 ở 2 đầu → đạn vọt lên rồi rơi xuống đúng target. Cộng SAU Lerp nên độc lập chênh cao 2 đầu.
+            Vector3 pos = Vector3.Lerp(_start, target, t);
+            pos.y += _arcPeak * 4f * t * (1f - t);
+            transform.position = pos;
         }
 
         private void Despawn()

@@ -346,7 +346,15 @@ namespace Wayfu.Lamkn
             // Chỉ được CHỌN target mới khi cell đang bám đã bị phá HẾT (dứt điểm từng cell) VÀ nòng còn
             // lượt của vòng này. Hết lượt (!Armed) thì KHÔNG nhặt cell mới — nhưng cell đang bắn DỞ vẫn
             // được bắn nốt ở khối dưới; bắn xong thì target tự về null và nòng im tới khi qua vòng mới.
-            if (!HasLiveTarget(b))
+            //
+            // Mode ĐẠN: cell "đặt chỗ hết" (Available<=0) coi như đã XONG với nòng này — mọi block đã có
+            // đạn đang bay nhắm tới, không cần bắn thêm phát nào. Nhả ra NGAY để chốt cell kế trong tầm,
+            // KHÔNG chờ đạn bay tới phá xong cell mới bắn tiếp (yêu cầu: đạn chưa nổ vẫn bắn cell bên cạnh).
+            // Cell fully-reserved bị FindTargetCell bỏ qua nên không bị chốt lại chính nó. Laser không áp:
+            // laser phá tức thì (không ReserveHit) nên cell tự rỗng, HasLiveTarget về false ngay.
+            bool targetSpent = _fire.Mode != GunFireMode.Laser
+                               && HasLiveTarget(b) && b.Target.Available <= 0;
+            if (!HasLiveTarget(b) || targetSpent)
             {
                 if (b.Target != null) b.Target.ReleaseClaim(b); // nhả claim cell cũ để gun khác chốt được
                 b.Target = null;
