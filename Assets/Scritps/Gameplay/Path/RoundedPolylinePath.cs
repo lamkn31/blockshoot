@@ -14,7 +14,7 @@ public class RoundedPolylinePath : MonoBehaviour
 
     [Header("Resolution Settings")]
     [Tooltip("Số điểm tạo thêm tại mỗi góc cua để làm mượt")]
-    public int curveSamples = 8;
+    public int curveSamples = 24;
 
     [HideInInspector] public Vector3[] samples;
     [HideInInspector] public float[] sampleArc;

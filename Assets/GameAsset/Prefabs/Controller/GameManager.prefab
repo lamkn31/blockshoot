@@ -278,7 +278,7 @@ MonoBehaviour:
   tubeModel: {fileID: 100100000, guid: d694174db209e9f438104557184ba66a, type: 3}
   pipeMeshName: pipe
   waterMeshName: water
-  pipeMaterial: {fileID: 2100000, guid: aafb08edd25bc144ca5aa7c78d034077, type: 2}
+  pipeMaterial: {fileID: 2100000, guid: 513aecb0b25a81b4c9410628431751b6, type: 2}
   waterMaterial: {fileID: 2100000, guid: 5ec9f197fa3d6714e94fdbd409f9141c, type: 2}
   modelRotation: {x: 0, y: 0, z: 0}
   meshLengthScale: 1

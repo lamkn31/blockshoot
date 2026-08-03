@@ -22,6 +22,8 @@ namespace Wayfu.Lamkn
         [Tooltip("Trục dài của piece trong FBX. tube_test được author theo Z.")]
         [SerializeField] private Vector3 modelRotation = Vector3.zero;
         [Min(0.001f)] [SerializeField] private float meshLengthScale = 1f;
+        [Tooltip("Chỉ pipe: lấy mỗi N mẫu cong để bo góc. Giá trị lớn hơn tạo ít vertices/triangles hơn.")]
+        [Min(1)] [SerializeField] private int pipeCornerSampleStep = 4;
         [Min(0f)] [SerializeField] private float waterSurfaceOffset = 0.01f;
         [Header("Bọt nổi")]
         [SerializeField] private bool spawnBubbles = true;
@@ -167,8 +169,8 @@ namespace Wayfu.Lamkn
             }
 
             DestroyPathMeshes();
-            _pipePathMesh = BuildBentMesh(path, pipeSource, "PathPipe");
-            _waterPathMesh = BuildBentMesh(path, waterSource, "PathWater", waterSurfaceOffset);
+            _pipePathMesh = BuildBentMesh(path, pipeSource, "PathPipe", 0f, stretchAtCorners: true);
+            _waterPathMesh = BuildBentMesh(path, waterSource, "PathWater", waterSurfaceOffset, stretchAtCorners: false);
             _pipeFilter.sharedMesh = _pipePathMesh;
             _waterFilter.sharedMesh = _waterPathMesh;
             _pipeRenderer.sharedMaterial = pipeMaterial != null ? pipeMaterial : pipeSource.GetComponent<MeshRenderer>()?.sharedMaterial;
@@ -201,7 +203,8 @@ namespace Wayfu.Lamkn
             return null;
         }
 
-        private Mesh BuildBentMesh(RoundedPolylinePath path, MeshFilter sourceFilter, string meshName, float yOffset = 0f)
+        private Mesh BuildBentMesh(RoundedPolylinePath path, MeshFilter sourceFilter, string meshName,
+                                   float yOffset = 0f, bool stretchAtCorners = false)
         {
             Mesh source = sourceFilter != null ? sourceFilter.sharedMesh : null;
             if (source == null) return null;
@@ -239,28 +242,42 @@ namespace Wayfu.Lamkn
                 minZ = Mathf.Min(minZ, p.z); maxZ = Mathf.Max(maxZ, p.z);
                 minX = Mathf.Min(minX, p.x); maxX = Mathf.Max(maxX, p.x);
             }
-            float pieceLength = Mathf.Max(0.0001f, (maxZ - minZ) * meshLengthScale);
+            // Keep the authored longitudinal size.  The old implementation remapped every
+            // source piece to its tile interval, which stretched/compressed it whenever the
+            // path length was not an exact multiple of the FBX piece length.  meshLengthScale
+            // is intentionally not applied here: path fitting is done by clipping the final
+            // piece, never by changing its aspect ratio.
+            float pieceLength = Mathf.Max(0.0001f, maxZ - minZ);
             float crossScale = _pathWidth > 0f ? _pathWidth / Mathf.Max(0.0001f, maxX - minX) : 1f;
-            // A source FBX often contains only two longitudinal rings.  If it is stretched over
-            // an entire corner, the result becomes a straight chord even though RoundedPolylinePath
-            // already contains the corner-radius samples.  At minimum stamp one tile per path
-            // sample interval, preserving the authored rounded-corner curve in the final mesh.
-            int curveTiles = path.samples != null ? Mathf.Max(1, path.samples.Length - 1) : 1;
-            int tiles = Mathf.Max(curveTiles, Mathf.CeilToInt(path.TotalLength / pieceLength));
-            float invRoot = 1f / Mathf.Max(0.0001f, maxZ - minZ);
-            for (int tile = 0; tile < tiles; tile++)
+            // Pipe can add short, stretchable pieces at curve samples for a round silhouette.
+            // Water intentionally keeps its authored longitudinal scale everywhere.
+            var tileEnds = new List<float> { 0f, path.TotalLength };
+            for (float d = pieceLength; d < path.TotalLength; d += pieceLength) tileEnds.Add(d);
+            if (stretchAtCorners && path.sampleArc != null)
             {
+                // The path stores many samples for movement precision. Rendering only needs a
+                // subset: using every fourth sample keeps corners visually round while avoiding
+                // a full source-mesh copy for every single path sample.
+                int sampleStep = Mathf.Max(1, pipeCornerSampleStep);
+                for (int i = sampleStep; i < path.sampleArc.Length - 1; i += sampleStep)
+                    tileEnds.Add(path.sampleArc[i]);
+            }
+            tileEnds.Sort();
+
+            const float minTileLength = 0.0001f;
+            for (int tile = 0; tile < tileEnds.Count - 1; tile++)
+            {
+                float d0 = tileEnds[tile];
+                float d1 = tileEnds[tile + 1];
+                if (d1 - d0 < minTileLength) continue;
                 int baseIndex = vertices.Count;
-                float d0 = path.TotalLength * tile / tiles, d1 = path.TotalLength * (tile + 1) / tiles;
-                // Slightly overlap neighbouring stamps. This closes microscopic seams caused by
-                // independent floating-point interpolation/tangent evaluation at tile boundaries.
-                float overlap = Mathf.Min(path.TotalLength / tiles * 0.025f, 0.01f);
-                if (tile > 0) d0 -= overlap;
-                if (tile < tiles - 1) d1 += overlap;
                 for (int i = 0; i < sourceVertices.Length; i++)
                 {
                     Vector3 local = sourceRotation * sourceToModel.MultiplyPoint3x4(sourceVertices[i]);
-                    float distance = Mathf.Lerp(d0, d1, (local.z - minZ) * invRoot);
+                    float longitudinalT = (local.z - minZ) / pieceLength;
+                    float distance = stretchAtCorners
+                        ? Mathf.Lerp(d0, d1, longitudinalT)
+                        : Mathf.Clamp(d0 + (local.z - minZ), 0f, path.TotalLength);
                     float t = path.TotalLength > 1e-5f ? distance / path.TotalLength : 0f;
                     Vector3 center = path.Evaluate(t);
                     Quaternion rotation = path.Tangent(t);
