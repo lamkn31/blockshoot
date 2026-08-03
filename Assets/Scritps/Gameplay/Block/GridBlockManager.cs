@@ -376,6 +376,9 @@ namespace Wayfu.Lamkn
                         if (cell == exclude) continue;  // nòng bên kia đang bắn cell này → không bắn trùng
                         if (claimant != null && !cell.ClaimFreeFor(claimant)) continue; // nòng KHÁC đã chốt
                         if (cell.PendingEntry) continue; // đang TRƯỢT (nhả mới / dồn hàng) → chưa cho ngắm
+                        if (cell.Available <= 0) continue; // mọi block đã có đạn đang bay đặt chỗ → cell coi
+                                                           // như đã "xong", không cần chốt/bắn thêm (nòng
+                                                           // khỏi phải chờ đạn nổ mới sang cell kế)
                         if (!IsShootableFromGun(gr, r, e, from)) continue;
                         Vector3 d = cell.transform.position - from; d.y = 0f;
                         float sqr = d.sqrMagnitude;
