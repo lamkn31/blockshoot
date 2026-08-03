@@ -13,7 +13,6 @@ namespace Wayfu.Lamkn
     {
         // Config lấy từ GameSettings, nạp lại mỗi lần Build.
         private float _collapseDuration = 0.25f;
-        private float _stackSpacing = 0.5f;   // khoảng cách block trong stack (dùng chung, không theo grid)
         private bool _frontRowFirst; // CoreType = FrontRowFirst → ưu tiên cell hàng 0 hơn cell sập xuống
 
         // Nguồn Spawner: 1 Ô CỐ ĐỊNH trên lưới. Cell ở đó dồn lên như cell thường; hễ ô trống là nhả mục kế
@@ -85,7 +84,6 @@ namespace Wayfu.Lamkn
         {
             Clear();
             var gs = GameSettings.Instance;
-            _stackSpacing = gs != null ? gs.BlockStackSpacing : 0.5f;
             _collapseDuration = gs != null ? gs.BlockCollapseDuration : 0.25f;
             _frontRowFirst = gs != null && gs.CoreType == CoreGameType.FrontRowFirst;
 
@@ -184,7 +182,7 @@ namespace Wayfu.Lamkn
             cell.transform.rotation = Quaternion.Euler(0f, CellAngle(gr, data), 0f);
             // Cell chỉ là node chứa → giữ scale 1; CellScale của grid áp thẳng lên BLOCK bên trong.
             cell.transform.localScale = Vector3.one;
-            cell.Build(data, _stackSpacing, gr.Data.CellScale, this);
+            cell.Build(data, gr.Data.EffectiveStackSpacing, gr.Data.CellScale, this);
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
             return cell;
         }
@@ -392,11 +390,15 @@ namespace Wayfu.Lamkn
                             // Path tangent chooses the barrel side at this exact point:
                             // right/left is measured from the current A -> B path direction.
                             if (Vector3.Dot(sideVec, d) * sideSign < 0f) continue;
-                            // A grid assigned to a barrel side is already gated by
-                            // IsShootableFromGun's exposed physical face. Let that
-                            // barrel shoot cells directly beside the path as well;
-                            // the forward fan only applies to unassigned grids.
-                            if (!sideLocked && Vector3.Dot(forward, d) < cosSpread * Mathf.Sqrt(sqr)) continue;
+                            // Grid đã gán bên vẫn được bắn khi ở NGANG gun (dot = 0),
+                            // nhưng không được chọn cell đã ở phía sau. Nếu không, TickBarrel
+                            // sẽ chốt rồi CanKeepTarget hủy target trước viên đầu tiên.
+                            float forwardDot = Vector3.Dot(forward, d);
+                            if (sideLocked)
+                            {
+                                if (forwardDot < -0.001f) continue;
+                            }
+                            else if (forwardDot < cosSpread * Mathf.Sqrt(sqr)) continue;
                         }
                         // NearestCell: gần nhất thắng. FrontRowFirst: cell có Depth GỐC nhỏ thắng trước
                         // (cell sinh ở hàng 0 = Depth 0, chưa bị bắn), cùng Depth mới xét gần nhất. Dùng
@@ -1222,7 +1224,7 @@ namespace Wayfu.Lamkn
                 SpawnerDirectionAngleZ = src.DirAngle,
                 Type = src.Line ? BlockCellType.SpawnerLine : BlockCellType.Spawner8, // giữ nguồn bất tử
             };
-            cell.Build(data, _stackSpacing, gr.Data.CellScale, this);
+            cell.Build(data, gr.Data.EffectiveStackSpacing, gr.Data.CellScale, this);
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
         }
 

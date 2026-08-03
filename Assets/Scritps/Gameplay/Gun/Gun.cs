@@ -373,7 +373,8 @@ namespace Wayfu.Lamkn
                     //  • Nòng kia RẢNH (reserved==0): VẪN chốt và dồn nốt số đạn LẺ còn lại vào cell gần nhất
                     //    (vd còn 1 mà cell 3 block thì bắn 1 vào đó) — bắn dở còn hơn gun chết với đạn thừa.
                     int reserved = NeedOf(other);
-                    if (cand != null && reserved > 0 && cand.Available > Data.CountBullet - reserved) cand = null;
+                    // Không hủy target chỉ vì nòng kia đang giữ đạn. Đạn còn lại vẫn phải
+                    // được dùng để phá dở cell (LeftoverDump sẽ chọn block đáy).
 
                     // CHỐT CLAIM (atomic): nòng khác cùng frame vừa giật mất cell → TryClaim thất bại → bỏ,
                     // frame sau chọn cell khác. Nhờ vậy 2 gun không bao giờ cùng đổ đạn 1 cell.

@@ -57,10 +57,10 @@ namespace Wayfu.Lamkn
 
             if (drawBlocks && level.Grids != null)
             {
-                float stackSpacing = GameSettings.Instance != null ? GameSettings.Instance.BlockStackSpacing : 0.5f;
                 foreach (var grid in level.Grids)
                 {
                     if (grid == null) continue;
+                    float stackSpacing = grid.EffectiveStackSpacing;
 
                     // Viền vòng cung: 2 cạnh bên + cung trong/ngoài.
                     Gizmos.color = new Color(0.6f, 0.6f, 0.6f);

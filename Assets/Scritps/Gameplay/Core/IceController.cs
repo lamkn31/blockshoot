@@ -126,8 +126,8 @@ namespace Wayfu.Lamkn
         private void BuildRegion(BlockGridData grid, HashSet<(int, int)> comp, int threshold,
                                  float colStep, float rowStep)
         {
-            // Nâng băng lên NẰM TRÊN đỉnh stack block của vùng (block xếp theo Y, cách nhau BlockStackSpacing).
-            float stackSpacing = GameSettings.Instance != null ? GameSettings.Instance.BlockStackSpacing : 0.5f;
+            // Nâng băng lên NẰM TRÊN đỉnh stack block của vùng; grid scale riêng dùng spacing riêng.
+            float stackSpacing = grid.EffectiveStackSpacing;
             int maxStack = 1;
             foreach (var (rr, ee) in comp)
             {

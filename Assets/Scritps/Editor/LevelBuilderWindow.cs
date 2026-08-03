@@ -3023,8 +3023,13 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("BlockWidth"), new GUIContent("Block W"));
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Spacing"), new GUIContent("Spacing"));
                 EditorGUILayout.EndHorizontal();
-                EditorGUILayout.PropertyField(grid.FindPropertyRelative("CellScale"),
+                var cellScale = grid.FindPropertyRelative("CellScale");
+                EditorGUILayout.PropertyField(cellScale,
                     new GUIContent("Cell Scale", "Scale của mọi BLOCK trong grid này."));
+                Vector3 scale = cellScale.vector3Value;
+                if (!Mathf.Approximately(scale.x, 1f) || !Mathf.Approximately(scale.y, 1f) || !Mathf.Approximately(scale.z, 1f))
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("StackSpacing"),
+                        new GUIContent("Stack Spacing", "Khoảng cách Y giữa block trong stack của grid scale riêng."));
                 if (!isRect) EditorGUILayout.PropertyField(grid.FindPropertyRelative("Layout"), new GUIContent("Layout"));
                 EditorGUILayout.HelpBox(DescribeLayout(i), MessageType.None);
 

@@ -204,8 +204,18 @@ namespace Wayfu.Lamkn
         public float Spacing = 0.2f;
         [Tooltip("Scale của MỌI block trong grid này (cell chỉ là node chứa nên scale áp thẳng lên block).")]
         public Vector3 CellScale = Vector3.one;
+        [Tooltip("Khoảng cách giữa các block trong stack của grid khi CellScale khác (1,1,1).")]
+        [Min(0.01f)] public float StackSpacing = 0.5f;
         [Tooltip("ArcLength = hàng ra xa nhiều cell hơn (cột lệch). Uniform = mọi hàng bằng nhau (cột thẳng).")]
         public BlockGridLayout Layout = BlockGridLayout.ArcLength;
+
+        /// <summary>Grid scale mặc định dùng spacing chung; scale riêng dùng spacing riêng để stack khớp kích thước block.</summary>
+        public bool UsesCustomStackSpacing => !Mathf.Approximately(CellScale.x, 1f)
+                                            || !Mathf.Approximately(CellScale.y, 1f)
+                                            || !Mathf.Approximately(CellScale.z, 1f);
+        public float EffectiveStackSpacing => UsesCustomStackSpacing
+            ? Mathf.Max(0.01f, StackSpacing)
+            : Mathf.Max(0.01f, GameSettings.Instance != null ? GameSettings.Instance.BlockStackSpacing : 0.5f);
         [Tooltip("Các CẠNH gun bắn được (grid bị path bao quanh nhiều mặt). None = mặc định cũ: chỉ mặt " +
                  "Front (hàng 0). Bật thêm Back/Left/Right để phá được từ nhiều phía; Spawner8 ở giữa vẫn bất tử.")]
         public GridEdges ShootableEdges = GridEdges.None;
