@@ -18,6 +18,7 @@ namespace Wayfu.Lamkn
 
         private readonly List<GunSlot> _activeSlots = new List<GunSlot>();
         private readonly List<GameObject> _fallbackCreated = new List<GameObject>();
+        private readonly HashSet<Gun> _movingToLoop = new HashSet<Gun>();
 
         // 1 nhóm gun connect (cùng ConnectGroup id, ở các slot khác nhau). Mỗi CẶP gun kề = 1 ConnectLine
         // (2 gun → 1 line; 3 gun → 2 line nối chuỗi).
@@ -101,6 +102,7 @@ namespace Wayfu.Lamkn
         {
             foreach (var s in _activeSlots) if (s != null) s.Clear();
             _activeSlots.Clear();
+            _movingToLoop.Clear();
             foreach (var go in _fallbackCreated) if (go != null) Destroy(go);
             _fallbackCreated.Clear();
             foreach (var grp in _connectGroups)
@@ -172,10 +174,10 @@ namespace Wayfu.Lamkn
 
             var slot = gun.Slot;
             if (slot == null || slot.FrontGun != gun) return;              // chỉ gun đầu slot
-            if (PathManager.Instance == null || !PathManager.Instance.CanAccept) return; // path đã đầy
+            if (PathManager.Instance == null || !PathManager.Instance.CanAcceptCount(_movingToLoop.Count + 1)) return;
 
             slot.RemoveFront();                     // gun sau dồn lên, click tiếp được ngay
-            PathManager.Instance.RequestDeploy(gun); // vào path luôn, hoặc xếp hàng chờ đủ khoảng cách
+            SendGunToLoop(slot.SlotIndex, gun);
             GameController.Instance?.OnBoardChanged();
         }
 
@@ -211,7 +213,7 @@ namespace Wayfu.Lamkn
                 if (g.Slot == null || g.Slot.FrontGun != g) return;
 
             var pm = PathManager.Instance;
-            if (pm == null || !pm.CanAcceptCount(members.Count))
+            if (pm == null || !pm.CanAcceptCount(_movingToLoop.Count + members.Count))
             {
                 GameController.Instance?.NotifyConnectStuck(); // vượt sức chứa → bế tắc thì thua
                 return;
@@ -219,10 +221,29 @@ namespace Wayfu.Lamkn
 
             foreach (var g in members)
             {
+                int slotIndex = g.Slot.SlotIndex;
                 g.Slot.RemoveFront();
-                pm.RequestDeploy(g);
+                SendGunToLoop(slotIndex, g);
             }
             GameController.Instance?.OnBoardChanged();
+        }
+
+        // Map prefab có thể định nghĩa route riêng cho từng slot. Sau khi đi hết route, gun mới
+        // được đưa vào queue/path loop bình thường; map không có route giữ nguyên hành vi cũ.
+        private void SendGunToLoop(int slotIndex, Gun gun)
+        {
+            var map = MapController.IsActive ? MapController.Instance.CurrentMapScript : null;
+            if (map != null)
+            {
+                _movingToLoop.Add(gun);
+                if (map.TryMoveGunToLoop(slotIndex, gun, () =>
+                    {
+                        _movingToLoop.Remove(gun);
+                        PathManager.Instance?.RequestDeploy(gun);
+                    })) return;
+                _movingToLoop.Remove(gun);
+            }
+            PathManager.Instance?.RequestDeploy(gun);
         }
 
         private List<GunSlot> ResolveSceneSlots()

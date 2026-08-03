@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 193c143710fe6564fa1b696a777e76ce
+guid: 8003b3b11c2b92c449f901aa10feb439
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -32,7 +32,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -67,7 +67,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60

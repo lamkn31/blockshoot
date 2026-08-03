@@ -275,6 +275,13 @@ namespace Wayfu.Lamkn
             ResetBarrel(_left);
         }
 
+        /// <summary>Rời slot và đang đi theo route của map trước khi vào queue path loop.</summary>
+        public void BeginMoveToLoopPath()
+        {
+            OnQueued();
+            if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
+        }
+
         public void OnDeployed()
         {
             _state = GunState.OnPath;
@@ -791,14 +798,14 @@ namespace Wayfu.Lamkn
         // Ô vuông ở đầu đường = cell đang bị nhắm; nhãn = R/L + số block còn phải bắn (Available).
         private void OnDrawGizmos()
         {
-            if (_state == GunState.Dead) return;
+            //if (_state == GunState.Dead) return;
 
-            DrawBarrelArc(_right);
-            DrawBarrelArc(_left);
+            //DrawBarrelArc(_right);
+            //DrawBarrelArc(_left);
 
-            if (_state != GunState.OnPath) return;
-            DrawTargetLine(_right, "R");
-            DrawTargetLine(_left, "L");
+            //if (_state != GunState.OnPath) return;
+            //DrawTargetLine(_right, "R");
+            //DrawTargetLine(_left, "L");
         }
 
         private void DrawBarrelArc(Barrel b)
