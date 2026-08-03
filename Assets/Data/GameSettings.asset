@@ -16,15 +16,15 @@ MonoBehaviour:
   SlotGunSpacing: 3
   PathWidth: 2.5
   MaxGunOnPath: 5
-  GunSpeed: 15
+  GunSpeed: 10
   GunSpacing: 3
-  FireInterval: 0.02
+  FireInterval: 0.1
   FireMode: 1
   BurstSpawnStacked: 1
   BurstRowLead: 0.2
   GunFireRange: 10
   GunFireAngle: 60
   FrontStationDistance: 0
-  BulletSpeed: 100
+  BulletSpeed: 25
   BlockStackSpacing: 1
   BlockCollapseDuration: 0.2

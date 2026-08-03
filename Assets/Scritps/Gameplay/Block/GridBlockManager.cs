@@ -567,6 +567,43 @@ namespace Wayfu.Lamkn
             return false;
         }
 
+        /// <summary>
+        /// 1 block của <paramref name="hit"/> vừa trúng đạn → các cell KỀ BÊN (trong ~1.6 pitch, cùng grid)
+        /// ngả BlocksContainer ra XA điểm va chạm rồi đàn hồi về (hiệu ứng rung dây chuyền). Xét theo KHOẢNG
+        /// CÁCH world nên đúng cho mọi hình grid (Rect/Arc/Spline) và bắt cả 4 ô thẳng lẫn 4 ô chéo.
+        /// </summary>
+        public void OnCellHit(BlockCell hit)
+        {
+            if (hit == null) return;
+            Vector3 hp = hit.transform.position; hp.y = 0f;
+            foreach (var gr in _grids)
+            {
+                // Chỉ xử lý grid CHỨA cell bị bắn (không lan sang grid khác đứng gần). Quét 1 lần: vừa dò cell
+                // này thuộc grid không, vừa gom hàng xóm; chỉ nghiêng nếu đúng là grid chủ.
+                float pitch = Mathf.Max(0.01f,
+                    Mathf.Max(gr.Data.BlockWidth + gr.Data.Spacing, gr.Data.RowSpacing));
+                float thrSqr = (1.6f * pitch) * (1.6f * pitch);
+                bool owns = false;
+                for (int r = 0; r < gr.Rows.Count && !owns; r++)
+                {
+                    var row = gr.Rows[r];
+                    for (int e = 0; e < row.Length; e++) if (row[e] == hit) { owns = true; break; }
+                }
+                if (!owns) continue;
+
+                foreach (var row in gr.Rows)
+                    foreach (var c in row)
+                    {
+                        if (c == null || c == hit) continue;
+                        Vector3 d = c.transform.position - hp; d.y = 0f;
+                        float sqr = d.sqrMagnitude;
+                        if (sqr < 1e-4f || sqr > thrSqr) continue; // trùng vị trí / quá xa (≥2 ô)
+                        c.TiltReact(d); // ngả ĐỈNH stack ra xa cell bị bắn
+                    }
+                return; // đã xử lý grid chủ → dừng
+            }
+        }
+
         public void OnCellCleared(BlockCell cell)
         {
             foreach (var gr in _grids)

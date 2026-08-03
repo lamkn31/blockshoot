@@ -24,6 +24,12 @@ namespace Wayfu.Lamkn
         [Tooltip("Nâng thêm độ cao của mũi tên so với ĐỈNH block trên cùng của cell.")]
         [SerializeField] private float indicatorHeightOffset = 0.3f;
 
+        [Header("Hiệu ứng nghiêng khi cell BÊN CẠNH trúng đạn")]
+        [Tooltip("Góc nghiêng tối đa (độ) của BlocksContainer khi 1 cell kề bên bị bắn. 0 = tắt hiệu ứng.")]
+        [SerializeField] private float neighborTiltAngle = 12f;
+        [Tooltip("Thời gian (giây) 1 nhịp ngả-ra-rồi-đàn-hồi-về của hiệu ứng nghiêng.")]
+        [SerializeField] private float neighborTiltDuration = 0.22f;
+
         private Sprite _defaultIndicatorSprite;
 
         public TypeColor Color { get; private set; }
@@ -78,7 +84,9 @@ namespace Wayfu.Lamkn
         private readonly List<Block> _blocks = new List<Block>();
         private GridBlockManager _manager;
         private Quaternion _indicatorRestLocalRot = Quaternion.identity; // pose gốc của mũi tên trong prefab
+        private Quaternion _containerRestLocalRot = Quaternion.identity; // pose gốc của BlocksContainer (mốc nghiêng)
         private Coroutine _moveRoutine;
+        private Coroutine _tiltRoutine;
         private int _pendingHits;
         private float _stackSpacing;
         private Vector3 _blockScale = Vector3.one;
@@ -91,6 +99,7 @@ namespace Wayfu.Lamkn
             // Nhớ pose gốc TRƯỚC khi ShowSpawnerIndicator kịp ghi đè — sau đó localRotation không còn là
             // giá trị dựng trong prefab nữa.
             if (spawnerIndicator != null) _indicatorRestLocalRot = spawnerIndicator.transform.localRotation;
+            if (blocksContainer != null) _containerRestLocalRot = blocksContainer.localRotation;
             if (indicatorRenderer == null && spawnerIndicator != null)
                 indicatorRenderer = spawnerIndicator.GetComponentInChildren<SpriteRenderer>(true);
             if (indicatorRenderer != null) _defaultIndicatorSprite = indicatorRenderer.sprite;
@@ -156,6 +165,10 @@ namespace Wayfu.Lamkn
             Generation++;                    // object pool tái dùng → đây là 1 cell MỚI
             SettleStamp = 0f;                // cell dựng lúc build = đã đứng sẵn từ đầu (không tính "vừa sập")
             PendingEntry = false;            // reset cho item pooled; MoveTo tự bật khi cell trượt
+            // Item pooled tái dùng: cell trước có thể đang nghiêng dở → dừng anh và trả BlocksContainer về
+            // pose gốc TRƯỚC khi Fill (Fill đặt block theo world, container nghiêng lúc đó sẽ lệch stack).
+            if (_tiltRoutine != null) { StopCoroutine(_tiltRoutine); _tiltRoutine = null; }
+            if (blocksContainer != null) blocksContainer.localRotation = _containerRestLocalRot;
             ReleaseBlocks();                 // item pooled tái dùng: dọn stack cũ trước
             ShowSpawnerIndicator(false);
 
@@ -234,6 +247,7 @@ namespace Wayfu.Lamkn
         public void ApplyHit()
         {
             if (_pendingHits > 0) _pendingHits--;
+            _manager?.OnCellHit(this); // báo TRƯỚC khi phá: các cell kề bên ngả theo hướng va chạm
             HitOnce();
         }
 
@@ -248,6 +262,7 @@ namespace Wayfu.Lamkn
         public void ApplyHitBottom()
         {
             if (_pendingHits > 0) _pendingHits--;
+            _manager?.OnCellHit(this); // báo TRƯỚC khi phá: các cell kề bên ngả theo hướng va chạm
             HitBottomOnce();
         }
 
@@ -292,6 +307,47 @@ namespace Wayfu.Lamkn
             transform.position = target;
             _moveRoutine = null;
             PendingEntry = false; // đã trượt xong về đúng ô → giờ mới cho gun ngắm
+        }
+
+        /// <summary>
+        /// Cell kề bên vừa trúng đạn → BlocksContainer NGẢ theo hướng va chạm rồi đàn hồi về. GridBlockManager
+        /// gọi với <paramref name="pushDir"/> = hướng world từ cell bị bắn TỚI cell này (đẩy ĐỈNH stack ngả ra
+        /// xa điểm va chạm). Item pooled: coroutine tự reset về pose gốc khi xong hoặc khi cell được Build lại.
+        /// </summary>
+        public void TiltReact(Vector3 pushDir)
+        {
+            if (blocksContainer == null || neighborTiltAngle <= 0f || neighborTiltDuration <= 0f) return;
+            if (!gameObject.activeInHierarchy || Indestructible) return; // nguồn tĩnh không lắc
+            pushDir.y = 0f;
+            if (pushDir.sqrMagnitude < 1e-6f) return;
+
+            // Đưa hướng đẩy về KHÔNG GIAN CELL (cell chỉ xoay quanh Y nên up-local = up). Trục nghiêng =
+            // cross(up, localDir): quay quanh trục này làm ĐỈNH stack (local up) ngả NGƯỢC với localDir
+            // (ngả VỀ phía cell bị bắn thay vì ra xa).
+            Vector3 localDir = transform.InverseTransformDirection(pushDir);
+            localDir.y = 0f;
+            if (localDir.sqrMagnitude < 1e-6f) return;
+            localDir.Normalize();
+            Vector3 axis = Vector3.Cross(Vector3.up, localDir);
+
+            if (_tiltRoutine != null) StopCoroutine(_tiltRoutine);
+            _tiltRoutine = StartCoroutine(TiltRoutine(axis));
+        }
+
+        private IEnumerator TiltRoutine(Vector3 axis)
+        {
+            float t = 0f;
+            while (t < neighborTiltDuration)
+            {
+                t += Time.deltaTime;
+                float k = t / neighborTiltDuration;
+                // 1 nhịp ngả-ra-rồi-về: sin(π·k) cho đường ra-vào mượt; nhân (1−k) để tắt dần (giảm chấn).
+                float ang = neighborTiltAngle * Mathf.Sin(k * Mathf.PI) * (1f - k);
+                blocksContainer.localRotation = Quaternion.AngleAxis(ang, axis) * _containerRestLocalRot;
+                yield return null;
+            }
+            blocksContainer.localRotation = _containerRestLocalRot;
+            _tiltRoutine = null;
         }
     }
 }
