@@ -85,8 +85,9 @@ namespace Wayfu.Lamkn
 
             // Material lấy từ GlobalConfigManager theo TypeColor.
             if (_renderer == null) _renderer = FindBodyRenderer();
-            var mat = GlobalConfigManager.MaterialOf(color, TypeObject.Bullet);
-            if (_renderer != null && mat != null) _renderer.sharedMaterial = mat;
+            if (_renderer != null) _renderer.enabled = true; // Bullet pooled: bật lại thân đạn đã ẩn ở lượt trước.
+            //var mat = GlobalConfigManager.MaterialOf(color, TypeObject.Bullet);
+            //if (_renderer != null && mat != null) _renderer.sharedMaterial = mat;
         }
 
         private void Update()
@@ -115,7 +116,8 @@ namespace Wayfu.Lamkn
                 _active = false;
                 if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
-                // Đứng im tại điểm trúng vài giây rồi mới trả về pool.
+                // Trúng block: ẩn thân đạn, đứng im tại điểm trúng vài giây rồi mới trả về pool.
+                if (_renderer != null) _renderer.enabled = false;
                 _lingering = true;
                 _lingerTimer = lingerDuration;
                 return;
@@ -125,6 +127,12 @@ namespace Wayfu.Lamkn
             // = 0 ở 2 đầu → đạn vọt lên rồi rơi xuống đúng target. Cộng SAU Lerp nên độc lập chênh cao 2 đầu.
             Vector3 pos = Vector3.Lerp(_start, target, t);
             pos.y += _arcPeak * 4f * t * (1f - t);
+
+            // Xoay đạn theo hướng bay: dùng vector di chuyển thực (pos mới − vị trí hiện tại) nên đầu đạn
+            // luôn chúc theo tiếp tuyến vòng cung — vọt lên lúc đầu, chúc xuống khi rơi vào target.
+            Vector3 dir = pos - transform.position;
+            if (dir.sqrMagnitude > 1e-8f) transform.rotation = Quaternion.LookRotation(dir);
+
             transform.position = pos;
         }
 

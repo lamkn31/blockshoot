@@ -185,7 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arcHeightRatio: 0.5
   arcMaxHeight: 10
-  lingerDuration: 0.2
+  lingerDuration: 0.15
 --- !u!1001 &1196117013080993163
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -199,7 +199,47 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 717610751764323971, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1248206733293664880, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2997124572629520085, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: autoRandomSeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2997124572629520085, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2997124572629520085, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2997124572629520085, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3245052877973631892, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3245052877973631892, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3392284363256562640, guid: 9e918853225e3e647b870548c812e478,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -254,6 +294,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4971914118132671508, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6642760134435823721, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6642760134435823721, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6642760134435823721, guid: 9e918853225e3e647b870548c812e478,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 6928791334677503089, guid: 9e918853225e3e647b870548c812e478,
         type: 3}
       propertyPath: m_Name
@@ -285,7 +345,8 @@ PrefabInstance:
       value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4971914118132671508, guid: 9e918853225e3e647b870548c812e478, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e918853225e3e647b870548c812e478, type: 3}
@@ -381,8 +442,23 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2108a80ea4b9ec646998d55ccb9977d7,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7138638781243747849, guid: 2108a80ea4b9ec646998d55ccb9977d7,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8787908849352107688, guid: 2108a80ea4b9ec646998d55ccb9977d7,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8787908849352107688, guid: 2108a80ea4b9ec646998d55ccb9977d7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fe554a4736e50e447b0e44a3ff2f83a5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
