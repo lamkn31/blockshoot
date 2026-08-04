@@ -135,6 +135,8 @@ namespace Wayfu.Lamkn
                 if (cc != null) maxStack = Mathf.Max(maxStack, cc.BlockStackCt);
             }
             float lift = stackSpacing * maxStack + _yOffset;
+            float coveredCellHeight = Mathf.Max(grid.CellScale.y,
+                stackSpacing * Mathf.Max(0, maxStack - 1) + grid.CellScale.y);
 
             var rects = Decompose(comp);
             var region = new Region { Threshold = threshold };
@@ -148,7 +150,7 @@ namespace Wayfu.Lamkn
                 float depth = (r1 - r0 + 1) * rowStep;
                 bool main = i == 0; // rects[0] là khối LỚN nhất → hiện countdown
                 var ice = _icePool.Get();
-                ice.Fit(center, width, depth, grid.Rotation, main, threshold);
+                ice.Fit(center, width, depth, grid.Rotation, coveredCellHeight, main, threshold);
                 region.Ices.Add(ice);
                 if (main) region.Main = ice;
             }
