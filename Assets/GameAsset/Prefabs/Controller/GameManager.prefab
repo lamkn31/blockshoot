@@ -287,12 +287,15 @@ MonoBehaviour:
   meshLengthScale: 100
   pipeCornerSampleStep: 8
   waterSurfaceOffset: 0.01
+  entryRevealDistance: 0.2
   spawnBubbles: 1
   bubbleSpawnInterval: 0.8
   bubbleSize: 0.22
   bubbleRiseSpeed: 0.7
-  tunnelInPrefab: {fileID: 0}
-  tunnelOutPrefab: {fileID: 0}
+  tunnelInPrefab: {fileID: 5868152063822215917, guid: dffe79f01902e17418f67225c2d58973,
+    type: 3}
+  tunnelOutPrefab: {fileID: 5868152063822215917, guid: dffe79f01902e17418f67225c2d58973,
+    type: 3}
   tunnelFaceDistance: 1
   queueMoveDuration: 0.2
   waterScrollSpeed: {x: 1, y: 0}
@@ -519,9 +522,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapPrefabs:
   - {fileID: 1727483338337369342, guid: df83e55a2799a8a408c9c2f78c533139, type: 3}
-  - {fileID: 4626228724480895985, guid: c72df1cdbdf25c6448b61683a2fb6afa, type: 3}
-  - {fileID: 6991575051246963569, guid: ac7b59a0dd749fb47a654c4832c00916, type: 3}
-  - {fileID: 5255094088871109158, guid: 3c41ff46d0a8db848aa5ef10b208111e, type: 3}
+  - {fileID: 4021699479797231725, guid: c72df1cdbdf25c6448b61683a2fb6afa, type: 3}
+  - {fileID: 6366340168554462402, guid: ac7b59a0dd749fb47a654c4832c00916, type: 3}
+  - {fileID: 3097187381807946122, guid: 3c41ff46d0a8db848aa5ef10b208111e, type: 3}
 --- !u!1 &8303161334858964469
 GameObject:
   m_ObjectHideFlags: 0
