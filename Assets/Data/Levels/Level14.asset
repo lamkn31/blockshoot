@@ -16,72 +16,99 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
-  PathWaypoints: []
-  IsClosed: 1
+  PathWaypoints:
+  - {x: 6.6632204, y: 0, z: -26.204165}
+  - {x: 6.7514243, y: 0, z: -19.840986}
+  - {x: -0.67139286, y: 0, z: -21.72614}
+  - {x: -6.5180364, y: 0, z: -19.629879}
+  - {x: -6.6051846, y: 0, z: -12.498724}
+  - {x: -2.5147452, y: 0, z: -9.174856}
+  - {x: 4.245267, y: 0, z: -5.172735}
+  - {x: 8.02902, y: 0, z: -5.287222}
+  IsClosed: 0
   PathStyle: 0
-  CornerRadius: 1
+  CornerRadius: 3
   SlotCount: 3
   Slots:
   - Guns:
     - Color: 6
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
     - Color: 8
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 7
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
   - Guns:
     - Color: 13
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 13
       CountBullet: 120
       Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 13
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
     - Color: 13
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
   - Guns:
     - Color: 6
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 9
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 4
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 7
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 8
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
     - Color: 9
       CountBullet: 120
       Hidden: 0
+      ConnectGroup: 0
     - Color: 9
       CountBullet: 120
       Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids: []
   CameraOrthoSize: 9
