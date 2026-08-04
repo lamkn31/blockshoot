@@ -43,6 +43,10 @@ namespace Wayfu.Lamkn
         /// </summary>
         public void HitDespawn()
         {
+            // Hit FX: phát NGAY tại vị trí block (world). Phát trước mọi nhánh return để cả trường hợp biến mất
+            // tức thì (shrinkDuration ≤ 0 / object đang tắt) vẫn có hiệu ứng vỡ.
+            FxController.Instance?.Play(FxType.BlockHit, transform.position);
+
             if (shrinkDuration <= 0f || !gameObject.activeInHierarchy) { Despawn(); return; }
             // Block đang là CON của cell. Cell despawn (Pooler.SetActive(false)) NGAY khi block cuối vỡ →
             // block bị tắt theo cha, coroutine dừng, biến mất mà chưa kịp thu nhỏ. Tách khỏi cell (giữ vị
