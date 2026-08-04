@@ -45,6 +45,15 @@ namespace Wayfu.Lamkn
         [SerializeField] private Renderer[] colorRenderers;
         [Tooltip("Các object hiển thị sẽ tắt khi gun đang chuyển vào path. Root Gun không được đưa vào đây để follower vẫn chạy.")]
         [SerializeField] private GameObject[] entryHiddenObjects;
+        [Header("Stickman shooting animation")]
+        [Tooltip("Animator dùng Stickman.controller. Để trống sẽ tự tìm Animator trong children.")]
+        [SerializeField] private Animator stickmanAnimator;
+        [SerializeField] private string shootLeftState = "Shoot_left_hand";
+        [SerializeField] private string shootRightState = "Shoot_right_hand";
+        [SerializeField] private string shootBothState = "Shoot_2_hand";
+        [SerializeField] private string idleState = "Idle";
+        [SerializeField, Min(0.05f)] private float shootAnimationDuration = 0.45f;
+        private Coroutine _animRoutine;
 
         [Header("Laser (chỉ dùng khi FireMode = Laser)")]
         [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
@@ -112,6 +121,7 @@ namespace Wayfu.Lamkn
                                           // "đã đứng sẵn" (SettleStamp ≤ mốc) vs "vừa sập trong lap này". Reset
                                           // mỗi lap → cell sập lap trước thành ready. (dùng cho laser readyBefore)
         private bool _atFront;            // gun đang ở VỊ TRÍ ĐẦU (index 0) của slot → gun ẩn lộ màu thật
+        private bool _firedRightThisFrame, _firedLeftThisFrame;
 
         /// <summary>
         /// Một bên nòng. Mỗi bên có target + nhịp bắn RIÊNG và quạt hướng ra sườn gun (±X local), nên
@@ -167,6 +177,8 @@ namespace Wayfu.Lamkn
 
             _right.Muzzle = muzzleRight;
             _left.Muzzle = muzzleLeft;
+            if (stickmanAnimator == null) stickmanAnimator = GetComponentInChildren<Animator>(true);
+            PlayRandomIdle();
 
             CollectRenderers();
 
@@ -200,6 +212,7 @@ namespace Wayfu.Lamkn
 
         public void Init(GunData data, GunFireConfig fire)
         {
+            if (_animRoutine != null) { StopCoroutine(_animRoutine); _animRoutine = null; }
             Data = new GunData { Color = data.Color, CountBullet = data.CountBullet, Hidden = data.Hidden, ConnectGroup = data.ConnectGroup };
             _fire = fire;
             _atFront = false; // item pooled tái dùng: mặc định CHƯA ở đầu; slot gọi SetAtFront sau Fill
@@ -333,6 +346,9 @@ namespace Wayfu.Lamkn
                 return;
             }
 
+            _firedRightThisFrame = false;
+            _firedLeftThisFrame = false;
+
             // Mỗi vòng path, MỖI NÒNG chỉ được 1 lượt bắn. Về tới pos 0 (xong 1 vòng) = mở khoá lượt mới.
             int lap = _follower != null ? _follower.LapCount : 0;
             if (lap != _lastLap)
@@ -352,6 +368,34 @@ namespace Wayfu.Lamkn
             // Vẽ tia laser SAU khi 2 nòng đã cập nhật target (mode Laser); mode khác thì tia luôn tắt.
             UpdateBeam(_right);
             UpdateBeam(_left);
+            PlayShootAnimation();
+        }
+
+        private void PlayShootAnimation()
+        {
+            if (stickmanAnimator == null) return;
+            string state = _firedRightThisFrame && _firedLeftThisFrame ? shootBothState
+                         : _firedRightThisFrame ? shootRightState
+                         : _firedLeftThisFrame ? shootLeftState : null;
+            if (!string.IsNullOrEmpty(state))
+            {
+                if (_animRoutine != null) StopCoroutine(_animRoutine);
+                stickmanAnimator.Play(state, 0, 0f);
+                _animRoutine = StartCoroutine(ReturnToRandomIdle());
+            }
+        }
+
+        private System.Collections.IEnumerator ReturnToRandomIdle()
+        {
+            yield return new WaitForSeconds(shootAnimationDuration);
+            PlayRandomIdle();
+            _animRoutine = null;
+        }
+
+        private void PlayRandomIdle()
+        {
+            if (stickmanAnimator != null && !string.IsNullOrEmpty(idleState))
+                stickmanAnimator.Play(idleState, 0, UnityEngine.Random.value);
         }
 
         /// <summary>Số đạn nòng này còn cần để bắn dứt điểm cell đang bám. 0 = đang rảnh.</summary>
@@ -635,6 +679,8 @@ namespace Wayfu.Lamkn
 
         private void FireOne(Barrel b, int blockIndex)
         {
+            if (ReferenceEquals(b, _right)) _firedRightThisFrame = true;
+            else if (ReferenceEquals(b, _left)) _firedLeftThisFrame = true;
             Data.CountBullet--;
             b.Target.ReserveHit();
             // Re-evaluate after reserving this projectile.  If the remaining
@@ -672,6 +718,8 @@ namespace Wayfu.Lamkn
         /// </summary>
         private void LaserHit(Barrel b)
         {
+            if (ReferenceEquals(b, _right)) _firedRightThisFrame = true;
+            else if (ReferenceEquals(b, _left)) _firedLeftThisFrame = true;
             b.FiredAtTarget = true;
             // Laser follows the same bottom-to-top destruction order as bullets.
             // Same policy as BurstPerCell: if this gun can clear the whole

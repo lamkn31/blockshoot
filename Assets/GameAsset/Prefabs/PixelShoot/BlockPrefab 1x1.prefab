@@ -59,6 +59,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0306b187d9a4964d906acc1308ed7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shrinkDuration: 0.12
+  hitFxPrefab: {fileID: 214258185039192972, guid: 6c4300962818caf468862589652a047e,
+    type: 3}
 --- !u!1 &1724804207875695
 GameObject:
   m_ObjectHideFlags: 0

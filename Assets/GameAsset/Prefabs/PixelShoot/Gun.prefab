@@ -74,6 +74,12 @@ MonoBehaviour:
   entryHiddenObjects:
   - {fileID: 4065937337305141625}
   - {fileID: 7186063181062848571}
+  stickmanAnimator: {fileID: 0}
+  shootLeftState: Shoot_left_hand
+  shootRightState: Shoot_right_hand
+  shootBothState: Shoot_2_hand
+  idleState: Idle
+  shootAnimationDuration: 0.45
   laserMaterial: {fileID: 2100000, guid: 1255821fc076ad943979a92690b2088c, type: 2}
   laserWidth: 0.4
   laserAimHeight: 0.25
@@ -689,6 +695,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: stickman_gunner
       objectReference: {fileID: 0}
+    - target: {fileID: 1240981529984917455, guid: b831e322868ec8b42b73998c4577ede4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e3cfc2ef9e881bf41911f1a99488d358, type: 2}
     - target: {fileID: 2838391200542782613, guid: b831e322868ec8b42b73998c4577ede4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
