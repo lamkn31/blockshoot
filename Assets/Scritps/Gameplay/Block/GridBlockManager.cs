@@ -41,6 +41,8 @@ namespace Wayfu.Lamkn
         private class GridRuntime
         {
             public BlockGridData Data;
+            public bool CollapseReferenceReady;
+            public float CachedCollapseReferenceAngle;
             public readonly List<BlockCell[]> Rows = new List<BlockCell[]>(); // [row][index]; null = đã phá
             /// <summary>
             /// [row][index] — true = ô LỖ, do designer xoá trong level (BlockStackCt &lt;= 0).
@@ -832,7 +834,7 @@ namespace Wayfu.Lamkn
                 {
                     var cell = cur[e];
                     if (cell == null) continue;
-                    if (IsCellDirectionDifferent(gr, cell, r, e) != (priority == 0)) continue;
+                    if (IsCellDirectionDifferent(gr, cell, CollapseReferenceAngle(gr)) != (priority == 0)) continue;
                     if (cell.Indestructible) continue; // nguồn Spawner8 đứng yên, không dồn lên
 
                     BlockGridData.FrontIndices(cur.Length, prev.Length, e, out int a, out int b);
@@ -879,15 +881,15 @@ namespace Wayfu.Lamkn
 
         // Dồn về hàng cuối khi toàn grid bị đảo 180°. Tìm mọi ô hàng sau nhận được từ ô hiện tại,
         // vì Arc/Spline có thể số cell mỗi hàng khác nhau.
-        private static bool IsCellDirectionDifferent(GridRuntime gr, BlockCell cell, int row, int col)
+        private static bool IsCellDirectionDifferent(GridRuntime gr, BlockCell cell, float expected)
         {
-            float expected = CollapseReferenceAngle(gr);
             float actual = cell.transform.eulerAngles.y;
             return Mathf.Abs(Mathf.DeltaAngle(actual, expected)) > 10f;
         }
 
         private static float CollapseReferenceAngle(GridRuntime gr)
         {
+            if (gr.CollapseReferenceReady) return gr.CachedCollapseReferenceAngle;
             float defaultAngle = gr.Data.DefaultCollapseAngle;
             bool hasDefault = false;
             var cells = new List<BlockCell>();
@@ -902,7 +904,12 @@ namespace Wayfu.Lamkn
 
             // Keep the grid-authored direction whenever at least one cell still
             // follows it. Only replace it when the whole grid was re-oriented.
-            if (hasDefault || cells.Count == 0) return defaultAngle;
+            if (hasDefault || cells.Count == 0)
+            {
+                gr.CachedCollapseReferenceAngle = defaultAngle;
+                gr.CollapseReferenceReady = true;
+                return defaultAngle;
+            }
 
             float dominant = defaultAngle;
             int bestCount = 0;
@@ -919,6 +926,8 @@ namespace Wayfu.Lamkn
                     dominant = candidateAngle;
                 }
             }
+            gr.CachedCollapseReferenceAngle = dominant;
+            gr.CollapseReferenceReady = true;
             return dominant;
         }
 
