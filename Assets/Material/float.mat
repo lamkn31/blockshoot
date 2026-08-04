@@ -179,7 +179,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SpecularMapType: 0
-    - _SpecularRoughness: 0.425
+    - _SpecularRoughness: 0.577
     - _SpecularRoughnessPBR: 0.5
     - _SpecularToonSize: 0.107
     - _SpecularToonSmoothness: 1
