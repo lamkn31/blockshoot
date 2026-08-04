@@ -12,7 +12,7 @@ namespace Wayfu.Lamkn
     {
         private TMP_Text _countdown;
         private Pooler<Ice> _pool;
-        private Vector3 _origScale, _countdownOrigScale;
+        private Vector3 _origScale, _countdownOrigScale, _countdownOrigLocalPosition;
         private Quaternion _origRot, _countdownOrigRot;
         private bool _cached;
         private MeshFilter _sideFilter;
@@ -39,6 +39,7 @@ namespace Wayfu.Lamkn
             if (_countdown != null)
             {
                 _countdownOrigScale = _countdown.transform.localScale;
+                _countdownOrigLocalPosition = _countdown.transform.localPosition;
                 _countdownOrigRot = _countdown.transform.localRotation;
             }
             _cached = true;
@@ -79,14 +80,18 @@ namespace Wayfu.Lamkn
 
             if (_countdown != null)
             {
+                // TMP must not be rotated below Ice's non-uniform fit scale: that causes shear.
+                if (_countdown.transform.parent != transform.parent)
+                    _countdown.transform.SetParent(transform.parent, true);
+                _countdown.transform.position = transform.TransformPoint(_countdownOrigLocalPosition);
+                _countdown.transform.localScale = Vector3.Scale(_countdownOrigScale, _origScale);
+                _countdown.transform.rotation = Quaternion.Euler(90f, yaw,
+                    _countdownZRotation + AutoCountdownFlipZ(yaw));
                 _countdown.gameObject.SetActive(showCountdown);
                 if (showCountdown)
                 {
                     // Khối scale không đều → counter-scale số để không bị kéo méo.
-                    _countdown.transform.localScale =
-                        new Vector3(_countdownOrigScale.x / kx, _countdownOrigScale.y / ky, _countdownOrigScale.z);
-                    _countdown.transform.localRotation = Quaternion.Euler(0f, 0f,
-                        _countdownZRotation + AutoCountdownFlipZ(yaw));
+                    // Scale and rotation were already set in world space above.
                     _countdown.text = value.ToString();
                 }
             }
@@ -95,7 +100,18 @@ namespace Wayfu.Lamkn
         /// <summary>Cập nhật số countdown (chỉ khối đang hiện countdown).</summary>
         public void SetCountdown(int remaining)
         {
-            if (_countdown != null && _countdown.gameObject.activeSelf) _countdown.text = remaining.ToString();
+            if (_countdown == null) return;
+
+            // The last visible tick is 1. Hide the glyph at that point so it cannot
+            // remain stuck on screen when the melt/despawn callback arrives later.
+            if (remaining <= 1)
+            {
+                _countdown.gameObject.SetActive(false);
+                return;
+            }
+
+            if (!_countdown.gameObject.activeSelf) _countdown.gameObject.SetActive(true);
+            _countdown.text = remaining.ToString();
         }
 
         private static float AutoCountdownFlipZ(float gridYaw)

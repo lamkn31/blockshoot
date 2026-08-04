@@ -3229,6 +3229,8 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Center"));
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Rotation"),
                     new GUIContent("Rotation (Y°)", "Xoay cả grid quanh trục Y. Kéo handle XANH LÁ trong khung giữa."));
+                EditorGUILayout.PropertyField(grid.FindPropertyRelative("DefaultDirection"),
+                    new GUIContent("Default Collapse Direction", "Auto, Up, Down, Left hoặc Right. Cell có hướng riêng là ngoại lệ."));
                 EditorGUILayout.BeginHorizontal();
                 var directionOffset = grid.FindPropertyRelative("CellDirectionOffset");
                 EditorGUILayout.PropertyField(directionOffset,

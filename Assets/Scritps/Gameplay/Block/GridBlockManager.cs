@@ -212,6 +212,16 @@ namespace Wayfu.Lamkn
         // Mặc định cũ: cell (r,e) bắn được khi MỌI cell chặn nó ở hàng trước đã bị phá. Row 0 luôn bắn được.
         private static bool IsShootableLegacy(GridRuntime gr, int r, int e)
         {
+            if (UsesHorizontalCollapseAxis(gr))
+            {
+                Vector3 right = Vector3.Cross(Vector3.up, gr.Data.Forward).normalized;
+                float angle = gr.Data.DefaultCollapseAngle * Mathf.Deg2Rad;
+                Vector3 direction = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle));
+                // The exposed side is the destination side of the collapse,
+                // not the source side from which the next cell is pulled.
+                int side = Vector3.Dot(direction, right) >= 0f ? 1 : -1;
+                return ExposedAlongRow(gr, r, e, side);
+            }
             if (ReverseGridDirection(gr))
                 return ExposedAlongRows(gr, r, e, +1); // offset 180° → mặt sau/hàng cuối là mặt bắn
             if (r <= 0) return true;
@@ -808,8 +818,12 @@ namespace Wayfu.Lamkn
         // để dồn lên (vd index 1 của hàng 5 dồn được lên index 0 hoặc 1 của hàng 4); 2 ô ngoài cùng khớp 1:1.
         private bool AdvanceOnce(GridRuntime gr)
         {
+            if (UsesHorizontalCollapseAxis(gr))
+                return AdvanceHorizontalOnce(gr);
             if (ReverseGridDirection(gr)) return AdvanceBackwardOnce(gr);
             bool moved = false;
+            // Process cells with a different facing before cells aligned with the grid.
+            for (int priority = 0; priority < 2; priority++)
             for (int r = 1; r < gr.Rows.Count; r++)
             {
                 var cur = gr.Rows[r];
@@ -818,6 +832,7 @@ namespace Wayfu.Lamkn
                 {
                     var cell = cur[e];
                     if (cell == null) continue;
+                    if (IsCellDirectionDifferent(gr, cell, r, e) != (priority == 0)) continue;
                     if (cell.Indestructible) continue; // nguồn Spawner8 đứng yên, không dồn lên
 
                     BlockGridData.FrontIndices(cur.Length, prev.Length, e, out int a, out int b);
@@ -842,8 +857,71 @@ namespace Wayfu.Lamkn
             return moved;
         }
 
+        private static bool UsesHorizontalCollapseAxis(GridRuntime gr)
+        {
+            if (gr.Data.Shape != BlockGridShape.Rect) return false;
+            float angle = gr.Data.DefaultCollapseAngle * Mathf.Deg2Rad;
+            Vector3 facing = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle));
+            Vector3 rowCollapse = -gr.Data.Forward;
+            rowCollapse.y = 0f;
+            rowCollapse.Normalize();
+            return Mathf.Abs(Vector3.Dot(facing, rowCollapse)) < 0.707f;
+        }
+
+        private bool AdvanceHorizontalOnce(GridRuntime gr)
+        {
+            float angle = gr.Data.DefaultCollapseAngle * Mathf.Deg2Rad;
+            Vector3 direction = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle));
+            Vector3 right = Vector3.Cross(Vector3.up, gr.Data.Forward).normalized;
+            int dc = Vector3.Dot(direction, right) >= 0f ? -1 : 1;
+            return AdvanceDir(gr, 0, dc);
+        }
+
         // Dồn về hàng cuối khi toàn grid bị đảo 180°. Tìm mọi ô hàng sau nhận được từ ô hiện tại,
         // vì Arc/Spline có thể số cell mỗi hàng khác nhau.
+        private static bool IsCellDirectionDifferent(GridRuntime gr, BlockCell cell, int row, int col)
+        {
+            float expected = CollapseReferenceAngle(gr);
+            float actual = cell.transform.eulerAngles.y;
+            return Mathf.Abs(Mathf.DeltaAngle(actual, expected)) > 10f;
+        }
+
+        private static float CollapseReferenceAngle(GridRuntime gr)
+        {
+            float defaultAngle = gr.Data.DefaultCollapseAngle;
+            bool hasDefault = false;
+            var cells = new List<BlockCell>();
+            foreach (var row in gr.Rows)
+                foreach (var cell in row)
+                    if (cell != null && !cell.Indestructible)
+                    {
+                        cells.Add(cell);
+                        if (Mathf.Abs(Mathf.DeltaAngle(cell.transform.eulerAngles.y, defaultAngle)) <= 10f)
+                            hasDefault = true;
+                    }
+
+            // Keep the grid-authored direction whenever at least one cell still
+            // follows it. Only replace it when the whole grid was re-oriented.
+            if (hasDefault || cells.Count == 0) return defaultAngle;
+
+            float dominant = defaultAngle;
+            int bestCount = 0;
+            foreach (var candidate in cells)
+            {
+                float candidateAngle = candidate.transform.eulerAngles.y;
+                int count = 0;
+                foreach (var cell in cells)
+                    if (Mathf.Abs(Mathf.DeltaAngle(cell.transform.eulerAngles.y, candidateAngle)) <= 10f)
+                        count++;
+                if (count > bestCount)
+                {
+                    bestCount = count;
+                    dominant = candidateAngle;
+                }
+            }
+            return dominant;
+        }
+
         private bool AdvanceBackwardOnce(GridRuntime gr)
         {
             bool moved = false;
@@ -883,8 +961,12 @@ namespace Wayfu.Lamkn
 
         private static bool ReverseGridDirection(GridRuntime gr)
         {
-            float offset = Mathf.Repeat(gr.Data.CellDirectionOffset, 360f);
-            return offset > 90f && offset < 270f;
+            float angle = gr.Data.DefaultCollapseAngle * Mathf.Deg2Rad;
+            Vector3 direction = new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle));
+            Vector3 front = -gr.Data.Forward;
+            front.y = 0f;
+            front.Normalize();
+            return Vector3.Dot(direction, front) < 0f;
         }
 
         // dc=+1: ô bên phải kéo sang trái (hướng mặc định); dc=-1: ô bên trái kéo sang phải.

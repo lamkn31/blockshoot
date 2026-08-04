@@ -166,6 +166,8 @@ namespace Wayfu.Lamkn
     [Flags]
     public enum GridEdges { None = 0, Front = 1, Back = 2, Left = 4, Right = 8 }
 
+    public enum GridDefaultDirection { Auto = 0, Up = 1, Down = 2, Left = 3, Right = 4 }
+
     /// <summary>
     /// 1 grid xếp block trên sàn XZ. Row 0 = ngoài cùng, gần path (gun ăn từ row 0 vào trong).
     /// <para><b>Shape = Arc</b>: vòng cung (fan). Mỗi hàng là 1 cung bán kính BaseRadius + row*RowSpacing,
@@ -187,6 +189,8 @@ namespace Wayfu.Lamkn
         public float Rotation;
         [Tooltip("Góc cộng thêm cho hướng của mọi cell trong grid (độ).")]
         public float CellDirectionOffset;
+        [Tooltip("Hướng dồn mặc định của grid. Auto dùng hướng theo Rotation; cell có hướng riêng vẫn được ưu tiên riêng.")]
+        public GridDefaultDirection DefaultDirection = GridDefaultDirection.Auto;
         [Tooltip("Arc: bán kính hàng đầu. Rect: khoảng cách từ Center tới hàng đầu (row 0, gần path).")]
         public float BaseRadius = 3f;
         [Tooltip("CHỈ dùng cho Rect: số cell mỗi hàng (mọi hàng bằng nhau → cột thẳng).")]
@@ -274,6 +278,21 @@ namespace Wayfu.Lamkn
 
         /// <summary>Hướng "sâu dần" của grid trên sàn (local +Z sau khi xoay). Hàng 0 gần path nhất.</summary>
         public Vector3 Forward => Quaternion.Euler(0f, Rotation, 0f) * Vector3.forward;
+
+        public float DefaultCollapseAngle
+        {
+            get
+            {
+                switch (DefaultDirection)
+                {
+                    case GridDefaultDirection.Up: return 0f;
+                    case GridDefaultDirection.Down: return 180f;
+                    case GridDefaultDirection.Left: return 270f;
+                    case GridDefaultDirection.Right: return 90f;
+                    default: return Mathf.Repeat(Mathf.Atan2((-Forward).x, (-Forward).z) * Mathf.Rad2Deg + CellDirectionOffset, 360f);
+                }
+            }
+        }
 
         /// <summary>
         /// Cung đã khép kín thành VÒNG TRÒN: mỗi hàng là 1 vòng đồng tâm quanh Center, nhiều Rows =
