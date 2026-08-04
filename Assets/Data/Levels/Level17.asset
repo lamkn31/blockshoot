@@ -20,7 +20,7 @@ MonoBehaviour:
   IsClosed: 1
   PathStyle: 0
   CornerRadius: 1
-  SlotCount: 4
+  SlotCount: 3
   Slots:
   - Guns:
     - Color: 6
@@ -119,47 +119,6 @@ MonoBehaviour:
       ConnectGroup: 0
     - Color: 1
       CountBullet: 120
-      Hidden: 0
-      ConnectGroup: 0
-  - Guns:
-    - Color: 8
-      CountBullet: 120
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 7
-      CountBullet: 60
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 1
-      CountBullet: 120
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 3
-      CountBullet: 30
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 4
-      CountBullet: 120
-      Hidden: 1
-      ConnectGroup: 0
-    - Color: 1
-      CountBullet: 60
-      Hidden: 1
-      ConnectGroup: 0
-    - Color: 1
-      CountBullet: 30
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 4
-      CountBullet: 90
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 7
-      CountBullet: 60
-      Hidden: 0
-      ConnectGroup: 0
-    - Color: 6
-      CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
   HoleCapacity: 3

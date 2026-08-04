@@ -20,90 +20,62 @@ MonoBehaviour:
   IsClosed: 1
   PathStyle: 0
   CornerRadius: 1
-  SlotCount: 4
+  SlotCount: 2
   Slots:
   - Guns:
     - Color: 3
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 2
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 13
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 13
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 9
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 2
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
   - Guns:
     - Color: 13
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 3
       CountBullet: 40
       Hidden: 0
+      ConnectGroup: 0
     - Color: 13
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 9
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 2
       CountBullet: 80
       Hidden: 0
+      ConnectGroup: 0
     - Color: 3
       CountBullet: 40
       Hidden: 0
+      ConnectGroup: 0
     - Color: 2
       CountBullet: 80
       Hidden: 0
-  - Guns:
-    - Color: 9
-      CountBullet: 80
-      Hidden: 0
-    - Color: 3
-      CountBullet: 80
-      Hidden: 0
-    - Color: 3
-      CountBullet: 80
-      Hidden: 0
-    - Color: 9
-      CountBullet: 80
-      Hidden: 0
-    - Color: 2
-      CountBullet: 80
-      Hidden: 0
-  - Guns:
-    - Color: 3
-      CountBullet: 40
-      Hidden: 0
-    - Color: 2
-      CountBullet: 40
-      Hidden: 0
-    - Color: 2
-      CountBullet: 80
-      Hidden: 0
-    - Color: 13
-      CountBullet: 80
-      Hidden: 0
-    - Color: 3
-      CountBullet: 80
-      Hidden: 0
-    - Color: 13
-      CountBullet: 40
-      Hidden: 0
-    - Color: 9
-      CountBullet: 80
-      Hidden: 0
-    - Color: 13
-      CountBullet: 80
-      Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids: []
   CameraOrthoSize: 9
