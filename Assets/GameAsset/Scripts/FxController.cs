@@ -40,6 +40,8 @@ namespace Wayfu.Lamkn
         private readonly Dictionary<FxType, GameObject> _prefabByType = new();
         // Mỗi prefab → 1 hàng đợi các instance đang nghỉ.
         private readonly Dictionary<GameObject, Queue<PooledFx>> _pools = new();
+        // Loại FX bật SHARED → 1 rig particle sống bền (mọi hit Emit vào cùng buffer → draw call ~cố định).
+        private readonly Dictionary<FxType, SharedParticleEmitter> _sharedRigs = new();
         private Transform _root; // parent chứa FX đang nghỉ (gọn hierarchy)
 
         [System.Serializable]
@@ -48,6 +50,10 @@ namespace Wayfu.Lamkn
             public FxType type;
             public GameObject prefab;
             [Min(0)] public int prewarm;
+            [Tooltip("BẬT = dùng RIG DÙNG CHUNG (SharedParticleEmitter): mọi hit Emit vào cùng 1 bộ ParticleSystem " +
+                     "→ số draw call KHÔNG tăng theo số hit. Chỉ hợp FX burst 1 phát (KHÔNG loop, KHÔNG mảnh vỡ " +
+                     "GameObject, KHÔNG cần xoay/tô màu riêng mỗi lần). Không đủ điều kiện sẽ tự fallback về pool.")]
+            public bool shared;
         }
 
         protected override void OnAwake()
@@ -61,7 +67,12 @@ namespace Wayfu.Lamkn
                 {
                     if (e.prefab == null) continue;
                     _prefabByType[e.type] = e.prefab;
-                    Prewarm(e.prefab, e.prewarm);
+
+                    // Bật shared + prefab đủ điều kiện → dựng 1 rig sống bền, KHÔNG cần prewarm pool (không mượn instance).
+                    if (e.shared && IsEligibleForShared(e.prefab))
+                        _sharedRigs[e.type] = BuildSharedRig(e.prefab);
+                    else
+                        Prewarm(e.prefab, e.prewarm);
                 }
             }
 
@@ -99,6 +110,14 @@ namespace Wayfu.Lamkn
         // Phát FX theo loại tại vị trí + góc xoay.
         public PooledFx Play(FxType type, Vector3 position, Quaternion rotation)
         {
+            // Đường SHARED: emit vào rig dùng chung → không tăng draw call theo số hit. Rig bỏ qua rotation
+            // (offset local của từng system đã bake sẵn theo prefab gốc) nên trả null (không có instance mượn ra).
+            if (_sharedRigs.TryGetValue(type, out SharedParticleEmitter rig) && rig != null)
+            {
+                rig.EmitAt(position);
+                return null;
+            }
+
             return _prefabByType.TryGetValue(type, out GameObject prefab)
                 ? Play(prefab, position, rotation)
                 : null;
@@ -141,6 +160,36 @@ namespace Wayfu.Lamkn
             fx.gameObject.SetActive(false);
             fx.transform.SetParent(_root, false);
             QueueFor(fx.SourcePrefab).Enqueue(fx);
+        }
+
+        // Dựng 1 rig dùng chung sống bền cho prefab (Instantiate 1 lần, World space, tắt auto-emit). Mọi hit
+        // của loại này Emit vào đây → draw call ~cố định. Bỏ PooledFx (nếu prefab lỡ có) để nó không tự về pool.
+        private SharedParticleEmitter BuildSharedRig(GameObject prefab)
+        {
+            GameObject go = Instantiate(prefab, _root);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.SetActive(true);
+
+            PooledFx legacy = go.GetComponent<PooledFx>();
+            if (legacy != null) Destroy(legacy);
+
+            SharedParticleEmitter rig = go.GetComponent<SharedParticleEmitter>();
+            if (rig == null) rig = go.AddComponent<SharedParticleEmitter>();
+            rig.Init(); // World space, tắt auto-emit, precompute burst count, giữ Play()
+            return rig;
+        }
+
+        // Prefab có dùng shared-emit được không? Điều kiện: có ParticleSystem, KHÔNG system nào loop
+        // (loop = FX bám/aura kéo dài, không hợp mô hình "emit 1 phát tại vị trí").
+        private bool IsEligibleForShared(GameObject prefab)
+        {
+            if (prefab == null) return false;
+            ParticleSystem[] systems = prefab.GetComponentsInChildren<ParticleSystem>(true);
+            if (systems.Length == 0) return false;
+            foreach (ParticleSystem ps in systems)
+                if (ps.main.loop) return false;
+            return true;
         }
 
         // Dựng sẵn 'count' instance cho prefab và để nghỉ trong pool.
