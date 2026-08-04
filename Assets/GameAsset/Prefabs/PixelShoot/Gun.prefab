@@ -343,7 +343,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 360547520873520329}
-  - component: {fileID: 5945839313910724193}
   m_Layer: 0
   m_Name: Stickman
   m_TagString: Untagged
@@ -367,27 +366,6 @@ Transform:
   - {fileID: 7562061435261655681}
   m_Father: {fileID: 8409230505453808584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5945839313910724193
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8295264078520528342}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8b6f7575519c27f48a5b09d73b9f7cb9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &8033137171392036202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -454,7 +432,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b831e322868ec8b42b73998c4577ede4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6768540014685515256}
   m_SourcePrefab: {fileID: 100100000, guid: b831e322868ec8b42b73998c4577ede4, type: 3}
 --- !u!137 &4654034432380433214 stripped
 SkinnedMeshRenderer:
@@ -468,6 +450,27 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8033137171392036202}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &6768540014685515256
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7186063181062848571}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8b6f7575519c27f48a5b09d73b9f7cb9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &7562061435261655681 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b831e322868ec8b42b73998c4577ede4,
