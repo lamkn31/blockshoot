@@ -99,6 +99,7 @@ namespace Wayfu.Lamkn
                     Root = gridGo.transform,
                     Pending = BuildPendingQueue(grid),
                 };
+                GridFoundationMesh.Create(grid, gridGo.transform);
 
                 for (int r = 0; r < grid.Rows; r++)
                 {

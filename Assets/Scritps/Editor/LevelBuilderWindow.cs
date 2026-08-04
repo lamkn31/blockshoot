@@ -69,6 +69,9 @@ namespace Wayfu.Lamkn
         private int _dragCellGrid = -1, _dragCellIndex = -1; // xoay hướng 1 cell
         private Vector3 _dragCellCenter;
         private int _dragSplineGrid = -1, _dragSplineWp = -1; // kéo waypoint của Spline grid
+        private int _foundationDrawGrid = -1;
+        private int _dragFoundationPoint = -1;
+        private bool _foundationInsertMode;
         // Obstacle: kéo trên map. handle 0 = di chuyển (tâm), 1 = xoay (Y), 2 = scale (góc).
         private int _dragObstacle = -1, _dragObHandle = -1;
         private Vector3 _dragObStart;                 // Pos lúc bắt đầu kéo — để Shift khóa trục
@@ -265,7 +268,14 @@ namespace Wayfu.Lamkn
             DrawRightPanel();
             EditorGUILayout.EndHorizontal();
 
-            if (_target != null && _so != null && _so.ApplyModifiedProperties()) _liveDirty = true;
+            if (_target != null && _so != null && _so.ApplyModifiedProperties())
+            {
+                // Avoid hashing every spline waypoint for every visible cell. Grid data clears its
+                // geometry caches exactly once when an Inspector/handle edit is committed.
+                if (_target.Grids != null)
+                    foreach (var grid in _target.Grids) grid?.InvalidateGeometryCache();
+                _liveDirty = true;
+            }
 
             // Sau khi serialized đã áp vào object: tính lại Left/Right của grid theo path (nếu vừa
             // tạo/di chuyển). Làm ở đây để đọc geometry THẬT của grid (CellPos) sau thay đổi.
@@ -845,6 +855,9 @@ namespace Wayfu.Lamkn
                     }
 
                     // Thanh cạnh: cho biết các HƯỚNG bắn được của grid (ShootableEdges).
+                    // Foundation is normally created only at runtime. Preview its footprint here
+                    // so spline and margin can be adjusted directly in the Level Tool.
+                    if (grid.GenerateFoundation) DrawFoundationPreview(grid, Proj, Front, Line);
                     if (_showEdges) DrawGridEdges(grid, last, area, Proj, Front);
 
                     for (int r = 0; r < grid.Rows; r++)
@@ -1016,6 +1029,7 @@ namespace Wayfu.Lamkn
                     }
 
                 }
+                HandleFoundationDrawing(area);
                 ApplyGridHandleDrag();
                 ApplySplineDrag();
                 if (_showDir) ApplyCellRotateDrag();
@@ -1343,6 +1357,227 @@ namespace Wayfu.Lamkn
         /// XANH = cạnh bắn được, ĐỎ = mặt chặn. Grid mặc định (ShootableEdges = None) chỉ hiện xanh ở mặt
         /// Front (hàng 0) như hành vi cũ. Cạnh vẽ theo TÂM cell nên bám cả Arc/Spline cong.
         /// </summary>
+        /// <summary>Lightweight editor-only footprint for the runtime GridFoundationMesh.</summary>
+        private static void DrawFoundationPreview(BlockGridData grid,
+            System.Func<Vector3, Vector2> Proj, System.Func<Vector3, bool> Front,
+            System.Action<Vector2, Vector2> Line)
+        {
+            if (grid.FoundationWaypoints != null && grid.FoundationWaypoints.Count >= 3)
+            {
+                Handles.color = new Color(1f, 0.84f, 0.54f, 0.8f);
+                var local = RoundedPolylinePath.BuildSamples(grid.FoundationWaypoints, true,
+                    grid.FoundationCornerRadius, 8, grid.FoundationStyle);
+                if (local != null)
+                    for (int i = 1; i < local.Length; i++)
+                    {
+                        Vector3 a = grid.FoundationWorldPoint(local[i - 1]);
+                        Vector3 b = grid.FoundationWorldPoint(local[i]);
+                        if (Front(a) && Front(b)) Line(Proj(a), Proj(b));
+                    }
+                Handles.color = new Color(1f, 0.9f, 0.2f, 1f);
+                foreach (var point in grid.FoundationWaypoints)
+                {
+                    Vector2 p = Proj(grid.FoundationWorldPoint(point));
+                    Handles.DrawSolidDisc(new Vector3(p.x, p.y), Vector3.forward, 5f);
+                }
+                return;
+            }
+            DrawActiveFoundationPreview(grid, Proj, Front, Line);
+            return;
+            /* Legacy continuous-rail preview retained below for reference. */
+            #pragma warning disable 162
+            int segments = Mathf.Max(4, grid.FoundationSegments);
+            bool closed = grid.IsFullRing;
+            int pointCount = closed ? segments : segments + 1;
+            float rowStep = Mathf.Max(0.01f, grid.RowSpacing);
+            float firstRow = -0.5f - grid.FoundationMargin / rowStep;
+            float lastRow = grid.Rows - 0.5f + grid.FoundationMargin / rowStep;
+            var front = new Vector3[pointCount];
+            var back = new Vector3[pointCount];
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                float s = i / (float)segments;
+                front[i] = grid.SurfacePosition(firstRow, s);
+                back[i] = grid.SurfacePosition(lastRow, s);
+            }
+
+            // This is only a lightweight translucent footprint, not a duplicate of the runtime mesh.
+            Handles.color = new Color(1f, 0.84f, 0.54f, 0.12f);
+            int spanCount = closed ? pointCount : pointCount - 1;
+            for (int i = 0; i < spanCount; i++)
+            {
+                int next = (i + 1) % pointCount;
+                if (!Front(front[i]) || !Front(front[next]) || !Front(back[next]) || !Front(back[i])) continue;
+                Handles.DrawAAConvexPolygon(
+                    new Vector3(Proj(front[i]).x, Proj(front[i]).y),
+                    new Vector3(Proj(front[next]).x, Proj(front[next]).y),
+                    new Vector3(Proj(back[next]).x, Proj(back[next]).y),
+                    new Vector3(Proj(back[i]).x, Proj(back[i]).y));
+            }
+
+            Handles.color = new Color(1f, 0.84f, 0.54f, 0.8f);
+            for (int i = 1; i < pointCount; i++)
+            {
+                Line(Proj(front[i - 1]), Proj(front[i]));
+                Line(Proj(back[i - 1]), Proj(back[i]));
+            }
+            if (closed)
+            {
+                Line(Proj(front[pointCount - 1]), Proj(front[0]));
+                Line(Proj(back[pointCount - 1]), Proj(back[0]));
+            }
+            else
+            {
+                Line(Proj(front[0]), Proj(back[0]));
+                Line(Proj(front[pointCount - 1]), Proj(back[pointCount - 1]));
+            }
+            #pragma warning restore 162
+        }
+
+        private static void DrawActiveFoundationPreview(BlockGridData grid,
+            System.Func<Vector3, Vector2> Proj, System.Func<Vector3, bool> Front,
+            System.Action<Vector2, Vector2> Line)
+        {
+            float halfW = Mathf.Max(0.05f, grid.BlockWidth > 0f ? grid.BlockWidth * grid.CellScale.x * 0.5f : 0.5f);
+            float halfD = Mathf.Max(0.05f, grid.BlockWidth > 0f ? grid.BlockWidth * grid.CellScale.z * 0.5f : 0.5f);
+            Handles.color = new Color(1f, 0.84f, 0.54f, 0.18f);
+            for (int row = 0; row < grid.Rows; row++)
+            {
+                int count = grid.ElementsInRow(row);
+                for (int e = 0; e < count; e++)
+                {
+                    var cell = grid.GetCell(row, e);
+                    if (cell == null || cell.BlockStackCt <= 0) continue;
+                    Vector3 center = grid.CellPosAt(row, e, count);
+                    Vector3 tangent = grid.CellPosAt(row, Mathf.Min(count - 1, e + 1), count) -
+                                      grid.CellPosAt(row, Mathf.Max(0, e - 1), count);
+                    tangent.y = 0f;
+                    if (tangent.sqrMagnitude < 1e-6f) tangent = grid.Forward;
+                    tangent.Normalize();
+                    Vector3 normal = Vector3.Cross(Vector3.up, tangent).normalized;
+                    Vector3[] corners = {
+                        center - tangent * halfW - normal * halfD,
+                        center + tangent * halfW - normal * halfD,
+                        center + tangent * halfW + normal * halfD,
+                        center - tangent * halfW + normal * halfD
+                    };
+                    if (!Front(center)) continue;
+                    Vector2 p0 = Proj(corners[0]), p1 = Proj(corners[1]), p2 = Proj(corners[2]), p3 = Proj(corners[3]);
+                    Handles.DrawAAConvexPolygon(new Vector3(p0.x, p0.y), new Vector3(p1.x, p1.y),
+                                                new Vector3(p2.x, p2.y), new Vector3(p3.x, p3.y));
+                    Handles.color = new Color(1f, 0.84f, 0.54f, 0.75f);
+                    Line(p0, p1); Line(p1, p2); Line(p2, p3); Line(p3, p0);
+                    Handles.color = new Color(1f, 0.84f, 0.54f, 0.18f);
+                }
+            }
+        }
+
+        private void HandleFoundationDrawing(Rect area)
+        {
+            if (_foundationDrawGrid < 0 || _target == null || _so == null ||
+                _foundationDrawGrid >= _target.Grids.Count) return;
+            var e = Event.current;
+            var grid = _so.FindProperty("Grids").GetArrayElementAtIndex(_foundationDrawGrid);
+            var points = grid.FindPropertyRelative("FoundationWaypoints");
+            if (e.type == EventType.MouseDown && e.button == 0 && !e.alt && area.Contains(e.mousePosition))
+            {
+                Vector3 world = InverseV(e.mousePosition);
+                float best = 24f; int bestIndex = -1;
+                for (int i = 0; i < points.arraySize; i++)
+                {
+                    Vector3 p = FoundationPointWorld(grid, points.GetArrayElementAtIndex(i).vector3Value);
+                    float d = (ProjectPoint(p) - e.mousePosition).magnitude;
+                    if (d < best) { best = d; bestIndex = i; }
+                }
+                if (bestIndex >= 0) { _dragFoundationPoint = bestIndex; e.Use(); }
+                else if (_foundationInsertMode && points.arraySize >= 2)
+                {
+                    int insertAfter = 0; float segmentBest = float.MaxValue;
+                    for (int i = 0; i < points.arraySize; i++)
+                    {
+                        int next = (i + 1) % points.arraySize;
+                        Vector2 a = ProjectPoint(FoundationPointWorld(grid, points.GetArrayElementAtIndex(i).vector3Value));
+                        Vector2 b = ProjectPoint(FoundationPointWorld(grid, points.GetArrayElementAtIndex(next).vector3Value));
+                        float d = DistanceToSegment(e.mousePosition, a, b);
+                        if (d < segmentBest) { segmentBest = d; insertAfter = i; }
+                    }
+                    if (segmentBest < 32f)
+                    {
+                        Vector3 insertWorld = InverseV(e.mousePosition);
+                        Vector3 center = grid.FindPropertyRelative("Center").vector3Value;
+                        float rot = grid.FindPropertyRelative("Rotation").floatValue;
+                        Vector3 local = Quaternion.Euler(0f, -rot, 0f) * (insertWorld - center);
+                        points.InsertArrayElementAtIndex(insertAfter + 1);
+                        points.GetArrayElementAtIndex(insertAfter + 1).vector3Value = new Vector3(local.x, 0f, local.z);
+                        _foundationInsertMode = false;
+                        e.Use(); Repaint();
+                    }
+                }
+            }
+            else if (e.type == EventType.MouseDrag && _dragFoundationPoint >= 0 && _dragFoundationPoint < points.arraySize)
+            {
+                Vector3 world = InverseV(e.mousePosition);
+                Vector3 center = grid.FindPropertyRelative("Center").vector3Value;
+                float rot = grid.FindPropertyRelative("Rotation").floatValue;
+                Vector3 local = Quaternion.Euler(0f, -rot, 0f) * (world - center);
+                points.GetArrayElementAtIndex(_dragFoundationPoint).vector3Value = new Vector3(local.x, 0f, local.z);
+                e.Use(); Repaint();
+            }
+            else if (e.type == EventType.MouseUp && _dragFoundationPoint >= 0)
+            {
+                _dragFoundationPoint = -1; e.Use();
+            }
+        }
+
+        private Vector2 ProjectPoint(Vector3 world)
+        {
+            Vector2 c = _viewContent.center;
+            Vector2 projected;
+            if (_previewCamera != null)
+            {
+                Vector3 vp = _previewCamera.WorldToViewportPoint(world);
+                projected = new Vector2(_viewContent.x + vp.x * _viewContent.width,
+                                        _viewContent.yMax - vp.y * _viewContent.height);
+            }
+            else
+            {
+                projected = new Vector2(_viewContent.x + Pad + (world.x - _viewMin.x) * _viewScale,
+                                        _viewContent.yMax - Pad - (world.z - _viewMin.y) * _viewScale);
+            }
+            return c + (projected - c) * _zoom + _pan;
+        }
+
+        private static Vector3 FoundationPointWorld(SerializedProperty grid, Vector3 local)
+        {
+            Vector3 center = grid.FindPropertyRelative("Center").vector3Value;
+            float rot = grid.FindPropertyRelative("Rotation").floatValue;
+            return center + Quaternion.Euler(0f, rot, 0f) * local;
+        }
+
+        private static float DistanceToSegment(Vector2 p, Vector2 a, Vector2 b)
+        {
+            Vector2 d = b - a;
+            float t = d.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, d) / d.sqrMagnitude) : 0f;
+            return Vector2.Distance(p, a + d * t);
+        }
+
+        private static void SeedFoundationCorners(SerializedProperty grid)
+        {
+            var points = grid.FindPropertyRelative("FoundationWaypoints");
+            if (points.arraySize >= 3) return;
+            float rows = Mathf.Max(1, grid.FindPropertyRelative("Rows").intValue);
+            float spacing = Mathf.Max(0.01f, grid.FindPropertyRelative("RowSpacing").floatValue);
+            float depth = rows * spacing * 0.5f;
+            float width = Mathf.Max(1f, grid.FindPropertyRelative("Columns").intValue) *
+                          Mathf.Max(0.5f, grid.FindPropertyRelative("BlockWidth").floatValue);
+            points.arraySize = 4;
+            Vector3[] corners = { new Vector3(-width, 0f, -depth), new Vector3(width, 0f, -depth),
+                                  new Vector3(width, 0f, depth), new Vector3(-width, 0f, depth) };
+            for (int i = 0; i < 4; i++) points.GetArrayElementAtIndex(i).vector3Value = corners[i];
+        }
+
+        /// <summary>Draws the shootable and blocked edges of a grid.</summary>
         private void DrawGridEdges(BlockGridData grid, int last, Rect area,
             System.Func<Vector3, Vector2> Proj, System.Func<Vector3, bool> Front)
         {
@@ -2017,12 +2252,13 @@ namespace Wayfu.Lamkn
             // Đường tim spline (grid bám theo) — mặc định ẨN, bật ở mục SPLINE.
             if (_showSplineLine)
             {
-                var s = RoundedPolylinePath.BuildSamples(g.SplineWaypoints, g.SplineClosed,
-                                                         g.SplineCornerRadius, 8, g.SplineStyle);
-                if (s != null && s.Length >= 2)
+                // Reuse BlockGridData's world-space cache; rebuilding samples on every repaint
+                // was particularly expensive while dragging a spline waypoint.
+                var s = g.SplineSamples;
+                if (s != null && s.Count >= 2)
                 {
                     Handles.color = new Color(0.8f, 0.4f, 1f, 0.7f);
-                    for (int i = 1; i < s.Length; i++) Line(Proj(ToW(s[i - 1])), Proj(ToW(s[i])));
+                    for (int i = 1; i < s.Count; i++) Line(Proj(s[i - 1]), Proj(s[i]));
                 }
             }
 
@@ -3031,6 +3267,62 @@ namespace Wayfu.Lamkn
                     EditorGUILayout.PropertyField(grid.FindPropertyRelative("StackSpacing"),
                         new GUIContent("Stack Spacing", "Khoảng cách Y giữa block trong stack của grid scale riêng."));
                 if (!isRect) EditorGUILayout.PropertyField(grid.FindPropertyRelative("Layout"), new GUIContent("Layout"));
+                EditorGUILayout.Space(2);
+                EditorGUILayout.PropertyField(grid.FindPropertyRelative("GenerateFoundation"), new GUIContent("Generate Foundation",
+                    "Tạo mesh nền liền dưới cell. Spline grid sẽ tự uốn theo các Spline Waypoints hiện tại."));
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Generate Foundation", GUILayout.Height(20)))
+                {
+                    // Foundation is procedural at runtime; this authoring action enables it and
+                    // refreshes the editor footprint immediately instead of creating a stale mesh asset.
+                    grid.FindPropertyRelative("GenerateFoundation").boolValue = true;
+                    SeedFoundationCorners(grid);
+                    _liveDirty = true;
+                    Repaint();
+                }
+                if (GUILayout.Button("Disable Foundation", GUILayout.Height(20)))
+                {
+                    grid.FindPropertyRelative("GenerateFoundation").boolValue = false;
+                    _liveDirty = true;
+                    Repaint();
+                }
+                if (GUILayout.Button(_foundationDrawGrid == i ? "Stop Drawing" : "Foundation Draw", GUILayout.Height(20)))
+                {
+                    _foundationDrawGrid = _foundationDrawGrid == i ? -1 : i;
+                    _activeGrid = i;
+                    Repaint();
+                }
+                EditorGUILayout.EndHorizontal();
+                if (grid.FindPropertyRelative("GenerateFoundation").boolValue)
+                {
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationSourceMesh"), new GUIContent("Foundation Source Mesh",
+                        "Optional mesh/FBX. Author X dọc spline, Z theo chiều sâu grid, Y là độ cao; mesh sẽ được uốn theo grid."));
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationStyle"), new GUIContent("Draw Style"));
+                    using (new EditorGUI.DisabledScope(grid.FindPropertyRelative("FoundationStyle").enumValueIndex != (int)PathStyle.RoundedCorner))
+                        EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationCornerRadius"), new GUIContent("Draw Corner Radius"));
+                    if (GUILayout.Button("Clear Foundation Points")) grid.FindPropertyRelative("FoundationWaypoints").arraySize = 0;
+                    if (GUILayout.Button("Add Point"))
+                    {
+                        var p = grid.FindPropertyRelative("FoundationWaypoints");
+                        p.arraySize++;
+                        p.GetArrayElementAtIndex(p.arraySize - 1).vector3Value = p.arraySize > 1
+                            ? p.GetArrayElementAtIndex(p.arraySize - 2).vector3Value + Vector3.right : Vector3.zero;
+                    }
+                    if (GUILayout.Button(_foundationInsertMode ? "Click Edge..." : "Insert Point"))
+                        _foundationInsertMode = !_foundationInsertMode;
+                    if (GUILayout.Button("Delete Last Point") && grid.FindPropertyRelative("FoundationWaypoints").arraySize > 0)
+                        grid.FindPropertyRelative("FoundationWaypoints").arraySize--;
+                    EditorGUILayout.LabelField("Foundation points", grid.FindPropertyRelative("FoundationWaypoints").arraySize.ToString());
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationMaterial"), new GUIContent("Foundation Material"));
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationMargin"), new GUIContent("Margin"));
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationThickness"), new GUIContent("Thickness"));
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationYOffset"), new GUIContent("Y Offset"));
+                    EditorGUILayout.PropertyField(grid.FindPropertyRelative("FoundationSegments"), new GUIContent("Curve Segments"));
+                    EditorGUILayout.EndHorizontal();
+                }
                 EditorGUILayout.HelpBox(DescribeLayout(i), MessageType.None);
 
                 if (GUILayout.Button($"Generate Cells (Gen Color · stack = Hole Capacity {Mathf.Max(1, _target.HoleCapacity)})")) GenerateGridCells(i);

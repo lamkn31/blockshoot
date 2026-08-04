@@ -223,6 +223,26 @@ namespace Wayfu.Lamkn
                  "index 0). Tắt = chỉ dồn dọc như cũ. (Chỉ áp dụng khi KHÔNG bật ShootableEdges.)")]
         public bool Collapse2D = false;
 
+        [Header("Foundation (optional mesh below cells)")]
+        [Tooltip("Tạo một mặt nền liền dưới toàn bộ grid. Với Shape = Spline, nền dùng chính spline nên bo/cong khớp cell.")]
+        public bool GenerateFoundation;
+        [Tooltip("Mesh nền tùy biến. Author mesh theo X = dọc spline, Z = chiều sâu grid, Y = độ cao. Khi gán, mesh này được bẻ theo shape của grid thay cho nền hộp tự sinh.")]
+        public Mesh FoundationSourceMesh;
+        [Tooltip("Material của nền. Cần gán khi bật Generate Foundation.")]
+        public Material FoundationMaterial;
+        [Min(0f)] [Tooltip("Nền nới ra ngoài cell theo cả hai chiều (world units).")]
+        public float FoundationMargin = 0.25f;
+        [Min(0f)] [Tooltip("Độ dày thành bên của nền. 0 = chỉ một mặt phẳng.")]
+        public float FoundationThickness = 0.25f;
+        [Tooltip("Độ cao của mặt nền so với tâm cell. Giá trị âm đặt nền nằm dưới block.")]
+        public float FoundationYOffset = -0.12f;
+        [Range(4, 128)] [Tooltip("Số đoạn theo chiều dài nền; tăng khi spline cong gắt.")]
+        public int FoundationSegments = 32;
+        [Tooltip("Các điểm local của foundation thủ công. Điểm cuối tự nối về điểm đầu.")]
+        public List<Vector3> FoundationWaypoints = new List<Vector3>();
+        public PathStyle FoundationStyle = PathStyle.RoundedCorner;
+        [Min(0f)] public float FoundationCornerRadius = 0.5f;
+
         [Header("Spline (chỉ dùng khi Shape = Spline)")]
         [Tooltip("Waypoint của đường uốn lượn, toạ độ LOCAL so với Center + Rotation — dời/xoay grid là " +
                  "cả dải đi theo. Hàng 0 nằm cách đường này BaseRadius, hàng sau lệch thêm RowSpacing.")]
@@ -321,7 +341,22 @@ namespace Wayfu.Lamkn
         private Vector3 ToWorld(Vector3 local) => Center + Quaternion.Euler(0f, Rotation, 0f) * local;
 
         // Vị trí tâm-hàng theo s (0..1) dọc sweep — có xoắn ốc.
-        private Vector3 PosAlong(int row, float s)
+        /// <summary>Điểm trên dải nền/grid ở hàng có thể là số lẻ. Dùng cho mesh foundation để mép ôm đúng spline.</summary>
+        public Vector3 SurfacePosition(float row, float s)
+        {
+            if (Shape == BlockGridShape.Rect)
+            {
+                float step = Mathf.Max(0.01f, BlockWidth + Spacing);
+                float width = Mathf.Max(BlockWidth, (Mathf.Max(1, Columns) - 1) * step + BlockWidth + FoundationMargin * 2f);
+                float lateral = (Mathf.Clamp01(s) - 0.5f) * width;
+                return ToWorld(new Vector3(lateral, 0f, BaseRadius + row * RowSpacing));
+            }
+            return PosAlong(row, s);
+        }
+
+        public Vector3 FoundationWorldPoint(Vector3 local) => ToWorld(local);
+
+        private Vector3 PosAlong(float row, float s)
         {
             if (Shape == BlockGridShape.Spline) return SplinePosAlong(row, s);
             float angleRad = Mathf.Lerp(-ArcAngle * 0.5f, ArcAngle * 0.5f, s) * Mathf.Deg2Rad;
@@ -335,6 +370,12 @@ namespace Wayfu.Lamkn
         [NonSerialized] private int _splineKey;
         [NonSerialized] private bool _splineBuilt;
 
+        /// <summary>World-space cached samples of the grid spline, intended for editor preview drawing.</summary>
+        public IReadOnlyList<Vector3> SplineSamples
+        {
+            get { EnsureSpline(); return _splinePts; }
+        }
+
         /// <summary>
         /// Dựng đường uốn lượn từ SplineWaypoints — dùng ĐÚNG bộ dựng của path
         /// (<see cref="RoundedPolylinePath.BuildSamples"/>) nên Spline grid và path cong y hệt nhau,
@@ -344,8 +385,8 @@ namespace Wayfu.Lamkn
         /// </summary>
         private void EnsureSpline()
         {
+            if (_splineBuilt) return;
             int key = SplineKey();
-            if (_splineBuilt && key == _splineKey) return;
             _splineKey = key;
             _splineBuilt = true;
             _splinePts = null;
@@ -382,7 +423,7 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>Điểm trên hàng 'row' tại s (0..1) dọc đường: bám đường rồi lệch ra theo PHÁP TUYẾN.</summary>
-        private Vector3 SplinePosAlong(int row, float s)
+        private Vector3 SplinePosAlong(float row, float s)
         {
             EnsureSpline();
             if (_splinePts == null) return Center;
@@ -437,10 +478,9 @@ namespace Wayfu.Lamkn
 
         private RowSample GetRow(int row)
         {
-            int k = GeometryKey();
-            if (!_geoBuilt || k != _geoKey || _rowCache == null)
+            if (!_geoBuilt || _rowCache == null)
             {
-                _geoKey = k; _geoBuilt = true;
+                _geoKey = GeometryKey(); _geoBuilt = true;
                 _rowCache = new Dictionary<int, RowSample>();
             }
             if (_rowCache.TryGetValue(row, out var rs)) return rs;
@@ -503,6 +543,21 @@ namespace Wayfu.Lamkn
         [NonSerialized] private int _layoutKey;
         [NonSerialized] private bool _layoutBuilt;
 
+        /// <summary>
+        /// Geometry is immutable between edits. Call this after changing the grid shape from code;
+        /// the Level Tool calls it once after applying serialized edits.
+        /// </summary>
+        public void InvalidateGeometryCache()
+        {
+            _splineBuilt = false;
+            _splinePts = null;
+            _splineArc = null;
+            _geoBuilt = false;
+            _rowCache?.Clear();
+            _layoutBuilt = false;
+            _rowStart = null;
+        }
+
         // Mọi thứ ảnh hưởng SỐ CELL mỗi hàng (khác GeometryKey vốn chỉ lo vị trí): thêm BlockWidth/Spacing/
         // Columns/Layout/Rows. Lệch là dựng lại prefix-sum.
         private int LayoutKey()
@@ -521,9 +576,8 @@ namespace Wayfu.Lamkn
 
         private void EnsureRowStart()
         {
-            int k = LayoutKey();
-            if (_layoutBuilt && k == _layoutKey && _rowStart != null) return;
-            _layoutBuilt = true; _layoutKey = k;
+            if (_layoutBuilt && _rowStart != null) return;
+            _layoutBuilt = true; _layoutKey = LayoutKey();
             int n = Mathf.Max(0, Rows);
             _rowStart = new int[n + 1];
             for (int r = 0; r < n; r++) _rowStart[r + 1] = _rowStart[r] + ElementsInRow(r);
