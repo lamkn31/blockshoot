@@ -12,6 +12,8 @@ namespace Wayfu.Lamkn
         [SerializeField] private float arcHeightRatio = 0.22f;
         [Tooltip("Giới hạn độ cao đỉnh vòng cung (world units) để cú bắn xa không vọt quá cao.")]
         [SerializeField] private float arcMaxHeight = 2.5f;
+        [Tooltip("Sau khi trúng block, đạn đứng im tại chỗ bao lâu (giây) rồi mới biến mất.")]
+        [SerializeField] private float lingerDuration = 1.5f;
 
         private Pooler<Bullet> _pool;
         private BlockCell _cell;
@@ -26,6 +28,8 @@ namespace Wayfu.Lamkn
         private float _duration;    // thời gian bay ≈ quãng đường / speed (chốt lúc Launch)
         private float _elapsed;     // thời gian đã bay → t = _elapsed / _duration
         private float _arcPeak;     // độ cao đỉnh vòng cung của cú bắn này
+        private bool _lingering;    // đã trúng block, đang đứng im chờ biến mất
+        private float _lingerTimer; // đếm ngược thời gian đứng im còn lại
 
         public void OnInitializedInPool(Pooler<Bullet> pool) => _pool = pool;
 
@@ -77,6 +81,7 @@ namespace Wayfu.Lamkn
             _cellGen = target != null ? target.Generation : 0;
             _speed = speed;
             _active = true;
+            _lingering = false;
 
             // Material lấy từ GlobalConfigManager theo TypeColor.
             if (_renderer == null) _renderer = FindBodyRenderer();
@@ -86,6 +91,14 @@ namespace Wayfu.Lamkn
 
         private void Update()
         {
+            // Đã trúng block: đứng im tại chỗ, đếm ngược rồi mới biến mất.
+            if (_lingering)
+            {
+                _lingerTimer -= Time.deltaTime;
+                if (_lingerTimer <= 0f) Despawn();
+                return;
+            }
+
             if (!_active) return;
             // Cell đã bị phá — hoặc object pooled đã TÁI DÙNG thành cell khác (Generation lệch) → huỷ đạn,
             // không bay đuổi theo cell mới ở vị trí khác.
@@ -102,7 +115,9 @@ namespace Wayfu.Lamkn
                 _active = false;
                 if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
-                Despawn();
+                // Đứng im tại điểm trúng vài giây rồi mới trả về pool.
+                _lingering = true;
+                _lingerTimer = lingerDuration;
                 return;
             }
 
@@ -116,6 +131,7 @@ namespace Wayfu.Lamkn
         private void Despawn()
         {
             _active = false;
+            _lingering = false;
             _cell = null;
             if (_pool != null) _pool.Release(this);
             else Destroy(gameObject);
