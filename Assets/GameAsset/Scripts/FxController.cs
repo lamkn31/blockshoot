@@ -12,6 +12,7 @@ namespace Wayfu.Lamkn
         TimerAura = 4, // xe ambulance aura
         MovingTimer = 5, // xe ambulance timer moving
         BlockHit = 6, // block trúng đạn vỡ — phát tại vị trí block, tô theo màu block
+        BulletTrail = 7, // FX nước bám theo viên đạn đang bay (Projectiles_water) — rig trail dùng chung
     }
 
     // Quản lý pool FX + phát FX tại vị trí cần. Toàn bộ prefab FX khai báo TẠI ĐÂY (không để ở car).
@@ -42,6 +43,8 @@ namespace Wayfu.Lamkn
         private readonly Dictionary<GameObject, Queue<PooledFx>> _pools = new();
         // Loại FX bật SHARED → 1 rig particle sống bền (mọi hit Emit vào cùng buffer → draw call ~cố định).
         private readonly Dictionary<FxType, SharedParticleEmitter> _sharedRigs = new();
+        // Loại FX bật TRAIL → 1 rig sống bền rải particle dọc đường bay (mọi viên đạn dùng chung → draw call ~cố định).
+        private readonly Dictionary<FxType, SharedTrailEmitter> _trailRigs = new();
         private Transform _root; // parent chứa FX đang nghỉ (gọn hierarchy)
 
         [System.Serializable]
@@ -54,6 +57,10 @@ namespace Wayfu.Lamkn
                      "→ số draw call KHÔNG tăng theo số hit. Chỉ hợp FX burst 1 phát (KHÔNG loop, KHÔNG mảnh vỡ " +
                      "GameObject, KHÔNG cần xoay/tô màu riêng mỗi lần). Không đủ điều kiện sẽ tự fallback về pool.")]
             public bool shared;
+            [Tooltip("BẬT = dùng RIG TRAIL DÙNG CHUNG (SharedTrailEmitter): FX BÁM VẬT BAY (vd đạn nước) rải particle " +
+                     "dọc đường bay từ 1 bộ ParticleSystem chung → draw call KHÔNG tăng theo số viên đạn. Giữ đúng " +
+                     "thông số prefab (start speed/shape/rate), bám vật qua inherit velocity. Ưu tiên hơn 'shared'.")]
+            public bool trail;
         }
 
         protected override void OnAwake()
@@ -68,8 +75,11 @@ namespace Wayfu.Lamkn
                     if (e.prefab == null) continue;
                     _prefabByType[e.type] = e.prefab;
 
-                    // Bật shared + prefab đủ điều kiện → dựng 1 rig sống bền, KHÔNG cần prewarm pool (không mượn instance).
-                    if (e.shared && IsEligibleForShared(e.prefab))
+                    // Bật trail → rig rải dọc đường bay (FX bám vật bay). Bật shared → rig burst đứng yên.
+                    // Cả hai KHÔNG cần prewarm pool (không mượn instance). Không đủ điều kiện → fallback pool.
+                    if (e.trail && IsEligibleForTrail(e.prefab))
+                        _trailRigs[e.type] = BuildTrailRig(e.prefab);
+                    else if (e.shared && IsEligibleForShared(e.prefab))
                         _sharedRigs[e.type] = BuildSharedRig(e.prefab);
                     else
                         Prewarm(e.prefab, e.prewarm);
@@ -121,6 +131,24 @@ namespace Wayfu.Lamkn
             return _prefabByType.TryGetValue(type, out GameObject prefab)
                 ? Play(prefab, position, rotation)
                 : null;
+        }
+
+        // Loại FX này có rig TRAIL dùng chung không? (nơi gọi kiểm tra trước khi quyết định dùng rig hay FX con riêng).
+        public bool HasTrailRig(FxType type) => _trailRigs.TryGetValue(type, out SharedTrailEmitter rig) && rig != null;
+
+        // Bắn các system BURST 1 phát của FX trail tại vị trí phóng (head/core), thừa hưởng vận tốc phóng.
+        public void EmitTrailBurst(FxType type, Vector3 position, Vector3 velocity)
+        {
+            if (_trailRigs.TryGetValue(type, out SharedTrailEmitter rig) && rig != null)
+                rig.EmitBurst(position, velocity);
+        }
+
+        // Rải particle trail của FX cho một bước bay dài 'distance' (gọi mỗi bước khi vật đang bay).
+        // 'velocity' = vận tốc world của vật → particle inherit để bay cùng vật (giữ nguyên start-velocity gốc).
+        public void EmitTrail(FxType type, Vector3 position, float distance, Vector3 velocity)
+        {
+            if (_trailRigs.TryGetValue(type, out SharedTrailEmitter rig) && rig != null)
+                rig.EmitTrail(position, distance, velocity);
         }
 
         // Phát FX theo prefab bất kỳ (dùng cho FX không nằm trong enum). Trả instance để tắt thủ công nếu cần.
@@ -178,6 +206,31 @@ namespace Wayfu.Lamkn
             if (rig == null) rig = go.AddComponent<SharedParticleEmitter>();
             rig.Init(); // World space, tắt auto-emit, precompute burst count, giữ Play()
             return rig;
+        }
+
+        // Dựng 1 rig TRAIL sống bền cho prefab (Instantiate 1 lần, World space, tắt auto-emit). Mọi viên đạn
+        // của loại này rải particle dọc đường bay vào đây → draw call ~cố định. Bỏ PooledFx để nó không tự về pool.
+        private SharedTrailEmitter BuildTrailRig(GameObject prefab)
+        {
+            GameObject go = Instantiate(prefab, _root);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.SetActive(true);
+
+            PooledFx legacy = go.GetComponent<PooledFx>();
+            if (legacy != null) Destroy(legacy);
+
+            SharedTrailEmitter rig = go.GetComponent<SharedTrailEmitter>();
+            if (rig == null) rig = go.AddComponent<SharedTrailEmitter>();
+            rig.Init(); // World space, inherit velocity, tắt auto-emit, precompute rate/burst, giữ Play()
+            return rig;
+        }
+
+        // Prefab có dùng trail-emit được không? Điều kiện: có ParticleSystem (loop được phép — trail thường loop).
+        private bool IsEligibleForTrail(GameObject prefab)
+        {
+            if (prefab == null) return false;
+            return prefab.GetComponentInChildren<ParticleSystem>(true) != null;
         }
 
         // Prefab có dùng shared-emit được không? Điều kiện: có ParticleSystem, KHÔNG system nào loop

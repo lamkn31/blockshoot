@@ -68,5 +68,10 @@ MonoBehaviour:
     prefab: {fileID: 1969807417912461557, guid: f656802eace68934bb6189089037846b,
       type: 3}
     prewarm: 2
+  - type: 7
+    prefab: {fileID: 7553881251408586405, guid: beb83023721f7de4e9bda6634f23aaed,
+      type: 3}
+    prewarm: 0
+    trail: 1
   _metaHiddenMaterial: {fileID: 2100000, guid: 21eda39985ea8164d8cf440abd7b5534, type: 2}
   _metaHiddenScrollSpeed: {x: -0.1, y: -0.1}

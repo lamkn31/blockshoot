@@ -15,6 +15,22 @@ namespace Wayfu.Lamkn
         [Tooltip("Sau khi trúng block, đạn đứng im tại chỗ bao lâu (giây) rồi mới biến mất.")]
         [SerializeField] private float lingerDuration = 1.5f;
 
+        [Header("FX nước bám đạn (Projectiles_water)")]
+        [Tooltip("BẬT = dùng RIG TRAIL DÙNG CHUNG của FxController (FxType.BulletTrail): mọi viên đạn rải particle " +
+                 "vào 1 bộ ParticleSystem chung → draw call ~cố định dù bắn loạt. Rig giữ đúng thông số prefab " +
+                 "Projectiles_water (start speed/shape/rate) và bám đạn qua inherit velocity. FX con trong đạn được " +
+                 "TẮT khi dùng rig. TẮT cờ này (hoặc rig chưa cấu hình) → chạy FX con native (draw call theo số đạn).")]
+        [SerializeField] private bool useSharedTrail = true;
+        [Tooltip("Cứ bay được quãng đường này (world units) thì rải 1 nhịp particle vào rig trail chung. " +
+                 "Nhỏ = mật độ vệt dày/mượt hơn nhưng nhiều lần Emit hơn. Chỉ dùng khi Use Shared Trail bật.")]
+        [SerializeField] private float trailStepDistance = 0.2f;
+
+        // FX nước con của prefab: chạy NATIVE (đúng thông số, Local space bám đạn) khi KHÔNG dùng rig chung.
+        private ParticleSystem[] _fxSystems;
+        private GameObject _fxRoot;     // GO gốc của FX con (để bật/tắt khi chọn rig vs native)
+        private bool _useRig;           // viên này đang dùng rig trail chung?
+        private Vector3 _trailLastPos;  // vị trí lần rải trail gần nhất → đo quãng đường bước kế
+
         private Pooler<Bullet> _pool;
         private BlockCell _cell;
         private int _cellGen; // Generation của cell lúc bắn — lệch = cell pooled đã bị tái dùng
@@ -40,6 +56,14 @@ namespace Wayfu.Lamkn
             if (col != null) Destroy(col);
             _trail = GetComponentInChildren<TrailRenderer>(true);
             _renderer = FindBodyRenderer();
+            _fxSystems = GetComponentsInChildren<ParticleSystem>(true); // FX nước con (Projectiles_water)
+            // GO gốc của FX con = tổ tiên cao nhất còn nằm dưới viên đạn (để bật/tắt cả cụm khi chọn rig vs native).
+            if (_fxSystems != null && _fxSystems.Length > 0)
+            {
+                Transform t = _fxSystems[0].transform;
+                while (t.parent != null && t.parent != transform) t = t.parent;
+                _fxRoot = t.gameObject;
+            }
         }
 
         /// <summary>
@@ -83,6 +107,32 @@ namespace Wayfu.Lamkn
             _active = true;
             _lingering = false;
 
+            // Chọn nguồn FX nước: rig trail dùng chung (ít draw call) nếu bật + đã cấu hình, ngược lại FX con native.
+            _useRig = useSharedTrail && FxController.Instance != null
+                      && FxController.Instance.HasTrailRig(FxType.BulletTrail);
+
+            if (_useRig)
+            {
+                // Dùng rig chung: TẮT FX con để khỏi phát trùng, rồi bắn nhịp burst (head/core) tại nòng.
+                if (_fxRoot != null) _fxRoot.SetActive(false);
+                _trailLastPos = start;
+                Vector3 launchVel = firstTarget != start ? (firstTarget - start).normalized * speed : Vector3.zero;
+                FxController.Instance.EmitTrailBurst(FxType.BulletTrail, start, launchVel);
+            }
+            else if (_fxSystems != null)
+            {
+                // FX con native: bật lại cụm rồi restart sạch tại nòng. Clear() SAU khi đã set position (giống
+                // _trail.Clear ở trên) để đạn pooled không kéo particle từ vị trí lượt trước; Play() phát đúng thông số prefab.
+                if (_fxRoot != null) _fxRoot.SetActive(true);
+                for (int i = 0; i < _fxSystems.Length; i++)
+                {
+                    ParticleSystem ps = _fxSystems[i];
+                    if (ps == null) continue;
+                    ps.Clear(true);
+                    ps.Play(true);
+                }
+            }
+
             // Material lấy từ GlobalConfigManager theo TypeColor.
             if (_renderer == null) _renderer = FindBodyRenderer();
             if (_renderer != null) _renderer.enabled = true; // Bullet pooled: bật lại thân đạn đã ẩn ở lượt trước.
@@ -111,8 +161,11 @@ namespace Wayfu.Lamkn
             float t = _elapsed / _duration;
             if (t >= 1f)
             {
-                // Tới đích: đáp đúng target rồi phá block.
+                // Tới đích: đáp đúng target rồi phá block. Rải nốt đoạn cuối để vệt không hụt (vận tốc = đoạn/dt).
+                Vector3 endStep = target - transform.position;
+                Vector3 endVel = Time.deltaTime > 0f ? endStep / Time.deltaTime : Vector3.zero;
                 transform.position = target;
+                ShedTrail(target, endVel);
                 _active = false;
                 if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
@@ -133,7 +186,23 @@ namespace Wayfu.Lamkn
             Vector3 dir = pos - transform.position;
             if (dir.sqrMagnitude > 1e-8f) transform.rotation = Quaternion.LookRotation(dir);
 
+            // Vận tốc world frame này = quãng đi / dt → rig dùng để particle inherit, bay CÙNG đạn.
+            Vector3 vel = Time.deltaTime > 0f ? dir / Time.deltaTime : Vector3.zero;
             transform.position = pos;
+            ShedTrail(pos, vel); // rải vệt nước dọc đường bay vào rig trail dùng chung (chỉ khi _useRig)
+        }
+
+        // Rải particle trail vào rig chung mỗi khi bay đủ trailStepDistance (mật độ vệt ~cố định theo quãng đường,
+        // độc lập frame rate). velocity truyền cho rig để particle inherit → bay cùng đạn. Chỉ chạy khi dùng rig.
+        private void ShedTrail(Vector3 pos, Vector3 velocity)
+        {
+            if (!_useRig) return;
+
+            float d = Vector3.Distance(pos, _trailLastPos);
+            if (d < trailStepDistance) return;
+
+            FxController.Instance.EmitTrail(FxType.BulletTrail, pos, d, velocity);
+            _trailLastPos = pos;
         }
 
         private void Despawn()
