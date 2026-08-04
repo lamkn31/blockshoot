@@ -55,11 +55,11 @@ MonoBehaviour:
     - Color: 9
       CountBullet: 60
       Hidden: 0
-      ConnectGroup: 0
+      ConnectGroup: 4
     - Color: 1
       CountBullet: 60
       Hidden: 0
-      ConnectGroup: 4
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0

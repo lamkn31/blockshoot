@@ -120,11 +120,11 @@ MonoBehaviour:
     - Color: 6
       CountBullet: 30
       Hidden: 0
-      ConnectGroup: 2
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0
-      ConnectGroup: 0
+      ConnectGroup: 2
     - Color: 9
       CountBullet: 30
       Hidden: 0
@@ -154,6 +154,10 @@ MonoBehaviour:
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 2
+    - Color: 13
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 30
       Hidden: 0
