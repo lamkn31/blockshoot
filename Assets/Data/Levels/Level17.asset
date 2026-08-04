@@ -23,117 +23,145 @@ MonoBehaviour:
   SlotCount: 4
   Slots:
   - Guns:
-    - Color: 13
-      CountBullet: 30
-      Hidden: 0
     - Color: 6
-      CountBullet: 60
-      Hidden: 0
-    - Color: 3
       CountBullet: 30
       Hidden: 0
-    - Color: 7
+      ConnectGroup: 0
+    - Color: 6
       CountBullet: 30
       Hidden: 0
-    - Color: 3
-      CountBullet: 80
-      Hidden: 0
-    - Color: 1
-      CountBullet: 60
-      Hidden: 0
-    - Color: 7
-      CountBullet: 30
-      Hidden: 0
+      ConnectGroup: 0
     - Color: 8
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 2
       CountBullet: 120
       Hidden: 0
-    - Color: 6
-      CountBullet: 30
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 120
       Hidden: 0
-  - Guns:
+      ConnectGroup: 0
     - Color: 3
-      CountBullet: 30
-      Hidden: 0
-    - Color: 3
-      CountBullet: 30
-      Hidden: 0
-    - Color: 8
       CountBullet: 60
       Hidden: 0
-    - Color: 7
-      CountBullet: 60
-      Hidden: 0
-    - Color: 13
-      CountBullet: 60
-      Hidden: 0
-    - Color: 13
-      CountBullet: 30
-      Hidden: 1
-    - Color: 13
-      CountBullet: 30
-      Hidden: 0
-    - Color: 3
-      CountBullet: 30
-      Hidden: 0
-  - Guns:
-    - Color: 1
-      CountBullet: 60
-      Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 60
       Hidden: 0
-    - Color: 13
-      CountBullet: 30
-      Hidden: 0
-    - Color: 13
-      CountBullet: 60
-      Hidden: 0
-    - Color: 4
-      CountBullet: 60
-      Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 30
       Hidden: 0
-    - Color: 6
-      CountBullet: 30
-      Hidden: 0
-    - Color: 4
-      CountBullet: 5
-      Hidden: 1
-    - Color: 1
-      CountBullet: 60
-      Hidden: 0
+      ConnectGroup: 0
   - Guns:
     - Color: 8
       CountBullet: 120
       Hidden: 0
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 3
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 3
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 1
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 3
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 3
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+  - Guns:
+    - Color: 2
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 1
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 2
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 1
+      CountBullet: 60
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 8
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 6
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 1
+      CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 1
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
+  - Guns:
+    - Color: 8
+      CountBullet: 120
+      Hidden: 0
+      ConnectGroup: 0
     - Color: 7
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 1
       CountBullet: 120
       Hidden: 0
+      ConnectGroup: 0
     - Color: 3
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
     - Color: 4
       CountBullet: 120
       Hidden: 1
+      ConnectGroup: 0
     - Color: 1
       CountBullet: 60
       Hidden: 1
+      ConnectGroup: 0
     - Color: 1
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
     - Color: 4
       CountBullet: 90
       Hidden: 0
+      ConnectGroup: 0
     - Color: 7
       CountBullet: 60
       Hidden: 0
+      ConnectGroup: 0
     - Color: 6
       CountBullet: 30
       Hidden: 0
+      ConnectGroup: 0
   HoleCapacity: 3
   Grids: []
   CameraOrthoSize: 9
