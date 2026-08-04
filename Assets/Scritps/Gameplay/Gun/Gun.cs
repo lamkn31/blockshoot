@@ -381,7 +381,9 @@ namespace Wayfu.Lamkn
             {
                 if (_animRoutine != null) StopCoroutine(_animRoutine);
                 stickmanAnimator.Play(state, 0, 0f);
-                _animRoutine = StartCoroutine(ReturnToRandomIdle());
+                // The final shot can immediately return this Gun to its pool. An inactive pooled
+                // object cannot start a coroutine (and does not need an idle transition).
+                if (gameObject.activeInHierarchy) _animRoutine = StartCoroutine(ReturnToRandomIdle());
             }
         }
 
