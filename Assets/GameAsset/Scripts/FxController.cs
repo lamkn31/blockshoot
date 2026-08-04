@@ -11,6 +11,7 @@ namespace Wayfu.Lamkn
         Reveal = 3,  // xe Hidden lộ màu thật (blink hoi cham) — phát tại xe khi chuyển từ hidden sang màu vốn có
         TimerAura = 4, // xe ambulance aura
         MovingTimer = 5, // xe ambulance timer moving
+        BlockHit = 6, // block trúng đạn vỡ — phát tại vị trí block, tô theo màu block
     }
 
     // Quản lý pool FX + phát FX tại vị trí cần. Toàn bộ prefab FX khai báo TẠI ĐÂY (không để ở car).

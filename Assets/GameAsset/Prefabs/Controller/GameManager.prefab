@@ -199,6 +199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneSlots: []
+  connectLinePrefab: {fileID: 1744352032104625680, guid: 9c1027679f3165743b699bcd008f08e2,
+    type: 3}
 --- !u!1 &1851512769490942651
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,19 +277,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d8921682dc05440a30593e46fae72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tubeModel: {fileID: 100100000, guid: d694174db209e9f438104557184ba66a, type: 3}
+  tubeModel: {fileID: 919132149155446097, guid: d694174db209e9f438104557184ba66a,
+    type: 3}
   pipeMeshName: pipe
   waterMeshName: water
   pipeMaterial: {fileID: 2100000, guid: 513aecb0b25a81b4c9410628431751b6, type: 2}
   waterMaterial: {fileID: 2100000, guid: 5ec9f197fa3d6714e94fdbd409f9141c, type: 2}
   modelRotation: {x: 0, y: 0, z: 0}
-  meshLengthScale: 1
+  meshLengthScale: 100
+  pipeCornerSampleStep: 8
   waterSurfaceOffset: 0.01
-  waterScrollSpeed: {x: -0.5, y: 0}
+  spawnBubbles: 1
+  bubbleSpawnInterval: 0.8
+  bubbleSize: 0.22
+  bubbleRiseSpeed: 0.7
   tunnelInPrefab: {fileID: 0}
   tunnelOutPrefab: {fileID: 0}
   tunnelFaceDistance: 1
-  queueMoveDuration: 0.15
+  queueMoveDuration: 0.2
+  waterScrollSpeed: {x: 1, y: 0}
 --- !u!1 &2250691386554029953
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +606,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aafb08edd25bc144ca5aa7c78d034077, type: 2}
+  - {fileID: 2100000, guid: 472ae31d65a74b345893967a425bfcf4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -923,6 +931,27 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8763046310201374150}
     m_Modifications:
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[6].type
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[6].prefab
+      value: 
+      objectReference: {fileID: 214258185039192972, guid: 6c4300962818caf468862589652a047e,
+        type: 3}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[6].prewarm
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2733185287105169972, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
       propertyPath: m_Name
