@@ -143,12 +143,13 @@ namespace Wayfu.Lamkn
                 rig.EmitBurst(position, velocity);
         }
 
-        // Rải particle trail của FX cho một bước bay dài 'distance' (gọi mỗi bước khi vật đang bay).
+        // Rải particle trail của FX cho đoạn bay 'fromPos'->'toPos' (gọi mỗi bước khi vật đang bay). Rig rải
+        // ĐỀU dọc đoạn (không dồn về điểm cuối) để rate-over-distance liền mạch dù bước thô.
         // 'velocity' = vận tốc world của vật → particle inherit để bay cùng vật (giữ nguyên start-velocity gốc).
-        public void EmitTrail(FxType type, Vector3 position, float distance, Vector3 velocity)
+        public void EmitTrail(FxType type, Vector3 fromPos, Vector3 toPos, Vector3 velocity)
         {
             if (_trailRigs.TryGetValue(type, out SharedTrailEmitter rig) && rig != null)
-                rig.EmitTrail(position, distance, velocity);
+                rig.EmitTrail(fromPos, toPos, velocity);
         }
 
         // Phát FX theo prefab bất kỳ (dùng cho FX không nằm trong enum). Trả instance để tắt thủ công nếu cần.
