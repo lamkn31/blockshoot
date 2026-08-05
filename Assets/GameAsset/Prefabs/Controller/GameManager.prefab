@@ -292,8 +292,7 @@ MonoBehaviour:
   bubbleSpawnInterval: 0.8
   bubbleSize: 0.22
   bubbleRiseSpeed: 0.7
-  tunnelInPrefab: {fileID: 5868152063822215917, guid: dffe79f01902e17418f67225c2d58973,
-    type: 3}
+  tunnelInPrefab: {fileID: 0}
   tunnelOutPrefab: {fileID: 5868152063822215917, guid: dffe79f01902e17418f67225c2d58973,
     type: 3}
   tunnelFaceDistance: 1
