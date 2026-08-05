@@ -35,21 +35,18 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 0.88
-    - _CausticScale: 0.5
-    - _CausticSpeed: 0.3
-    - _CausticStrength: 0.5
-    - _CausticThin: 0.42
+    - _CausticScale: 0.68
+    - _CausticSpeed: 0.37
+    - _CausticStrength: 0.1
+    - _CausticThin: 0.452
     - _CrestStrength: 0.35
     - _DeepStrength: 1.2
     - _DepthMax: 3
     - _EdgeAlphaBoost: 0.3
-    - _FleckAmount: 0.12
-    - _FleckScale: 1.5
-    - _FleckSize: 0.14
     - _FoamCutoff: 0.55
-    - _FoamDepth: 0.6
+    - _FoamDepth: 1.02
     - _FoamNoiseScale: 8.3
-    - _FresnelPower: 6
+    - _FresnelPower: 4.97
     - _SurfaceFoam: 0.3
     - _WaveHeight: 0.1
     - _WaveScale: 0.8
@@ -58,7 +55,6 @@ Material:
     - _CausticColor: {r: 0.75, g: 1, b: 0.92, a: 1}
     - _CrestColor: {r: 0.55, g: 0.9, b: 0.82, a: 1}
     - _DeepColor: {r: 0.1, g: 0.45, b: 0.52, a: 1}
-    - _FleckColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamSpeed: {r: 0.05, g: 0.03, b: 0, a: 0}
     - _FresnelColor: {r: 0.7, g: 0.95, b: 0.95, a: 1}
