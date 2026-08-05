@@ -176,9 +176,14 @@ namespace Wayfu.Lamkn
             if (slot == null || slot.FrontGun != gun) return;              // chỉ gun đầu slot
             if (PathManager.Instance == null || !PathManager.Instance.CanAcceptCount(_movingToLoop.Count + 1)) return;
 
-            slot.RemoveFront();                     // gun sau dồn lên, click tiếp được ngay
-            SendGunToLoop(slot.SlotIndex, gun);
-            GameController.Instance?.OnBoardChanged();
+            int slotIndex = slot.SlotIndex;
+            if (!gun.TryPlayClickThen(() =>
+            {
+                if (gun == null || gun.IsDead) return;
+                slot.RemoveFront();
+                SendGunToLoop(slotIndex, gun);
+                GameController.Instance?.OnBoardChanged();
+            })) return;
         }
 
         // Gun connect hết đạn: chỉ HỦY CẢ NHÓM khi MỌI member đã hết đạn (lúc đó path giảm count đồng loạt).

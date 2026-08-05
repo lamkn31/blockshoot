@@ -22,7 +22,20 @@ namespace Wayfu.Lamkn
         public IReadOnlyList<Gun> Guns => _guns;
 
         /// <summary>Vị trí của gun theo index — index 0 ở PHÍA TRƯỚC (gần path, +Z), index sau lùi về −Z.</summary>
-        private Vector3 SlotPos(int index) => transform.position - Vector3.forward * _spacing * index;
+        private Vector3 SlotPos(int index)
+        {
+            // Slot0 co the co khoang dau rieng; cac khoang con lai van dung spacing chung.
+            if (index > 0)
+            {
+                float firstSpacing = GameSettings.Instance != null
+                    ? GameSettings.Instance.FirstGunSpacing
+                    : 0f;
+                if (firstSpacing > 0f)
+                    return transform.position - Vector3.forward * (firstSpacing + _spacing * (index - 1));
+            }
+
+            return transform.position - Vector3.forward * _spacing * index;
+        }
 
         /// <summary>Đặt vị trí slot (dùng cho fallback khi scene chưa có slot).</summary>
         public void SetPosition(Vector3 pos) => transform.position = pos;

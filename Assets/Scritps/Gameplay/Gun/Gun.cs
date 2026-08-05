@@ -52,8 +52,17 @@ namespace Wayfu.Lamkn
         [SerializeField] private string shootRightState = "Shoot_right_hand";
         [SerializeField] private string shootBothState = "Shoot_2_hand";
         [SerializeField] private string idleState = "Idle";
+        [SerializeField] private string clickState = "Click";
+        [SerializeField] private string goInState = "GoIn";
+        [SerializeField] private string goOutState = "GoOut";
+        [SerializeField, Min(0f)] private float bothHandWindow = 0.12f;
         [SerializeField, Min(0.05f)] private float shootAnimationDuration = 0.45f;
         private Coroutine _animRoutine;
+        private bool _clickInProgress;
+        private bool _pathEntryAnimating;
+        private bool _pathCycleTransition;
+        private float _lastRightShotTime = -999f;
+        private float _lastLeftShotTime = -999f;
 
         [Header("Laser (chỉ dùng khi FireMode = Laser)")]
         [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
@@ -279,6 +288,58 @@ namespace Wayfu.Lamkn
             if (_state == GunState.InSlot) SlotManager.Instance?.OnGunClicked(this);
         }
 
+        public bool TryPlayClickThen(Action onComplete)
+        {
+            if (_clickInProgress) return false;
+            if (stickmanAnimator == null || string.IsNullOrEmpty(clickState))
+            {
+                onComplete?.Invoke();
+                return true;
+            }
+            _clickInProgress = true;
+            StartCoroutine(PlayAnimationThen(clickState, () => { _clickInProgress = false; onComplete?.Invoke(); }));
+            return true;
+        }
+
+        private IEnumerator PlayAnimationThen(string state, Action onComplete)
+        {
+            stickmanAnimator.Play(state, 0, 0f);
+            yield return null;
+            float duration = 0f;
+            if (stickmanAnimator.runtimeAnimatorController != null)
+                foreach (var clip in stickmanAnimator.runtimeAnimatorController.animationClips)
+                    if (clip != null && clip.name == state) { duration = clip.length; break; }
+            if (duration <= 0f) duration = stickmanAnimator.GetCurrentAnimatorStateInfo(0).length;
+            if (duration > 0f) yield return new WaitForSeconds(duration);
+            onComplete?.Invoke();
+        }
+
+        public void PlayClickAnimation() => PlayNamedAnimation(clickState);
+        public void PlayGoInAnimation() => PlayNamedAnimation(goInState);
+        public void PlayGoOutAnimation() => PlayNamedAnimation(goOutState);
+
+        public void PlayGoInThen(Action onComplete)
+        {
+            if (stickmanAnimator == null || string.IsNullOrEmpty(goInState))
+            {
+                onComplete?.Invoke();
+                return;
+            }
+            StartCoroutine(PlayAnimationThen(goInState, onComplete));
+        }
+
+        public void PlayGoOutThen(Action onComplete)
+        {
+            if (stickmanAnimator == null || string.IsNullOrEmpty(goOutState)) { onComplete?.Invoke(); return; }
+            StartCoroutine(PlayAnimationThen(goOutState, onComplete));
+        }
+
+        private void PlayNamedAnimation(string state)
+        {
+            if (stickmanAnimator != null && !string.IsNullOrEmpty(state))
+                stickmanAnimator.Play(state, 0, 0f);
+        }
+
         private void OnMouseDown() => HandleClick();
 
         /// <summary>Tách khỏi slot nhưng CHƯA lên path — gun đang xếp hàng chờ đủ khoảng cách.</summary>
@@ -317,6 +378,7 @@ namespace Wayfu.Lamkn
         public void OnDeployed()
         {
             _state = GunState.OnPath;
+            _pathEntryAnimating = true;
             Slot = null;
             transform.SetParent(null);
             ResetBarrel(_right);
@@ -329,6 +391,37 @@ namespace Wayfu.Lamkn
         /// <summary>Bật RoundedPolylineFollower cho gun chạy vòng path liên tục từ startDistance (yêu cầu #3).</summary>
         public void DeployOnPath(RoundedPolylinePath path, float startDistance, float speed)
         {
+            // A gun returning from path_end must be placed at path_0 before
+            // the entry animation starts. Otherwise GoOut is played at the
+            // old end position while the follower is still disabled.
+            if (path != null)
+            {
+                transform.position = path.GetPointAtDistance(startDistance);
+                if (_follower != null) _follower.enabled = false;
+            }
+
+            // The model is revealed only at path_0, immediately before GoOut.
+            SetHiddenDuringPathEntry(false);
+            // Gun appears at path_0, plays GoOut, then starts moving.
+            StartPathFollower(path, startDistance, speed);
+        }
+
+        private void StartPathFollower(RoundedPolylinePath path, float startDistance, float speed)
+        {
+            if (stickmanAnimator != null && !string.IsNullOrEmpty(goOutState))
+            {
+                _pathEntryAnimating = true;
+                StartCoroutine(PlayAnimationThen(goOutState, () => BeginPathFollower(path, startDistance, speed)));
+                return;
+            }
+            _pathEntryAnimating = false;
+            BeginPathFollower(path, startDistance, speed);
+        }
+
+        private void BeginPathFollower(RoundedPolylinePath path, float startDistance, float speed)
+        {
+            _pathCycleTransition = false;
+            _pathEntryAnimating = false;
             _lastLap = 0;   // follower.Init đưa LapCount về 0 — mốc đếm vòng bắt đầu từ đây
             _lapStartStamp = Time.time; // mốc "ready" ban đầu: mọi cell đang có coi như đã đứng sẵn
             ArmForNewLap(); // vào path tại pos 0 = bắt đầu lượt bắn đầu tiên
@@ -344,6 +437,21 @@ namespace Wayfu.Lamkn
                 DisableBeam(_right);
                 DisableBeam(_left);
                 return;
+            }
+            if (_pathEntryAnimating) return;
+
+            if (!_pathCycleTransition && _follower != null && _follower.targetPath != null)
+            {
+                float total = _follower.targetPath.TotalLength;
+                float distance = GameSettings.Instance != null ? Mathf.Max(0f, GameSettings.Instance.GunPathGoInDistanceBeforeEnd) : 0f;
+                distance = Mathf.Min(total - 0.001f, Mathf.Max(distance, _follower.moveSpeed * Time.deltaTime * 1.5f));
+                float remaining = total - Mathf.Repeat(_follower.CurrentDistance, total);
+                if (distance > 0f && remaining <= distance)
+                {
+                    _pathCycleTransition = true;
+                    StartCoroutine(CyclePathAnimation(_follower.targetPath, _follower.moveSpeed));
+                    return;
+                }
             }
 
             _firedRightThisFrame = false;
@@ -364,6 +472,8 @@ namespace Wayfu.Lamkn
             TickBarrel(_right, _left);
             if (_state != GunState.OnPath) return; // hết đạn giữa chừng → Die() đã despawn gun
             TickBarrel(_left, _right);
+            if (_firedRightThisFrame) _lastRightShotTime = Time.time;
+            if (_firedLeftThisFrame) _lastLeftShotTime = Time.time;
 
             // Vẽ tia laser SAU khi 2 nòng đã cập nhật target (mode Laser); mode khác thì tia luôn tắt.
             UpdateBeam(_right);
@@ -371,10 +481,29 @@ namespace Wayfu.Lamkn
             PlayShootAnimation();
         }
 
+        private IEnumerator CyclePathAnimation(RoundedPolylinePath path, float speed)
+        {
+            if (_follower != null) _follower.enabled = false;
+            _pathEntryAnimating = true;
+            bool done = false;
+            PlayGoInThen(() => done = true);
+            while (!done) yield return null;
+
+            SetHiddenDuringPathEntry(true);
+            transform.position = path.GetPointAtDistance(0f);
+            SetHiddenDuringPathEntry(false);
+            done = false;
+            PlayGoOutThen(() => done = true);
+            while (!done) yield return null;
+            BeginPathFollower(path, 0f, speed);
+        }
+
         private void PlayShootAnimation()
         {
             if (stickmanAnimator == null) return;
-            string state = _firedRightThisFrame && _firedLeftThisFrame ? shootBothState
+            bool bothNear = Time.time - _lastRightShotTime <= bothHandWindow
+                         && Time.time - _lastLeftShotTime <= bothHandWindow;
+            string state = bothNear ? shootBothState
                          : _firedRightThisFrame ? shootRightState
                          : _firedLeftThisFrame ? shootLeftState : null;
             if (!string.IsNullOrEmpty(state))

@@ -615,7 +615,7 @@ namespace Wayfu.Lamkn
             }
             if (_gsSO == null || _gsSO.targetObject != gs) _gsSO = new SerializedObject(gs);
             _gsSO.Update();
-            foreach (var name in new[] { "CoreType", "SlotGunSpacing", "PathWidth", "MaxGunOnPath", "GunSpeed", "GunSpacing",
+            foreach (var name in new[] { "CoreType", "SlotGunSpacing", "FirstGunSpacing", "GunGoInDistanceBeforeEnd", "GunPathGoInDistanceBeforeEnd", "PathWidth", "MaxGunOnPath", "GunSpeed", "GunSpacing",
                 "FireInterval", "FireMode", "BurstSpawnStacked", "BurstRowLead", "GunFireRange",
                 "GunFireAngle", "FrontStationDistance", "BulletSpeed", "BlockStackSpacing",
                 "BlockCollapseDuration" })
@@ -1046,6 +1046,7 @@ namespace Wayfu.Lamkn
                 if (Event.current.type == EventType.MouseDown || Event.current.type == EventType.MouseUp) _hitGuns.Clear();
                 _hitGunAdd.Clear();
                 float spacing = GameSettings.Instance != null ? GameSettings.Instance.SlotGunSpacing : 1f;
+                float firstGunSpacing = GameSettings.Instance != null && GameSettings.Instance.FirstGunSpacing > 0f ? GameSettings.Instance.FirstGunSpacing : spacing;
                 var lbl = new GUIStyle(EditorStyles.miniBoldLabel) { alignment = TextAnchor.MiddleCenter };
                 lbl.normal.textColor = Color.white;
                 // Gom vị trí gun theo nhóm CONNECT để vẽ đường nối (màu 2 đầu theo gun).
@@ -1058,7 +1059,8 @@ namespace Wayfu.Lamkn
                     for (int i = 0; i < guns.Count; i++)
                     {
                         var g = guns[i]; if (g == null) continue;
-                        Vector3 wp = basePos - Vector3.forward * spacing * i; // index 0 phía trước (+Z)
+                        float gunOffset = i == 0 ? 0f : firstGunSpacing + spacing * (i - 1);
+                        Vector3 wp = basePos - Vector3.forward * gunOffset;
                         if (!Front(wp)) continue;
                         Vector2 gp = Proj(wp); float sz = PixSize(wp, 0.6f);
                         var gunRect = new Rect(gp.x - sz / 2, gp.y - sz / 2, sz, sz);
@@ -1090,7 +1092,8 @@ namespace Wayfu.Lamkn
                     // đúng kiểu thêm cell vào queue của spawner.
                     if (_paintColor != TypeColor.None)
                     {
-                        Vector3 addWp = basePos - Vector3.forward * spacing * guns.Count;
+                        float addOffset = guns.Count == 0 ? 0f : firstGunSpacing + spacing * (guns.Count - 1);
+                        Vector3 addWp = basePos - Vector3.forward * addOffset;
                         if (Front(addWp))
                         {
                             Vector2 ap = Proj(addWp); float asz = PixSize(addWp, 0.6f);
@@ -2450,12 +2453,17 @@ namespace Wayfu.Lamkn
             if (_target.Slots == null) return;
             var slotPos = GetSlotBasePositions();
             float spacing = GameSettings.Instance != null ? GameSettings.Instance.SlotGunSpacing : 1f;
+            float firstGunSpacing = GameSettings.Instance != null && GameSettings.Instance.FirstGunSpacing > 0f ? GameSettings.Instance.FirstGunSpacing : spacing;
             for (int si = 0; si < slotPos.Count && si < _target.Slots.Count; si++)
             {
                 var guns = _target.Slots[si]?.Guns;
                 if (guns == null) continue;
                 Vector3 basePos = slotPos[si];
-                for (int i = 0; i < guns.Count; i++) pts.Add(basePos + Vector3.forward * spacing * i);
+                for (int i = 0; i < guns.Count; i++)
+                {
+                    float gunOffset = i == 0 ? 0f : firstGunSpacing + spacing * (i - 1);
+                    pts.Add(basePos + Vector3.forward * gunOffset);
+                }
             }
         }
 

@@ -163,18 +163,16 @@ namespace Wayfu.Lamkn
 
             var pipeSource = FindSourceMesh(pipeMeshName);
             var waterSource = FindSourceMesh(waterMeshName);
-            if (pipeSource == null || waterSource == null)
+            if (waterSource == null)
             {
-                Debug.LogWarning("[PathManager] tubeModel must contain MeshFilters named pipe and water.", this);
+                Debug.LogWarning("[PathManager] tubeModel must contain a MeshFilter named water.", this);
                 return;
             }
 
             DestroyPathMeshes();
-            _pipePathMesh = BuildBentMesh(path, pipeSource, "PathPipe", 0f, stretchAtCorners: true);
             _waterPathMesh = BuildBentMesh(path, waterSource, "PathWater", waterSurfaceOffset, stretchAtCorners: false);
-            _pipeFilter.sharedMesh = _pipePathMesh;
             _waterFilter.sharedMesh = _waterPathMesh;
-            _pipeRenderer.sharedMaterial = pipeMaterial != null ? pipeMaterial : pipeSource.GetComponent<MeshRenderer>()?.sharedMaterial;
+            if (_pipeRenderer != null) _pipeRenderer.enabled = false;
             _waterRenderer.sharedMaterial = waterMaterial != null ? waterMaterial : waterSource.GetComponent<MeshRenderer>()?.sharedMaterial;
             SetupWaterFlow(path);
         }
@@ -333,7 +331,6 @@ namespace Wayfu.Lamkn
             bool geometryChanged = !Mathf.Approximately(_pathWidth, newWidth);
             _pathWidth = newWidth;
             if (geometryChanged && _path != null) ApplyPathMeshes(_path);
-            if (_pipeRenderer != null) _pipeRenderer.enabled = _pathWidth > 0f;
             if (_waterRenderer != null) _waterRenderer.enabled = _pathWidth > 0f;
             if (_waterMaterialInstance != null && _waterMaterialInstance.HasProperty("_PathWidth"))
                 _waterMaterialInstance.SetFloat("_PathWidth", _pathWidth);
@@ -425,12 +422,13 @@ namespace Wayfu.Lamkn
         {
             _guns.Add(gun);
             gun.OnDeployed();
+            // Reveal at path_0 before GoOut; movement starts only after GoOut completes.
+            gun.SetHiddenDuringPathEntry(false);
             // MỌI gun đều vào path từ ĐIỂM ĐẦU (distance = FrontStationDistance, mặc định 0 = pos 0 của
             // path) rồi chạy tới. Khoảng cách giữa các gun do IsEntryClear() bảo đảm, không cộng offset
             // theo lượt deploy nữa.
             gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed);
-            if (entryRevealDistance <= 0f) gun.SetHiddenDuringPathEntry(false);
-            else StartCoroutine(RevealGunAfterEntry(gun, _frontStationDistance));
+            // DeployOnPath handles GoOut before enabling the follower.
         }
 
         private System.Collections.IEnumerator RevealGunAfterEntry(Gun gun, float startDistance)
