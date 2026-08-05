@@ -20,7 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _Caustic_Edge_Color
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -74,8 +74,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Caustic_Alpha: 0.459
-    - _Caustic_Blur: 2
+    - _Caustic_Alpha: 0.583
+    - _Caustic_Blur: 2.21
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Water_Alpha: 1
