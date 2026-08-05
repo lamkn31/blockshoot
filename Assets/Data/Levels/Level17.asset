@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b4429a5846abd4b99ca05c60e3832b, type: 3}
   m_Name: Level17
   m_EditorClassIdentifier: 
-  CurGameDifficulty: 2
+  CurGameDifficulty: 0
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
