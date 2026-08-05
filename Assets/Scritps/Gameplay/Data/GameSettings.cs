@@ -20,8 +20,8 @@ namespace Wayfu.Lamkn
         public float SlotGunSpacing = 1f;
         [Tooltip("Spacing rieng tu gun index 0 den gun index 1 trong Slot0. 0 = dung SlotGunSpacing.")]
         public float FirstGunSpacing = 0f;
-        [Min(0f)] public float GunGoInDistanceBeforeEnd = 0.5f;
-        [Min(0f)] public float GunPathGoInDistanceBeforeEnd = 0.5f;
+        [Min(0f)] public float GunGoInDistanceBeforeEnd = 0f;
+        [Min(0f)] public float GunPathGoInDistanceBeforeEnd = 0f;
 
         [Header("Guns / Path (config chung, không theo level)")]
         [Tooltip("Độ rộng mặt đường path — DÙNG CHUNG mọi level (trước ở LevelData, giờ gom về đây).")]

@@ -55,10 +55,12 @@ namespace Wayfu.Lamkn
         [SerializeField] private string clickState = "Click";
         [SerializeField] private string goInState = "GoIn";
         [SerializeField] private string goOutState = "GoOut";
+        [SerializeField, Min(0f)] private float pathEntryHoldDuration = 0.1f;
         [SerializeField, Min(0f)] private float bothHandWindow = 0.12f;
         [SerializeField, Min(0.05f)] private float shootAnimationDuration = 0.45f;
         private Coroutine _animRoutine;
         private bool _clickInProgress;
+        private bool _emptyAnimationInProgress;
         private bool _pathEntryAnimating;
         private bool _pathCycleTransition;
         private float _lastRightShotTime = -999f;
@@ -224,6 +226,7 @@ namespace Wayfu.Lamkn
             if (_animRoutine != null) { StopCoroutine(_animRoutine); _animRoutine = null; }
             Data = new GunData { Color = data.Color, CountBullet = data.CountBullet, Hidden = data.Hidden, ConnectGroup = data.ConnectGroup };
             _fire = fire;
+            _emptyAnimationInProgress = false;
             _atFront = false; // item pooled tái dùng: mặc định CHƯA ở đầu; slot gọi SetAtFront sau Fill
 
             // Reset trạng thái (item pooled có thể tái dùng).
@@ -301,7 +304,7 @@ namespace Wayfu.Lamkn
             return true;
         }
 
-        private IEnumerator PlayAnimationThen(string state, Action onComplete)
+        private IEnumerator PlayAnimationThen(string state, Action onComplete, bool returnToIdle = true)
         {
             stickmanAnimator.Play(state, 0, 0f);
             yield return null;
@@ -311,27 +314,52 @@ namespace Wayfu.Lamkn
                     if (clip != null && clip.name == state) { duration = clip.length; break; }
             if (duration <= 0f) duration = stickmanAnimator.GetCurrentAnimatorStateInfo(0).length;
             if (duration > 0f) yield return new WaitForSeconds(duration);
+            if (returnToIdle) PlayRandomIdle();
             onComplete?.Invoke();
         }
 
         public void PlayClickAnimation() => PlayNamedAnimation(clickState);
-        public void PlayGoInAnimation() => PlayNamedAnimation(goInState);
+        public void PlayGoInAnimation()
+        {
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+            PlayNamedAnimation(goInState);
+        }
         public void PlayGoOutAnimation() => PlayNamedAnimation(goOutState);
 
         public void PlayGoInThen(Action onComplete)
         {
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             if (stickmanAnimator == null || string.IsNullOrEmpty(goInState))
             {
+                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
+                UpdateLabel();
                 onComplete?.Invoke();
                 return;
             }
-            StartCoroutine(PlayAnimationThen(goInState, onComplete));
+            StartCoroutine(PlayAnimationThen(goInState, () =>
+            {
+                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
+                UpdateLabel();
+                onComplete?.Invoke();
+            }));
         }
 
         public void PlayGoOutThen(Action onComplete)
         {
-            if (stickmanAnimator == null || string.IsNullOrEmpty(goOutState)) { onComplete?.Invoke(); return; }
-            StartCoroutine(PlayAnimationThen(goOutState, onComplete));
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+            if (stickmanAnimator == null || string.IsNullOrEmpty(goOutState))
+            {
+                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
+                UpdateLabel();
+                onComplete?.Invoke();
+                return;
+            }
+            StartCoroutine(PlayAnimationThen(goOutState, () =>
+            {
+                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
+                UpdateLabel();
+                onComplete?.Invoke();
+            }));
         }
 
         private void PlayNamedAnimation(string state)
@@ -402,7 +430,7 @@ namespace Wayfu.Lamkn
 
             // The model is revealed only at path_0, immediately before GoOut.
             SetHiddenDuringPathEntry(false);
-            // Gun appears at path_0, plays GoOut, then starts moving.
+            // Gun appears at path_0, holds briefly, then starts moving while GoOut continues.
             StartPathFollower(path, startDistance, speed);
         }
 
@@ -411,15 +439,39 @@ namespace Wayfu.Lamkn
             if (stickmanAnimator != null && !string.IsNullOrEmpty(goOutState))
             {
                 _pathEntryAnimating = true;
-                StartCoroutine(PlayAnimationThen(goOutState, () => BeginPathFollower(path, startDistance, speed)));
+                if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+                PlayGoOutAnimation();
+                StartCoroutine(BeginPathFollowerAfterHold(path, startDistance, speed));
                 return;
             }
             _pathEntryAnimating = false;
             BeginPathFollower(path, startDistance, speed);
         }
 
+        private IEnumerator BeginPathFollowerAfterHold(RoundedPolylinePath path, float startDistance, float speed)
+        {
+            if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
+            UpdateLabel();
+            BeginPathFollower(path, startDistance, speed);
+        }
+
+        private IEnumerator ReturnToIdleAfterAnimation(string state)
+        {
+            yield return null;
+            float duration = 0f;
+            if (stickmanAnimator != null && stickmanAnimator.runtimeAnimatorController != null)
+                foreach (var clip in stickmanAnimator.runtimeAnimatorController.animationClips)
+                    if (clip != null && clip.name == state) { duration = clip.length; break; }
+            if (duration <= 0f && stickmanAnimator != null)
+                duration = stickmanAnimator.GetCurrentAnimatorStateInfo(0).length;
+            if (duration > 0f) yield return new WaitForSeconds(duration);
+            PlayRandomIdle();
+        }
+
         private void BeginPathFollower(RoundedPolylinePath path, float startDistance, float speed)
         {
+            if (_state == GunState.Dead || _emptyAnimationInProgress) return;
             _pathCycleTransition = false;
             _pathEntryAnimating = false;
             _lastLap = 0;   // follower.Init đưa LapCount về 0 — mốc đếm vòng bắt đầu từ đây
@@ -492,15 +544,17 @@ namespace Wayfu.Lamkn
             SetHiddenDuringPathEntry(true);
             transform.position = path.GetPointAtDistance(0f);
             SetHiddenDuringPathEntry(false);
-            done = false;
-            PlayGoOutThen(() => done = true);
-            while (!done) yield return null;
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+            PlayGoOutAnimation();
+            if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
+            UpdateLabel();
             BeginPathFollower(path, 0f, speed);
         }
 
         private void PlayShootAnimation()
         {
-            if (stickmanAnimator == null) return;
+            if (stickmanAnimator == null || Data == null || Data.CountBullet <= 0 || _emptyAnimationInProgress) return;
             bool bothNear = Time.time - _lastRightShotTime <= bothHandWindow
                          && Time.time - _lastLeftShotTime <= bothHandWindow;
             string state = bothNear ? shootBothState
@@ -781,6 +835,7 @@ namespace Wayfu.Lamkn
         // tới lúc đó). Gun thường thì hủy ngay như cũ.
         private void OnEmptied()
         {
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             if (Data.ConnectGroup != 0 && SlotManager.IsActive)
             {
                 SlotManager.Instance.OnConnectGunEmptied(this);
@@ -791,6 +846,27 @@ namespace Wayfu.Lamkn
 
         /// <summary>Hủy gun ngay (SlotManager gọi khi cả nhóm connect đã hết đạn).</summary>
         public void Kill() => Die();
+
+        private void DieWithGoIn()
+        {
+            if (_state == GunState.Dead || _emptyAnimationInProgress) return;
+            _emptyAnimationInProgress = true;
+            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+
+            // Hủy animation bắn đang chờ trả về Idle; gun hết đạn không được chạy Idle nữa.
+            if (_animRoutine != null) { StopCoroutine(_animRoutine); _animRoutine = null; }
+
+            // Hết đạn thì dừng ngay tại vị trí hiện tại trước khi chạy GoIn.
+            if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
+            _pathCycleTransition = false;
+            _pathEntryAnimating = true;
+            if (_follower != null) _follower.enabled = false;
+
+            if (stickmanAnimator != null && !string.IsNullOrEmpty(goInState))
+                StartCoroutine(PlayAnimationThen(goInState, Die, returnToIdle: false));
+            else
+                Die();
+        }
 
         /// <summary>
         /// Đẩy hàng đạn tiến sẵn về phía target: hàng đáy (blockIndex 0) đứng nguyên, mỗi hàng lên cao

@@ -82,6 +82,7 @@ MonoBehaviour:
   clickState: Click
   goInState: GoIn
   goOutState: GoOut
+  pathEntryHoldDuration: 0.1
   bothHandWindow: 0.04
   shootAnimationDuration: 0.45
   laserMaterial: {fileID: 2100000, guid: 1255821fc076ad943979a92690b2088c, type: 2}
@@ -144,7 +145,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0135, y: 3.88}
+  m_AnchoredPosition: {x: 0.0135, y: 4.494}
   m_SizeDelta: {x: 2.0491, y: 1.8078}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2675942737574272953
