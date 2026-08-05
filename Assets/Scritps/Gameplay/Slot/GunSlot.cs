@@ -12,7 +12,10 @@ namespace Wayfu.Lamkn
     {
         [Tooltip("Chỉ số slot 0..4 — quyết định thứ tự active theo số lượng slot của level.")]
         public int SlotIndex;
-        [SerializeField] private float shiftDuration = 0.15f;
+        [SerializeField] private float shiftDuration = 0.25f;
+
+        private const float InSlotScale = 0.7f;
+        private const float FrontGunScale = 0.85f;
 
         private readonly List<Gun> _guns = new List<Gun>();
         private float _spacing = 1f;
@@ -57,6 +60,7 @@ namespace Wayfu.Lamkn
                 _guns.Add(g);
             }
             RefreshReveal();
+            RefreshScales();
         }
 
         // Gun ở index 0 = ở VỊ TRÍ ĐẦU → gun ẩn lộ màu; các gun sau vẫn ẩn. Gọi mỗi khi list gun đổi.
@@ -66,13 +70,25 @@ namespace Wayfu.Lamkn
                 if (_guns[i] != null) _guns[i].SetAtFront(i == 0);
         }
 
+        // Gun index 0 nổi bật hơn; các gun phía sau giữ scale mặc định.
+        private void RefreshScales()
+        {
+            for (int i = 0; i < _guns.Count; i++)
+                if (_guns[i] != null)
+                    _guns[i].transform.localScale = Vector3.one * (i == 0 ? FrontGunScale : InSlotScale);
+        }
+
         public Gun RemoveFront()
         {
             if (_guns.Count == 0) return null;
             var front = _guns[0];
+            if (front != null) front.transform.localScale = Vector3.one * InSlotScale;
             _guns.RemoveAt(0);
             for (int i = 0; i < _guns.Count; i++)
+            {
                 _guns[i].MoveTo(SlotPos(i), shiftDuration); // dồn gun sau lên
+                _guns[i].transform.localScale = Vector3.one * (i == 0 ? FrontGunScale : InSlotScale);
+            }
             RefreshReveal(); // gun mới lên đầu (index 0) → lộ màu nếu là gun ẩn
             return front;
         }
