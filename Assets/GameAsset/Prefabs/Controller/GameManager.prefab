@@ -941,7 +941,7 @@ PrefabInstance:
     - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
       propertyPath: _fx.Array.size
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
