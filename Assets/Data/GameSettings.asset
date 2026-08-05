@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   CoreType: 0
-  SlotGunSpacing: 2.25
+  SlotGunSpacing: 2.5
+  FirstGunSpacing: 3.5
   PathWidth: 2.5
   MaxGunOnPath: 5
   GunSpeed: 10

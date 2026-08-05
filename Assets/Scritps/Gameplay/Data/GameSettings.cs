@@ -18,6 +18,8 @@ namespace Wayfu.Lamkn
         [Header("Slot")]
         [Tooltip("Spacing DÙNG CHUNG giữa các gun trong slot (theo trục Z).")]
         public float SlotGunSpacing = 1f;
+        [Tooltip("Spacing rieng tu gun index 0 den gun index 1 trong Slot0. 0 = dung SlotGunSpacing.")]
+        public float FirstGunSpacing = 0f;
 
         [Header("Guns / Path (config chung, không theo level)")]
         [Tooltip("Độ rộng mặt đường path — DÙNG CHUNG mọi level (trước ở LevelData, giờ gom về đây).")]

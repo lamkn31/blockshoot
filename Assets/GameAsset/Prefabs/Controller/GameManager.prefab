@@ -521,9 +521,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapPrefabs:
   - {fileID: 1727483338337369342, guid: df83e55a2799a8a408c9c2f78c533139, type: 3}
-  - {fileID: 4021699479797231725, guid: c72df1cdbdf25c6448b61683a2fb6afa, type: 3}
-  - {fileID: 6366340168554462402, guid: ac7b59a0dd749fb47a654c4832c00916, type: 3}
-  - {fileID: 3097187381807946122, guid: 3c41ff46d0a8db848aa5ef10b208111e, type: 3}
+  - {fileID: 8069862465506806037, guid: c72df1cdbdf25c6448b61683a2fb6afa, type: 3}
+  - {fileID: 2846543923855309577, guid: ac7b59a0dd749fb47a654c4832c00916, type: 3}
+  - {fileID: 2396934992273216828, guid: 3c41ff46d0a8db848aa5ef10b208111e, type: 3}
 --- !u!1 &8303161334858964469
 GameObject:
   m_ObjectHideFlags: 0
