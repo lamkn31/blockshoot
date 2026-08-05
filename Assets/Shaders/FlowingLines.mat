@@ -34,7 +34,7 @@ Material:
     - _FadeSpeed: 0.35
     - _FlowSpeed: 1
     - _Intensity: 35
-    - _Lanes: 8
+    - _Lanes: 1
     - _Layer2Scale: 1.7
     - _Layer2Strength: 0.4
     - _LineCount: 6
@@ -44,8 +44,8 @@ Material:
     - _Softness: 900
     - _SpeedVary: 1
     - _StreakLen: 0.9
-    - _Taper: 7
-    - _Thickness: 150
+    - _Taper: 12.3
+    - _Thickness: 540.64
     - _TravelSpeed: -2
     m_Colors:
     - _BottomColor: {r: 0.09999997, g: 0.27999997, b: 0.62, a: 1}
