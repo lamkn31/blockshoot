@@ -615,7 +615,7 @@ namespace Wayfu.Lamkn
             }
             if (_gsSO == null || _gsSO.targetObject != gs) _gsSO = new SerializedObject(gs);
             _gsSO.Update();
-            foreach (var name in new[] { "CoreType", "SlotGunSpacing", "FirstGunSpacing", "PathWidth", "MaxGunOnPath", "GunSpeed", "GunSpacing",
+            foreach (var name in new[] { "CoreType", "SlotGunSpacing", "FirstGunSpacing", "GunGoInDistanceBeforeEnd", "GunPathGoInDistanceBeforeEnd", "PathWidth", "MaxGunOnPath", "GunSpeed", "GunSpacing",
                 "FireInterval", "FireMode", "BurstSpawnStacked", "BurstRowLead", "GunFireRange",
                 "GunFireAngle", "FrontStationDistance", "BulletSpeed", "BlockStackSpacing",
                 "BlockCollapseDuration" })

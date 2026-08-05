@@ -79,6 +79,10 @@ MonoBehaviour:
   shootRightState: Shoot_right_hand
   shootBothState: Shoot_2_hand
   idleState: Idle
+  clickState: Click
+  goInState: GoIn
+  goOutState: GoOut
+  bothHandWindow: 0.04
   shootAnimationDuration: 0.45
   laserMaterial: {fileID: 2100000, guid: 1255821fc076ad943979a92690b2088c, type: 2}
   laserWidth: 0.4
@@ -444,6 +448,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b831e322868ec8b42b73998c4577ede4,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8069032694317455793, guid: b831e322868ec8b42b73998c4577ede4,
         type: 3}

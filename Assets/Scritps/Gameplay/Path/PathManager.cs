@@ -422,12 +422,13 @@ namespace Wayfu.Lamkn
         {
             _guns.Add(gun);
             gun.OnDeployed();
+            // Reveal at path_0 before GoOut; movement starts only after GoOut completes.
+            gun.SetHiddenDuringPathEntry(false);
             // MỌI gun đều vào path từ ĐIỂM ĐẦU (distance = FrontStationDistance, mặc định 0 = pos 0 của
             // path) rồi chạy tới. Khoảng cách giữa các gun do IsEntryClear() bảo đảm, không cộng offset
             // theo lượt deploy nữa.
             gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed);
-            if (entryRevealDistance <= 0f) gun.SetHiddenDuringPathEntry(false);
-            else StartCoroutine(RevealGunAfterEntry(gun, _frontStationDistance));
+            // DeployOnPath handles GoOut before enabling the follower.
         }
 
         private System.Collections.IEnumerator RevealGunAfterEntry(Gun gun, float startDistance)
