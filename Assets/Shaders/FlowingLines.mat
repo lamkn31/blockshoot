@@ -27,13 +27,13 @@ Material:
     m_Floats:
     - _Alpha: 1
     - _Bend: 1
-    - _BendCenter: 1
-    - _Curve: 10
-    - _CurveFreq: 1
+    - _BendCenter: 0
+    - _Curve: 4
+    - _CurveFreq: 4
     - _Density: 1
     - _FadeSpeed: 0.35
     - _FlowSpeed: 1
-    - _Intensity: 35.07
+    - _Intensity: 35
     - _Lanes: 8
     - _Layer2Scale: 1.7
     - _Layer2Strength: 0.4
@@ -42,9 +42,9 @@ Material:
     - _LineSpacing: 0.5
     - _LineWidth: 0.02
     - _Softness: 900
-    - _SpeedVary: 0.84
-    - _StreakLen: 0.5
-    - _Taper: 11
+    - _SpeedVary: 1
+    - _StreakLen: 0.9
+    - _Taper: 7
     - _Thickness: 150
     - _TravelSpeed: -2
     m_Colors:
