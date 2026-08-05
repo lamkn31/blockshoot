@@ -17,7 +17,7 @@ MonoBehaviour:
   NumberOfColors: 0
   MechanicNames: []
   PathWaypoints:
-  - {x: 6.6094627, y: 0, z: -28.189049}
+  - {x: 6.5400696, y: 0, z: -29.438925}
   - {x: 6.7514243, y: 0, z: -19.840986}
   - {x: -0.67139286, y: 0, z: -21.72614}
   - {x: -6.5180364, y: 0, z: -19.629879}
@@ -116,6 +116,7 @@ MonoBehaviour:
     Center: {x: -3.782986, y: 0, z: -5.0169067}
     Rotation: 143.83719
     CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 14
     RowSpacing: 1
@@ -129,6 +130,16 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints:
     - {x: -4.4625025, y: 0, z: 2.5901387}
     - {x: 2.005036, y: 0, z: 1.950159}
@@ -824,6 +835,7 @@ MonoBehaviour:
     Center: {x: -5.057105, y: 0, z: -15.75156}
     Rotation: 78.193794
     CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 13
     RowSpacing: 1
@@ -837,6 +849,16 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -4118,6 +4140,7 @@ MonoBehaviour:
     Center: {x: -1.236802, y: 0, z: -21.231035}
     Rotation: 180.83733
     CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 15
     RowSpacing: 1
@@ -4131,6 +4154,16 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
