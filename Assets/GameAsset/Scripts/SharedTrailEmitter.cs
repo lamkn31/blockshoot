@@ -79,18 +79,41 @@ namespace Wayfu.Lamkn
             }
         }
 
-        // Rải các system RATE-OVER-DISTANCE (droplets, bubbles) cho một bước bay dài 'distance' đơn vị.
+        // Rải các system RATE-OVER-DISTANCE (droplets, bubbles) cho đoạn bay 'fromPos'->'toPos'.
         // Số particle mỗi system = ceil(rateOverDistance * distance) -> đúng mật độ rate-over-distance gốc.
-        public void EmitTrail(Vector3 worldPos, float distance, Vector3 velocity)
+        // QUAN TRỌNG: particle được RẢI ĐỀU DỌC đoạn, KHÔNG dồn hết vào điểm cuối. ParticleSystem gốc chạy
+        // rate-over-distance thì sinh hạt liên tục theo transform di chuyển; nếu ta Emit tất cả tại 1 điểm
+        // (mỗi bước trailStepDistance) thì vệt vỡ thành từng CỤM cách đều -> hạt cườm/đứt đoạn. Lerp vị trí
+        // theo k làm vệt liền mạch như bản gốc, độc lập với việc trailStepDistance đặt thô hay mịn.
+        public void EmitTrail(Vector3 fromPos, Vector3 toPos, Vector3 velocity)
         {
-            if (_systems == null || distance <= 0f) return;
+            if (_systems == null) return;
+            float distance = Vector3.Distance(fromPos, toPos);
+            if (distance <= 0f) return;
 
             for (int i = 0; i < _systems.Length; i++)
             {
                 Sys s = _systems[i];
                 if (s.ps == null || s.perDistance <= 0f) continue;
                 int count = Mathf.CeilToInt(s.perDistance * distance);
-                if (count > 0) EmitParticles(s, worldPos, velocity, count);
+                if (count <= 0) continue;
+                EmitAlongSegment(s, fromPos, toPos, velocity, count);
+            }
+        }
+
+        // Rải 'count' particle của 1 system ĐỀU dọc đoạn fromPos->toPos (mẫu tại giữa mỗi khoảng con để
+        // không dồn về 2 đầu). Mỗi hạt = vận tốc đạn + toả ngẫu nhiên theo startSpeed (giữ vẻ toả nước gốc).
+        private void EmitAlongSegment(Sys s, Vector3 fromPos, Vector3 toPos, Vector3 velocity, int count)
+        {
+            var ep = new ParticleSystem.EmitParams { applyShapeToPosition = true };
+            for (int k = 0; k < count; k++)
+            {
+                float f = (k + 0.5f) / count;
+                ep.position = Vector3.Lerp(fromPos, toPos, f) + s.localOffset;
+                ep.velocity = s.startSpeed > 0.0001f
+                    ? velocity + Random.onUnitSphere * s.startSpeed
+                    : velocity;
+                s.ps.Emit(ep, 1);
             }
         }
 

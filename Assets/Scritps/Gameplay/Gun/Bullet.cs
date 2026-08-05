@@ -161,15 +161,18 @@ namespace Wayfu.Lamkn
             float t = _elapsed / _duration;
             if (t >= 1f)
             {
-                // Tới đích: đáp đúng target rồi phá block. Rải nốt đoạn cuối để vệt không hụt (vận tốc = đoạn/dt).
-                Vector3 endStep = target - transform.position;
-                Vector3 endVel = Time.deltaTime > 0f ? endStep / Time.deltaTime : Vector3.zero;
+                // Tới đích: đáp đúng target rồi phá block. Rải nốt đoạn cuối để vệt không hụt — nhưng cấp
+                // vận tốc = 0 (KHÔNG dùng đoạn/dt như lúc bay): particle inherit velocity, cho tiến tới thì
+                // nước phun VỌT QUA block. Zero → nước đọng ngay tại điểm chạm rồi tự tan (giống "tắt" FX
+                // ở đầu bay). Rig dùng chung không xoá riêng particle của viên này được nên chỉ chặn được
+                // phần sinh MỚI tại đây; các hạt đã rải dọc đường tự hết theo startLifetime.
                 transform.position = target;
-                ShedTrail(target, endVel);
+                ShedTrail(target, Vector3.zero);
                 _active = false;
                 if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
-                // Trúng block: ẩn thân đạn, đứng im tại điểm trúng vài giây rồi mới trả về pool.
+                // Trúng block: TẮT FX nước, ẩn thân đạn, đứng im tại điểm trúng vài giây rồi mới trả về pool.
+                StopFx();
                 if (_renderer != null) _renderer.enabled = false;
                 _lingering = true;
                 _lingerTimer = lingerDuration;
@@ -201,8 +204,28 @@ namespace Wayfu.Lamkn
             float d = Vector3.Distance(pos, _trailLastPos);
             if (d < trailStepDistance) return;
 
-            FxController.Instance.EmitTrail(FxType.BulletTrail, pos, d, velocity);
+            // Rải particle DỌC đoạn _trailLastPos -> pos (không dồn hết vào pos) → vệt rate-over-distance liền mạch.
+            FxController.Instance.EmitTrail(FxType.BulletTrail, _trailLastPos, pos, velocity);
             _trailLastPos = pos;
+        }
+
+        // Trúng block → tắt FX nước bám đạn để không còn particle nào phun ra trong lúc đạn đứng im (linger).
+        private void StopFx()
+        {
+            // Đường rig dùng chung: particle nằm trong buffer CHUNG của mọi viên → KHÔNG xoá ở đây (xoá cả
+            // buffer sẽ mất luôn vệt của các viên khác đang bay). _active=false đã ngừng rải; vệt tự tan
+            // theo startLifetime ngắn của prefab.
+            if (_useRig) return;
+
+            // FX con native (không dùng rig): mỗi viên có particle riêng → chỉ cần dừng+xoá của viên này.
+            if (_fxSystems == null) return;
+            for (int i = 0; i < _fxSystems.Length; i++)
+            {
+                ParticleSystem ps = _fxSystems[i];
+                if (ps == null) continue;
+                // StopEmittingAndClear: ngừng phát VÀ xoá sạch particle đang tồn tại ngay lập tức.
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
         }
 
         private void Despawn()
