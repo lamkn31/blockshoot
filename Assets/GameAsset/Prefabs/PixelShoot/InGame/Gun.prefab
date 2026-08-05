@@ -80,7 +80,6 @@ MonoBehaviour:
   shootBothState: Shoot_2_hand
   idleState: Idle
   clickState: Click
-  readyState: Ready
   goInState: GoIn
   goOutState: GoOut
   bothHandWindow: 0.04
@@ -220,8 +219,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -570,6 +569,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -7.5034637
       objectReference: {fileID: 0}
+    - target: {fileID: -5769924648142238124, guid: b831e322868ec8b42b73998c4577ede4,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5738099386740791124, guid: b831e322868ec8b42b73998c4577ede4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -704,6 +708,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: stickman_gunner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240981529984917455, guid: b831e322868ec8b42b73998c4577ede4,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1240981529984917455, guid: b831e322868ec8b42b73998c4577ede4,
         type: 3}
