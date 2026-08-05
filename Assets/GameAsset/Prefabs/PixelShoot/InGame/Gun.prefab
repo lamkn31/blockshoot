@@ -74,12 +74,13 @@ MonoBehaviour:
   entryHiddenObjects:
   - {fileID: 4065937337305141625}
   - {fileID: 7186063181062848571}
-  stickmanAnimator: {fileID: 0}
+  stickmanAnimator: {fileID: 6768540014685515256}
   shootLeftState: Shoot_left_hand
   shootRightState: Shoot_right_hand
   shootBothState: Shoot_2_hand
   idleState: Idle
   clickState: Click
+  readyState: Ready
   goInState: GoIn
   goOutState: GoOut
   bothHandWindow: 0.04

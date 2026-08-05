@@ -187,6 +187,7 @@ MonoBehaviour:
   rightMoveEndSpeedMultiplier: 2
   gunMoveSpeed: 10
   rotateGunAlongMovePath: 0
+  slotOneMoveZeroTargetScale: {x: 1.242, y: 1.242, z: 1.242}
 --- !u!1 &2991618823254973898
 GameObject:
   m_ObjectHideFlags: 0
