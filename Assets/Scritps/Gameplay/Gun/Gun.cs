@@ -45,6 +45,21 @@ namespace Wayfu.Lamkn
         [SerializeField] private Renderer[] colorRenderers;
         [Tooltip("Các object hiển thị sẽ tắt khi gun đang chuyển vào path. Root Gun không được đưa vào đây để follower vẫn chạy.")]
         [SerializeField] private GameObject[] entryHiddenObjects;
+
+        [Header("Vệt di chuyển (trail)")]
+        [Tooltip("ParticleSystem vệt bám gun khi DI CHUYỂN (kéo thả child trong prefab). Bỏ trống → tắt " +
+                 "tính năng. Code tự ép Simulation Space = World để vệt ở lại phía sau; đừng đưa nó vào " +
+                 "entryHiddenObjects (sẽ bị tắt lúc vào path).")]
+        [SerializeField] private ParticleSystem moveTrail;
+        [Tooltip("Tốc độ tối thiểu (world units/giây) để BẬT vệt. Dưới ngưỡng coi như gun đứng yên.")]
+        [SerializeField, Min(0f)] private float trailMinSpeed = 0.1f;
+        [Tooltip("Trên tốc độ này coi là TELEPORT (deploy về pos 0 / qua hầm) → KHÔNG phun vệt frame đó, " +
+                 "tránh 1 vệt dài bắc ngang màn hình. Đặt lớn hơn GunSpeed nhiều lần.")]
+        [SerializeField, Min(0f)] private float trailTeleportSpeed = 30f;
+        private ParticleSystem.EmissionModule _trailEmission;
+        private bool _hasTrail;
+        private Vector3 _lastTrailPos;
+        private bool _trailPrimed;   // đã có mốc _lastTrailPos để tính delta chưa (frame đầu bỏ qua)
         [Header("Stickman shooting animation")]
         [Tooltip("Animator dùng Stickman.controller. Để trống sẽ tự tìm Animator trong children.")]
         [SerializeField] private Animator stickmanAnimator;
@@ -190,6 +205,7 @@ namespace Wayfu.Lamkn
             PlayRandomIdle();
 
             CollectRenderers();
+            SetupMoveTrail();
 
             // Collider của prefab thường nằm ở CHILD (vd "Model") → OnMouseDown gửi tới child, không tới
             // script Gun ở root. Gắn relay lên mọi collider để forward click về đây (yêu cầu click→deploy).
@@ -217,6 +233,52 @@ namespace Wayfu.Lamkn
             foreach (var r in GetComponentsInChildren<Renderer>(true))
                 if (r.GetComponent<TMP_Text>() == null) list.Add(r);
             _renderers = list.ToArray();
+        }
+
+        /// <summary>
+        /// Chuẩn bị vệt di chuyển: ép World-space (particle ở lại phía sau thành wake, không bám cứng gun),
+        /// tắt emission ban đầu (LateUpdate mới bật khi gun thật sự chạy), và cho hệ chạy sẵn để lúc bật
+        /// emission là phun ngay. Không gán trong prefab thì tính năng tắt hẳn (mọi chỗ đều check _hasTrail).
+        /// </summary>
+        private void SetupMoveTrail()
+        {
+            if (moveTrail == null) return;
+            var main = moveTrail.main;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.playOnAwake = false;
+            _trailEmission = moveTrail.emission;
+            _trailEmission.enabled = false;
+            _hasTrail = true;
+            moveTrail.Play(); // hệ chạy nền, emission=false nên chưa sinh hạt nào
+        }
+
+        /// <summary>Dọn vệt (gun tái dùng từ pool / vừa chết): tắt phun + xoá hạt còn treo.</summary>
+        private void ResetMoveTrail()
+        {
+            if (!_hasTrail) return;
+            _trailEmission.enabled = false;
+            moveTrail.Clear();
+            _trailPrimed = false; // frame sau lấy lại mốc _lastTrailPos, không tính delta qua lần teleport
+        }
+
+        // Đo tốc độ bằng delta vị trí giữa 2 frame → hoạt động đồng nhất cho MỌI nguồn di chuyển
+        // (RoundedPolylineFollower trên path, MoveRoutine xếp hàng, route ra loop của Map). Chạy ở
+        // LateUpdate để đọc vị trí SAU khi các nguồn đó đã ghi transform trong frame này.
+        private void LateUpdate()
+        {
+            if (!_hasTrail) return;
+            Vector3 pos = transform.position;
+            if (!_trailPrimed) { _lastTrailPos = pos; _trailPrimed = true; return; }
+
+            float dt = Time.deltaTime;
+            float speed = dt > 1e-5f ? Vector3.Distance(pos, _lastTrailPos) / dt : 0f;
+            _lastTrailPos = pos;
+
+            // Bật vệt khi đang chạy trong dải tốc độ hợp lệ. Loại: gun chết, đang chơi anim vào path
+            // (đứng yên), và cú nhảy vị trí quá nhanh (deploy về pos 0 / chui hầm) = teleport.
+            bool moving = _state != GunState.Dead && !_pathEntryAnimating
+                          && speed >= trailMinSpeed && speed <= trailTeleportSpeed;
+            if (_trailEmission.enabled != moving) _trailEmission.enabled = moving;
         }
 
         public void Init(GunData data, GunFireConfig fire)
@@ -251,6 +313,9 @@ namespace Wayfu.Lamkn
 
             // Item pooled tái dùng: tắt follower để gun đứng yên trong slot (bật lại khi deploy).
             if (_follower != null) _follower.enabled = false;
+
+            // Gun tái dùng có thể mang vệt còn treo của lượt trước → dọn sạch trước khi vào slot.
+            ResetMoveTrail();
         }
 
         public void SetSlot(GunSlot s) => Slot = s;
@@ -947,6 +1012,7 @@ namespace Wayfu.Lamkn
             ResetBarrel(_left);
             DisableBeam(_right); // tắt tia trước khi trả gun về pool (item pooled tái dùng)
             DisableBeam(_left);
+            ResetMoveTrail();    // tắt + xoá vệt trước khi despawn, không để hạt treo lơ lửng
             PathManager.Instance?.RemoveGun(this);
             GameController.Instance?.OnBoardChanged();
             Despawn();
