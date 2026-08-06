@@ -127,6 +127,7 @@ namespace Wayfu.Lamkn
         private bool _multiIced;
         private int _multiIceThreshold = 10;
         private float _multiLineDir; // hướng chung đặt cho SpawnerLine đang chọn (độ quanh Y)
+        private float _multiDirectionOffset;
         // Thao tác HÀNG LOẠT cho queue của spawner: thêm N mục, đặt màu/stack cả queue.
         private int _queueAddCount = 3;
         private TypeColor _queueBulkColor = TypeColor.Red;
@@ -917,9 +918,12 @@ namespace Wayfu.Lamkn
                         string shootName = grid.ShootableEdges == GridEdges.None
                             ? "Shoot: Front"
                             : $"Shoot: {grid.ShootableEdges}";
+                        string collapseName = grid.CustomCollapseDirections == GridCollapseDirections.None
+                            ? (grid.Collapse2D ? "Collapse: 2D" : "Collapse: Front")
+                            : $"Collapse: {grid.CustomCollapseDirections}";
                         if (area.Contains(gridTip))
-                            GUI.Label(new Rect(gridTip.x + 4f, gridTip.y - 20f, 190f, 32f),
-                                $"Grid {gi}: {dirName}\n{shootName}", gridDirLabel);
+                            GUI.Label(new Rect(gridTip.x + 4f, gridTip.y - 20f, 220f, 48f),
+                                $"Grid {gi}: {dirName}\n{shootName}\n{collapseName}", gridDirLabel);
                     }
 
                     for (int r = 0; r < grid.Rows; r++)
@@ -991,11 +995,26 @@ namespace Wayfu.Lamkn
 
                             // Các HƯỚNG cell có thể dồn/move khi collapse: DỌC (về hàng 0) luôn có; NGANG (về
                             // index 0) chỉ khi Collapse2D. KHÔNG có chéo — chéo là của riêng Spawner8 (xem Dir).
-                            if (_showMove)
+                            if (_showMove || grid.CustomCollapseDirections != GridCollapseDirections.None)
                             {
                                 Handles.color = new Color(0.3f, 0.9f, 1f, 0.95f);
-                                if (r > 0 && e < grid.ElementsInRow(r - 1)) MoveArrow(wp, grid.CellPos(r - 1, e));
-                                if (grid.Collapse2D && e > 0) MoveArrow(wp, grid.CellPos(r, e - 1));
+                                var customCollapse = grid.CustomCollapseDirections;
+                                if (customCollapse != GridCollapseDirections.None)
+                                {
+                                    if ((customCollapse & GridCollapseDirections.Front) != 0 && r > 0 && e < grid.ElementsInRow(r - 1))
+                                        MoveArrow(wp, grid.CellPos(r - 1, e));
+                                    if ((customCollapse & GridCollapseDirections.Back) != 0 && r + 1 < grid.Rows && e < grid.ElementsInRow(r + 1))
+                                        MoveArrow(wp, grid.CellPos(r + 1, e));
+                                    if ((customCollapse & GridCollapseDirections.Left) != 0 && e > 0)
+                                        MoveArrow(wp, grid.CellPos(r, e - 1));
+                                    if ((customCollapse & GridCollapseDirections.Right) != 0 && e + 1 < grid.ElementsInRow(r))
+                                        MoveArrow(wp, grid.CellPos(r, e + 1));
+                                }
+                                else
+                                {
+                                    if (r > 0 && e < grid.ElementsInRow(r - 1)) MoveArrow(wp, grid.CellPos(r - 1, e));
+                                    if (grid.Collapse2D && e > 0) MoveArrow(wp, grid.CellPos(r, e - 1));
+                                }
                             }
 
                         }
@@ -2745,6 +2764,17 @@ namespace Wayfu.Lamkn
             _multiIceThreshold = Mathf.Max(0, EditorGUILayout.IntField("Block Meta Ice ≥", _multiIceThreshold));
             if (GUILayout.Button("Áp dụng", GUILayout.Width(70))) ApplyToSelected("IceThreshold", _multiIceThreshold);
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            _multiDirectionOffset = EditorGUILayout.FloatField("Offset hướng cell (°)", _multiDirectionOffset);
+            if (GUILayout.Button("Áp dụng", GUILayout.Width(70))) ApplyDirectionOffset(_multiDirectionOffset);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Nhanh", GUILayout.Width(72));
+            if (GUILayout.Button("-90°", EditorStyles.miniButton)) ApplyDirectionOffset(-90f);
+            if (GUILayout.Button("+90°", EditorStyles.miniButton)) ApplyDirectionOffset(90f);
+            if (GUILayout.Button("180°", EditorStyles.miniButton)) ApplyDirectionOffset(180f);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.HelpBox("Offset chỉ áp dụng cho các cell đang chọn, không đổi hướng của toàn grid. Cell sẽ dùng hướng custom riêng.", MessageType.None);
 
             // HƯỚNG CHUNG cho MỌI SpawnerLine đang chọn (góc quanh Y: 0=+Z, 90=+X, 180=−Z, 270=−X). Khỏi
             // phải kéo xoay từng ô.
@@ -2822,6 +2852,33 @@ namespace Wayfu.Lamkn
                 cell.FindPropertyRelative("SpawnerDirectionAngleZ").floatValue = angle;
                 cell.FindPropertyRelative("UseCustomDirection").boolValue = true;
             }
+        }
+
+        // Xoay hướng thực tế của từng cell đang chọn quanh trục Y.
+        private void ApplyDirectionOffset(float offset)
+        {
+            offset = Mathf.Repeat(offset + 180f, 360f) - 180f;
+            var grids = _so.FindProperty("Grids");
+            foreach (var (gi, ci) in _selCells)
+            {
+                if (gi < 0 || gi >= grids.arraySize) continue;
+                var grid = _target.Grids[gi];
+                var cells = grids.GetArrayElementAtIndex(gi).FindPropertyRelative("Cells");
+                if (grid == null || ci < 0 || ci >= cells.arraySize) continue;
+                var data = grid.Cells[ci];
+                if (data == null) continue;
+
+                bool shapeDir = grid.CellAngleFromShape && !data.UseCustomDirection &&
+                                data.Type != BlockCellType.SpawnerLine;
+                float current = shapeDir ? grid.DefaultCellAngle(data.SpawnerDepth, data.BlockCol) :
+                    data.SpawnerDirectionAngleZ + grid.CellDirectionOffset;
+                var cell = cells.GetArrayElementAtIndex(ci);
+                cell.FindPropertyRelative("SpawnerDirectionAngleZ").floatValue =
+                    Mathf.Repeat(current + offset - grid.CellDirectionOffset, 360f);
+                cell.FindPropertyRelative("UseCustomDirection").boolValue = true;
+            }
+            _so.ApplyModifiedProperties();
+            Repaint();
         }
 
         private void ApplyToSelected(string propName, int value)
@@ -2938,7 +2995,13 @@ namespace Wayfu.Lamkn
             if (cellType == BlockCellType.SpawnerLine || customDirection.boolValue)
                 EditorGUILayout.PropertyField(c.FindPropertyRelative("SpawnerDirectionAngleZ"),
                     new GUIContent("Hướng nhả (°)", "Góc quanh Y: 0=+Z, 90=+X, 180=−Z, 270=−X. Hoặc kéo đầu mũi tên."));
-            if (cellType.IsSpawner()) DrawCellQueue(c);
+            if (cellType.IsSpawner())
+            {
+                EditorGUILayout.PropertyField(c.FindPropertyRelative("AllowCollapseIntoAfterQueueEmpty"),
+                    new GUIContent("Cho dồn vào sau khi hết queue",
+                        "Bật: xoá ô gốc khi queue hết và cho cell khác dồn vào. Tắt: giữ ô gốc bị khóa."));
+                DrawCellQueue(c);
+            }
             else EditorGUILayout.HelpBox("Normal: phá hết stack là cell biến mất.", MessageType.None);
             EditorGUILayout.EndVertical();
         }
@@ -3326,6 +3389,8 @@ namespace Wayfu.Lamkn
             _genColor = (TypeColor)EditorGUILayout.EnumPopup("Gen Color", _genColor);
             _genStack = Mathf.Max(1, EditorGUILayout.IntField(new GUIContent("Refill Stack", "Stack cho hàng đợi Refill (Generate Cells dùng Hole Capacity)."), _genStack, GUILayout.Width(120)));
             EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button("Migrate Spawner collapse = ON"))
+                MigrateSpawnerCollapseDefaults();
 
             DrawPaintPalette();
 
@@ -3387,6 +3452,9 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Collapse2D"), new GUIContent(
                     "Collapse 2D",
                     "Dồn cả DỌC (về hàng 0) lẫn NGANG (về index 0) → lấp lỗ 2 chiều về góc. Chỉ khi KHÔNG bật Shootable Edges."));
+                EditorGUILayout.PropertyField(grid.FindPropertyRelative("CustomCollapseDirections"), new GUIContent(
+                    "Custom Collapse Directions",
+                    "Chọn một hoặc nhiều hướng dồn Front/Back/Left/Right. Khi khác None, custom này được ưu tiên thay logic mặc định."));
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Center"));
                 EditorGUILayout.PropertyField(grid.FindPropertyRelative("Rotation"),
                     new GUIContent("Rotation (Y°)", "Xoay cả grid quanh trục Y. Kéo handle XANH LÁ trong khung giữa."));
@@ -3505,6 +3573,30 @@ namespace Wayfu.Lamkn
         }
 
         #endregion
+
+        private void MigrateSpawnerCollapseDefaults()
+        {
+            if (_so == null || _target == null) return;
+            Undo.RecordObject(_target, "Migrate spawner collapse defaults");
+            var grids = _so.FindProperty("Grids");
+            int changed = 0;
+            for (int gi = 0; gi < grids.arraySize; gi++)
+            {
+                var cells = grids.GetArrayElementAtIndex(gi).FindPropertyRelative("Cells");
+                for (int ci = 0; ci < cells.arraySize; ci++)
+                {
+                    var cell = cells.GetArrayElementAtIndex(ci);
+                    var type = (BlockCellType)cell.FindPropertyRelative("Type").enumValueIndex;
+                    if (!type.IsSpawner()) continue;
+                    var allow = cell.FindPropertyRelative("AllowCollapseIntoAfterQueueEmpty");
+                    if (allow != null && !allow.boolValue) { allow.boolValue = true; changed++; }
+                }
+            }
+            _so.ApplyModifiedProperties();
+            EditorUtility.SetDirty(_target);
+            AssetDatabase.SaveAssets();
+            ShowNotification(new GUIContent($"Đã bật collapse cho {changed} spawner"));
+        }
 
         #region Grid ops
 

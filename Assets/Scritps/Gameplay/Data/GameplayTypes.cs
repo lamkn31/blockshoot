@@ -168,6 +168,9 @@ namespace Wayfu.Lamkn
 
     public enum GridDefaultDirection { Auto = 0, Up = 1, Down = 2, Left = 3, Right = 4 }
 
+    [Flags]
+    public enum GridCollapseDirections { None = 0, Front = 1, Back = 2, Left = 4, Right = 8 }
+
     /// <summary>
     /// 1 grid xếp block trên sàn XZ. Row 0 = ngoài cùng, gần path (gun ăn từ row 0 vào trong).
     /// <para><b>Shape = Arc</b>: vòng cung (fan). Mỗi hàng là 1 cung bán kính BaseRadius + row*RowSpacing,
@@ -226,6 +229,8 @@ namespace Wayfu.Lamkn
         [Tooltip("Bật = grid dồn cả DỌC (về hàng 0) LẪN NGANG (về index 0) → lấp lỗ 2 chiều về góc (hàng 0, " +
                  "index 0). Tắt = chỉ dồn dọc như cũ. (Chỉ áp dụng khi KHÔNG bật ShootableEdges.)")]
         public bool Collapse2D = false;
+        [Tooltip("Custom hướng dồn của grid. None = dùng logic mặc định; có thể bật nhiều hướng cùng lúc.")]
+        public GridCollapseDirections CustomCollapseDirections = GridCollapseDirections.None;
 
         [Header("Foundation (optional mesh below cells)")]
         [Tooltip("Tạo một mặt nền liền dưới toàn bộ grid. Với Shape = Spline, nền dùng chính spline nên bo/cong khớp cell.")]
@@ -735,6 +740,8 @@ namespace Wayfu.Lamkn
         public float SpawnerDirectionAngleZ;
         [Tooltip("Dùng hướng riêng của cell thay vì hướng tự động theo shape của grid. SpawnerLine luôn dùng hướng riêng.")]
         public bool UseCustomDirection;
+        [Tooltip("Khi queue của Spawner/Spawner8/SpawnerLine hết: bật để xoá ô gốc và cho cell khác dồn vào; tắt để giữ ô gốc bị khóa.")]
+        public bool AllowCollapseIntoAfterQueueEmpty = true;
 
         [Tooltip("Cell bị BĂNG phủ: KHÔNG bắn được cho tới khi băng tan (phá đủ block). IceController tự sinh " +
                  "khối Ice phủ vùng cell băng liền kề khi Play.")]
