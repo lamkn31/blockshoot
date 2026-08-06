@@ -66,14 +66,18 @@ namespace Wayfu.Lamkn
         private int _maxGunOnPath = 5;
 
         // ===== Gate điều phối cửa vào path (path_0) =====
-        // Mỗi lúc chỉ 1 gun được TRANSIT (GoOut) qua cửa. Ưu tiên: gun slot đang chờ (_queue) vào HẾT
-        // trước; gun loop muốn tái xuất (_emerge) phải ẩn hẳn tại cửa đợi tới lượt.
+        // Mỗi lúc chỉ 1 gun được TRANSIT (GoOut) qua cửa. Gun loop muốn tái xuất (_emerge) chỉ nhường các
+        // gun slot ĐANG đợi lúc nó xin (snapshot WaitFor) — nhường xong nhóm đó là ra ngay, gun slot tới
+        // SAU xếp phía sau nó (không để dòng gun slot mới chen liên tục làm gun loop kẹt mãi ở cửa).
         private Gun _gateGun;                                             // gun đang transit; null = cửa rảnh
         private readonly List<EmergeReq> _emerge = new List<EmergeReq>(); // gun loop ẩn ở cửa chờ tái xuất (FIFO)
         private readonly HashSet<Gun> _emergeWaiting = new HashSet<Gun>();// gun đang ẩn chờ → IsEntryClear bỏ qua
 
-        /// <summary>Một yêu cầu tái xuất của gun loop: giữ callback để "mở cửa" khi tới lượt.</summary>
-        private class EmergeReq { public Gun Gun; public Action OnGranted; }
+        /// <summary>
+        /// Một yêu cầu tái xuất của gun loop. WaitFor = ảnh chụp các gun slot đang đợi lúc gun này xin;
+        /// nó chỉ phải nhường đúng nhóm đó, xong là được ra (EmergeReady).
+        /// </summary>
+        private class EmergeReq { public Gun Gun; public Action OnGranted; public HashSet<Gun> WaitFor; }
 
         private Mesh _pipePathMesh;
         private Mesh _waterPathMesh;
@@ -433,7 +437,13 @@ namespace Wayfu.Lamkn
         {
             if (gun == null) { onGranted?.Invoke(); return; }
             _emergeWaiting.Add(gun);
-            _emerge.Add(new EmergeReq { Gun = gun, OnGranted = onGranted });
+            // Snapshot hàng chờ HIỆN TẠI: gun loop này chỉ nhường đúng các gun slot đang đợi lúc này.
+            _emerge.Add(new EmergeReq
+            {
+                Gun = gun,
+                OnGranted = onGranted,
+                WaitFor = new HashSet<Gun>(_queue)
+            });
         }
 
         private void Update()
@@ -443,7 +453,8 @@ namespace Wayfu.Lamkn
 
         /// <summary>
         /// Điều phối cửa vào path mỗi frame. Chỉ 1 gun transit tại một thời điểm (_gateGun). Khi cửa rảnh:
-        /// ƯU TIÊN gun slot đang chờ (_queue) — vào HẾT rồi mới tới gun loop tái xuất (_emerge).
+        /// gun loop tái xuất được ra ngay khi đã nhường xong nhóm gun slot trong snapshot của nó
+        /// (EmergeReady); ngoài ra ưu tiên gun slot đang chờ ở đầu hàng.
         /// </summary>
         private void ServiceGate()
         {
@@ -458,7 +469,16 @@ namespace Wayfu.Lamkn
 
             if (!IsEntrySpacingClear()) return; // gun vừa transit chưa chạy đủ xa → giữ khoảng cách, chưa mở lượt kế
 
-            // Ưu tiên 1: gun slot đang chờ ngoài cửa.
+            // Gun loop tái xuất đã nhường XONG nhóm gun slot mà nó phải nhường (snapshot lúc xin) → cho ra
+            // NGAY, kể cả khi có gun slot MỚI tới sau đang đợi (chúng xếp sau gun loop này). Đây là chỗ sửa
+            // starvation: trước đây gun loop nhường mọi gun slot nên bị kẹt mãi khi slot chen liên tục.
+            if (_emerge.Count > 0 && EmergeReady(_emerge[0]))
+            {
+                GrantEmerge();
+                return;
+            }
+
+            // Gun slot đang chờ ngoài cửa (những gun mà gun loop còn đang phải nhường sẽ luôn ở đầu hàng).
             if (_queue.Count > 0)
             {
                 var gun = _queue[0];
@@ -467,8 +487,7 @@ namespace Wayfu.Lamkn
                 // lúc click). Gun tái xuất KHÔNG kiểm cái này vì nó đã nằm sẵn trong _guns.
                 if (_guns.Count >= _maxGunOnPath) return;
                 // Đợi gun bay TỚI điểm chờ ngoài cửa rồi mới cho transit — để thấy nó "đi ra" khỏi slot,
-                // không teleport vào pos 0 ngay lúc còn đang bay (cả khi cửa đang rảnh). Gun loop chờ tái
-                // xuất cũng phải nhường trong lúc này (ưu tiên slot).
+                // không teleport vào pos 0 ngay lúc còn đang bay (cả khi cửa đang rảnh).
                 const float arriveSqr = 0.2f * 0.2f;
                 if ((gun.transform.position - EntryWaitPos()).sqrMagnitude > arriveSqr) return;
                 _queue.RemoveAt(0);
@@ -476,8 +495,20 @@ namespace Wayfu.Lamkn
                 return;
             }
 
-            // Ưu tiên 2: gun loop ẩn ở cửa chờ tái xuất (chỉ khi KHÔNG còn gun slot nào chờ).
+            // Không còn gun slot nào chờ → cho gun loop ra (barrier coi như đã thoả).
             if (_emerge.Count > 0) GrantEmerge();
+        }
+
+        /// <summary>
+        /// Gun loop đã tới lượt ra chưa: mọi gun slot trong snapshot WaitFor của nó đã rời hàng chờ (đã vào
+        /// path hoặc bị hủy) chưa. Gun slot tới SAU không nằm trong snapshot nên không cản.
+        /// </summary>
+        private bool EmergeReady(EmergeReq req)
+        {
+            if (req == null) return false;
+            if (req.WaitFor == null || req.WaitFor.Count == 0) return true;
+            foreach (var g in _queue) if (req.WaitFor.Contains(g)) return false;
+            return true;
         }
 
         /// <summary>Gun slot được vào: teleport về pos 0, hiện hình rồi bật follower NGAY (không GoOut).</summary>
@@ -526,9 +557,12 @@ namespace Wayfu.Lamkn
             foreach (var g in _guns)
             {
                 if (g == null) continue;
-                // Gun loop đang ẩn ở cửa chờ tái xuất: nó parked tại pos 0 nhưng KHÔNG thật sự chắn đường
-                // (đang nhường cho gun slot vào) → bỏ qua khỏi check spacing, nếu không sẽ tự khoá cửa.
-                if (_emergeWaiting.Contains(g)) continue;
+                // Gun đang TRANSIT qua hầm không chiếm track gần pos 0 theo nghĩa vật lý (nó ở trong hầm):
+                //  • GoIn ở CUỐI path: follower tắt nên PathDistance đóng băng ~cuối, mà ArcGap coi cuối wrap
+                //    về pos 0 → sẽ khoá oan cửa dù A chỉ đang biến mất ở cuối.
+                //  • ẩn chờ tái xuất ở cửa (_emergeWaiting) hoặc GoOut vào: cũng không tính là chắn.
+                // → Bỏ qua mọi gun PathEntryAnimating (bao trùm luôn _emergeWaiting) để không khoá cửa oan.
+                if (g.PathEntryAnimating || _emergeWaiting.Contains(g)) continue;
                 if (ArcGap(_frontStationDistance, g.PathDistance, _path.TotalLength) < _minGunGap) return false;
             }
             return true;

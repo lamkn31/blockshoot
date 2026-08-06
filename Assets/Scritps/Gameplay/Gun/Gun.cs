@@ -491,20 +491,51 @@ namespace Wayfu.Lamkn
         /// </summary>
         public void DeployOnPath(RoundedPolylinePath path, float startDistance, float speed, bool playEmerge = true)
         {
-            // A gun returning from path_end must be placed at path_0 before
-            // the entry animation starts. Otherwise GoOut is played at the
-            // old end position while the follower is still disabled.
-            if (path != null)
+            if (_follower != null) _follower.enabled = false;
+            SetHiddenDuringPathEntry(false);
+
+            if (!playEmerge)
             {
-                transform.position = path.GetPointAtDistance(startDistance);
-                if (_follower != null) _follower.enabled = false;
+                // Gun slot: KHÔNG teleport vào pos 0 nữa — trượt MƯỢT từ điểm chờ ngoài cửa VÀO pos 0 theo
+                // speed rồi mới bàn giao cho follower, để không thấy nhảy vị trí (yêu cầu: đi vào đúng speed).
+                if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
+                _pathEntryAnimating = true; // giữ gate + khoá bắn trong lúc trượt vào
+                _moveRoutine = StartCoroutine(MoveIntoPathThenFollow(path, startDistance, speed));
+                return;
             }
 
-            // The model is revealed only at path_0, immediately before GoOut.
-            SetHiddenDuringPathEntry(false);
+            // playEmerge: đặt về pos 0 TRƯỚC rồi mới GoOut (không thì GoOut chơi ở vị trí cũ lúc follower tắt).
+            if (path != null) transform.position = path.GetPointAtDistance(startDistance);
             // playEmerge: gun hiện ở path_0, hold ngắn rồi chạy trong lúc GoOut tiếp diễn (gun loop tái xuất).
-            // !playEmerge: gun slot vào path chạy NGAY, bỏ hiệu ứng xuất hiện.
             StartPathFollower(path, startDistance, speed, playEmerge);
+        }
+
+        /// <summary>
+        /// Gun slot trượt từ vị trí hiện tại (điểm chờ ngoài cửa) tới pos 0 với tốc độ <paramref name="speed"/>
+        /// (= tốc độ chạy path) rồi bật follower — vào đường liền mạch, không teleport. Giữ _pathEntryAnimating
+        /// suốt lúc trượt để gate chỉ nhả khi gun đã thật sự vào đường.
+        /// </summary>
+        private IEnumerator MoveIntoPathThenFollow(RoundedPolylinePath path, float startDistance, float speed)
+        {
+            _pathEntryAnimating = true;
+            Vector3 target = path != null ? path.GetPointAtDistance(startDistance) : transform.position;
+            Vector3 start = transform.position;
+            float dist = Vector3.Distance(start, target);
+            float dur = speed > 0.01f ? dist / speed : 0f;
+
+            // Quay mặt theo hướng đi vào (điểm chờ nằm ngay sau pos 0 nên đây cũng là hướng tiếp tuyến path).
+            Vector3 dir = target - start; dir.y = 0f;
+            if (dir.sqrMagnitude > 1e-6f)
+                transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
+
+            for (float t = 0f; t < dur; t += Time.deltaTime)
+            {
+                transform.position = Vector3.Lerp(start, target, t / dur);
+                yield return null;
+            }
+            transform.position = target;
+            _moveRoutine = null;
+            BeginPathFollower(path, startDistance, speed);
         }
 
         private void StartPathFollower(RoundedPolylinePath path, float startDistance, float speed, bool playEmerge)
