@@ -728,7 +728,9 @@ namespace Wayfu.Lamkn
         /// Chỗ đứng (anchor) trong đám đông chờ cho gun ở index. Pack thành LƯỚI đều: perRow ~ căn bậc 2 của Max
         /// Gun On Path (kẹp để cả hàng lọt trong bề rộng vùng). Tâm lưới dời về phía CỬA path (lateral) nhưng luôn
         /// nằm TRỌN trong vùng → không collapse chồng cột, không tràn biên. Hàng 0 sát cửa (vào trước), hàng sau
-        /// lùi vào sâu. Gap = _clusterSpacing (GameSettings.WaitClusterSpacing). Xê dịch nhẹ/gun cho tự nhiên.
+        /// lùi vào sâu. Trong hàng, cột được lấp TỪ CỘT GẦN CỬA NHẤT toả ra 2 bên → index 0 (gun click TRƯỚC) đứng
+        /// đúng chỗ gần cửa nhất, vào path THẲNG chứ không dạt sang bên nhường gun sau. Gap = _clusterSpacing
+        /// (GameSettings.WaitClusterSpacing). Xê dịch nhẹ/gun cho tự nhiên.
         /// </summary>
         private Vector3 EntryClusterPos(int index, Gun gun)
         {
@@ -739,15 +741,21 @@ namespace Wayfu.Lamkn
                 perRow = Mathf.Clamp(perRow, 1, Mathf.Max(1, Mathf.FloorToInt(2f * half / _clusterSpacing) + 1));
 
             int row = index / perRow;
-            int col = index % perRow;
+            int slotInRow = index % perRow;
 
             float gridWidth = (perRow - 1) * _clusterSpacing;
             float gridCenter = lateral;
             if (!float.IsInfinity(half)) // dời tâm lưới về phía cửa nhưng giữ cả lưới trong bề rộng
                 gridCenter = gridWidth >= 2f * half ? 0f
                            : Mathf.Clamp(lateral, -half + gridWidth * 0.5f, half - gridWidth * 0.5f);
+            float gridStart = gridCenter - gridWidth * 0.5f; // across của cột 0 (biên trái lưới)
 
-            float across = gridCenter + (col - (perRow - 1) * 0.5f) * _clusterSpacing;
+            // Cột gần CỬA nhất (theo lateral), rồi lấp toả 2 bên từ đó → slotInRow=0 = cột gần cửa nhất.
+            int nearCol = float.IsInfinity(half) ? 0
+                        : Mathf.Clamp(Mathf.RoundToInt((lateral - gridStart) / Mathf.Max(0.01f, _clusterSpacing)), 0, perRow - 1);
+            int col = NthCenterOut(slotInRow, nearCol, perRow);
+
+            float across = gridStart + col * _clusterSpacing;
             float depthPos = _clusterSpacing * (row + 0.5f); // lùi vào trong, chừa cạnh
             if (!float.IsInfinity(depth)) depthPos = Mathf.Min(depthPos, Mathf.Max(0f, depth - _clusterSpacing * 0.5f));
 
@@ -755,6 +763,23 @@ namespace Wayfu.Lamkn
             if (clusterJitter > 0f && _queueJitter.TryGetValue(gun, out var j))
                 anchor += (widthDir * j.x + depthDir * j.y) * clusterJitter;
             return ClampToWait(anchor);
+        }
+
+        /// <summary>
+        /// Cột thứ <paramref name="n"/> khi lấp 1 hàng TỪ cột <paramref name="center"/> toả xen kẽ 2 bên
+        /// (center, +1, −1, +2, −2…), bỏ cột ra ngoài [0, len) và lấp tiếp phía còn lại. Đảm bảo n=0 → center
+        /// (gần cửa nhất) và các cột trả về ĐÔI MỘT KHÁC NHAU (không chồng chỗ).
+        /// </summary>
+        private static int NthCenterOut(int n, int center, int len)
+        {
+            int taken = 0;
+            if (center >= 0 && center < len) { if (taken == n) return center; taken++; }
+            for (int off = 1; off < len; off++)
+            {
+                int a = center + off; if (a < len && a >= 0) { if (taken == n) return a; taken++; }
+                int b = center - off; if (b >= 0 && b < len) { if (taken == n) return b; taken++; }
+            }
+            return Mathf.Clamp(center, 0, Mathf.Max(0, len - 1));
         }
 
         /// <summary>
