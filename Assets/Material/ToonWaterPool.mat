@@ -41,7 +41,7 @@ Material:
     - _CausticThin: 0.522
     - _CrestStrength: 0
     - _DeepStrength: 1.25
-    - _DepthMax: 6.1
+    - _DepthMax: 5.4
     - _EdgeAlphaBoost: 0.477
     - _FoamCutoff: 0.55
     - _FoamDepth: 2.18
@@ -54,9 +54,9 @@ Material:
     m_Colors:
     - _CausticColor: {r: 1, g: 1, b: 1, a: 1}
     - _CrestColor: {r: 0, g: 0.7922032, b: 1, a: 1}
-    - _DeepColor: {r: 0.13679248, g: 0.6765931, b: 1, a: 1}
+    - _DeepColor: {r: 0.4292453, g: 0.83979666, b: 1, a: 1}
     - _FoamColor: {r: 0.8349056, g: 0.9724843, b: 1, a: 1}
     - _FoamSpeed: {r: 0.05, g: 0.03, b: 0, a: 0}
     - _FresnelColor: {r: 0.014017418, g: 0.5739641, b: 0.990566, a: 1}
-    - _ShallowColor: {r: 0.23113209, g: 0.85577184, b: 1, a: 1}
+    - _ShallowColor: {r: 0, g: 0.60588074, b: 1, a: 1}
   m_BuildTextureStacks: []
