@@ -563,36 +563,27 @@ namespace Wayfu.Lamkn
                 return;
             }
 
-            // Gun slot đang chờ ngoài cửa. "GẦN PATH NHẤT VÀO TRƯỚC": không theo thứ tự tới hàng mà chọn gun
-            // đang đứng GẦN CỬA (pos 0) nhất trong đám đông. Không ảnh hưởng ưu tiên gun loop: EmergeReady
-            // xét theo TẬP (mọi gun trong snapshot phải rời _queue), không phụ thuộc thứ tự chúng vào path.
+            // Gun slot đang chờ ngoài cửa. FIFO: gun CLICK TRƯỚC (đầu hàng _queue[0]) vào path TRƯỚC — nó đã được
+            // xếp anchor ở chỗ ĐẦU gần cửa nhất (EntryClusterPos index 0), nên vào thẳng, không nhường gun sau.
+            // Không ảnh hưởng ưu tiên gun loop: EmergeReady xét theo TẬP (mọi gun snapshot phải rời _queue).
+            while (_queue.Count > 0 && _queue[0] == null) _queue.RemoveAt(0); // dọn ô null ở đầu hàng
             if (_queue.Count > 0)
             {
                 // Sức chứa CHỈ áp cho gun MỚI: path đầy thì gun slot đợi (thường CanAcceptCount đã chặn từ
                 // lúc click). Gun tái xuất KHÔNG kiểm cái này vì nó đã nằm sẵn trong _guns.
                 if (_guns.Count >= _maxGunOnPath) return;
 
-                Vector3 entrance = _path.GetPointAtDistance(_frontStationDistance);
-                // Chỉ xét gun ĐÃ TỚI vùng chờ (bay xong từ slot). Trong nhóm đó lấy gun GẦN CỬA nhất vào trước.
-                // Dùng cờ _queueArrived (bền) thay vì đo khoảng cách anchor mỗi frame → gun bị chen xô vẫn đủ
-                // điều kiện, không kẹt cửa khi vùng chật đám đông cứ nhấp nhổm.
-                Gun gun = null; int gunIdx = -1; float bestSqr = float.MaxValue;
-                for (int i = 0; i < _queue.Count; i++)
-                {
-                    var g = _queue[i];
-                    if (g == null) { _queue.RemoveAt(i); i--; continue; }
-                    if (!_queueArrived.Contains(g)) continue; // còn đang bay từ slot → chưa cho vào path
-                    float d = (g.transform.position - entrance).sqrMagnitude;
-                    if (d < bestSqr) { bestSqr = d; gun = g; gunIdx = i; }
-                }
-                if (gun == null) return; // chưa gun nào tới vùng chờ → chờ frame sau
+                var gun = _queue[0];
+                // Đầu hàng còn đang BAY từ slot vào vùng chờ → ĐỢI nó tới, KHÔNG cho gun sau chen lên (giữ đúng
+                // thứ tự click). Cờ _queueArrived bền nên gun đã vào vùng vẫn đủ điều kiện dù đang bị chen xô.
+                if (!_queueArrived.Contains(gun)) return;
 
-                _queue.RemoveAt(gunIdx);
+                _queue.RemoveAt(0);
                 _queueJitter.Remove(gun);
                 _queueTarget.Remove(gun);
                 _queueArrived.Remove(gun);
                 BeginSlotTransit(gun);
-                RestageQueue(); // 1 gun đã vào → đám đông còn lại dồn lại lấp chỗ trống
+                RestageQueue(); // đầu hàng đã vào → cả hàng dồn LÊN 1 chỗ, gun kế chen vào vị trí đầu gần cửa
                 return;
             }
 
