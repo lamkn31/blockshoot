@@ -240,17 +240,9 @@ namespace Wayfu.Lamkn
         // được đưa vào queue/path loop bình thường; map không có route giữ nguyên hành vi cũ.
         private void SendGunToLoop(int slotIndex, Gun gun)
         {
-            var map = MapController.IsActive ? MapController.Instance.CurrentMapScript : null;
-            if (map != null)
-            {
-                _movingToLoop.Add(gun);
-                if (map.TryMoveGunToLoop(slotIndex, gun, () =>
-                    {
-                        _movingToLoop.Remove(gun);
-                        PathManager.Instance?.RequestDeploy(gun);
-                    })) return;
-                _movingToLoop.Remove(gun);
-            }
+            // Bỏ Slot Move Paths: gun không đi theo route riêng của slot nữa mà ĐI THẲNG ra cửa PathManager.
+            // RequestDeploy tự MoveTo gun tới điểm chờ NGOÀI cửa tunnel rồi mới điều phối transit vào path.
+            // (Code Map.slotMovePaths/TryMoveGunToLoop vẫn giữ, chỉ không gọi tới — phòng khi cần dùng lại.)
             PathManager.Instance?.RequestDeploy(gun);
         }
 

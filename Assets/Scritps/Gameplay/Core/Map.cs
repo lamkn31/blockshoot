@@ -38,6 +38,70 @@ namespace Wayfu.Lamkn
         [Min(0.01f)] [SerializeField] private float gunMoveSpeed = 8f;
         [SerializeField] private bool rotateGunAlongMovePath = true;
 
+        [Header("Vùng chờ vào path (vẽ trên map)")]
+        [Tooltip("Mốc GIỮA cạnh GẦN cửa path — gun đầu hàng (vào path TRƯỚC) đứng quanh đây. Hướng từ mốc " +
+                 "này tới 'Far' = chiều SÂU của vùng (càng xa cửa càng vào sau). Đặt trùng/sát đầu vào path.")]
+        [SerializeField] private Transform waitAreaNear;
+        [Tooltip("Mốc GIỮA cạnh XA của vùng chờ — xác định chiều sâu + hướng vùng.")]
+        [SerializeField] private Transform waitAreaFar;
+        [Tooltip("Bề RỘNG vùng chờ (vuông góc chiều sâu). 0 → hàng đơn 1 gun mỗi hàng.")]
+        [Min(0f)] [SerializeField] private float waitAreaWidth = 2f;
+        [Tooltip("Khoảng cách giữa 2 gun kề nhau trong vùng (cả theo sâu lẫn theo rộng).")]
+        [Min(0.1f)] [SerializeField] private float waitSpacing = 1f;
+
+        /// <summary>Map có định nghĩa vùng chờ không (đủ 2 mốc).</summary>
+        public bool HasWaitArea => waitAreaNear != null && waitAreaFar != null;
+
+        /// <summary>Số gun tối đa trên MỖI HÀNG ngang (theo bề rộng vùng).</summary>
+        public int WaitPerRow => Mathf.Max(1, 1 + Mathf.FloorToInt(waitAreaWidth / Mathf.Max(0.01f, waitSpacing)));
+
+        /// <summary>
+        /// Hình học vùng chờ để PathManager tự pack đám đông: <paramref name="near"/> = tâm cạnh GẦN cửa,
+        /// <paramref name="depthDir"/> = hướng vào SÂU trong vùng (ra xa cửa), <paramref name="widthDir"/> =
+        /// ngang, <paramref name="width"/> = bề rộng vùng, <paramref name="depth"/> = chiều sâu vùng (near→far).
+        /// False = map chưa vẽ vùng (thiếu mốc).
+        /// </summary>
+        public bool GetWaitBasis(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir,
+                                 out float width, out float depth)
+        {
+            near = default; depthDir = Vector3.forward; widthDir = Vector3.right; width = 0f; depth = 0f;
+            if (!HasWaitArea) return false;
+            near = waitAreaNear.position;
+            Vector3 d = waitAreaFar.position - near; d.y = 0f;
+            depth = d.magnitude;
+            depthDir = d.sqrMagnitude > 1e-6f ? d.normalized : Vector3.forward;
+            widthDir = Vector3.Cross(Vector3.up, depthDir); // vuông góc trên sàn XZ
+            width = waitAreaWidth;
+            return true;
+        }
+
+        /// <summary>
+        /// Vị trí chỗ đứng thứ <paramref name="index"/> trong vùng chờ. Lấp theo HÀNG: hàng 0 sát cạnh GẦN
+        /// cửa (vào trước), đầy thì sang hàng lùi ra xa. Trong mỗi hàng lấp từ GIỮA toả 2 bên (0, +, −…) nên
+        /// không dồn một phía "trái qua phải". Chỗ số 0 = giữa hàng gần cửa nhất = gun vào path trước nhất.
+        /// </summary>
+        public Vector3 WaitSlot(int index)
+        {
+            if (waitAreaNear == null) return Vector3.zero;
+            Vector3 near = waitAreaNear.position;
+            if (waitAreaFar == null) return near;
+
+            Vector3 depth = waitAreaFar.position - near; depth.y = 0f;
+            Vector3 depthDir = depth.sqrMagnitude > 1e-6f ? depth.normalized : Vector3.forward;
+            Vector3 widthDir = Vector3.Cross(Vector3.up, depthDir); // vuông góc trên sàn XZ
+
+            int perRow = WaitPerRow;
+            int row = index / perRow;
+            int col = index % perRow;
+
+            // Cột center-out trong bề rộng.
+            int k = (col + 1) / 2;
+            float sign = (col % 2 == 1) ? 1f : -1f;
+            float across = Mathf.Clamp(sign * k * waitSpacing, -waitAreaWidth * 0.5f, waitAreaWidth * 0.5f);
+
+            return near + depthDir * (row * waitSpacing) + widthDir * across;
+        }
+
         /// <summary>Số slot mà map này định vị trí (= số mốc trong list).</summary>
         public int SlotCount => slotSpawns != null ? slotSpawns.Count : 0;
 
@@ -152,6 +216,39 @@ namespace Wayfu.Lamkn
                     Gizmos.DrawLine(samples[samples.Length - 1], rightMoveEndPosition.position);
                 }
             }
+        }
+
+        // Vẽ VÙNG CHỜ vào path — LUÔN hiện để căn trên scene. Xanh lá: khung vùng (cạnh gần cửa dày hơn) +
+        // ô vuông từng chỗ đứng. Ô sát cạnh gần cửa = gun vào path trước nhất.
+        private void OnDrawGizmos()
+        {
+            if (waitAreaNear == null || waitAreaFar == null) return;
+
+            Vector3 near = waitAreaNear.position;
+            Vector3 depth = waitAreaFar.position - near; depth.y = 0f;
+            Vector3 depthDir = depth.sqrMagnitude > 1e-6f ? depth.normalized : Vector3.forward;
+            Vector3 widthDir = Vector3.Cross(Vector3.up, depthDir);
+            float half = waitAreaWidth * 0.5f;
+            Vector3 far = waitAreaFar.position;
+
+            // Khung vùng.
+            Gizmos.color = new Color(0.2f, 1f, 0.55f, 0.9f);
+            Vector3 nL = near - widthDir * half, nR = near + widthDir * half;
+            Vector3 fL = far - widthDir * half, fR = far + widthDir * half;
+            Gizmos.DrawLine(nL, nR); // cạnh gần cửa
+            Gizmos.DrawLine(fL, fR);
+            Gizmos.DrawLine(nL, fL);
+            Gizmos.DrawLine(nR, fR);
+            // Nhấn cạnh gần cửa (hàng vào trước) bằng đường thứ 2.
+            Gizmos.DrawLine(nL + depthDir * 0.06f, nR + depthDir * 0.06f);
+
+            // Chỗ đứng: rải đủ vài hàng để thấy layout (giới hạn để khỏi vẽ vô hạn).
+            int perRow = WaitPerRow;
+            int rows = depth.magnitude > 1e-3f ? Mathf.Max(1, Mathf.FloorToInt(depth.magnitude / Mathf.Max(0.01f, waitSpacing)) + 1) : 1;
+            int total = Mathf.Min(perRow * rows, 40);
+            Gizmos.color = new Color(0.2f, 1f, 0.55f, 0.55f);
+            for (int i = 0; i < total; i++)
+                Gizmos.DrawWireCube(WaitSlot(i), Vector3.one * 0.22f);
         }
     }
 }

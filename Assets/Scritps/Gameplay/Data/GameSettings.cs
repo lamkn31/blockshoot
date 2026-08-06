@@ -30,6 +30,9 @@ namespace Wayfu.Lamkn
         public float GunSpeed = 3f;
         [Tooltip("Khoảng cách (arc-length) giữa các station gun trên path.")]
         public float GunSpacing = 1.2f;
+        [Tooltip("Khoảng cách giữa các gun trong ĐÁM ĐÔNG CHỜ cạnh cửa path (càng lớn gun đứng càng xa nhau, " +
+                 "càng nhỏ càng chen chúc). 0 = dùng mặc định của PathManager.")]
+        [Min(0f)] public float WaitClusterSpacing = 1.5f;
         public float FireInterval = 0.25f;
         [Tooltip("Single = mỗi nhịp FireInterval nhả 1 viên, gặm dần cho tới khi cell sạch.\n" +
                  "BurstPerCell = chốt cell xong nhả LUÔN cả loạt đúng bằng số block còn lại của cell, mỗi " +
