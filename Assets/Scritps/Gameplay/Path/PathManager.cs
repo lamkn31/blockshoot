@@ -442,7 +442,7 @@ namespace Wayfu.Lamkn
             // không nhảy loạn mỗi frame. Nhân clusterJitter lúc dùng để chỉnh biên độ được runtime.
             if (!_queueJitter.ContainsKey(gun)) _queueJitter[gun] = Random.insideUnitCircle;
             _queue.Add(gun);
-            RestageQueue(); // dồn cả đám đông vào đúng chỗ (gun mới lùi ra sau, không đè gun đang đợi)
+            RestageQueue(); // gun mới xếp cuối hàng (rank cuối); cả hàng nén front-first theo rank, không đè nhau
         }
 
         /// <summary>
@@ -563,8 +563,8 @@ namespace Wayfu.Lamkn
                 return;
             }
 
-            // Gun slot đang chờ ngoài cửa. FIFO: gun CLICK TRƯỚC (đầu hàng _queue[0]) vào path TRƯỚC — nó đã được
-            // xếp anchor ở chỗ ĐẦU gần cửa nhất (EntryClusterPos index 0), nên vào thẳng, không nhường gun sau.
+            // Gun slot đang chờ ngoài cửa. FIFO: gun CLICK TRƯỚC (đầu hàng _queue[0]) vào path TRƯỚC — nó là gun
+            // sớm nhất nên đứng RANK 0 (đầu) trong CỘT của mình, vào thẳng, không nhường gun sau.
             // Không ảnh hưởng ưu tiên gun loop: EmergeReady xét theo TẬP (mọi gun snapshot phải rời _queue).
             while (_queue.Count > 0 && _queue[0] == null) _queue.RemoveAt(0); // dọn ô null ở đầu hàng
             if (_queue.Count > 0)
@@ -716,38 +716,49 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>
-        /// Chỗ đứng (anchor) trong đám đông chờ cho gun ở index. Pack thành LƯỚI đều: perRow ~ căn bậc 2 của Max
-        /// Gun On Path (kẹp để cả hàng lọt trong bề rộng vùng). Tâm lưới dời về phía CỬA path (lateral) nhưng luôn
-        /// nằm TRỌN trong vùng → không collapse chồng cột, không tràn biên. Hàng 0 sát cửa (vào trước), hàng sau
-        /// lùi vào sâu. Trong hàng, cột được lấp TỪ CỘT GẦN CỬA NHẤT toả ra 2 bên → index 0 (gun click TRƯỚC) đứng
-        /// đúng chỗ gần cửa nhất, vào path THẲNG chứ không dạt sang bên nhường gun sau. Gap = _clusterSpacing
-        /// (GameSettings.WaitClusterSpacing). Xê dịch nhẹ/gun cho tự nhiên.
+        /// Bố cục CỘT của vùng chờ (ổn định theo level): <paramref name="perRow"/> = số cột (kẹp để cả lưới lọt
+        /// trong bề rộng vùng), <paramref name="gridStart"/> = across của cột 0, <paramref name="nearCol"/> = cột
+        /// gần CỬA path nhất. Lưới dời về phía cửa nhưng luôn nằm TRỌN trong vùng. Kèm khung (near/dir/depth) để
+        /// đặt anchor. Map chưa vẽ vùng → half/depth = ∞ (bám cửa, không biên).
         /// </summary>
-        private Vector3 EntryClusterPos(int index, Gun gun)
+        private void ColumnLayout(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float depth,
+                                  out int perRow, out float gridStart, out int nearCol)
         {
-            WaitFrame(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float half, out float depth, out float lateral);
+            WaitFrame(out near, out depthDir, out widthDir, out float half, out depth, out float lateral);
 
-            int perRow = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(Mathf.Max(1, _maxGunOnPath))));
-            if (!float.IsInfinity(half)) // giới hạn số cột để cả hàng lọt trong bề rộng vùng
+            perRow = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(Mathf.Max(1, _maxGunOnPath))));
+            if (!float.IsInfinity(half))
                 perRow = Mathf.Clamp(perRow, 1, Mathf.Max(1, Mathf.FloorToInt(2f * half / _clusterSpacing) + 1));
 
-            int row = index / perRow;
-            int slotInRow = index % perRow;
-
             float gridWidth = (perRow - 1) * _clusterSpacing;
-            float gridCenter = lateral;
-            if (!float.IsInfinity(half)) // dời tâm lưới về phía cửa nhưng giữ cả lưới trong bề rộng
-                gridCenter = gridWidth >= 2f * half ? 0f
-                           : Mathf.Clamp(lateral, -half + gridWidth * 0.5f, half - gridWidth * 0.5f);
-            float gridStart = gridCenter - gridWidth * 0.5f; // across của cột 0 (biên trái lưới)
+            float gridCenter = float.IsInfinity(half) ? lateral
+                             : (gridWidth >= 2f * half ? 0f
+                                : Mathf.Clamp(lateral, -half + gridWidth * 0.5f, half - gridWidth * 0.5f));
+            gridStart = gridCenter - gridWidth * 0.5f;
+            nearCol = float.IsInfinity(half) ? 0
+                    : Mathf.Clamp(Mathf.RoundToInt((lateral - gridStart) / Mathf.Max(0.01f, _clusterSpacing)), 0, perRow - 1);
+        }
 
-            // Cột gần CỬA nhất (theo lateral), rồi lấp toả 2 bên từ đó → slotInRow=0 = cột gần cửa nhất.
-            int nearCol = float.IsInfinity(half) ? 0
-                        : Mathf.Clamp(Mathf.RoundToInt((lateral - gridStart) / Mathf.Max(0.01f, _clusterSpacing)), 0, perRow - 1);
-            int col = NthCenterOut(slotInRow, nearCol, perRow);
+        /// <summary>
+        /// Anchor cho gun ở HẠNG <paramref name="rank"/> (0 = đầu hàng, sát cửa). Lấp theo kiểu RẮN BÒ
+        /// (boustrophedon): hàng 0 lấp từ phía CỬA, hàng kế lấp ngược lại… nên rank kề nhau luôn Ở Ô KỀ NHAU.
+        /// Nhờ đó rank liên tục (0..n-1) → KHÔNG bao giờ có lỗ; và khi 1 gun vào path, mọi gun chỉ tụt 1 rank =
+        /// nhích đúng 1 ô kề → cả hàng dồn LÊN MƯỢT như sâu bò, không dạt ngang loạn xạ.
+        /// </summary>
+        private Vector3 QueueSlotPos(int rank, Gun gun)
+        {
+            ColumnLayout(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float depth,
+                         out int perRow, out float gridStart, out int nearCol);
+
+            int row = rank / perRow;
+            int posInRow = rank % perRow;
+            // Hàng 0 lấp từ phía CỬA (để rank 0 = ô gần cửa nhất); hàng lẻ lấp ngược → 2 đầu hàng nối nhau kề ô.
+            bool row0FromRight = nearCol >= perRow * 0.5f;
+            bool fromRight = (row % 2 == 0) ? row0FromRight : !row0FromRight;
+            int col = fromRight ? (perRow - 1 - posInRow) : posInRow;
 
             float across = gridStart + col * _clusterSpacing;
-            float depthPos = _clusterSpacing * (row + 0.5f); // lùi vào trong, chừa cạnh
+            float depthPos = _clusterSpacing * (row + 0.5f); // hàng 0 sát cửa (vào trước), hàng sau lùi vào
             if (!float.IsInfinity(depth)) depthPos = Mathf.Min(depthPos, Mathf.Max(0f, depth - _clusterSpacing * 0.5f));
 
             Vector3 anchor = near + widthDir * across + depthDir * depthPos;
@@ -757,34 +768,18 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>
-        /// Cột thứ <paramref name="n"/> khi lấp 1 hàng TỪ cột <paramref name="center"/> toả xen kẽ 2 bên
-        /// (center, +1, −1, +2, −2…), bỏ cột ra ngoài [0, len) và lấp tiếp phía còn lại. Đảm bảo n=0 → center
-        /// (gần cửa nhất) và các cột trả về ĐÔI MỘT KHÁC NHAU (không chồng chỗ).
-        /// </summary>
-        private static int NthCenterOut(int n, int center, int len)
-        {
-            int taken = 0;
-            if (center >= 0 && center < len) { if (taken == n) return center; taken++; }
-            for (int off = 1; off < len; off++)
-            {
-                int a = center + off; if (a < len && a >= 0) { if (taken == n) return a; taken++; }
-                int b = center - off; if (b >= 0 && b < len) { if (taken == n) return b; taken++; }
-            }
-            return Mathf.Clamp(center, 0, Mathf.Max(0, len - 1));
-        }
-
-        /// <summary>
-        /// Cập nhật CHỖ ĐỨNG (anchor) của cả đám đông: gun _queue[i] → chỗ pack thứ i. Chỉ lưu vào _queueTarget;
-        /// việc DI CHUYỂN + ĐẨY nhau do SimulateQueueCrowd() chạy mỗi frame. Gọi mỗi khi đám đông đổi (thêm gun /
-        /// 1 gun vào path) → các anchor dồn lại, gun tự bay lấp chỗ.
+        /// Cập nhật CHỖ ĐỨNG (anchor) của cả đám đông: gun _queue[i] → ô rank i (nén front-first, không lỗ). Khi
+        /// gun đầu hàng vào path, mọi gun tụt 1 rank = nhích 1 ô kề → dồn lên lấp chỗ trống mượt. Di chuyển thật
+        /// + đẩy nhau do SimulateQueueCrowd() chạy mỗi frame.
         /// </summary>
         private void RestageQueue()
         {
+            int rank = 0;
             for (int i = 0; i < _queue.Count; i++)
             {
                 var gun = _queue[i];
                 if (gun == null) continue;
-                _queueTarget[gun] = EntryClusterPos(i, gun);
+                _queueTarget[gun] = QueueSlotPos(rank++, gun);
             }
         }
 
