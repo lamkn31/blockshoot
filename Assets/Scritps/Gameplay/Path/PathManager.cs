@@ -54,6 +54,9 @@ namespace Wayfu.Lamkn
         [Min(0.1f)] [SerializeField] private float clusterSpacing = 1.5f;
         [Tooltip("Biên độ xê dịch NGẪU NHIÊN mỗi gun quanh anchor (world units) — phá thế thẳng hàng cho tự nhiên.")]
         [Min(0f)] [SerializeField] private float clusterJitter = 0.28f;
+        [Tooltip("Khoảng cách TÂM-TÂM tối thiểu giữa 2 gun chờ (≈ đường kính gun). Gun tới gần hơn số này sẽ " +
+                 "ĐẨY nhau ra thay vì xuyên qua. Nên nhỏ hơn Wait Cluster Spacing để lúc đứng yên không rung.")]
+        [Min(0f)] [SerializeField] private float crowdMinSeparation = 0.85f;
 
         [Header("Nước chảy")]
         [Tooltip("Tốc độ cuộn UV material mặt đường để tạo hiệu ứng nước chảy. X = dọc theo path (chiều " +
@@ -66,6 +69,7 @@ namespace Wayfu.Lamkn
         private readonly List<Gun> _queue = new List<Gun>();   // đám đông chờ (thứ tự tới); vào path = GẦN CỬA nhất trước
         private readonly Dictionary<Gun, Vector2> _queueJitter = new Dictionary<Gun, Vector2>(); // xê dịch cố định/gun
         private readonly Dictionary<Gun, Vector3> _queueTarget = new Dictionary<Gun, Vector3>();  // anchor+jitter hiện tại
+        private readonly HashSet<Gun> _queueArrived = new HashSet<Gun>();                         // đã bay tới vùng chờ (đủ đk vào path)
         private float _gunSpeed = 3f;
         private float _minGunGap = 1.2f;     // khoảng cách arc-length tối thiểu giữa 2 gun
         private float _frontStationDistance; // điểm VÀO path của mọi gun (0 = đầu path)
@@ -460,7 +464,76 @@ namespace Wayfu.Lamkn
 
         private void Update()
         {
+            SimulateQueueCrowd(); // gun chờ tự bay tới chỗ đứng + ĐẨY nhau (không xuyên qua) trước khi xét cửa
             ServiceGate();
+        }
+
+        /// <summary>
+        /// Mô phỏng đám đông chờ mỗi frame: mỗi gun (1) bay tới anchor của nó ở tốc độ slotToEntrySpeed, và
+        /// (2) bị ĐẨY khỏi mọi gun chờ khác đang lại gần hơn crowdMinSeparation → các gun chen nhau ra thay vì
+        /// xuyên qua. Thay cho MoveTo cũ (lerp thẳng, không va chạm). Chỉ tác động gun đang trong _queue; gun
+        /// đã transit / trên path do follower lo.
+        /// </summary>
+        private void SimulateQueueCrowd()
+        {
+            int n = _queue.Count;
+            if (n == 0) return;
+            float dt = Time.deltaTime;
+            if (dt <= 0f) return;
+
+            float maxStep = slotToEntrySpeed * dt;
+            float sep = crowdMinSeparation;
+            Vector3 entrance = _path != null ? _path.GetPointAtDistance(_frontStationDistance) : Vector3.zero;
+
+            for (int i = 0; i < n; i++)
+            {
+                var gun = _queue[i];
+                if (gun == null) continue;
+                Vector3 pos = gun.transform.position;
+                float keepY = pos.y;
+
+                // (1) Bay tới anchor (giới hạn bước = tốc độ chờ) — tới nơi thì bước nhỏ dần rồi dừng.
+                Vector3 seek = Vector3.zero;
+                bool hasTarget = _queueTarget.TryGetValue(gun, out var target);
+                if (hasTarget)
+                {
+                    Vector3 toTarget = target - pos; toTarget.y = 0f;
+                    seek = Vector3.ClampMagnitude(toTarget, maxStep);
+                }
+
+                // (2) Đẩy khỏi các gun chờ khác đang chồng lên (separation kiểu boids).
+                Vector3 push = Vector3.zero;
+                if (sep > 0f)
+                    for (int j = 0; j < n; j++)
+                    {
+                        if (j == i) continue;
+                        var o = _queue[j];
+                        if (o == null) continue;
+                        Vector3 d = pos - o.transform.position; d.y = 0f;
+                        float dist = d.magnitude;
+                        if (dist > 1e-4f) { if (dist < sep) push += d / dist * (sep - dist); }
+                        else push += new Vector3(Random.value - 0.5f, 0f, Random.value - 0.5f); // trùng khít → tách ngẫu nhiên
+                    }
+                push = Vector3.ClampMagnitude(push, maxStep);
+
+                Vector3 moved = pos + seek + push;
+
+                // Đánh dấu "đã tới vùng chờ" LẦN ĐẦU gun lại gần chỗ đứng (rộng tay 1 spacing) → từ đó đủ điều
+                // kiện vào path DÙ sau này bị chen xô (không cần đứng im đúng anchor) và bị kẹp trong vùng. Gun
+                // còn ĐANG BAY từ slot (xa chỗ đứng) thì CHƯA kẹp → bay mượt, không teleport vào vùng.
+                bool arrived = _queueArrived.Contains(gun);
+                if (!arrived && hasTarget && (moved - target).sqrMagnitude <= _clusterSpacing * _clusterSpacing)
+                { _queueArrived.Add(gun); arrived = true; }
+
+                Vector3 next = arrived ? ClampToWait(moved) : moved; // chỉ gun đã vào vùng mới bị kẹp biên
+                next.y = keepY;
+                gun.transform.position = next;
+
+                // Quay mặt VỀ CỬA (pos 0) — chờ hướng về đường, vào là chạy thẳng theo tiếp tuyến path.
+                Vector3 face = entrance - next; face.y = 0f;
+                if (face.sqrMagnitude > 1e-6f)
+                    gun.transform.rotation = Quaternion.LookRotation(face.normalized, Vector3.up);
+            }
         }
 
         /// <summary>
@@ -500,24 +573,24 @@ namespace Wayfu.Lamkn
                 if (_guns.Count >= _maxGunOnPath) return;
 
                 Vector3 entrance = _path.GetPointAtDistance(_frontStationDistance);
-                // Chỉ transit gun đã DỪNG ở chỗ đứng (đến gần anchor của nó) — tránh giật 1 gun còn đang bay
-                // vào giữa đám đông chỉ vì nó tạt ngang sát cửa. Trong nhóm đã đứng yên, lấy gun gần cửa nhất.
-                const float arriveSqr = 0.5f * 0.5f;
+                // Chỉ xét gun ĐÃ TỚI vùng chờ (bay xong từ slot). Trong nhóm đó lấy gun GẦN CỬA nhất vào trước.
+                // Dùng cờ _queueArrived (bền) thay vì đo khoảng cách anchor mỗi frame → gun bị chen xô vẫn đủ
+                // điều kiện, không kẹt cửa khi vùng chật đám đông cứ nhấp nhổm.
                 Gun gun = null; int gunIdx = -1; float bestSqr = float.MaxValue;
                 for (int i = 0; i < _queue.Count; i++)
                 {
                     var g = _queue[i];
                     if (g == null) { _queue.RemoveAt(i); i--; continue; }
-                    if (_queueTarget.TryGetValue(g, out var tgt)
-                        && (g.transform.position - tgt).sqrMagnitude > arriveSqr) continue; // chưa tới chỗ đứng
+                    if (!_queueArrived.Contains(g)) continue; // còn đang bay từ slot → chưa cho vào path
                     float d = (g.transform.position - entrance).sqrMagnitude;
                     if (d < bestSqr) { bestSqr = d; gun = g; gunIdx = i; }
                 }
-                if (gun == null) return; // chưa gun nào đứng yên trong đám đông → chờ frame sau
+                if (gun == null) return; // chưa gun nào tới vùng chờ → chờ frame sau
 
                 _queue.RemoveAt(gunIdx);
                 _queueJitter.Remove(gun);
                 _queueTarget.Remove(gun);
+                _queueArrived.Remove(gun);
                 BeginSlotTransit(gun);
                 RestageQueue(); // 1 gun đã vào → đám đông còn lại dồn lại lấp chỗ trống
                 return;
@@ -610,82 +683,92 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>
-        /// Hình học đám đông chờ. ƯU TIÊN vùng chờ VẼ TRÊN MAP (giữ gun TRONG màn hình như designer định): neo
-        /// đám đông tại điểm trên cạnh GẦN của vùng, GẦN CỬA path nhất (chiếu pos0 lên cạnh + kẹp trong bề rộng)
-        /// → gun ở gần path mà không dồn vào GIỮA vùng, cũng không tràn ra ngoài. Map chưa vẽ vùng → bám thẳng
-        /// cửa path, lùi ngược dòng ra ngoài (không có biên).
-        /// <paramref name="acrossMin"/>/<paramref name="acrossMax"/> = biên lệch ngang cho phép quanh center.
+        /// Khung vùng chờ để pack + kẹp đám đông. <paramref name="near"/> = tâm cạnh GẦN cửa, <paramref name="depthDir"/>
+        /// = vào SÂU trong vùng, <paramref name="widthDir"/> = ngang, <paramref name="half"/> = nửa bề rộng,
+        /// <paramref name="depth"/> = chiều sâu vùng, <paramref name="lateral"/> = vị trí ngang của CỬA path chiếu lên
+        /// cạnh gần (đám đông dồn về phía này cho gần path). ƯU TIÊN vùng VẼ TRÊN MAP; map chưa vẽ → khung quanh cửa
+        /// path, KHÔNG biên (half/depth = ∞) → gun bám cửa như fallback cũ. Trả false nếu không có biên.
         /// </summary>
-        private void EntryClusterBasis(out Vector3 center, out Vector3 depthDir, out Vector3 widthDir,
-                                       out float acrossMin, out float acrossMax)
+        private bool WaitFrame(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir,
+                               out float half, out float depth, out float lateral)
         {
             Vector3 p0 = _path != null ? _path.GetPointAtDistance(_frontStationDistance) : Vector3.zero;
 
             var map = MapController.IsActive ? MapController.Instance.CurrentMapScript : null;
-            if (map != null && map.GetWaitBasis(out Vector3 near, out depthDir, out widthDir, out float width))
+            if (map != null && map.GetWaitBasis(out near, out depthDir, out widthDir, out float width, out depth))
             {
-                float half = width * 0.5f;
-                float lateral = Mathf.Clamp(Vector3.Dot(p0 - near, widthDir), -half, half); // chiếu cửa lên cạnh gần
-                center = near + widthDir * lateral + depthDir * _clusterSpacing; // lùi 1 spacing vào trong, chừa cạnh
-                acrossMin = -half - lateral; // mọi gun vẫn nằm trong bề rộng vùng
-                acrossMax = half - lateral;
-                return;
+                half = width * 0.5f;
+                lateral = Mathf.Clamp(Vector3.Dot(p0 - near, widthDir), -half, half); // chiếu cửa lên cạnh gần
+                return true;
             }
 
-            acrossMin = float.NegativeInfinity; acrossMax = float.PositiveInfinity;
-            if (_path == null) { center = Vector3.zero; depthDir = Vector3.forward; widthDir = Vector3.right; return; }
-            Vector3 tangent = _path.GetPointAtDistance(_frontStationDistance + 0.1f) - p0; tangent.y = 0f;
-            Vector3 outward = tangent.sqrMagnitude > 1e-6f ? -tangent.normalized : Vector3.forward; // ngược dòng, ra ngoài cửa
-            center = p0 + outward * _clusterSpacing; // hàng đầu tụ SÁT cửa, lùi 1 spacing để không đè điểm vào
-            depthDir = outward;
+            near = p0;
+            half = float.PositiveInfinity; depth = float.PositiveInfinity; lateral = 0f;
+            Vector3 tangent = _path != null ? _path.GetPointAtDistance(_frontStationDistance + 0.1f) - p0 : Vector3.forward;
+            tangent.y = 0f;
+            depthDir = tangent.sqrMagnitude > 1e-6f ? -tangent.normalized : Vector3.forward; // ngược dòng, ra ngoài cửa
             widthDir = Vector3.Cross(Vector3.up, depthDir);
+            return false;
+        }
+
+        /// <summary>Kẹp 1 điểm vào TRONG hình chữ nhật vùng chờ (chỉ khi có biên) — không cho gun tràn ra ngoài.</summary>
+        private Vector3 ClampToWait(Vector3 pos)
+        {
+            if (!WaitFrame(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float half, out float depth, out _))
+                return pos; // không có biên (map chưa vẽ vùng)
+            Vector3 rel = pos - near;
+            float w = Mathf.Clamp(Vector3.Dot(rel, widthDir), -half, half);
+            float d = Mathf.Clamp(Vector3.Dot(rel, depthDir), 0f, Mathf.Max(0f, depth));
+            Vector3 clamped = near + widthDir * w + depthDir * d;
+            clamped.y = pos.y;
+            return clamped;
         }
 
         /// <summary>
-        /// Chỗ đứng (anchor + xê dịch cố định của gun) trong đám đông chờ cho gun ở index. Pack thành khối gần
-        /// vuông (perRow ~ căn bậc 2 của Max Gun On Path): hàng 0 sát cửa (vào trước), đầy thì lùi ra xa; trong
-        /// mỗi hàng lấp từ GIỮA toả 2 bên, kẹp trong biên vùng chờ. Gap giữa 2 gun = _clusterSpacing (chỉnh ở
-        /// GameSettings.WaitClusterSpacing). Xê dịch ngẫu nhiên/gun cho tự nhiên, không thẳng tắp.
+        /// Chỗ đứng (anchor) trong đám đông chờ cho gun ở index. Pack thành LƯỚI đều: perRow ~ căn bậc 2 của Max
+        /// Gun On Path (kẹp để cả hàng lọt trong bề rộng vùng). Tâm lưới dời về phía CỬA path (lateral) nhưng luôn
+        /// nằm TRỌN trong vùng → không collapse chồng cột, không tràn biên. Hàng 0 sát cửa (vào trước), hàng sau
+        /// lùi vào sâu. Gap = _clusterSpacing (GameSettings.WaitClusterSpacing). Xê dịch nhẹ/gun cho tự nhiên.
         /// </summary>
         private Vector3 EntryClusterPos(int index, Gun gun)
         {
-            EntryClusterBasis(out Vector3 center, out Vector3 depthDir, out Vector3 widthDir,
-                              out float acrossMin, out float acrossMax);
+            WaitFrame(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float half, out float depth, out float lateral);
+
             int perRow = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(Mathf.Max(1, _maxGunOnPath))));
+            if (!float.IsInfinity(half)) // giới hạn số cột để cả hàng lọt trong bề rộng vùng
+                perRow = Mathf.Clamp(perRow, 1, Mathf.Max(1, Mathf.FloorToInt(2f * half / _clusterSpacing) + 1));
+
             int row = index / perRow;
             int col = index % perRow;
-            int k = (col + 1) / 2;
-            float sign = (col % 2 == 1) ? 1f : -1f;
-            float across = Mathf.Clamp(sign * k * _clusterSpacing, acrossMin, acrossMax);
-            Vector3 anchor = center + depthDir * (row * _clusterSpacing) + widthDir * across;
+
+            float gridWidth = (perRow - 1) * _clusterSpacing;
+            float gridCenter = lateral;
+            if (!float.IsInfinity(half)) // dời tâm lưới về phía cửa nhưng giữ cả lưới trong bề rộng
+                gridCenter = gridWidth >= 2f * half ? 0f
+                           : Mathf.Clamp(lateral, -half + gridWidth * 0.5f, half - gridWidth * 0.5f);
+
+            float across = gridCenter + (col - (perRow - 1) * 0.5f) * _clusterSpacing;
+            float depthPos = _clusterSpacing * (row + 0.5f); // lùi vào trong, chừa cạnh
+            if (!float.IsInfinity(depth)) depthPos = Mathf.Min(depthPos, Mathf.Max(0f, depth - _clusterSpacing * 0.5f));
+
+            Vector3 anchor = near + widthDir * across + depthDir * depthPos;
             if (clusterJitter > 0f && _queueJitter.TryGetValue(gun, out var j))
                 anchor += (widthDir * j.x + depthDir * j.y) * clusterJitter;
-            return anchor;
+            return ClampToWait(anchor);
         }
 
         /// <summary>
-        /// Xếp lại đám đông chờ: gun _queue[i] về chỗ đứng pack thứ i (bay ở slotToEntrySpeed), quay mặt VỀ CỬA.
-        /// Gọi mỗi khi đám đông đổi (thêm gun / 1 gun vào path) → các gun dồn lại lấp chỗ, không đè lên nhau.
-        /// Lưu anchor vào _queueTarget để ServiceGate biết gun nào đã đứng yên (đủ điều kiện "gần nhất vào trước").
+        /// Cập nhật CHỖ ĐỨNG (anchor) của cả đám đông: gun _queue[i] → chỗ pack thứ i. Chỉ lưu vào _queueTarget;
+        /// việc DI CHUYỂN + ĐẨY nhau do SimulateQueueCrowd() chạy mỗi frame. Gọi mỗi khi đám đông đổi (thêm gun /
+        /// 1 gun vào path) → các anchor dồn lại, gun tự bay lấp chỗ.
         /// </summary>
         private void RestageQueue()
         {
-            Vector3 entrance = _path != null ? _path.GetPointAtDistance(_frontStationDistance) : Vector3.zero;
             for (int i = 0; i < _queue.Count; i++)
             {
                 var gun = _queue[i];
                 if (gun == null) continue;
-
-                Vector3 pos = EntryClusterPos(i, gun);
-                _queueTarget[gun] = pos;
-                float dist = Vector3.Distance(gun.transform.position, pos);
-                float dur = dist / Mathf.Max(0.01f, slotToEntrySpeed);
-                gun.MoveTo(pos, dur);
-
-                // Mọi gun trong đám đông cùng quay mặt VỀ CỬA (pos 0) — vào là chạy thẳng theo tiếp tuyến path.
-                Vector3 dir = entrance - pos; dir.y = 0f;
-                if (dir.sqrMagnitude > 1e-6f)
-                    gun.transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
+                _queueTarget[gun] = EntryClusterPos(i, gun);
             }
         }
 
@@ -695,6 +778,7 @@ namespace Wayfu.Lamkn
             bool wasQueued = _queue.Remove(gun);
             _queueJitter.Remove(gun);
             _queueTarget.Remove(gun);
+            _queueArrived.Remove(gun);
             // Gun chết/despawn khi đang ở cửa: dọn khỏi gate để không kẹt lượt cho gun sau.
             _emergeWaiting.Remove(gun);
             _emerge.RemoveAll(r => r.Gun == gun);
@@ -708,6 +792,7 @@ namespace Wayfu.Lamkn
             _queue.Clear();
             _queueJitter.Clear();
             _queueTarget.Clear();
+            _queueArrived.Clear();
             _emerge.Clear();
             _emergeWaiting.Clear();
             _gateGun = null;

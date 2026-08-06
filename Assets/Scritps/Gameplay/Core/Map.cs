@@ -58,15 +58,18 @@ namespace Wayfu.Lamkn
         /// <summary>
         /// Hình học vùng chờ để PathManager tự pack đám đông: <paramref name="near"/> = tâm cạnh GẦN cửa,
         /// <paramref name="depthDir"/> = hướng vào SÂU trong vùng (ra xa cửa), <paramref name="widthDir"/> =
-        /// ngang, <paramref name="width"/> = bề rộng vùng. False = map chưa vẽ vùng (thiếu mốc).
+        /// ngang, <paramref name="width"/> = bề rộng vùng, <paramref name="depth"/> = chiều sâu vùng (near→far).
+        /// False = map chưa vẽ vùng (thiếu mốc).
         /// </summary>
-        public bool GetWaitBasis(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float width)
+        public bool GetWaitBasis(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir,
+                                 out float width, out float depth)
         {
-            near = default; depthDir = Vector3.forward; widthDir = Vector3.right; width = 0f;
+            near = default; depthDir = Vector3.forward; widthDir = Vector3.right; width = 0f; depth = 0f;
             if (!HasWaitArea) return false;
             near = waitAreaNear.position;
-            Vector3 depth = waitAreaFar.position - near; depth.y = 0f;
-            depthDir = depth.sqrMagnitude > 1e-6f ? depth.normalized : Vector3.forward;
+            Vector3 d = waitAreaFar.position - near; d.y = 0f;
+            depth = d.magnitude;
+            depthDir = d.sqrMagnitude > 1e-6f ? d.normalized : Vector3.forward;
             widthDir = Vector3.Cross(Vector3.up, depthDir); // vuông góc trên sàn XZ
             width = waitAreaWidth;
             return true;
