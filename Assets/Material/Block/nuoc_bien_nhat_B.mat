@@ -16,6 +16,7 @@ Material:
   - TCP2_REFLECTIONS_FRESNEL
   - TCP2_RIM_LIGHTING_LIGHTMASK
   - TCP2_SPECULAR
+  - TCP2_SPECULAR_STYLIZED
   - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords:
   - TCP2_AMBIENT
@@ -63,7 +64,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCapTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 936808216a9044d46883b03242d1e502, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -165,7 +166,7 @@ Material:
     - _RampOffset: 0
     - _RampScale: 1
     - _RampSmoothing: 0.8
-    - _RampThreshold: 0.822
+    - _RampThreshold: 0.81
     - _RampType: 0
     - _ReceiveShadows: 1
     - _ReceiveShadowsOff: 0
@@ -182,9 +183,9 @@ Material:
     - _SpecularMapType: 0
     - _SpecularRoughness: 0.575
     - _SpecularRoughnessPBR: 0.53
-    - _SpecularToonSize: 0.25
-    - _SpecularToonSmoothness: 0.05
-    - _SpecularType: 0
+    - _SpecularToonSize: 0.016
+    - _SpecularToonSmoothness: 1
+    - _SpecularType: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
@@ -209,17 +210,17 @@ Material:
     - _ZWrite: 1
     - __dummy__: 0
     m_Colors:
-    - _BaseColor: {r: 0.07778566, g: 0.7301783, b: 0.8679245, a: 1}
+    - _BaseColor: {r: 0, g: 0.7245845, b: 0.8773585, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MatCapColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MatCapColor: {r: 0.10123709, g: 0.25120673, b: 0.6132076, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.5}
-    - _SColor: {r: 0.32156864, g: 0.33635542, b: 0.6039216, a: 1}
+    - _SColor: {r: 0, g: 0.3093884, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColor: {r: 0.25098038, g: 0.49119914, b: 1, a: 1}
+    - _SpecularColor: {r: 0, g: 0.1476341, b: 0.46226418, a: 1}
     - _TCP2_AMBIENT_BACK: {r: 0, g: 0, b: 0, a: 1}
     - _TCP2_AMBIENT_BOTTOM: {r: 0, g: 0, b: 0, a: 1}
     - _TCP2_AMBIENT_FRONT: {r: 0, g: 0, b: 0, a: 1}
