@@ -56,6 +56,23 @@ namespace Wayfu.Lamkn
         public int WaitPerRow => Mathf.Max(1, 1 + Mathf.FloorToInt(waitAreaWidth / Mathf.Max(0.01f, waitSpacing)));
 
         /// <summary>
+        /// Hình học vùng chờ để PathManager tự pack đám đông: <paramref name="near"/> = tâm cạnh GẦN cửa,
+        /// <paramref name="depthDir"/> = hướng vào SÂU trong vùng (ra xa cửa), <paramref name="widthDir"/> =
+        /// ngang, <paramref name="width"/> = bề rộng vùng. False = map chưa vẽ vùng (thiếu mốc).
+        /// </summary>
+        public bool GetWaitBasis(out Vector3 near, out Vector3 depthDir, out Vector3 widthDir, out float width)
+        {
+            near = default; depthDir = Vector3.forward; widthDir = Vector3.right; width = 0f;
+            if (!HasWaitArea) return false;
+            near = waitAreaNear.position;
+            Vector3 depth = waitAreaFar.position - near; depth.y = 0f;
+            depthDir = depth.sqrMagnitude > 1e-6f ? depth.normalized : Vector3.forward;
+            widthDir = Vector3.Cross(Vector3.up, depthDir); // vuông góc trên sàn XZ
+            width = waitAreaWidth;
+            return true;
+        }
+
+        /// <summary>
         /// Vị trí chỗ đứng thứ <paramref name="index"/> trong vùng chờ. Lấp theo HÀNG: hàng 0 sát cạnh GẦN
         /// cửa (vào trước), đầy thì sang hàng lùi ra xa. Trong mỗi hàng lấp từ GIỮA toả 2 bên (0, +, −…) nên
         /// không dồn một phía "trái qua phải". Chỗ số 0 = giữa hàng gần cửa nhất = gun vào path trước nhất.
