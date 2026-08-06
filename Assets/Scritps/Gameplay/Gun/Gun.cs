@@ -403,12 +403,14 @@ namespace Wayfu.Lamkn
                 onComplete?.Invoke();
                 return;
             }
+            // GoIn ở cuối vòng là một phần của nhịp connect; không được chen Idle
+            // giữa GoIn và barrier của các gun còn lại.
             StartCoroutine(PlayAnimationThen(goInState, () =>
             {
                 if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
                 UpdateLabel();
                 onComplete?.Invoke();
-            }));
+            }, returnToIdle: false));
         }
 
         public void PlayGoOutThen(Action onComplete)
@@ -648,6 +650,18 @@ namespace Wayfu.Lamkn
             bool done = false;
             PlayGoInThen(() => done = true);
             while (!done) yield return null;
+
+            // Hết đạn khi tới path_end → biến mất luôn, không loop lại.
+            if (!HasBullets)
+            {
+                Die();
+                yield break;
+            }
+
+            // Gun connect phải đồng bộ ở cuối vòng: tất cả member chạy xong GoIn
+            // rồi mới cùng teleport/tái xuất để không bị lệch nhịp giữa các gun.
+            if (Data != null && Data.ConnectGroup != 0 && SlotManager.IsActive)
+                yield return SlotManager.Instance.WaitForConnectCycle(this);
 
             // Đã chui vào hầm ở cuối path: ẩn hẳn rồi teleport về cửa (pos 0), NHƯNG chưa tái xuất ngay.
             SetHiddenDuringPathEntry(true);

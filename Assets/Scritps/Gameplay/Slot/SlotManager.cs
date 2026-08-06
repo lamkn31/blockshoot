@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,13 @@ namespace Wayfu.Lamkn
 
         // 1 nhóm gun connect (cùng ConnectGroup id, ở các slot khác nhau). Mỗi CẶP gun kề = 1 ConnectLine
         // (2 gun → 1 line; 3 gun → 2 line nối chuỗi).
-        private class ConnectGroup { public List<Gun> Members = new List<Gun>(); public List<ConnectLine> Lines = new List<ConnectLine>(); }
+        private class ConnectGroup
+        {
+            public List<Gun> Members = new List<Gun>();
+            public List<ConnectLine> Lines = new List<ConnectLine>();
+            public readonly HashSet<Gun> CycleReady = new HashSet<Gun>();
+            public int CycleRelease;
+        }
         private readonly List<ConnectGroup> _connectGroups = new List<ConnectGroup>();
 
         public void Build(LevelData level)
@@ -108,6 +115,43 @@ namespace Wayfu.Lamkn
             foreach (var grp in _connectGroups)
                 foreach (var line in grp.Lines) if (line != null) Destroy(line.gameObject);
             _connectGroups.Clear();
+        }
+
+        /// <summary>
+        /// Barrier cho các gun cùng ConnectGroup khi hoàn tất GoIn ở cuối một vòng path.
+        /// Mỗi gun chờ tại đây cho tới khi mọi member còn sống trên path cùng tới barrier.
+        /// </summary>
+        public IEnumerator WaitForConnectCycle(Gun gun)
+        {
+            ConnectGroup group = null;
+            foreach (var candidate in _connectGroups)
+                if (candidate.Members.Contains(gun)) { group = candidate; break; }
+
+            if (group == null || group.Members.Count < 2) yield break;
+
+            int release = group.CycleRelease + 1;
+            group.CycleReady.Add(gun);
+
+            bool complete = true;
+            foreach (var member in group.Members)
+            {
+                if (member != null && !member.IsDead && member.IsOnPath && !group.CycleReady.Contains(member))
+                {
+                    complete = false;
+                    break;
+                }
+            }
+            if (complete)
+            {
+                group.CycleReady.Clear();
+                group.CycleRelease = release;
+            }
+
+            while (group.CycleRelease < release)
+            {
+                if (gun == null || gun.IsDead) yield break;
+                yield return null;
+            }
         }
 
         // Gom các gun cùng ConnectGroup id (≠0) thành nhóm; tạo LineRenderer cho nhóm ≥2 gun.
