@@ -111,9 +111,14 @@ namespace Wayfu.Lamkn
 
         // Đối tượng đang chọn trong khung giữa (chỉ khi Paint = None).
         private readonly List<(int grid, int cell)> _selCells = new List<(int, int)>();
+        private readonly List<(int grid, int cell)> _stackErrorCells = new List<(int, int)>();
+        private readonly List<(int grid, int cell, int queue)> _stackErrorQueues = new List<(int, int, int)>();
         private int _selSlot = -1, _selGun = -1;    // gun (chọn 1)
         // Cell trong hàng đợi Spawner đang chọn (chỉ 1). qi < 0 = không chọn gì.
         private (int grid, int cell, int qi) _selQueue = (-1, -1, -1);
+
+        private string _stackValidationReport;
+        private MessageType _stackValidationMessage = MessageType.Info;
 
         // Giá trị áp dụng CHUNG cho nhiều cell đang chọn.
         private TypeColor _multiColor = TypeColor.Red;
@@ -180,6 +185,8 @@ namespace Wayfu.Lamkn
         }
 
         private bool IsCellSelected(int gi, int flat) => _selCells.Contains((gi, flat));
+        private bool IsStackError(int gi, int flat) => _stackErrorCells.Contains((gi, flat));
+        private bool IsStackQueueError(int gi, int flat, int qi) => _stackErrorQueues.Contains((gi, flat, qi));
 
         private void SelectGun(int si, int gi) { _selSlot = si; _selGun = gi; _selCells.Clear(); ClearQueueSel(); }
 
@@ -860,6 +867,61 @@ namespace Wayfu.Lamkn
                     if (grid.GenerateFoundation) DrawFoundationPreview(grid, Proj, Front, Line);
                     if (_showEdges) DrawGridEdges(grid, last, area, Proj, Front);
 
+                    // Tính hướng thực tế từ toàn bộ cell: Rect dùng hướng theo shape,
+                    // Spline/Arc và cell custom dùng đúng hướng riêng của từng cell.
+                    var cellAngles = new List<float>();
+                    for (int cr = 0; cr < grid.Rows; cr++)
+                    {
+                        int cc = grid.ElementsInRow(cr);
+                        for (int ce = 0; ce < cc; ce++)
+                        {
+                            var cdata = grid.GetCell(cr, ce);
+                            if (cdata == null || cdata.BlockStackCt <= 0) continue;
+                            bool shapeDir = grid.CellAngleFromShape && !cdata.UseCustomDirection &&
+                                            cdata.Type != BlockCellType.SpawnerLine;
+                            float angle = shapeDir ? grid.DefaultCellAngle(cr, ce) :
+                                cdata.SpawnerDirectionAngleZ + grid.CellDirectionOffset;
+                            cellAngles.Add(angle);
+                        }
+                    }
+
+                    float actualAngle = grid.DefaultCollapseAngle;
+                    bool mixedCellDirections = false;
+                    if (cellAngles.Count > 0)
+                    {
+                        float sx = 0f, sz = 0f;
+                        foreach (float a in cellAngles)
+                        {
+                            float rad = a * Mathf.Deg2Rad;
+                            sx += Mathf.Sin(rad); sz += Mathf.Cos(rad);
+                        }
+                        actualAngle = Mathf.Repeat(Mathf.Atan2(sx, sz) * Mathf.Rad2Deg, 360f);
+                        foreach (float a in cellAngles)
+                            if (Mathf.Abs(Mathf.DeltaAngle(a, actualAngle)) > 10f) { mixedCellDirections = true; break; }
+                    }
+
+                    // Hướng dồn tổng hợp của grid; nếu cell không đồng hướng thì báo Mixed
+                    // để người dùng nhìn các mũi tên từng cell bên dưới.
+                    Vector3 gridDir = Quaternion.Euler(0f, actualAngle, 0f) * Vector3.forward;
+                    Vector3 gridTipW = grid.Center + gridDir * Mathf.Max(0.8f, grid.RowSpacing * 1.5f);
+                    if (Front(grid.Center) && Front(gridTipW))
+                    {
+                        Handles.color = new Color(1f, 0.2f, 1f, 1f);
+                        Vector2 gridCenter = Proj(grid.Center), gridTip = Proj(gridTipW);
+                        Line(gridCenter, gridTip); ArrowHead(gridCenter, gridTip);
+                        var gridDirLabel = new GUIStyle(EditorStyles.miniBoldLabel);
+                        gridDirLabel.normal.textColor = new Color(1f, 0.35f, 1f, 1f);
+                        string dirName = mixedCellDirections
+                            ? $"Cells: Mixed ({cellAngles.Count})"
+                            : $"Cells: {actualAngle:0}°";
+                        string shootName = grid.ShootableEdges == GridEdges.None
+                            ? "Shoot: Front"
+                            : $"Shoot: {grid.ShootableEdges}";
+                        if (area.Contains(gridTip))
+                            GUI.Label(new Rect(gridTip.x + 4f, gridTip.y - 20f, 190f, 32f),
+                                $"Grid {gi}: {dirName}\n{shootName}", gridDirLabel);
+                    }
+
                     for (int r = 0; r < grid.Rows; r++)
                     {
                         int count = grid.ElementsInRow(r);
@@ -882,7 +944,15 @@ namespace Wayfu.Lamkn
                             {
                                 // Ghost ô trống: fill rất mờ + viền, click (tô màu) sẽ phục hồi stack.
                                 FillRect(cellRect, new Color(1f, 1f, 1f, 0.06f));
+                                if (IsStackError(gi, flatIdx))
+                                {
+                                    FillRect(cellRect, new Color(1f, 1f, 1f, 0.9f));
+                                    DrawOutline(cellRect, Color.white, area);
+                                    DrawOutline(new Rect(cellRect.x - 2f, cellRect.y - 2f,
+                                        cellRect.width + 4f, cellRect.height + 4f), Color.white, area);
+                                }
                                 DrawOutline(cellRect,
+                                    IsStackError(gi, flatIdx) ? Color.black :
                                     IsCellSelected(gi, flatIdx) ? Color.yellow : new Color(1f, 1f, 1f, 0.4f), area);
                                 continue;
                             }
@@ -890,6 +960,7 @@ namespace Wayfu.Lamkn
                             var cellCol = GlobalConfigManager.ColorOf(cell.Color);
                             if (!editable) cellCol.a *= 0.22f; // grid bị khóa → làm MỜ HẲN để nổi grid active
                             cellCol = DimIfUnfocused(cellCol, gi, flatIdx); // focus spawner → mờ cell khác
+                            if (IsStackError(gi, flatIdx)) cellCol = Color.white;
                             FillRect(cellRect, cellCol);
                             // Cell KHÔNG bắn được: gạch chéo X + viền đen để phân biệt.
                             if (!cell.Shootable)
@@ -906,7 +977,13 @@ namespace Wayfu.Lamkn
                                 DrawOutline(cellRect, new Color(0.4f, 0.8f, 1f, 0.95f), area);
                             }
                             // Viền vàng = cell đang chọn; viền cam = cell Spawner (còn hàng đợi phía sau).
-                            if (IsCellSelected(gi, flatIdx)) DrawOutline(cellRect, Color.yellow, area);
+                            if (IsStackError(gi, flatIdx))
+                            {
+                                DrawOutline(cellRect, Color.white, area);
+                                DrawOutline(new Rect(cellRect.x - 2f, cellRect.y - 2f,
+                                    cellRect.width + 4f, cellRect.height + 4f), Color.black, area);
+                            }
+                            else if (IsCellSelected(gi, flatIdx)) DrawOutline(cellRect, Color.yellow, area);
                             else if (isSpawner) DrawOutline(cellRect, DimIfUnfocused(SpawnerCol, gi, flatIdx), area);
                             // Số block trong stack (giống nhãn số đạn của gun).
                             if (sz >= 10f && area.Contains(bp))
@@ -2079,10 +2156,13 @@ namespace Wayfu.Lamkn
                     var col = GlobalConfigManager.ColorOf(q != null ? q.Color : TypeColor.None);
                     col.a = 0.5f; // mờ = block chưa nhả ra, phân biệt với cell thật
                     col = DimIfUnfocused(col, gi, flatIdx); // focus spawner → mờ queue của spawner khác
+                    bool stackError = IsStackQueueError(gi, flatIdx, qi);
+                    if (stackError) col = Color.white;
                     var ir = RectIntersect(qr, area);
                     if (ir.width > 0f && ir.height > 0f) EditorGUI.DrawRect(ir, col);
                     bool hi = parentSelected || IsQueueSelected(gi, flatIdx, qi);
-                    DrawOutline(qr, hi ? Color.yellow : DimIfUnfocused(SpawnerCol, gi, flatIdx), area);
+                    DrawOutline(qr, stackError ? Color.black :
+                        hi ? Color.yellow : DimIfUnfocused(SpawnerCol, gi, flatIdx), area);
                 }
                 else DrawOutline(qr, DimIfUnfocused(new Color(1f, 0.6f, 0.1f, 0.5f), gi, flatIdx), area); // ô "+" rỗng
 
@@ -2481,6 +2561,11 @@ namespace Wayfu.Lamkn
             bool ok0 = _target.ValidateColorBalance(out string rep0);
             EditorGUILayout.HelpBox(rep0, ok0 ? MessageType.Info : MessageType.Warning);
 
+            if (!string.IsNullOrEmpty(_stackValidationReport))
+                EditorGUILayout.HelpBox(_stackValidationReport, _stackValidationMessage);
+            if (GUILayout.Button("Validate Stack Consistency + Highlight"))
+                ValidateStackConsistency();
+
             _rightScroll = EditorGUILayout.BeginScrollView(_rightScroll);
             DrawSelectionSection();
             EditorGUILayout.Space(4); DrawMetaSection();
@@ -2490,6 +2575,74 @@ namespace Wayfu.Lamkn
             EditorGUILayout.Space(4); DrawGridsSection();
             EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
+        }
+
+        private void ValidateStackConsistency()
+        {
+            _selCells.Clear();
+            _stackErrorCells.Clear();
+            _stackErrorQueues.Clear();
+            ClearQueueSel();
+            _stackValidationReport = null;
+            var errors = new List<string>();
+
+            for (int gi = 0; gi < _target.Grids.Count; gi++)
+            {
+                var grid = _target.Grids[gi];
+                if (grid?.Cells == null) continue;
+                int layoutCellCount = grid.TotalCells();
+                if (grid.Cells.Count > layoutCellCount)
+                {
+                    for (int ci = layoutCellCount; ci < grid.Cells.Count; ci++)
+                    {
+                        var orphan = grid.Cells[ci];
+                        if (orphan == null) continue;
+                        if (orphan.BlockStackCt > 0 || (orphan.Queue != null && orphan.Queue.Count > 0))
+                            errors.Add($"Grid {gi}, cell {ci} nằm ngoài layout (layout chỉ có {layoutCellCount} cell; " +
+                                       $"BlockCol {orphan.BlockCol}, SpawnerDepth {orphan.SpawnerDepth})");
+                    }
+                }
+                int expected = -1;
+                foreach (var cell in grid.Cells)
+                    if (cell != null && cell.BlockStackCt > 0) { expected = cell.BlockStackCt; break; }
+                if (expected < 0) continue;
+
+                for (int ci = 0; ci < grid.Cells.Count; ci++)
+                {
+                    var cell = grid.Cells[ci];
+                    if (cell == null) continue;
+                    bool bad = cell.BlockStackCt > 0 && cell.BlockStackCt != expected;
+                    if (cell.BlockStackCt <= 0 && cell.Queue != null && cell.Queue.Count > 0)
+                        bad = true; // hole/spawner cannot create its queue at runtime
+                    if (cell.Queue != null)
+                        for (int qi = 0; qi < cell.Queue.Count; qi++)
+                            if (cell.Queue[qi] != null && cell.Queue[qi].BlockStackCt != expected)
+                            {
+                                bad = true;
+                                _stackErrorQueues.Add((gi, ci, qi));
+                                errors.Add($"Grid {gi}, cell {ci}, queue {qi}: stack {cell.Queue[qi].BlockStackCt} (expected {expected})");
+                            }
+                    // Cell ngoài layout không có vị trí hình học để highlight trên map.
+                    if (bad && ci < layoutCellCount)
+                    {
+                        _stackErrorCells.Add((gi, ci));
+                        if (!_selCells.Contains((gi, ci))) _selCells.Add((gi, ci));
+                        errors.Add($"Grid {gi}, cell {ci}: stack {cell.BlockStackCt} (expected {expected})");
+                    }
+                }
+            }
+
+            if (errors.Count == 0)
+            {
+                _stackValidationReport = "Stack consistency: OK.";
+                _stackValidationMessage = MessageType.Info;
+            }
+            else
+            {
+                _stackValidationReport = "Stack consistency lỗi — đã highlight cell: \n" + string.Join("\n", errors);
+                _stackValidationMessage = MessageType.Warning;
+            }
+            Repaint();
         }
 
         // Đã bỏ khỏi UI (vẫn còn trong LevelData, code chiếu vẫn dùng): CAMERA FRAME (Ortho Size / Aspect /

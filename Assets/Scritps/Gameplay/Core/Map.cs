@@ -110,19 +110,10 @@ namespace Wayfu.Lamkn
                 float distance = Vector3.Distance(start, target);
                 float duration = distance /
                                  Mathf.Max(0.01f, gunMoveSpeed * rightMoveEndSpeedMultiplier);
-                float goInDistance = GameSettings.Instance != null ? Mathf.Max(0f, GameSettings.Instance.GunGoInDistanceBeforeEnd) : 0f;
-                bool goInPlayed = false;
-                bool goInDone = true;
                 for (float elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
                 {
                     if (gun == null) yield break;
                     float t = Mathf.Clamp01(elapsed / duration);
-                    if (!goInPlayed && distance - distance * t <= goInDistance)
-                    {
-                        goInDone = false;
-                        gun.PlayGoInThen(() => goInDone = true);
-                        goInPlayed = true;
-                    }
                     gun.transform.position = Vector3.Lerp(start, target, t);
                     if (rotateGunAlongMovePath)
                     {
@@ -133,13 +124,6 @@ namespace Wayfu.Lamkn
                     yield return null;
                 }
                 gun.transform.position = target;
-                if (!goInPlayed)
-                {
-                    goInDone = false;
-                    gun.PlayGoInThen(() => goInDone = true);
-                    goInPlayed = true;
-                }
-                while (gun != null && !goInDone) yield return null;
 
             }
             // Ẩn trong lúc chuyển từ Pos End tới điểm 0 của path loop; PathManager sẽ bật lại
