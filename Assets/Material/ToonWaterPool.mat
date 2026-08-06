@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _FoamNoise:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 42dcc7e4f53027f4f87d7115534d69fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -37,26 +37,26 @@ Material:
     - _Alpha: 0.781
     - _CausticScale: 0.53
     - _CausticSpeed: 0.59
-    - _CausticStrength: 0.03
+    - _CausticStrength: 0.05
     - _CausticThin: 0.522
-    - _CrestStrength: 0.35
-    - _DeepStrength: 0.76
-    - _DepthMax: 4.5
-    - _EdgeAlphaBoost: 0.738
+    - _CrestStrength: 0
+    - _DeepStrength: 1.25
+    - _DepthMax: 5.4
+    - _EdgeAlphaBoost: 0.477
     - _FoamCutoff: 0.55
-    - _FoamDepth: 1.86
-    - _FoamNoiseScale: 8.3
-    - _FresnelPower: 4.97
-    - _SurfaceFoam: 0.3
-    - _WaveHeight: 0.37
-    - _WaveScale: 0.56
+    - _FoamDepth: 2.18
+    - _FoamNoiseScale: 2.3
+    - _FresnelPower: 4.52
+    - _SurfaceFoam: 0.488
+    - _WaveHeight: 0.666
+    - _WaveScale: 0.43
     - _WaveSpeed: 0.94
     m_Colors:
     - _CausticColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CrestColor: {r: 0, g: 0.6277771, b: 1, a: 1}
-    - _DeepColor: {r: 0.23137257, g: 0.627451, b: 0.9960785, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CrestColor: {r: 0, g: 0.7922032, b: 1, a: 1}
+    - _DeepColor: {r: 0.4292453, g: 0.83979666, b: 1, a: 1}
+    - _FoamColor: {r: 0.8349056, g: 0.9724843, b: 1, a: 1}
     - _FoamSpeed: {r: 0.05, g: 0.03, b: 0, a: 0}
     - _FresnelColor: {r: 0.014017418, g: 0.5739641, b: 0.990566, a: 1}
-    - _ShallowColor: {r: 0, g: 0.34998178, b: 1, a: 1}
+    - _ShallowColor: {r: 0, g: 0.60588074, b: 1, a: 1}
   m_BuildTextureStacks: []

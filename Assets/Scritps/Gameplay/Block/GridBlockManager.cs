@@ -26,6 +26,7 @@ namespace Wayfu.Lamkn
             public bool EightWay; // Spawner8: nhả vào ô trống ở 8 ô quanh ô gốc
             public Spawner8Directions EightDirections;
             public bool Line;     // SpawnerLine: nhả theo 1 đường (StepRow,StepCol) tới Reach ô
+            public bool AllowCollapseIntoAfterQueueEmpty;
             public int Reach;     // SpawnerLine: số ô tối đa (0 = tới mép grid)
             public int StepRow, StepCol; // SpawnerLine: bước đi 1 ô theo hướng nhả
         }
@@ -148,6 +149,7 @@ namespace Wayfu.Lamkn
                             EightDirections = cellData.Spawner8Directions == Spawner8Directions.None
                                 ? Spawner8Directions.All : cellData.Spawner8Directions,
                             Line = line,
+                            AllowCollapseIntoAfterQueueEmpty = cellData.AllowCollapseIntoAfterQueueEmpty,
                             Reach = cellData.SpawnerReach,
                         };
                         if (line) LineStep(grid, srcObj.DirAngle, out srcObj.StepRow, out srcObj.StepCol);
@@ -303,7 +305,10 @@ namespace Wayfu.Lamkn
             // A blank adjacent row separates two independent collapse segments.
             // Do not let cells from an older segment farther along the same column
             // keep this segment hidden.
-            return idx < 0 || gr.Rows[rr][idx] == null;
+            // Ô gốc Spawner là nguồn trung tâm, không được che mặt Front/Back
+            // của cell ở phía đối diện. Nó vẫn được khóa riêng cho collapse/refill
+            // bằng SpawnerCells.
+            return idx < 0 || gr.Rows[rr][idx] == null || IsSpawnerCell(gr, rr, idx);
         }
 
         // Lộ ra theo HÀNG (Left/Right): mọi cell giữa (r,e) và mép hàng đã trống chưa.
@@ -683,7 +688,9 @@ namespace Wayfu.Lamkn
                 fed |= FeedEightWayAll(gr);
                 // One-dimensional grids may receive Spawner8 output, but their
                 // existing cells must never be pulled sideways or diagonally.
-                if (gr.Data.Collapse2D) moved |= CascadeTowardSpawners(gr);
+                if (gr.Data.Collapse2D
+                    || gr.Data.CustomCollapseDirections != GridCollapseDirections.None)
+                    moved |= CascadeTowardSpawners(gr);
 
                 if (!moved && !fed) break;
             }
@@ -769,6 +776,7 @@ namespace Wayfu.Lamkn
                     // One-direction grids only let Spawner8 feed toward the
                     // path: forward, forward-left and forward-right.
                     if (!gr.Data.Collapse2D
+                        && gr.Data.CustomCollapseDirections == GridCollapseDirections.None
                         && (r != src.Row - 1 || Mathf.Abs(c - src.Col) > 1)) continue;
                     d = Mathf.Max(Mathf.Abs(src.Row - r), Mathf.Abs(src.Col - c));
                     if (d < 1 || (src.Reach > 0 && d > src.Reach)) continue;
@@ -820,6 +828,8 @@ namespace Wayfu.Lamkn
         // để dồn lên (vd index 1 của hàng 5 dồn được lên index 0 hoặc 1 của hàng 4); 2 ô ngoài cùng khớp 1:1.
         private bool AdvanceOnce(GridRuntime gr)
         {
+            if (gr.Data.CustomCollapseDirections != GridCollapseDirections.None)
+                return AdvanceCustomDirections(gr);
             if (UsesHorizontalCollapseAxis(gr))
                 return AdvanceHorizontalOnce(gr);
             if (ReverseGridDirection(gr)) return AdvanceBackwardOnce(gr);
@@ -856,6 +866,17 @@ namespace Wayfu.Lamkn
                     moved = true;
                 }
             }
+            return moved;
+        }
+
+        private bool AdvanceCustomDirections(GridRuntime gr)
+        {
+            var directions = gr.Data.CustomCollapseDirections;
+            bool moved = false;
+            if ((directions & GridCollapseDirections.Front) != 0) moved |= AdvanceDir(gr, 1, 0);
+            if ((directions & GridCollapseDirections.Back) != 0) moved |= AdvanceDir(gr, -1, 0);
+            if ((directions & GridCollapseDirections.Left) != 0) moved |= AdvanceDir(gr, 0, 1);
+            if ((directions & GridCollapseDirections.Right) != 0) moved |= AdvanceDir(gr, 0, -1);
             return moved;
         }
 
@@ -961,11 +982,40 @@ namespace Wayfu.Lamkn
         // hết mới sang ngang. KHÔNG dồn CHÉO — chéo là việc của riêng Spawner8 (nhả 8 hướng trong Reach).
         private bool AdvanceCorner2D(GridRuntime gr)
         {
+            bool preferHorizontal = PreferHorizontalCollapse(gr);
             int dr = ReverseGridDirection(gr) ? -1 : 1;
-            if (AdvanceDir(gr, dr, 0)) return true; // 1. DỌC
             int dc = HorizontalCollapseStep(gr);
-            if (AdvanceDir(gr, 0, dc)) return true; // 2. NGANG: ưu tiên hướng mũi tên của cell
+            if (preferHorizontal)
+            {
+                if (AdvanceDir(gr, 0, dc)) return true;
+                if (AdvanceDir(gr, dr, 0)) return true;
+            }
+            else
+            {
+                if (AdvanceDir(gr, dr, 0)) return true;
+                if (AdvanceDir(gr, 0, dc)) return true;
+            }
             return false;
+        }
+
+        private static bool PreferHorizontalCollapse(GridRuntime gr)
+        {
+            int vertical = 0, horizontal = 0;
+            for (int r = 0; r < gr.Rows.Count; r++)
+            for (int c = 0; c < gr.Rows[r].Length; c++)
+            {
+                if (gr.Rows[r][c] != null || IsHole(gr, r, c)) continue;
+                int v = 0;
+                for (int rr = 0; rr < gr.Rows.Count; rr++)
+                    if (c < gr.Rows[rr].Length && gr.Rows[rr][c] != null) v++;
+                int h = 0;
+                for (int cc = 0; cc < gr.Rows[r].Length; cc++)
+                    if (gr.Rows[r][cc] != null) h++;
+                if (h > v) horizontal++;
+                else if (v > h) vertical++;
+            }
+            if (horizontal != vertical) return horizontal > vertical;
+            return UsesHorizontalCollapseAxis(gr);
         }
 
         private static bool ReverseGridDirection(GridRuntime gr)
@@ -1025,6 +1075,9 @@ namespace Wayfu.Lamkn
             var srow = gr.Rows[sr];
             if (sc < 0 || sc >= srow.Length) return false;
             var cell = srow[sc];
+            // Spawner thường phải được phép dồn như cell bình thường để mở ô gốc
+            // và tiếp tục nhả queue. Spawner8/SpawnerLine còn bất tử thì vẫn bị
+            // chặn bởi Indestructible.
             if (cell == null || cell.Indestructible) return false;
             srow[sc] = null;
             gr.Rows[r][e] = cell;
@@ -1059,7 +1112,7 @@ namespace Wayfu.Lamkn
 
                     // Chọn neighbor có cell di chuyển được và GẦN spawner hơn ô này (ưu tiên dọc/ngang trước
                     // chéo nhờ thứ tự EightNeighbors + so sánh chặt "<").
-                    int bestD = dE, br = -1, bc = -1;
+                    int bestChain = -1, br = -1, bc = -1;
                     for (int k = 0; k < EightNeighbors.GetLength(0); k++)
                     {
                         int nr = r + EightNeighbors[k, 0];
@@ -1069,8 +1122,10 @@ namespace Wayfu.Lamkn
                         var ncell = gr.Rows[nr][nc];
                         if (ncell == null || ncell.Indestructible) continue;   // trống / là spawner: không kéo
                         if (IsSpawnerCell(gr, nr, nc)) continue;
-                        int dN = DistToNearestSpawner(gr, nr, nc);
-                        if (dN >= 0 && dN < bestD) { bestD = dN; br = nr; bc = nc; }
+                        if (gr.Data.CustomCollapseDirections != GridCollapseDirections.None
+                            && !AllowsCustomDirection(gr.Data.CustomCollapseDirections, r - nr, c - nc)) continue;
+                        int chain = CollapseChainLength(gr, r, c, nr, nc);
+                        if (chain > bestChain) { bestChain = chain; br = nr; bc = nc; }
                     }
                     if (br < 0) continue;
 
@@ -1083,6 +1138,22 @@ namespace Wayfu.Lamkn
                 }
             }
             return moved;
+        }
+
+        private static int CollapseChainLength(GridRuntime gr, int r, int c, int nr, int nc)
+        {
+            int dr = Mathf.Clamp(nr - r, -1, 1);
+            int dc = Mathf.Clamp(nc - c, -1, 1);
+            int length = 0;
+            int rr = nr, cc = nc;
+            while (rr >= 0 && rr < gr.Rows.Count && cc >= 0 && cc < gr.Rows[rr].Length)
+            {
+                if (gr.Rows[rr][cc] == null || IsHole(gr, rr, cc) || IsSpawnerCell(gr, rr, cc)) break;
+                length++;
+                rr += dr;
+                cc += dc;
+            }
+            return length;
         }
 
         // Khoảng cách Chebyshev (8 hướng) tới ô gốc Spawner8 ĐANG hoạt động gần nhất; -1 nếu không còn cái nào.
@@ -1270,9 +1341,13 @@ namespace Wayfu.Lamkn
                 {
                     int dr = EightNeighbors[k, 0], dc = EightNeighbors[k, 1];
                     if ((src.EightDirections & Spawner8DirectionFor(k)) == 0) continue;
+                    if (gr.Data.CustomCollapseDirections != GridCollapseDirections.None
+                        && !AllowsCustomDirection(gr.Data.CustomCollapseDirections, dr, dc)) continue;
                     // A one-direction grid never expands a Spawner8 sideways or
                     // backwards: only its three forward neighbours are valid.
-                    if (!gr.Data.Collapse2D && dr != -1) continue;
+                    if (!gr.Data.Collapse2D
+                        && gr.Data.CustomCollapseDirections == GridCollapseDirections.None
+                        && dr != -1) continue;
                     int t = dr != 0 && dc != 0 ? 2 : dc == 0 ? 0 : 1; // dọc / ngang / chéo
                     if (t != tier) continue;                          // lượt này chỉ 1 tier hướng
 
@@ -1290,6 +1365,17 @@ namespace Wayfu.Lamkn
                 if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
             }
             return fed;
+        }
+
+        private static bool AllowsCustomDirection(GridCollapseDirections directions, int dr, int dc)
+        {
+            bool rowOk = dr == 0
+                || (dr < 0 && (directions & GridCollapseDirections.Front) != 0)
+                || (dr > 0 && (directions & GridCollapseDirections.Back) != 0);
+            bool colOk = dc == 0
+                || (dc < 0 && (directions & GridCollapseDirections.Left) != 0)
+                || (dc > 0 && (directions & GridCollapseDirections.Right) != 0);
+            return rowOk && colOk;
         }
 
         private static Spawner8Directions Spawner8DirectionFor(int neighborIndex)
@@ -1341,7 +1427,8 @@ namespace Wayfu.Lamkn
             var cell = gr.Rows[src.Row][src.Col];
             if (src.Queue.Count == 0)
             {
-                if (cell != null) { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
+                if (src.AllowCollapseIntoAfterQueueEmpty && cell != null)
+                { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
                 ReleaseExhaustedSpawnerCell(gr, src);
                 return;
             }
@@ -1354,7 +1441,10 @@ namespace Wayfu.Lamkn
                 BlockCol = src.Col,
                 SpawnerDepth = src.Row,
                 SpawnerDirectionAngleZ = src.DirAngle,
-                Type = src.Line ? BlockCellType.SpawnerLine : BlockCellType.Spawner8, // giữ nguồn bất tử
+                // The displayed queue head must be a normal shootable cell. The source
+                // position is protected separately by SpawnerCells, so it cannot be
+                // pulled away while it is still an active source.
+                Type = BlockCellType.Normal,
             };
             cell.Build(data, gr.Data.EffectiveStackSpacing, gr.Data.CellScale, this);
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
@@ -1368,7 +1458,8 @@ namespace Wayfu.Lamkn
             if (src.Row < gr.Rows.Count && src.Col < gr.Rows[src.Row].Length)
             {
                 var cell = gr.Rows[src.Row][src.Col];
-                if (cell != null && cell.Indestructible) { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
+                if (src.AllowCollapseIntoAfterQueueEmpty && cell != null)
+                { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
             }
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
@@ -1380,6 +1471,7 @@ namespace Wayfu.Lamkn
         // normal cell exists behind it to feed the vacancy.
         private static void ReleaseExhaustedSpawnerCell(GridRuntime gr, SpawnerSource src)
         {
+            if (!src.AllowCollapseIntoAfterQueueEmpty) return;
             if (src.Row < 0 || src.Row >= gr.Rows.Count - 1 || src.Col < 0
                 || src.Col >= gr.SpawnerCells[src.Row].Length) return;
             gr.SpawnerCells[src.Row][src.Col] = false;
