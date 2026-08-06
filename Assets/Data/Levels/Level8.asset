@@ -2498,9 +2498,9 @@ MonoBehaviour:
       SpawnerDepth: 7
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
-      Spawner8Directions: 129
+      Spawner8Directions: -1
       Queue:
       - Color: 6
         BlockStackCt: 3
@@ -2526,9 +2526,9 @@ MonoBehaviour:
       SpawnerDepth: 7
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
-      Spawner8Directions: 131
+      Spawner8Directions: -1
       Queue:
       - Color: 4
         BlockStackCt: 3
@@ -2554,9 +2554,9 @@ MonoBehaviour:
       SpawnerDepth: 7
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
-      Spawner8Directions: 131
+      Spawner8Directions: -1
       Queue:
       - Color: 4
         BlockStackCt: 3
@@ -2582,9 +2582,9 @@ MonoBehaviour:
       SpawnerDepth: 7
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
-      Spawner8Directions: 131
+      Spawner8Directions: -1
       Queue:
       - Color: 6
         BlockStackCt: 3
@@ -2610,9 +2610,9 @@ MonoBehaviour:
       SpawnerDepth: 7
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
-      Spawner8Directions: 3
+      Spawner8Directions: -1
       Queue:
       - Color: 6
         BlockStackCt: 3
@@ -3324,7 +3324,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 2
-    Center: {x: 27.629713, y: 0, z: -9.571861}
+    Center: {x: 0.30853945, y: 0, z: -13.383282}
     Rotation: 179.7486
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -3967,8 +3967,8 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 1
-    Center: {x: 45.246605, y: 0, z: 9.529236}
+    Side: 2
+    Center: {x: 9.440664, y: 0, z: -15.681313}
     Rotation: 269.47174
     CellDirectionOffset: 180
     DefaultDirection: 0
@@ -4344,7 +4344,7 @@ MonoBehaviour:
       SpawnerDepth: 1
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
       Spawner8Directions: 3
       Queue:
@@ -4372,7 +4372,7 @@ MonoBehaviour:
       SpawnerDepth: 1
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
       Spawner8Directions: 131
       Queue:
@@ -4400,7 +4400,7 @@ MonoBehaviour:
       SpawnerDepth: 1
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
       Spawner8Directions: 131
       Queue:
@@ -4428,7 +4428,7 @@ MonoBehaviour:
       SpawnerDepth: 1
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
       Spawner8Directions: 131
       Queue:
@@ -4456,7 +4456,7 @@ MonoBehaviour:
       SpawnerDepth: 1
       BlockStackCt: 3
       Shootable: 1
-      Type: 2
+      Type: 1
       SpawnerReach: 0
       Spawner8Directions: 129
       Queue:
@@ -8736,7 +8736,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: 14.6010685, y: 0, z: 6.7528877}
+    Center: {x: 6.023293, y: 0, z: -9.589733}
     Rotation: 0
     CellDirectionOffset: 90
     DefaultDirection: 2
@@ -8752,8 +8752,8 @@ MonoBehaviour:
     StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
-    Collapse2D: 1
-    CustomCollapseDirections: 0
+    Collapse2D: 0
+    CustomCollapseDirections: 5
     GenerateFoundation: 0
     FoundationSourceMesh: {fileID: 0}
     FoundationMaterial: {fileID: 0}
@@ -8807,7 +8807,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -8823,7 +8823,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 0
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 1
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -8881,7 +8881,7 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 1
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -8897,8 +8897,8 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 1
       BlockStackCt: 3
-      Shootable: 1
-      Type: 1
+      Shootable: 0
+      Type: 2
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
@@ -8925,7 +8925,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 1
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -8941,7 +8941,7 @@ MonoBehaviour:
       BlockCol: 4
       SpawnerDepth: 1
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -8957,7 +8957,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 2
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -8973,8 +8973,8 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 2
       BlockStackCt: 3
-      Shootable: 1
-      Type: 1
+      Shootable: 0
+      Type: 2
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
@@ -9001,7 +9001,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 2
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -9017,7 +9017,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 2
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -9033,7 +9033,7 @@ MonoBehaviour:
       BlockCol: 4
       SpawnerDepth: 2
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -9049,7 +9049,7 @@ MonoBehaviour:
       BlockCol: 0
       SpawnerDepth: 3
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 2
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -9077,8 +9077,8 @@ MonoBehaviour:
       BlockCol: 1
       SpawnerDepth: 3
       BlockStackCt: 3
-      Shootable: 1
-      Type: 1
+      Shootable: 0
+      Type: 2
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
@@ -9101,7 +9101,7 @@ MonoBehaviour:
       BlockCol: 2
       SpawnerDepth: 3
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -9117,7 +9117,7 @@ MonoBehaviour:
       BlockCol: 3
       SpawnerDepth: 3
       BlockStackCt: 3
-      Shootable: 1
+      Shootable: 0
       Type: 0
       SpawnerReach: 0
       Spawner8Directions: 0
@@ -9133,8 +9133,8 @@ MonoBehaviour:
       BlockCol: 4
       SpawnerDepth: 3
       BlockStackCt: 3
-      Shootable: 1
-      Type: 1
+      Shootable: 0
+      Type: 2
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
