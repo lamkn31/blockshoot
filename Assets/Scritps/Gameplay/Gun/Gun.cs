@@ -489,18 +489,21 @@ namespace Wayfu.Lamkn
         /// SLOT vào path thì FALSE (đã bay ra khỏi slot rồi, không cần hiệu ứng xuất hiện); chỉ gun LOOP
         /// tái xuất mới chơi GoOut — nhưng nhánh đó đi qua CyclePathAnimation, không qua đây.
         /// </summary>
-        public void DeployOnPath(RoundedPolylinePath path, float startDistance, float speed, bool playEmerge = true)
+        public void DeployOnPath(RoundedPolylinePath path, float startDistance, float speed, bool playEmerge = true, float entryMoveSpeed = -1f)
         {
             if (_follower != null) _follower.enabled = false;
             SetHiddenDuringPathEntry(false);
 
             if (!playEmerge)
             {
-                // Gun slot: KHÔNG teleport vào pos 0 nữa — trượt MƯỢT từ điểm chờ ngoài cửa VÀO pos 0 theo
-                // speed rồi mới bàn giao cho follower, để không thấy nhảy vị trí (yêu cầu: đi vào đúng speed).
+                // Gun slot: KHÔNG teleport vào pos 0 — trượt MƯỢT từ vị trí HIỆN TẠI (đang bay ra khỏi slot,
+                // hoặc điểm chờ nếu bị kẹt) VÀO pos 0 rồi mới bàn giao follower. entryMoveSpeed = tốc độ đoạn
+                // trượt vào (mặc định = speed nếu không truyền); để bằng slotToEntrySpeed cho liền mạch, không
+                // bò chậm ở cửa.
                 if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
                 _pathEntryAnimating = true; // giữ gate + khoá bắn trong lúc trượt vào
-                _moveRoutine = StartCoroutine(MoveIntoPathThenFollow(path, startDistance, speed));
+                float moveSpeed = entryMoveSpeed > 0.01f ? entryMoveSpeed : speed;
+                _moveRoutine = StartCoroutine(MoveIntoPathThenFollow(path, startDistance, speed, moveSpeed));
                 return;
             }
 
@@ -515,13 +518,13 @@ namespace Wayfu.Lamkn
         /// (= tốc độ chạy path) rồi bật follower — vào đường liền mạch, không teleport. Giữ _pathEntryAnimating
         /// suốt lúc trượt để gate chỉ nhả khi gun đã thật sự vào đường.
         /// </summary>
-        private IEnumerator MoveIntoPathThenFollow(RoundedPolylinePath path, float startDistance, float speed)
+        private IEnumerator MoveIntoPathThenFollow(RoundedPolylinePath path, float startDistance, float pathSpeed, float moveSpeed)
         {
             _pathEntryAnimating = true;
             Vector3 target = path != null ? path.GetPointAtDistance(startDistance) : transform.position;
             Vector3 start = transform.position;
             float dist = Vector3.Distance(start, target);
-            float dur = speed > 0.01f ? dist / speed : 0f;
+            float dur = moveSpeed > 0.01f ? dist / moveSpeed : 0f;
 
             // Quay mặt theo hướng đi vào (điểm chờ nằm ngay sau pos 0 nên đây cũng là hướng tiếp tuyến path).
             Vector3 dir = target - start; dir.y = 0f;
@@ -535,7 +538,7 @@ namespace Wayfu.Lamkn
             }
             transform.position = target;
             _moveRoutine = null;
-            BeginPathFollower(path, startDistance, speed);
+            BeginPathFollower(path, startDistance, pathSpeed);
         }
 
         private void StartPathFollower(RoundedPolylinePath path, float startDistance, float speed, bool playEmerge)
