@@ -867,6 +867,61 @@ namespace Wayfu.Lamkn
                     if (grid.GenerateFoundation) DrawFoundationPreview(grid, Proj, Front, Line);
                     if (_showEdges) DrawGridEdges(grid, last, area, Proj, Front);
 
+                    // Tính hướng thực tế từ toàn bộ cell: Rect dùng hướng theo shape,
+                    // Spline/Arc và cell custom dùng đúng hướng riêng của từng cell.
+                    var cellAngles = new List<float>();
+                    for (int cr = 0; cr < grid.Rows; cr++)
+                    {
+                        int cc = grid.ElementsInRow(cr);
+                        for (int ce = 0; ce < cc; ce++)
+                        {
+                            var cdata = grid.GetCell(cr, ce);
+                            if (cdata == null || cdata.BlockStackCt <= 0) continue;
+                            bool shapeDir = grid.CellAngleFromShape && !cdata.UseCustomDirection &&
+                                            cdata.Type != BlockCellType.SpawnerLine;
+                            float angle = shapeDir ? grid.DefaultCellAngle(cr, ce) :
+                                cdata.SpawnerDirectionAngleZ + grid.CellDirectionOffset;
+                            cellAngles.Add(angle);
+                        }
+                    }
+
+                    float actualAngle = grid.DefaultCollapseAngle;
+                    bool mixedCellDirections = false;
+                    if (cellAngles.Count > 0)
+                    {
+                        float sx = 0f, sz = 0f;
+                        foreach (float a in cellAngles)
+                        {
+                            float rad = a * Mathf.Deg2Rad;
+                            sx += Mathf.Sin(rad); sz += Mathf.Cos(rad);
+                        }
+                        actualAngle = Mathf.Repeat(Mathf.Atan2(sx, sz) * Mathf.Rad2Deg, 360f);
+                        foreach (float a in cellAngles)
+                            if (Mathf.Abs(Mathf.DeltaAngle(a, actualAngle)) > 10f) { mixedCellDirections = true; break; }
+                    }
+
+                    // Hướng dồn tổng hợp của grid; nếu cell không đồng hướng thì báo Mixed
+                    // để người dùng nhìn các mũi tên từng cell bên dưới.
+                    Vector3 gridDir = Quaternion.Euler(0f, actualAngle, 0f) * Vector3.forward;
+                    Vector3 gridTipW = grid.Center + gridDir * Mathf.Max(0.8f, grid.RowSpacing * 1.5f);
+                    if (Front(grid.Center) && Front(gridTipW))
+                    {
+                        Handles.color = new Color(1f, 0.2f, 1f, 1f);
+                        Vector2 gridCenter = Proj(grid.Center), gridTip = Proj(gridTipW);
+                        Line(gridCenter, gridTip); ArrowHead(gridCenter, gridTip);
+                        var gridDirLabel = new GUIStyle(EditorStyles.miniBoldLabel);
+                        gridDirLabel.normal.textColor = new Color(1f, 0.35f, 1f, 1f);
+                        string dirName = mixedCellDirections
+                            ? $"Cells: Mixed ({cellAngles.Count})"
+                            : $"Cells: {actualAngle:0}°";
+                        string shootName = grid.ShootableEdges == GridEdges.None
+                            ? "Shoot: Front"
+                            : $"Shoot: {grid.ShootableEdges}";
+                        if (area.Contains(gridTip))
+                            GUI.Label(new Rect(gridTip.x + 4f, gridTip.y - 20f, 190f, 32f),
+                                $"Grid {gi}: {dirName}\n{shootName}", gridDirLabel);
+                    }
+
                     for (int r = 0; r < grid.Rows; r++)
                     {
                         int count = grid.ElementsInRow(r);
