@@ -17,7 +17,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3001
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -34,6 +34,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_1926223d95894b81a4a16bced106ad24_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: dfaef3f68bd0bec4fac217999b5b34e4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_39d10fa9f6714e4a890a16973107a261_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: dfaef3f68bd0bec4fac217999b5b34e4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_3b8ba6626d8d4235b208ab717cb01322_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 29268b4534c490847ae8bf5748bd93b8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_5debf05c49744343a655e11dc5092d65_Texture_1_Texture2D:
@@ -75,9 +83,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _Caustic_Alpha: 0.583
-    - _Caustic_Blur: 2.21
+    - _Caustic_Blur: 2.03
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: 1
     - _Water_Alpha: 1
     - _caustic_random: 0.5
     m_Colors:
@@ -85,14 +93,14 @@ Material:
     - _Caustic_Color_1: {r: 0, g: 0.4847312, b: 1, a: 0}
     - _Caustic_Color_2: {r: 0.6745283, g: 0.9711973, b: 1, a: 0}
     - _Caustic_Edge_Color: {r: 0.514151, g: 0.9762287, b: 1, a: 0}
-    - _Caustic_Edge_Speed: {r: 0.8, g: 0, b: 0, a: 0}
+    - _Caustic_Edge_Speed: {r: 1.5, g: 0, b: 0, a: 0}
     - _Caustic_Scale: {r: 1, g: 1, b: 0, a: 0}
     - _Caustic_Speed: {r: 0.5, g: 0.1, b: 0, a: 0}
-    - _Caustic_Speed2: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _Caustic_Speed2: {r: 1.5, g: 0.2, b: 0, a: 0}
     - _Caustic_Speed_2: {r: -0.3, g: 0.4, b: 0, a: 0}
     - _Edge_Speed: {r: -0.2, g: 0, b: 0, a: 0}
-    - _Water_Center_Color: {r: 0.24056602, g: 0.6186103, b: 1, a: 0}
-    - _Water_Color: {r: 0.09803921, g: 0.72965527, b: 1, a: 0}
+    - _Water_Center_Color: {r: 0.23921567, g: 0.72917897, b: 1, a: 0}
+    - _Water_Color: {r: 0.3915094, g: 0.8174527, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2489318993705090563
 MonoBehaviour:
