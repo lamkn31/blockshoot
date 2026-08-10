@@ -99,6 +99,8 @@ namespace Wayfu.Lamkn
         /// <summary>Arc-length hiện tại trên path — PathManager đọc để giữ khoảng cách giữa các gun.</summary>
         public float PathDistance => _follower != null ? _follower.CurrentDistance : 0f;
         public bool IsOnPath => _state == GunState.OnPath;
+        /// <summary>Gun has left its slot and is currently being positioned by PathManager's entry queue.</summary>
+        public bool IsQueued => _state == GunState.Queued;
         public bool IsDead => _state == GunState.Dead;
         /// <summary>Gun đang chơi anim vào/ra cửa path (GoOut/GoIn) — PathManager dùng để giữ gate 1 gun/lượt.</summary>
         public bool PathEntryAnimating => _pathEntryAnimating;

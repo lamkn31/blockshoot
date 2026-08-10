@@ -437,12 +437,39 @@ namespace Wayfu.Lamkn
         public void RequestDeploy(Gun gun)
         {
             if (gun == null) return;
-            gun.OnQueued();
-            // Xê dịch cố định của gun (hướng trong đĩa đơn vị) → mỗi lần restage vẫn giữ đúng "cá tính" chỗ đứng,
-            // không nhảy loạn mỗi frame. Nhân clusterJitter lúc dùng để chỉnh biên độ được runtime.
-            if (!_queueJitter.ContainsKey(gun)) _queueJitter[gun] = Random.insideUnitCircle;
-            _queue.Add(gun);
-            RestageQueue(); // gun mới xếp cuối hàng (rank cuối); cả hàng nén front-first theo rank, không đè nhau
+
+            // No waiting guns and an open entry gate: skip the staging crowd entirely.
+            // DeployOnPath(playEmerge:false) moves this gun directly from its current
+            // slot position to path_0, then hands control to the path follower.
+            if (_queue.Count == 0 && _gateGun == null && _path != null
+                && _guns.Count < _maxGunOnPath && IsEntrySpacingClear())
+            {
+                BeginSlotTransit(gun);
+                return;
+            }
+
+            RequestDeployGroup(new[] { gun });
+        }
+
+        /// <summary>
+        /// Adds an already ordered set of guns to the entry queue as one transaction.
+        /// This is used by CONNECT groups so the queue never observes an intermediate
+        /// one-gun state before every member has been assigned its final rank.
+        /// </summary>
+        public void RequestDeployGroup(IList<Gun> guns)
+        {
+            if (guns == null || guns.Count == 0) return;
+
+            foreach (var gun in guns)
+            {
+                if (gun == null || _queue.Contains(gun)) continue;
+                gun.OnQueued();
+                // Xê dịch cố định của gun (hướng trong đĩa đơn vị) → mỗi lần restage vẫn giữ đúng "cá tính" chỗ đứng,
+                // không nhảy loạn mỗi frame. Nhân clusterJitter lúc dùng để chỉnh biên độ được runtime.
+                if (!_queueJitter.ContainsKey(gun)) _queueJitter[gun] = Random.insideUnitCircle;
+                _queue.Add(gun);
+            }
+            RestageQueue(); // stage the completed batch once, preserving its supplied FIFO order
         }
 
         /// <summary>

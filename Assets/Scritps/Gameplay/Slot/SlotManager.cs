@@ -184,7 +184,9 @@ namespace Wayfu.Lamkn
         private void Update() => UpdateConnectLines();
 
         // Đường connect tự bám target (ConnectLine.Update); ở đây BẬT/TẮT từng đoạn line[i] (nối member i↔i+1):
-        // - Cả 2 trong slot HOẶC cả 2 trên path CÙNG VÒNG → nối.
+        // - Cả 2 trong slot, hoặc bất kỳ member nào còn ở queue trong khi nhóm đi vào loop → nối.
+        // - Cả 2 đã chạy trên path CÙNG VÒNG → nối.
+        // - Cả 2 cùng ở transition tại path_0/path_end → tắt dây (không vắt qua tunnel).
         // - 1 gun vừa lap qua path0 mà gun kia CHƯA (khác LapCount) → tắt đoạn đó (dây sẽ vắt hết vòng path),
         //   tới khi gun kia cũng lap về path0 (cùng vòng) thì nối tiếp.
         private void UpdateConnectLines()
@@ -204,9 +206,20 @@ namespace Wayfu.Lamkn
             if (a == null || b == null || a.IsDead || b.IsDead) return false;
             bool aSlot = a.Slot != null, bSlot = b.Slot != null;
             if (aSlot && bSlot) return true;                        // cả 2 còn trong slot → nối
+            // Keep the wire while a CONNECT group is split between the waiting
+            // queue and the loop.  The gate admits members one at a time, so this
+            // mixed state is expected rather than a reason to disconnect.
+            if ((a.IsQueued || a.IsOnPath) && (b.IsQueued || b.IsOnPath)
+                && (a.IsQueued || b.IsQueued)) return true;
             if (!aSlot && !bSlot && a.IsOnPath && b.IsOnPath)
+            {
+                // PathEntryAnimating covers the endpoint transitions: entering/leaving
+                // path_0 and GoIn at path_end.  When both members are there, hiding
+                // the line prevents it from being drawn through the tunnel.
+                if (a.PathEntryAnimating && b.PathEntryAnimating) return false;
                 return a.LapCount == b.LapCount;                    // cả 2 trên path → nối khi CÙNG vòng
-            return false;                                           // đang deploy dở (queued) → tạm tắt
+            }
+            return false;                                           // hai gun đang ở trạng thái khác nhau → tạm tắt
         }
 
         public void OnGunClicked(Gun gun)
@@ -264,6 +277,10 @@ namespace Wayfu.Lamkn
             foreach (var g in members)
                 if (g.Slot == null || g.Slot.FrontGun != g) return;
 
+            // PathManager serves _queue as FIFO.  Enqueue the highest slot first so
+            // connected guns leave in the same, deterministic high-to-low slot order.
+            members.Sort((a, b) => b.Slot.SlotIndex.CompareTo(a.Slot.SlotIndex));
+
             var pm = PathManager.Instance;
             if (pm == null || !pm.CanAcceptCount(_movingToLoop.Count + members.Count))
             {
@@ -271,12 +288,11 @@ namespace Wayfu.Lamkn
                 return;
             }
 
-            foreach (var g in members)
-            {
-                int slotIndex = g.Slot.SlotIndex;
-                g.Slot.RemoveFront();
-                SendGunToLoop(slotIndex, g);
-            }
+            // Remove every member before it is visible to PathManager, then queue the
+            // complete ordered group in one operation.  SimulateQueueCrowd therefore
+            // sees only the final ranks, never a transient single-gun queue.
+            foreach (var g in members) g.Slot.RemoveFront();
+            pm.RequestDeployGroup(members);
             GameController.Instance?.OnBoardChanged();
         }
 

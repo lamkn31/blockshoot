@@ -18,7 +18,7 @@ MonoBehaviour:
   GunGoInDistanceBeforeEnd: 0
   GunPathGoInDistanceBeforeEnd: 0
   PathWidth: 2.5
-  MaxGunOnPath: 10
+  MaxGunOnPath: 5
   GunSpeed: 10
   GunSpacing: 3
   WaitClusterSpacing: 2
