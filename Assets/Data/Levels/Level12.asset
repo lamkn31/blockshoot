@@ -5862,7 +5862,23 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 3330962480086696267, guid: ece0ea511e1e4084f8fa721339b046ce,
+      type: 3}
+    Pos: {x: -2.5287538, y: 0, z: -15.333794}
+    RotationY: 0
+    Scale: {x: 1.2, y: 1, z: 1.2}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3880441430053725302, guid: a75eff93b1f4e204baeefa5d73bfa835,
+      type: 3}
+    Pos: {x: 3.980729, y: 0, z: -17.3788}
+    RotationY: 0
+    Scale: {x: 1.2, y: 1, z: 1.2}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

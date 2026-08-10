@@ -17,14 +17,14 @@ MonoBehaviour:
   NumberOfColors: 0
   MechanicNames: []
   PathWaypoints:
-  - {x: -6.515948, y: 0, z: -28.528181}
+  - {x: -6.619186, y: 0, z: -27.29101}
   - {x: -6.77744, y: 0, z: -20.333876}
   - {x: -3.830428, y: 0, z: -18.819645}
   - {x: -2.778753, y: 0, z: -15.675276}
   - {x: 2.6518102, y: 0, z: -15.675276}
   - {x: 4.220938, y: 0, z: -19.088509}
   - {x: 6.8329625, y: 0, z: -20.333876}
-  - {x: 6.5847545, y: 0, z: -28.950014}
+  - {x: 6.7928205, y: 0, z: -27.278667}
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 3
@@ -124,6 +124,7 @@ MonoBehaviour:
     Center: {x: 0.044409785, y: 0, z: -14.730358}
     Rotation: 180.27951
     CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 12
     RowSpacing: 1
@@ -137,6 +138,17 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -155,6 +167,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -170,6 +183,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -185,6 +199,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -200,6 +215,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -215,6 +231,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -230,6 +247,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -245,6 +263,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -260,6 +279,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -275,6 +295,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -290,6 +311,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -305,6 +327,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -320,6 +343,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -335,6 +359,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -350,6 +375,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -365,6 +391,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -380,6 +407,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -395,6 +423,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -410,6 +439,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -425,6 +455,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -440,6 +471,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -455,6 +487,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -470,6 +503,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -485,6 +519,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -500,6 +535,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -515,6 +551,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -530,6 +567,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -545,6 +583,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -560,6 +599,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -575,6 +615,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -590,6 +631,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -605,6 +647,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -620,6 +663,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -635,6 +679,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -650,6 +695,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -665,6 +711,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -680,6 +727,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -695,6 +743,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -710,6 +759,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -725,6 +775,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -740,6 +791,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -755,6 +807,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -770,6 +823,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -785,6 +839,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -800,6 +855,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -815,6 +871,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -830,6 +887,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -845,6 +903,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -860,6 +919,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -875,6 +935,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -890,6 +951,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -905,6 +967,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -920,6 +983,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -935,6 +999,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -950,6 +1015,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -965,6 +1031,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -980,6 +1047,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -995,6 +1063,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1010,6 +1079,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1025,6 +1095,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1040,6 +1111,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1055,6 +1127,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1070,6 +1143,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1085,6 +1159,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1100,6 +1175,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1115,6 +1191,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1130,6 +1207,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1145,6 +1223,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1160,6 +1239,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1175,6 +1255,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1190,6 +1271,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1205,6 +1287,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1220,6 +1303,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1235,6 +1319,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1250,6 +1335,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1265,6 +1351,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1280,6 +1367,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1295,6 +1383,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1310,6 +1399,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1325,6 +1415,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1340,6 +1431,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1355,6 +1447,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1370,6 +1463,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1385,6 +1479,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1400,6 +1495,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1415,6 +1511,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1430,6 +1527,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1445,6 +1543,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1460,6 +1559,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1475,6 +1575,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1490,6 +1591,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1505,6 +1607,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1520,6 +1623,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1535,6 +1639,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1550,6 +1655,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1565,6 +1671,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1580,6 +1687,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1595,6 +1703,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1610,6 +1719,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1625,6 +1735,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1640,6 +1751,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1655,6 +1767,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1670,6 +1783,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1685,6 +1799,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1700,6 +1815,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1715,6 +1831,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1730,6 +1847,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1745,6 +1863,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1760,6 +1879,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1775,6 +1895,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1790,6 +1911,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1805,6 +1927,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1820,6 +1943,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1835,6 +1959,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1850,6 +1975,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1865,6 +1991,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1880,6 +2007,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1895,6 +2023,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1910,6 +2039,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1925,6 +2055,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1940,6 +2071,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -1955,6 +2087,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -1970,6 +2103,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1985,6 +2119,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2000,6 +2135,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2015,6 +2151,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2030,6 +2167,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2045,6 +2183,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2060,6 +2199,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2075,6 +2215,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2090,6 +2231,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2105,6 +2247,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2120,6 +2263,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2135,6 +2279,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2150,6 +2295,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2165,6 +2311,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2180,6 +2327,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2195,6 +2343,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2210,6 +2359,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2225,6 +2375,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2240,6 +2391,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2255,6 +2407,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2270,6 +2423,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2285,6 +2439,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2300,6 +2455,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2315,6 +2471,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2330,6 +2487,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2345,6 +2503,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2360,6 +2519,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2375,6 +2535,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2390,6 +2551,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2405,6 +2567,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2420,6 +2583,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2435,6 +2599,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2450,6 +2615,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2465,6 +2631,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2480,6 +2647,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2495,6 +2663,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2510,6 +2679,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2539,6 +2709,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2554,6 +2725,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2569,6 +2741,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2584,6 +2757,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2599,6 +2773,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2614,6 +2789,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2629,6 +2805,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2658,6 +2835,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2673,6 +2851,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2688,6 +2867,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2703,6 +2883,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2718,6 +2899,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2733,6 +2915,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2766,6 +2949,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2799,6 +2983,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2828,6 +3013,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2857,6 +3043,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2890,6 +3077,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2923,6 +3111,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2938,6 +3127,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -2953,6 +3143,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -2968,6 +3159,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 0.27951002
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -2976,6 +3168,7 @@ MonoBehaviour:
     Center: {x: 0.12974286, y: 0, z: -12.907318}
     Rotation: 0
     CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 5
     RowSpacing: 1
@@ -2989,6 +3182,17 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -3007,6 +3211,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3022,6 +3227,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3037,6 +3243,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3052,6 +3259,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3067,6 +3275,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3082,6 +3291,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3097,6 +3307,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3112,6 +3323,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3127,6 +3339,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3142,6 +3355,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3157,6 +3371,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3172,6 +3387,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3187,6 +3403,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3202,6 +3419,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3217,6 +3435,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3232,6 +3451,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3247,6 +3467,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3262,6 +3483,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3277,6 +3499,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3292,6 +3515,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3307,6 +3531,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3322,6 +3547,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3337,6 +3563,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3352,6 +3579,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3367,6 +3595,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3382,6 +3611,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3397,6 +3627,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3412,6 +3643,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3427,6 +3659,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3442,6 +3675,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3479,6 +3713,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3516,6 +3751,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3553,6 +3789,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3590,6 +3827,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -3627,6 +3865,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3642,6 +3881,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3657,6 +3897,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3672,6 +3913,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3687,6 +3929,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3702,6 +3945,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3717,6 +3961,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3732,6 +3977,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3747,6 +3993,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3762,6 +4009,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3777,6 +4025,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3792,6 +4041,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3807,6 +4057,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3822,6 +4073,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3837,6 +4089,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3852,6 +4105,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -3860,6 +4114,7 @@ MonoBehaviour:
     Center: {x: -2.8945675, y: 0, z: -10.921131}
     Rotation: 269.70456
     CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 15
     RowSpacing: 1
@@ -3873,6 +4128,17 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -3891,6 +4157,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3906,6 +4173,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3921,6 +4189,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -3936,6 +4205,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -3951,6 +4221,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -3966,6 +4237,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -3981,6 +4253,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -3996,6 +4269,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4011,6 +4285,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4026,6 +4301,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4041,6 +4317,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4076,6 +4353,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4091,6 +4369,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4106,6 +4385,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4121,6 +4401,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4136,6 +4417,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4151,6 +4433,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4166,6 +4449,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4181,6 +4465,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4196,6 +4481,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4211,6 +4497,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4226,6 +4513,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4241,6 +4529,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4256,6 +4545,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4271,6 +4561,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4286,6 +4577,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4321,6 +4613,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4336,6 +4629,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4351,6 +4645,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4366,6 +4661,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4381,6 +4677,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4396,6 +4693,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -4411,6 +4709,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -4426,6 +4725,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4441,6 +4741,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4456,6 +4757,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4471,6 +4773,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4486,6 +4789,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4501,6 +4805,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4516,6 +4821,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4531,6 +4837,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4566,6 +4873,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4581,6 +4889,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4596,6 +4905,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4611,6 +4921,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4626,6 +4937,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -4641,6 +4953,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -4656,6 +4969,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -4671,6 +4985,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4686,6 +5001,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4701,6 +5017,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4716,6 +5033,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4731,6 +5049,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4746,6 +5065,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4761,6 +5081,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4776,6 +5097,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -4811,6 +5133,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4826,6 +5149,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4841,6 +5165,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -4856,6 +5181,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4887,6 +5213,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4918,6 +5245,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4949,6 +5277,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -4980,6 +5309,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5011,6 +5341,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5026,6 +5357,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5041,6 +5373,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5056,6 +5389,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5071,6 +5405,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5086,6 +5421,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5101,6 +5437,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5136,6 +5473,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -5151,6 +5489,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -5166,6 +5505,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -5181,6 +5521,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5214,6 +5555,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5247,6 +5589,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5280,6 +5623,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5313,6 +5657,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5346,6 +5691,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5379,6 +5725,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5412,6 +5759,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5445,6 +5793,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5478,6 +5827,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5511,6 +5861,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5544,6 +5895,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5579,6 +5931,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -5594,6 +5947,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -5609,6 +5963,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -5624,6 +5979,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 89.70456
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -5632,6 +5988,7 @@ MonoBehaviour:
     Center: {x: 8.175049, y: 0, z: -10.902611}
     Rotation: 270.1516
     CellDirectionOffset: 180
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 15
     RowSpacing: 1
@@ -5645,6 +6002,17 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -5679,6 +6047,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5710,6 +6079,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5741,6 +6111,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5772,6 +6143,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5803,6 +6175,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -5834,6 +6207,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5865,6 +6239,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5896,6 +6271,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5927,6 +6303,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5958,6 +6335,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -5989,6 +6367,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6026,6 +6405,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6041,6 +6421,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6056,6 +6437,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6071,6 +6453,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6102,6 +6485,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6133,6 +6517,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6164,6 +6549,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6195,6 +6581,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6226,6 +6613,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6257,6 +6645,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6272,6 +6661,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6287,6 +6677,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6302,6 +6693,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6317,6 +6709,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6332,6 +6725,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6347,6 +6741,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6362,6 +6757,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6377,6 +6773,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6392,6 +6789,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6407,6 +6805,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6422,6 +6821,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6437,6 +6837,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6452,6 +6853,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6467,6 +6869,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6482,6 +6885,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6497,6 +6901,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6512,6 +6917,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6527,6 +6933,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6542,6 +6949,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6557,6 +6965,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6592,6 +7001,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6607,6 +7017,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6622,6 +7033,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6637,6 +7049,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6652,6 +7065,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6667,6 +7081,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6682,6 +7097,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -6697,6 +7113,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6712,6 +7129,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6727,6 +7145,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6742,6 +7161,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6757,6 +7177,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6772,6 +7193,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6787,6 +7209,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6802,6 +7225,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6837,6 +7261,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6852,6 +7277,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6867,6 +7293,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6882,6 +7309,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6897,6 +7325,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6912,6 +7341,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -6927,6 +7357,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6942,6 +7373,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -6957,6 +7389,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6972,6 +7405,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -6987,6 +7421,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -7002,6 +7437,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -7017,6 +7453,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -7032,6 +7469,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7047,6 +7485,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7082,6 +7521,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7097,6 +7537,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7112,6 +7553,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7127,6 +7569,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7142,6 +7585,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7157,6 +7601,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7172,6 +7617,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7187,6 +7633,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7202,6 +7649,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7217,6 +7665,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7232,6 +7681,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7247,6 +7697,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7262,6 +7713,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7277,6 +7729,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7292,6 +7745,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 4
@@ -7327,6 +7781,7 @@ MonoBehaviour:
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7342,6 +7797,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7357,6 +7813,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 1
@@ -7372,6 +7829,7 @@ MonoBehaviour:
       Queue: []
       SpawnerDirectionAngleZ: 90.29544
       UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -7379,7 +7837,39 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 3880441430053725302, guid: 56fe54436975e4b4498e0b5ae1c5ef06,
+      type: 3}
+    Pos: {x: 0, y: 0, z: -9.9}
+    RotationY: 0
+    Scale: {x: 1.2, y: 1, z: 1.2}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3330962480086696267, guid: fd3556eb5c5416148adfa0fb643b15b0,
+      type: 3}
+    Pos: {x: 0, y: 0, z: -23.5}
+    RotationY: 0
+    Scale: {x: 1.3, y: 1, z: 1.2}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -5.3103094, y: 0, z: -24.680902}
+    RotationY: -0.7
+    Scale: {x: 0.8, y: 1, z: 1.2370672}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 5.2824407, y: 0, z: -24.701893}
+    RotationY: 0.7
+    Scale: {x: 0.8, y: 1, z: 1.2370672}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}
