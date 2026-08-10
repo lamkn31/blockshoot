@@ -9320,7 +9320,39 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 3880441430053725302, guid: 4d301462bd1251d45a5e80eebbc3017b,
+      type: 3}
+    Pos: {x: 0.38158605, y: 0, z: -14.899639}
+    RotationY: 180
+    Scale: {x: 1.2, y: 1, z: 1.2}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3330962480086696267, guid: b1c4e3eb7d6a90544943e81b897b749f,
+      type: 3}
+    Pos: {x: 0.37, y: 0, z: -20.9}
+    RotationY: 180
+    Scale: {x: 1.2, y: 1, z: 1.25}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 5.6191187, y: 0, z: -26.41883}
+    RotationY: 90
+    Scale: {x: 0.62405235, y: 1, z: 1.2377734}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -4.9905114, y: 0, z: -26.439457}
+    RotationY: 90
+    Scale: {x: 0.6215607, y: 1, z: 1.5363463}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

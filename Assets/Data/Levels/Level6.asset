@@ -12664,7 +12664,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: 0.5565581, y: 0, z: -24.966991}
+    Center: {x: 0.57766956, y: 0, z: -24.612303}
     Rotation: -90
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -13586,7 +13586,46 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 7917115439556375520, guid: 9272e565e40ee1642ae86263389c6472,
+      type: 3}
+    Pos: {x: -2.4728532, y: 0, z: -24.712887}
+    RotationY: 0
+    Scale: {x: 1.2566086, y: 1, z: 1.3982421}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 817997986985095117, guid: 8aac217d40589334ab2b59880d8e45bd, type: 3}
+    Pos: {x: 2.8673246, y: 0, z: -16.935616}
+    RotationY: 180
+    Scale: {x: 1.2298586, y: 1, z: 1.2058023}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 6054179251720648522, guid: b300a44c8110c6c40b5aaec06ba4b5d4,
+      type: 3}
+    Pos: {x: -2.6978889, y: -1, z: -22.036772}
+    RotationY: 90
+    Scale: {x: 0.65771925, y: 1, z: 0.76915073}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 6054179251720648522, guid: b300a44c8110c6c40b5aaec06ba4b5d4,
+      type: 3}
+    Pos: {x: -2.661916, y: -1, z: -27.027653}
+    RotationY: 90
+    Scale: {x: 0.6348058, y: 1, z: 0.7620264}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 0.8291979, y: -1, z: -17.965816}
+    RotationY: 90
+    Scale: {x: 0.75419915, y: 1, z: 1.2383668}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

@@ -17,7 +17,7 @@ MonoBehaviour:
   NumberOfColors: 0
   MechanicNames: []
   PathWaypoints:
-  - {x: 0.3899306, y: 0, z: -33.08081}
+  - {x: 0.15774286, y: 0, z: -28.810358}
   - {x: 0.2313122, y: 0, z: -21.32557}
   - {x: 0.2313122, y: 0, z: -13.222599}
   - {x: 0.23131217, y: 0, z: -5.7165604}
@@ -77,8 +77,10 @@ MonoBehaviour:
   Grids:
   - Shape: 1
     Side: 1
-    Center: {x: -2.2743409, y: 0, z: -26.837477}
+    Center: {x: -2.422607, y: 0, z: -25.855341}
     Rotation: 270.21017
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 2
     RowSpacing: 1
@@ -88,9 +90,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -105,8 +119,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -118,8 +135,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -131,8 +151,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -144,8 +167,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -157,8 +183,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -170,8 +199,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -183,8 +215,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -196,8 +231,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -209,8 +247,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -222,8 +263,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -235,6 +279,7 @@ MonoBehaviour:
       Shootable: 0
       Type: 1
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue:
       - Color: 2
         BlockStackCt: 3
@@ -243,6 +288,8 @@ MonoBehaviour:
       - Color: 2
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -254,6 +301,7 @@ MonoBehaviour:
       Shootable: 0
       Type: 1
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue:
       - Color: 2
         BlockStackCt: 3
@@ -262,13 +310,17 @@ MonoBehaviour:
       - Color: 2
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
     Side: 2
-    Center: {x: 2.45269, y: 0, z: -26.808743}
+    Center: {x: 2.5776885, y: 0, z: -25.808224}
     Rotation: 90.01201
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 2
     RowSpacing: 1
@@ -278,9 +330,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -295,8 +359,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -308,8 +375,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -321,8 +391,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -334,8 +407,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -347,8 +423,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -360,8 +439,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -373,8 +455,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -386,8 +471,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -399,8 +487,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -412,8 +503,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -425,6 +519,7 @@ MonoBehaviour:
       Shootable: 0
       Type: 1
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue:
       - Color: 2
         BlockStackCt: 3
@@ -433,6 +528,8 @@ MonoBehaviour:
       - Color: 2
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -444,6 +541,7 @@ MonoBehaviour:
       Shootable: 0
       Type: 1
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue:
       - Color: 2
         BlockStackCt: 3
@@ -452,13 +550,17 @@ MonoBehaviour:
       - Color: 2
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
     Side: 2
-    Center: {x: 2.6485596, y: 0, z: -22.043474}
+    Center: {x: 2.6938183, y: 0, z: -21.207712}
     Rotation: 90.01286
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 4
     RowSpacing: 1
@@ -468,9 +570,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -485,8 +599,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -498,8 +615,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -511,8 +631,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -524,8 +647,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -537,8 +663,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -550,8 +679,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -563,8 +695,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -576,8 +711,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -589,8 +727,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -602,8 +743,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -615,8 +759,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -628,8 +775,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -641,8 +791,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -654,8 +807,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -667,8 +823,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -680,8 +839,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -693,8 +855,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -706,8 +871,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -719,8 +887,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -732,8 +903,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -745,8 +919,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -758,8 +935,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -771,8 +951,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -784,15 +967,20 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
     Side: 2
-    Center: {x: 2.8419003, y: 0, z: -15.85326}
+    Center: {x: 2.804464, y: 0, z: -15.246037}
     Rotation: 90.01286
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 4
     RowSpacing: 1
@@ -802,9 +990,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -819,8 +1019,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -832,8 +1035,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -845,8 +1051,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -858,8 +1067,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -871,8 +1083,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -884,8 +1099,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -897,8 +1115,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -910,8 +1131,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -923,8 +1147,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -936,8 +1163,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -949,8 +1179,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -962,8 +1195,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -975,8 +1211,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -988,8 +1227,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1001,8 +1243,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1014,8 +1259,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1027,8 +1275,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1040,8 +1291,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1053,8 +1307,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1066,8 +1323,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1079,8 +1339,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1092,8 +1355,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1105,8 +1371,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1118,8 +1387,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -1127,6 +1399,8 @@ MonoBehaviour:
     Side: 2
     Center: {x: 2.8909519, y: 0, z: -9.02475}
     Rotation: 90.01286
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 4
     RowSpacing: 1
@@ -1136,9 +1410,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -1153,8 +1439,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1166,8 +1455,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1179,8 +1471,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1192,8 +1487,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1205,8 +1503,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1218,8 +1519,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1231,8 +1535,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1244,8 +1551,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1257,8 +1567,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1270,8 +1583,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1283,8 +1599,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1296,8 +1615,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1309,8 +1631,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1322,8 +1647,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1335,8 +1663,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1348,8 +1679,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1361,8 +1695,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1374,8 +1711,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1387,8 +1727,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1400,8 +1743,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1413,8 +1759,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1426,8 +1775,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1439,8 +1791,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1452,15 +1807,20 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: -2.6199946, y: 0, z: -15.824123}
+    Center: {x: -2.5051749, y: 0, z: -15.194717}
     Rotation: 270.21405
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 4
     RowSpacing: 1
@@ -1470,9 +1830,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -1487,8 +1859,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1500,8 +1875,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1513,8 +1891,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1526,8 +1907,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1539,8 +1923,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1552,8 +1939,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1565,8 +1955,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1578,8 +1971,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1591,8 +1987,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1604,8 +2003,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1617,8 +2019,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1630,8 +2035,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1643,8 +2051,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1656,8 +2067,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1669,8 +2083,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1682,8 +2099,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1695,8 +2115,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1708,8 +2131,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1721,8 +2147,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1734,8 +2163,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1747,8 +2179,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -1760,8 +2195,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1773,8 +2211,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1786,15 +2227,20 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: -2.4234455, y: 0, z: -22.137388}
+    Center: {x: -2.491204, y: 0, z: -21.207712}
     Rotation: 270.21405
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 4
     RowSpacing: 1
@@ -1804,9 +2250,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -1821,8 +2279,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1834,8 +2295,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1847,8 +2311,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1860,8 +2327,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1873,8 +2343,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1886,8 +2359,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1899,8 +2375,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -1912,8 +2391,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1925,8 +2407,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1938,8 +2423,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1951,8 +2439,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1964,8 +2455,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1977,8 +2471,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -1990,8 +2487,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2003,8 +2503,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2016,8 +2519,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2029,8 +2535,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2042,8 +2551,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2055,8 +2567,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2068,8 +2583,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2081,8 +2599,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2094,8 +2615,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2107,8 +2631,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2120,8 +2647,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -2129,6 +2659,8 @@ MonoBehaviour:
     Side: 1
     Center: {x: -2.4687462, y: 0, z: -9.086182}
     Rotation: 270.21405
+    CellDirectionOffset: 0
+    DefaultDirection: 0
     BaseRadius: 0
     Columns: 4
     RowSpacing: 1
@@ -2138,9 +2670,21 @@ MonoBehaviour:
     BlockWidth: 1
     Spacing: 0
     CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0.5
     Layout: 0
     ShootableEdges: 0
     Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0.25
+    FoundationThickness: 0.25
+    FoundationYOffset: -0.12
+    FoundationSegments: 32
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0.5
     SplineWaypoints: []
     SplineClosed: 0
     SplineStyle: 0
@@ -2155,8 +2699,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2168,8 +2715,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2181,8 +2731,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2194,8 +2747,11 @@ MonoBehaviour:
       Shootable: 1
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2207,8 +2763,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2220,8 +2779,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2233,8 +2795,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2246,8 +2811,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2259,8 +2827,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2272,8 +2843,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2285,8 +2859,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2298,8 +2875,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2311,8 +2891,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2324,8 +2907,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 2
@@ -2337,8 +2923,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2350,8 +2939,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2363,8 +2955,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2376,8 +2971,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 3
@@ -2389,8 +2987,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2402,8 +3003,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2415,8 +3019,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2428,8 +3035,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2441,8 +3051,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     - Color: 7
@@ -2454,8 +3067,11 @@ MonoBehaviour:
       Shootable: 0
       Type: 0
       SpawnerReach: 0
+      Spawner8Directions: 255
       Queue: []
       SpawnerDirectionAngleZ: 259.0625
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
     PendingRefill: []
@@ -2463,7 +3079,71 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 7732688080146675318, guid: 6cfb7249fe349d64fa2fdf23eb8f04ba,
+      type: 3}
+    Pos: {x: -5.4605126, y: 0, z: -21.250671}
+    RotationY: 0
+    Scale: {x: 1.3363636, y: 1, z: 1.104527}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7732688080146675318, guid: 6cfb7249fe349d64fa2fdf23eb8f04ba,
+      type: 3}
+    Pos: {x: -5.507374, y: 0, z: -15.223335}
+    RotationY: 0
+    Scale: {x: 1.3363636, y: 1, z: 1.104527}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7732688080146675318, guid: 6cfb7249fe349d64fa2fdf23eb8f04ba,
+      type: 3}
+    Pos: {x: 5.626664, y: 0, z: -21.19865}
+    RotationY: 0
+    Scale: {x: 1.3363636, y: 1, z: 1.104527}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7732688080146675318, guid: 6cfb7249fe349d64fa2fdf23eb8f04ba,
+      type: 3}
+    Pos: {x: 5.708689, y: 0, z: -15.25457}
+    RotationY: 0
+    Scale: {x: 1.3363636, y: 1, z: 1.104527}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7732688080146675318, guid: 6cfb7249fe349d64fa2fdf23eb8f04ba,
+      type: 3}
+    Pos: {x: 5.8344812, y: 0, z: -9.053383}
+    RotationY: 0
+    Scale: {x: 1.3363636, y: 1, z: 1.104527}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7732688080146675318, guid: 6cfb7249fe349d64fa2fdf23eb8f04ba,
+      type: 3}
+    Pos: {x: -5.434626, y: 0, z: -9.051874}
+    RotationY: 0
+    Scale: {x: 1.3363636, y: 1, z: 1.104527}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 5177527186728107250, guid: 8fa1880ce955945408cf7cc46b18240b,
+      type: 3}
+    Pos: {x: 5.512711, y: 0, z: -25.845348}
+    RotationY: 0
+    Scale: {x: 1.2868241, y: 1, z: 1.009656}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 5177527186728107250, guid: 8fa1880ce955945408cf7cc46b18240b,
+      type: 3}
+    Pos: {x: -5.3001194, y: 0, z: -25.86385}
+    RotationY: 0
+    Scale: {x: 1.2868241, y: 1, z: 1.009656}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}
