@@ -76,6 +76,13 @@ namespace Wayfu.Lamkn
         private int _dragObstacle = -1, _dragObHandle = -1;
         private Vector3 _dragObStart;                 // Pos lúc bắt đầu kéo — để Shift khóa trục
 
+        // Whole-layout move gizmo state (shown after selecting every grid + path waypoint).
+        private int _dragLayoutAxis; // 0 = none, 1 = X, 2 = Z
+        private Vector3 _dragLayoutMouseStart;
+        private readonly List<Vector3> _dragLayoutGridStarts = new List<Vector3>();
+        private readonly List<Vector3> _dragLayoutPathStarts = new List<Vector3>();
+        private readonly List<Vector3> _dragLayoutObstacleStarts = new List<Vector3>();
+
         // Generate grid.
         private TypeColor _genColor = TypeColor.Red;
         private int _genStack = 3;
@@ -1222,6 +1229,7 @@ namespace Wayfu.Lamkn
             if (_showObstacles) DrawObstacles(area, Proj, Front, Line);
 
             // Cuối cùng: quét chọn / click chọn. Đặt sau mọi handle nên nếu handle đã e.Use() thì bỏ qua.
+            DrawWholeLayoutMoveHandle(area, Proj);
             HandleMarquee(area);
             HandleDeleteKey(area);
 
@@ -1230,6 +1238,79 @@ namespace Wayfu.Lamkn
 
         // Paint = None: kéo chuột = QUÉT chọn nhiều cell; click ngắn = chọn 1 cell/gun.
         // Giữ Ctrl (hoặc Cmd) = chọn THÊM (click lại vào cell đã chọn thì bỏ chọn).
+        private bool HasWholeLayoutSelection()
+        {
+            if (_target?.Grids == null || _target.PathWaypoints == null ||
+                _target.Grids.Count == 0 || _target.PathWaypoints.Count == 0 ||
+                _selGrids.Count != _target.Grids.Count || _selWaypoints.Count != _target.PathWaypoints.Count) return false;
+            for (int i = 0; i < _target.Grids.Count; i++) if (!_selGrids.Contains(i)) return false;
+            for (int i = 0; i < _target.PathWaypoints.Count; i++) if (!_selWaypoints.Contains(i)) return false;
+            return true;
+        }
+
+        // When the marquee includes the entire layout, show X/Z arrows that move
+        // all grid centers and every path waypoint together.
+        private void DrawWholeLayoutMoveHandle(Rect area, System.Func<Vector3, Vector2> project)
+        {
+            if (!HasWholeLayoutSelection() || _so == null) return;
+            Vector3 center = Vector3.zero; int count = 0;
+            foreach (var grid in _target.Grids) if (grid != null) { center += grid.Center; count++; }
+            foreach (var point in _target.PathWaypoints) { center += point; count++; }
+            if (_target.Obstacles != null)
+                foreach (var obstacle in _target.Obstacles) if (obstacle != null) { center += obstacle.Pos; count++; }
+            if (count == 0) return;
+            Vector2 p = project(center / count);
+            const float arm = 18f, half = 8f;
+            Rect left = new Rect(p.x - arm - half, p.y - half, arm, arm);
+            Rect right = new Rect(p.x + half, p.y - half, arm, arm);
+            Rect up = new Rect(p.x - half, p.y - arm - half, arm, arm);
+            Rect down = new Rect(p.x - half, p.y + half, arm, arm);
+            var style = new GUIStyle(EditorStyles.boldLabel) { alignment = TextAnchor.MiddleCenter };
+            style.normal.textColor = new Color(1f, 0.85f, 0.2f);
+            foreach (var rect in new[] { left, right, up, down })
+            {
+                EditorGUI.DrawRect(rect, new Color(0.12f, 0.12f, 0.12f, 0.9f));
+                EditorGUIUtility.AddCursorRect(rect, MouseCursor.SlideArrow);
+            }
+            GUI.Label(left, "<", style); GUI.Label(right, ">", style); GUI.Label(up, "^", style); GUI.Label(down, "v", style);
+
+            var e = Event.current;
+            if (e.type == EventType.MouseDown && e.button == 0 && !e.alt)
+            {
+                if (left.Contains(e.mousePosition) || right.Contains(e.mousePosition)) _dragLayoutAxis = 1;
+                else if (up.Contains(e.mousePosition) || down.Contains(e.mousePosition)) _dragLayoutAxis = 2;
+                if (_dragLayoutAxis != 0)
+                {
+                    _dragLayoutMouseStart = InverseV(e.mousePosition);
+                    _dragLayoutGridStarts.Clear(); _dragLayoutPathStarts.Clear(); _dragLayoutObstacleStarts.Clear();
+                    foreach (var grid in _target.Grids) _dragLayoutGridStarts.Add(grid != null ? grid.Center : Vector3.zero);
+                    _dragLayoutPathStarts.AddRange(_target.PathWaypoints);
+                    if (_target.Obstacles != null)
+                        foreach (var obstacle in _target.Obstacles) _dragLayoutObstacleStarts.Add(obstacle != null ? obstacle.Pos : Vector3.zero);
+                    e.Use();
+                }
+            }
+            if (_dragLayoutAxis == 0) return;
+            if (e.type == EventType.MouseDrag)
+            {
+                Vector3 delta = InverseV(e.mousePosition) - _dragLayoutMouseStart;
+                delta = _dragLayoutAxis == 1 ? new Vector3(delta.x, 0f, 0f) : new Vector3(0f, 0f, delta.z);
+                var grids = _so.FindProperty("Grids"); var waypoints = _so.FindProperty("PathWaypoints");
+                var obstacles = _so.FindProperty("Obstacles");
+                for (int i = 0; i < grids.arraySize; i++) grids.GetArrayElementAtIndex(i).FindPropertyRelative("Center").vector3Value = _dragLayoutGridStarts[i] + delta;
+                for (int i = 0; i < waypoints.arraySize; i++) waypoints.GetArrayElementAtIndex(i).vector3Value = _dragLayoutPathStarts[i] + delta;
+                if (obstacles != null)
+                    for (int i = 0; i < obstacles.arraySize && i < _dragLayoutObstacleStarts.Count; i++)
+                        obstacles.GetArrayElementAtIndex(i).FindPropertyRelative("Pos").vector3Value = _dragLayoutObstacleStarts[i] + delta;
+                _recomputeGridSides = true;
+                e.Use(); Repaint();
+            }
+            else if (e.type == EventType.MouseUp)
+            {
+                _dragLayoutAxis = 0; _dragLayoutGridStarts.Clear(); _dragLayoutPathStarts.Clear(); _dragLayoutObstacleStarts.Clear(); e.Use();
+            }
+        }
+
         private void HandleMarquee(Rect area)
         {
             if (_paintColor != TypeColor.None || _eraseMode || _shootMode) return; // tô màu / xoá / shoot → không quét

@@ -1254,8 +1254,8 @@ namespace Wayfu.Lamkn
         {
             //if (_state == GunState.Dead) return;
 
-            DrawBarrelArc(_right);
-            DrawBarrelArc(_left);
+            //DrawBarrelArc(_right);
+            //DrawBarrelArc(_left);
 
             //if (_state != GunState.OnPath) return;
             //DrawTargetLine(_right, "R");
