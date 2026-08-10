@@ -3960,6 +3960,8 @@ MonoBehaviour:
       Queue:
       - Color: 14
         BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 270
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -4552,6 +4554,8 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 255
       Queue:
+      - Color: 14
+        BlockStackCt: 3
       - Color: 14
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 270

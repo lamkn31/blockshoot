@@ -693,6 +693,18 @@ namespace Wayfu.Lamkn
                     FeedLineFrontGaps(gr);
                     FeedLine(gr, verticalPass: true);
                     FeedLine(gr, verticalPass: false);
+                    // Spawner8 must also refill its newly opened forward neighbor
+                    // now.  Otherwise a normal collapse ahead of it makes the
+                    // source wait until every front row is cleared before it can
+                    // feed the gap directly in front of the source.
+                    FeedEightWayAll(gr);
+                    // Sources are stored front-to-back, but FeedEightWay scans
+                    // them back-to-front. If a front source becomes exhausted in
+                    // that scan, a neighbour source was already skipped because
+                    // the source marker still occupied its destination. A second
+                    // pass lets that neighbour immediately fill the just-released
+                    // slot instead of leaving a hole until the next destruction.
+                    FeedEightWayAll(gr);
                     break;
                 }
                 fed |= FeedRegular(gr) | TryRefill(gr);
@@ -1349,6 +1361,18 @@ namespace Wayfu.Lamkn
                 if (src.Row >= gr.Rows.Count || src.Col >= gr.Rows[src.Row].Length || src.Queue.Count == 0)
                 { RemoveStaticSource(gr, i); continue; }
 
+                // The final queued item belongs at the source position. Only
+                // push the displayed item forward when another queued item can
+                // replace it at the source; otherwise the last item appears one
+                // cell ahead and leaves a visible hole at the Spawner8.
+                if (src.Queue.Count == 1 && src.AllowCollapseIntoAfterQueueEmpty)
+                {
+                    UpdateStaticSourceDisplay(gr, src); // build final head as a normal cell
+                    ReleaseStaticSourceAtOrigin(gr, i);
+                    fed = true;
+                    continue;
+                }
+
                 int len = gr.Rows[src.Row].Length;
                 Vector3 origin = gr.Data.CellPosAt(src.Row, src.Col, len);
                 for (int k = 0; k < EightNeighbors.GetLength(0) && src.Queue.Count > 0; k++)
@@ -1374,7 +1398,16 @@ namespace Wayfu.Lamkn
                     if (OwnerOf(gr, r, c) != FillOwner.Eight) continue;
 
                     // Nhả MÀU HIỆN TẠI ra ô kề (cell mới trượt từ ô gốc ra), rồi ô gốc chuyển sang màu kế.
-                    if (EmitHead(gr, src, r, c, origin)) { fed = true; UpdateStaticSourceDisplay(gr, src); }
+                    if (EmitHead(gr, src, r, c, origin))
+                    {
+                        fed = true;
+                        UpdateStaticSourceDisplay(gr, src);
+                        if (src.Queue.Count == 1 && src.AllowCollapseIntoAfterQueueEmpty)
+                        {
+                            ReleaseStaticSourceAtOrigin(gr, i);
+                            break;
+                        }
+                    }
                 }
                 if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
             }
@@ -1464,8 +1497,8 @@ namespace Wayfu.Lamkn
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
         }
 
-        // Gỡ 1 nguồn tĩnh đã cạn: despawn ô gốc bất tử nếu còn (thành ô trống — vẫn là SpawnerCell nên
-        // spawner khác không lấp vào).
+        // Gỡ 1 nguồn tĩnh đã cạn. Với source cho phép collapse, marker được nhả và
+        // cell ở phía sau được kéo vào ngay trong cùng lượt.
         private void RemoveStaticSource(GridRuntime gr, int i)
         {
             var src = gr.Sources[i];
@@ -1477,6 +1510,52 @@ namespace Wayfu.Lamkn
             }
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
+            // Arc rows can have different element counts, so the direct pull
+            // below is only the fast path. Continue with the grid's regular
+            // collapse mapping until this released source slot is filled (or
+            // there is no trailing cell). A single pass only moves a chain by
+            // one step and otherwise leaves a visible hole at the source.
+            if (!PullIntoReleasedStaticSource(gr, src))
+            {
+                for (int guard = 0; guard < 64
+                    && src.Row >= 0 && src.Row < gr.Rows.Count
+                    && src.Col >= 0 && src.Col < gr.Rows[src.Row].Length
+                    && gr.Rows[src.Row][src.Col] == null; guard++)
+                    if (!AdvanceOnce(gr)) break;
+            }
+        }
+
+        // The last Spawner8 item remains in the source slot as an ordinary cell.
+        // Do not despawn or pull into this slot until a later normal collapse.
+        private static void ReleaseStaticSourceAtOrigin(GridRuntime gr, int i)
+        {
+            var src = gr.Sources[i];
+            ReleaseExhaustedSpawnerCell(gr, src);
+            gr.Sources.RemoveAt(i);
+        }
+
+        // A static source can disappear after the normal collapse pass has
+        // already run. Pull its immediate trailing cell now so its old position
+        // never stays visibly empty until another block is destroyed.
+        private bool PullIntoReleasedStaticSource(GridRuntime gr, SpawnerSource src)
+        {
+            int r = src.Row, c = src.Col;
+            if (r < 0 || r >= gr.Rows.Count || c < 0 || c >= gr.Rows[r].Length
+                || IsSpawnerCell(gr, r, c) || gr.Rows[r][c] != null) return false;
+
+            var directions = gr.Data.CustomCollapseDirections;
+            if (directions != GridCollapseDirections.None)
+            {
+                if ((directions & GridCollapseDirections.Front) != 0 && TryPull(gr, r, c, r + 1, c)) return true;
+                if ((directions & GridCollapseDirections.Back) != 0 && TryPull(gr, r, c, r - 1, c)) return true;
+                if ((directions & GridCollapseDirections.Left) != 0 && TryPull(gr, r, c, r, c + 1)) return true;
+                if ((directions & GridCollapseDirections.Right) != 0 && TryPull(gr, r, c, r, c - 1)) return true;
+                return false;
+            }
+
+            if (UsesHorizontalCollapseAxis(gr))
+                return TryPull(gr, r, c, r, c + HorizontalCollapseStep(gr));
+            return TryPull(gr, r, c, r + (ReverseGridDirection(gr) ? -1 : 1), c);
         }
 
         // Once a source is empty, an interior source cell becomes a normal grid

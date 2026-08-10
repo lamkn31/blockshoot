@@ -286,17 +286,20 @@ MonoBehaviour:
   modelRotation: {x: 0, y: 0, z: 0}
   meshLengthScale: 100
   pipeCornerSampleStep: 8
-  waterSurfaceOffset: 0.01
+  waterSurfaceOffset: -0.6
   entryRevealDistance: 0.2
   spawnBubbles: 1
   bubbleSpawnInterval: 0.8
   bubbleSize: 0.22
   bubbleRiseSpeed: 0.7
   tunnelInPrefab: {fileID: 0}
-  tunnelOutPrefab: {fileID: 5868152063822215917, guid: dffe79f01902e17418f67225c2d58973,
-    type: 3}
+  tunnelOutPrefab: {fileID: 0}
   tunnelFaceDistance: 1
   queueMoveDuration: 0.2
+  slotToEntrySpeed: 8
+  clusterSpacing: 1.5
+  clusterJitter: 0.28
+  crowdMinSeparation: 0.85
   waterScrollSpeed: {x: 1, y: 0}
 --- !u!1 &2250691386554029953
 GameObject:
