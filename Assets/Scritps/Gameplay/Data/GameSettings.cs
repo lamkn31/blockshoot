@@ -69,6 +69,10 @@ namespace Wayfu.Lamkn
         [Tooltip("Tốc độ bay của bullet.")]
         public float BulletSpeed = 14f;
 
+        [Header("Endgame (all slots empty)")]
+        [Tooltip("Hệ số tốc độ khi tất cả GunSlot đã hết gun. Áp dụng cho gun chạy path, bullet và tốc độ dồn cell. 1 = tắt.")]
+        [Min(1f)] public float EndgameSpeedMultiplier = 1f;
+
         [Header("Block")]
         [Tooltip("Khoảng cách giữa các block trong 1 stack (theo trục Y).")]
         public float BlockStackSpacing = 0.5f;

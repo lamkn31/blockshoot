@@ -80,6 +80,12 @@ namespace Wayfu.Lamkn
         // Mỗi lúc chỉ 1 gun được TRANSIT (GoOut) qua cửa. Gun loop muốn tái xuất (_emerge) chỉ nhường các
         // gun slot ĐANG đợi lúc nó xin (snapshot WaitFor) — nhường xong nhóm đó là ra ngay, gun slot tới
         // SAU xếp phía sau nó (không để dòng gun slot mới chen liên tục làm gun loop kẹt mãi ở cửa).
+        // The last gun leaves its slot before it is staged in _queue, so this
+        // applies to both slot -> queue and queue -> path_0 movement.
+        private float EndgameSpeedMultiplier => SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+            ? Mathf.Max(1f, GameSettings.Instance != null ? GameSettings.Instance.EndgameSpeedMultiplier : 1f)
+            : 1f;
+
         private Gun _gateGun;                                             // gun đang transit; null = cửa rảnh
         private readonly List<EmergeReq> _emerge = new List<EmergeReq>(); // gun loop ẩn ở cửa chờ tái xuất (FIFO)
         private readonly HashSet<Gun> _emergeWaiting = new HashSet<Gun>();// gun đang ẩn chờ → IsEntryClear bỏ qua
@@ -508,7 +514,7 @@ namespace Wayfu.Lamkn
             float dt = Time.deltaTime;
             if (dt <= 0f) return;
 
-            float maxStep = slotToEntrySpeed * dt;
+            float maxStep = slotToEntrySpeed * EndgameSpeedMultiplier * dt;
             float sep = crowdMinSeparation;
             Vector3 entrance = _path != null ? _path.GetPointAtDistance(_frontStationDistance) : Vector3.zero;
 
@@ -642,7 +648,8 @@ namespace Wayfu.Lamkn
             // do IsEntrySpacingClear() bảo đảm. playEmerge:false → gun slot KHÔNG chơi hiệu ứng GoOut.
             // entryMoveSpeed = slotToEntrySpeed: đoạn trượt vào pos 0 chạy nhanh liền mạch với lúc bay ra
             // khỏi slot, không bò chậm ở tốc độ path rồi mới vào (tránh cảm giác đứng đợi ở cửa).
-            gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed, playEmerge: false, entryMoveSpeed: slotToEntrySpeed);
+            gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed, playEmerge: false,
+                entryMoveSpeed: slotToEntrySpeed * EndgameSpeedMultiplier);
         }
 
         /// <summary>Mở cửa cho gun loop đầu hàng tái xuất: nó tự hiện hình + GoOut trong callback.</summary>

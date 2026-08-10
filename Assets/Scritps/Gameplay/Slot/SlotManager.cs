@@ -33,6 +33,16 @@ namespace Wayfu.Lamkn
         }
         private readonly List<ConnectGroup> _connectGroups = new List<ConnectGroup>();
 
+        /// <summary>True once no gun remains in any active slot; queued/path guns do not count.</summary>
+        public bool AreAllSlotsEmpty
+        {
+            get
+            {
+                foreach (var slot in _activeSlots) if (slot != null && slot.Count > 0) return false;
+                return true;
+            }
+        }
+
         public void Build(LevelData level)
         {
             Clear();

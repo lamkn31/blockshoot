@@ -12,7 +12,12 @@ namespace Wayfu.Lamkn
     public class GridBlockManager : Singleton<GridBlockManager>
     {
         // Config lấy từ GameSettings, nạp lại mỗi lần Build.
-        private float _collapseDuration = 0.25f;
+        private float _collapseDurationBase = 0.25f;
+        private float _collapseDuration => _collapseDurationBase / EndgameSpeedMultiplier;
+        private float CollapseDuration => _collapseDuration;
+        private static float EndgameSpeedMultiplier => SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+            ? Mathf.Max(1f, GameSettings.Instance != null ? GameSettings.Instance.EndgameSpeedMultiplier : 1f)
+            : 1f;
         private bool _frontRowFirst; // CoreType = FrontRowFirst → ưu tiên cell hàng 0 hơn cell sập xuống
 
         // Nguồn Spawner: 1 Ô CỐ ĐỊNH trên lưới. Cell ở đó dồn lên như cell thường; hễ ô trống là nhả mục kế
@@ -87,7 +92,7 @@ namespace Wayfu.Lamkn
         {
             Clear();
             var gs = GameSettings.Instance;
-            _collapseDuration = gs != null ? gs.BlockCollapseDuration : 0.25f;
+            _collapseDurationBase = gs != null ? gs.BlockCollapseDuration : 0.25f;
             _frontRowFirst = gs != null && gs.CoreType == CoreGameType.FrontRowFirst;
 
             foreach (var grid in level.Grids)
@@ -371,6 +376,10 @@ namespace Wayfu.Lamkn
             // Toả tối đa 180° là kín nửa mặt phẳng của nòng — quá số đó không còn ý nghĩa.
             float cosSpread = Mathf.Cos(Mathf.Clamp(spreadAngle, 0f, 180f) * Mathf.Deg2Rad);
 
+            // Once every slot is empty, path guns may clear every live matching
+            // cell in range. Pending-entry / queue cells remain filtered below.
+            bool endgame = SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty;
+
             foreach (var gr in _grids)
             {
                 // Grid gán CỨNG 1 bên → chỉ nòng cùng bên bắn được; grid của nòng bên kia thì bỏ nguyên.
@@ -388,7 +397,7 @@ namespace Wayfu.Lamkn
                     {
                         var cell = row[e];
                         if (cell == null || cell.Color != color) continue;
-                        if (!IsPositionShootable(gr, r, e)) continue; // Ô này không bắn được (theo vị trí)
+                        if (!endgame && !IsPositionShootable(gr, r, e)) continue; // Endgame ignores Shoot Mode; queue/PendingEntry remains filtered below.
                         if (cell.Indestructible) continue; // Spawner8 ở giữa: không bao giờ bị ngắm
                         if (cell.Frozen) continue;         // cell băng: chưa tan thì không bắn được
                         if (cell == exclude) continue;  // nòng bên kia đang bắn cell này → không bắn trùng
@@ -397,7 +406,10 @@ namespace Wayfu.Lamkn
                         if (cell.Available <= 0) continue; // mọi block đã có đạn đang bay đặt chỗ → cell coi
                                                            // như đã "xong", không cần chốt/bắn thêm (nòng
                                                            // khỏi phải chờ đạn nổ mới sang cell kế)
-                        if (!IsShootableFromGun(gr, r, e, from)) continue;
+                        // When every slot is empty, guns may clear any live board
+                        // cell in range. Queue/PendingEntry cells are still skipped
+                        // above, so spawning and grid sorting remain unchanged.
+                        if (!endgame && !IsShootableFromGun(gr, r, e, from)) continue;
                         Vector3 d = cell.transform.position - from; d.y = 0f;
                         float sqr = d.sqrMagnitude;
                         if (sqr > detectSqr) continue;
@@ -406,7 +418,7 @@ namespace Wayfu.Lamkn
                         // sqr>eps để cell trùng vị trí gun không chia cho 0 (luôn coi là trong quạt).
                         // Grid gán bên → bỏ kiểm tra SƯỜN (đã chốt theo Side), nhưng GIỮ quạt trước mặt để
                         // không bắn giật lùi vào grid đã đi qua.
-                        if (hasDir && sqr > 1e-6f)
+                        if (!endgame && hasDir && sqr > 1e-6f)
                         {
                             // Path tangent chooses the barrel side at this exact point:
                             // right/left is measured from the current A -> B path direction.
@@ -447,7 +459,7 @@ namespace Wayfu.Lamkn
                         // phần thân cell che, và khớp với chỗ đạn thật sự chạm.
                         Vector3 aimPoint = cell.transform.position
                             + cell.transform.forward * (0.5f * Mathf.Max(0.01f, gr.Data.RowSpacing));
-                        if (IsLineBlockedByCell(losOrigin, cell, aimPoint)) continue;
+                        if (!endgame && IsLineBlockedByCell(losOrigin, cell, aimPoint)) continue;
                         bestDepth = depth; bestSqr = sqr; bestFell = fell; best = cell;
                     }
                 }
@@ -575,12 +587,14 @@ namespace Wayfu.Lamkn
 
         public bool HasFrontCellOfColor(TypeColor color)
         {
+            bool endgame = SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty;
             foreach (var gr in _grids)
                 for (int r = 0; r < gr.Rows.Count; r++)
                 {
                     var row = gr.Rows[r];
                     for (int e = 0; e < row.Length; e++)
-                        if (row[e] != null && !row[e].Frozen && IsPositionShootable(gr, r, e) && row[e].Color == color && IsShootable(gr, r, e)) return true;
+                        if (row[e] != null && !row[e].Frozen && row[e].Color == color
+                            && (endgame || (IsPositionShootable(gr, r, e) && IsShootable(gr, r, e)))) return true;
                 }
             return false;
         }
@@ -862,7 +876,7 @@ namespace Wayfu.Lamkn
                     cur[e] = null;
                     cell.SetColumn(slot);
                     // Không gỡ PendingEntry ở đây: transform còn đang trượt. MoveTo tự gỡ khi tới nơi.
-                    cell.MoveTo(gr.Data.CellPosAt(r - 1, slot, prev.Length), _collapseDuration);
+                    cell.MoveTo(gr.Data.CellPosAt(r - 1, slot, prev.Length), CollapseDuration);
                     moved = true;
                 }
             }
@@ -970,7 +984,7 @@ namespace Wayfu.Lamkn
                     }
                     if (slot < 0) continue;
                     next[slot] = cell; cur[e] = null; cell.SetColumn(slot);
-                    cell.MoveTo(gr.Data.CellPosAt(r + 1, slot, next.Length), _collapseDuration);
+                    cell.MoveTo(gr.Data.CellPosAt(r + 1, slot, next.Length), CollapseDuration);
                     moved = true;
                 }
             }
@@ -1082,7 +1096,7 @@ namespace Wayfu.Lamkn
             srow[sc] = null;
             gr.Rows[r][e] = cell;
             cell.SetColumn(e);
-            cell.MoveTo(gr.Data.CellPosAt(r, e, gr.Rows[r].Length), _collapseDuration);
+            cell.MoveTo(gr.Data.CellPosAt(r, e, gr.Rows[r].Length), CollapseDuration);
             return true;
         }
 
@@ -1133,7 +1147,7 @@ namespace Wayfu.Lamkn
                     gr.Rows[br][bc] = null;
                     row[c] = cell;
                     cell.SetColumn(c);
-                    cell.MoveTo(gr.Data.CellPosAt(r, c, row.Length), _collapseDuration);
+                    cell.MoveTo(gr.Data.CellPosAt(r, c, row.Length), CollapseDuration);
                     moved = true;
                 }
             }
@@ -1302,7 +1316,7 @@ namespace Wayfu.Lamkn
                     gr.Rows[pr][pc] = null;
                     gr.Rows[r][c] = pcell;
                     pcell.SetColumn(c);
-                    pcell.MoveTo(gr.Data.CellPosAt(r, c, gr.Rows[r].Length), _collapseDuration);
+                    pcell.MoveTo(gr.Data.CellPosAt(r, c, gr.Rows[r].Length), CollapseDuration);
                     changed = true;
                 }
                 if (src.Queue.Count == 0) RemoveStaticSource(gr, i);

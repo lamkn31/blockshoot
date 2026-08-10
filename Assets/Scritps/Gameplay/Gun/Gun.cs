@@ -146,6 +146,7 @@ namespace Wayfu.Lamkn
         private Coroutine _moveRoutine;
         private Pooler<Gun> _pool;
         private RoundedPolylineFollower _follower;
+        private float _basePathSpeed;
         private int _lastLap;             // vòng path đã chạy, mốc để mở khoá bắn
         private float _lapStartStamp;     // Time.time lúc bắt đầu lap hiện tại — mốc PER-GUN phân biệt cell
                                           // "đã đứng sẵn" (SettleStamp ≤ mốc) vs "vừa sập trong lap này". Reset
@@ -196,6 +197,10 @@ namespace Wayfu.Lamkn
 
         /// <summary>Góc toả tối đa của 1 nòng: quá 180° là đã kín nửa mặt phẳng của nó, không thêm được gì.</summary>
         private float Spread => Mathf.Clamp(_fire.Angle, 0f, 180f);
+
+        private float EndgameSpeedMultiplier => SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+            ? Mathf.Max(1f, GameSettings.Instance != null ? GameSettings.Instance.EndgameSpeedMultiplier : 1f)
+            : 1f;
 
         public void OnInitializedInPool(Pooler<Gun> pool) => _pool = pool;
 
@@ -589,7 +594,8 @@ namespace Wayfu.Lamkn
             _lastLap = 0;   // follower.Init đưa LapCount về 0 — mốc đếm vòng bắt đầu từ đây
             _lapStartStamp = Time.time; // mốc "ready" ban đầu: mọi cell đang có coi như đã đứng sẵn
             ArmForNewLap(); // vào path tại pos 0 = bắt đầu lượt bắn đầu tiên
-            if (_follower != null) { _follower.Init(path, startDistance, speed); _follower.enabled = true; }
+            _basePathSpeed = speed;
+            if (_follower != null) { _follower.Init(path, startDistance, speed * EndgameSpeedMultiplier); _follower.enabled = true; }
             else if (path != null) transform.position = path.GetPointAtDistance(startDistance); // gun ko có follower
         }
 
@@ -602,6 +608,8 @@ namespace Wayfu.Lamkn
                 DisableBeam(_left);
                 return;
             }
+            if (_follower != null && _basePathSpeed > 0f)
+                _follower.moveSpeed = _basePathSpeed * EndgameSpeedMultiplier;
             if (_pathEntryAnimating) return;
 
             if (!_pathCycleTransition && _follower != null && _follower.targetPath != null)
@@ -618,7 +626,8 @@ namespace Wayfu.Lamkn
                 if ((distance > 0f && remaining <= distance) || crossedPathEnd)
                 {
                     _pathCycleTransition = true;
-                    StartCoroutine(CyclePathAnimation(_follower.targetPath, _follower.moveSpeed));
+                    StartCoroutine(CyclePathAnimation(_follower.targetPath,
+                        _basePathSpeed > 0f ? _basePathSpeed : _follower.moveSpeed));
                     return;
                 }
             }
@@ -862,6 +871,7 @@ namespace Wayfu.Lamkn
             }
 
             if (_fire.Mode == GunFireMode.Laser && b.Target != null && !b.FiredAtTarget
+                && !(SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty)
                 && GridBlockManager.Instance != null
                 && GridBlockManager.Instance.IsCellBlockedFrom(
                     b.Muzzle != null ? b.Muzzle.position : transform.position, b.Target))
@@ -964,6 +974,10 @@ namespace Wayfu.Lamkn
             if (cell == null || cell.Generation != b.TargetGen) return false;
             Vector3 d = cell.transform.position - transform.position; d.y = 0f;
             if (d.sqrMagnitude > _fire.Range * _fire.Range) return false;
+            // Endgame target selection allows every live matching cell in range;
+            // do not drop that target on the next frame because it is behind or
+            // on the other side of the moving gun.
+            if (SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty) return true;
             if (Vector3.Dot(transform.right, d) * b.Sign < 0f) return false;
             return Vector3.Dot(transform.forward, d) >= -0.001f;
         }
@@ -1080,7 +1094,7 @@ namespace Wayfu.Lamkn
             }
 
             if (bullet != null)
-                bullet.Launch(from, b.Target, _fire.BulletSpeed, Data.Color, aim, hitBottom);
+                bullet.Launch(from, b.Target, _fire.BulletSpeed * EndgameSpeedMultiplier, Data.Color, aim, hitBottom);
             else
             {
                 if (hitBottom) b.Target.ApplyHitBottom(); else b.Target.ApplyHit(); // fallback không có pool
