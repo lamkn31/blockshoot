@@ -872,6 +872,13 @@ namespace Wayfu.Lamkn
                 // check. If any shootable cell in any grid matches a gun that
                 // still has ammo, allow the gun to keep moving until it reaches it.
                 if (g != null && g.HasBullets && grid.HasFrontCellOfColor(g.Color)) return true;
+
+            // A click can fill the last path capacity while its gun is still
+            // waiting in _queue. It must participate in this board-level check;
+            // otherwise IsFull becomes true and the game loses before that gun
+            // has been admitted to path_0.
+            foreach (var g in _queue)
+                if (g != null && g.HasBullets && grid.HasFrontCellOfColor(g.Color)) return true;
             return false;
         }
     }

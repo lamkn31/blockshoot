@@ -397,6 +397,11 @@ namespace Wayfu.Lamkn
                     {
                         var cell = row[e];
                         if (cell == null || cell.Color != color) continue;
+                        // A live Spawner8/Line source displays the next queued
+                        // color, but that display is not a separate target. The
+                        // queued item will be emitted later; shooting it here
+                        // consumes bullets and then duplicates the same item.
+                        if (IsQueuedStaticSource(gr, r, e)) continue;
                         if (!endgame && !IsPositionShootable(gr, r, e)) continue; // Endgame ignores Shoot Mode; queue/PendingEntry remains filtered below.
                         if (cell.Indestructible) continue; // Spawner8 ở giữa: không bao giờ bị ngắm
                         if (cell.Frozen) continue;         // cell băng: chưa tan thì không bắn được
@@ -593,7 +598,7 @@ namespace Wayfu.Lamkn
                 {
                     var row = gr.Rows[r];
                     for (int e = 0; e < row.Length; e++)
-                        if (row[e] != null && !row[e].Frozen && row[e].Color == color
+                        if (row[e] != null && !IsQueuedStaticSource(gr, r, e) && !row[e].Frozen && row[e].Color == color
                             && (endgame || (IsPositionShootable(gr, r, e) && IsShootable(gr, r, e)))) return true;
                 }
             return false;
@@ -1579,6 +1584,16 @@ namespace Wayfu.Lamkn
             row >= 0 && row < gr.SpawnerCells.Count && col >= 0 && col < gr.SpawnerCells[row].Length
             && gr.SpawnerCells[row][col];
 
+        // Spawner8/Line show their queued head at the source position. That
+        // display is a preview of the queued item, not an independently
+        // shootable/countable cell. Regular Spawner sources remain normal cells.
+        private static bool IsQueuedStaticSource(GridRuntime gr, int row, int col)
+        {
+            foreach (var src in gr.Sources)
+                if ((src.EightWay || src.Line) && src.Row == row && src.Col == col) return true;
+            return false;
+        }
+
         // Ô (row, col) có BẮN được không (theo VỊ TRÍ). Ngoài phạm vi = bắn được.
         private static bool IsPositionShootable(GridRuntime gr, int row, int col) =>
             row < 0 || row >= gr.Shootable.Count || col < 0 || col >= gr.Shootable[row].Length
@@ -1662,11 +1677,21 @@ namespace Wayfu.Lamkn
                 {
                     // Ô gốc Spawner8 (Indestructible) KHÔNG cộng ở đây: block nó đang hiển thị chính là ĐẦU
                     // Queue của nguồn, đã cộng ở vòng dưới → cộng cả 2 là đếm gấp đôi.
-                    foreach (var row in gr.Rows)
-                        foreach (var cell in row)
+                    for (int r = 0; r < gr.Rows.Count; r++)
+                    {
+                        var row = gr.Rows[r];
+                        for (int e = 0; e < row.Length; e++)
+                        {
+                            var cell = row[e];
                             // Bắn được là theo VỊ TRÍ: cell ở ô không bắn được vẫn dồn sang ô bắn được để phá →
                             // VẪN tính vào điều kiện thắng (chỉ ô gốc spawner bất tử mới loại).
-                            if (cell != null && !cell.Indestructible) s += cell.StackCount;
+                            // Static-source display is the queue head, not an
+                            // additional block. It can be visually normal after
+                            // UpdateStaticSourceDisplay, so use the source marker
+                            // rather than Indestructible to avoid double-counting.
+                            if (cell != null && !IsQueuedStaticSource(gr, r, e)) s += cell.StackCount;
+                        }
+                    }
                     // Block chưa nhả ra: Spawner thường = các mục refill sau ô gốc; Spawner8 = cả sequence
                     // (gồm màu ô gốc đang hiển thị). Đều là block "chưa clear".
                     foreach (var src in gr.Sources)
@@ -1681,6 +1706,38 @@ namespace Wayfu.Lamkn
         }
 
         public bool AllCleared => _everHadBlocks && RemainingBlocks == 0;
+
+        /// <summary>Runtime diagnostic for an out-of-guns board state.</summary>
+        public string RemainingBlocksByColorReport()
+        {
+            var totals = new Dictionary<TypeColor, int>();
+            void Add(TypeColor color, int amount)
+            {
+                if (amount <= 0) return;
+                totals.TryGetValue(color, out int current);
+                totals[color] = current + amount;
+            }
+
+            foreach (var gr in _grids)
+            {
+                for (int r = 0; r < gr.Rows.Count; r++)
+                    for (int e = 0; e < gr.Rows[r].Length; e++)
+                    {
+                        var cell = gr.Rows[r][e];
+                        if (cell != null && !IsQueuedStaticSource(gr, r, e)) Add(cell.Color, cell.StackCount);
+                    }
+                foreach (var src in gr.Sources)
+                    foreach (var item in src.Queue)
+                        if (item != null) Add(item.Color, item.BlockStackCt);
+                if (gr.Pending != null)
+                    foreach (var item in gr.Pending)
+                        if (item != null) Add(item.Color, item.BlockStackCt);
+            }
+
+            var parts = new List<string>();
+            foreach (var pair in totals) parts.Add($"{pair.Key}={pair.Value}");
+            return parts.Count == 0 ? "none" : string.Join(", ", parts);
+        }
 
         // Băng tan cho mọi cell có ngưỡng ≤ tổng block đã phá (destroyed). Gọi từ GameController.OnBoardChanged.
         public void UpdateIce(int destroyed)

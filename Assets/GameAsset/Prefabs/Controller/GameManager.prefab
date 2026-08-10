@@ -847,8 +847,7 @@ PrefabInstance:
         type: 3}
       propertyPath: levelOverride
       value: 
-      objectReference: {fileID: 11400000, guid: f6ee896823249a64d8f1298417317395,
-        type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

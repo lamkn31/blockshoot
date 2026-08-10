@@ -1013,6 +1013,11 @@ namespace Wayfu.Lamkn
         // tới lúc đó). Gun thường thì hủy ngay như cũ.
         private void OnEmptied()
         {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (Data != null && GridBlockManager.Instance != null)
+                Debug.Log($"[Balance] Gun emptied: color={Data.Color}; remaining blocks: " +
+                          GridBlockManager.Instance.RemainingBlocksByColorReport(), this);
+#endif
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             if (Data.ConnectGroup != 0 && SlotManager.IsActive)
             {

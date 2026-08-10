@@ -34,6 +34,7 @@ namespace Wayfu.Lamkn
         private Pooler<Bullet> _pool;
         private BlockCell _cell;
         private int _cellGen; // Generation của cell lúc bắn — lệch = cell pooled đã bị tái dùng
+        private TypeColor _color;
         private float _speed = 14f;
         private bool _active;
         private Renderer _renderer;
@@ -103,6 +104,7 @@ namespace Wayfu.Lamkn
 
             _cell = target;
             _cellGen = target != null ? target.Generation : 0;
+            _color = color;
             _speed = speed;
             _active = true;
             _lingering = false;
@@ -153,7 +155,14 @@ namespace Wayfu.Lamkn
             if (!_active) return;
             // Cell đã bị phá — hoặc object pooled đã TÁI DÙNG thành cell khác (Generation lệch) → huỷ đạn,
             // không bay đuổi theo cell mới ở vị trí khác.
-            if (_cell == null || _cell.Generation != _cellGen) { Despawn(); return; }
+            if (_cell == null || _cell.Generation != _cellGen)
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                Debug.LogWarning($"[Balance] Bullet cancelled before hit: color={_color}, target generation changed.", this);
+#endif
+                Despawn();
+                return;
+            }
 
             Vector3 target = _cell.transform.position + _aimOffset; // bám cell (cell có thể đang trượt)
 

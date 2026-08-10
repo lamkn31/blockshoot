@@ -30,6 +30,7 @@ namespace Wayfu.Lamkn
         private LevelDifficulty _pendingNotify;
         private bool _loseCheckPending;
         private bool _waitingLoading;
+        private bool _reportedOutOfGunBalance;
 
         /// <summary>
         /// <see cref="LevelController.Build"/> gọi ở CUỐI, sau khi bàn chơi đã dựng xong — nên đây cũng
@@ -38,6 +39,7 @@ namespace Wayfu.Lamkn
         public void StartLevel()
         {
             State = GameState.Playing;
+            _reportedOutOfGunBalance = false;
             // Chốt tổng block NGAY sau khi dựng: lúc này RemainingBlocks đang là 100%.
             _blocksAtStart = GridBlockManager.Instance != null ? GridBlockManager.Instance.RemainingBlocks : 0;
             ShowGamePlayHud();
@@ -100,6 +102,15 @@ namespace Wayfu.Lamkn
         {
             var pm = PathManager.Instance;
             if (pm == null) return;
+            var grid = GridBlockManager.Instance;
+            if (!_reportedOutOfGunBalance && pm.GunCount == 0
+                && SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+                && grid != null && grid.RemainingBlocks > 0)
+            {
+                _reportedOutOfGunBalance = true;
+                Debug.LogWarning($"[Balance] No guns remain but board still has {grid.RemainingBlocks} blocks: " +
+                                 grid.RemainingBlocksByColorReport());
+            }
             if (!pm.IsFull) return;            // chỉ xét khi path đã đầy gun
             if (pm.AnyGunHasTarget()) return;  // còn gun bắn được → chưa thua
             Lose();

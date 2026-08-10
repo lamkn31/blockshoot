@@ -1306,8 +1306,6 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.00304
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -1332,8 +1330,6 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
       SpawnerDirectionAngleZ: 89.00304
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -1350,8 +1346,6 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 255
       Queue:
-      - Color: 13
-        BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
       - Color: 13
@@ -4630,8 +4624,6 @@ MonoBehaviour:
       Queue:
       - Color: 13
         BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
       SpawnerDirectionAngleZ: 90
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 0
@@ -4648,8 +4640,6 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 17
       Queue:
-      - Color: 13
-        BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 90
@@ -6705,9 +6695,7 @@ MonoBehaviour:
       Type: 1
       SpawnerReach: 0
       Spawner8Directions: 255
-      Queue:
-      - Color: 6
-        BlockStackCt: 3
+      Queue: []
       SpawnerDirectionAngleZ: 90.52784
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -7416,6 +7404,8 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -7468,8 +7458,6 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -7488,15 +7476,11 @@ MonoBehaviour:
       Queue:
       - Color: 6
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
       - Color: 6
-        BlockStackCt: 3
-      - Color: 4
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 180
       UseCustomDirection: 0
@@ -7709,9 +7693,7 @@ MonoBehaviour:
       Type: 1
       SpawnerReach: 0
       Spawner8Directions: 0
-      Queue:
-      - Color: 4
-        BlockStackCt: 3
+      Queue: []
       SpawnerDirectionAngleZ: 269.24057
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
@@ -7743,9 +7725,7 @@ MonoBehaviour:
       Type: 1
       SpawnerReach: 0
       Spawner8Directions: 0
-      Queue:
-      - Color: 4
-        BlockStackCt: 3
+      Queue: []
       SpawnerDirectionAngleZ: 269.24057
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
