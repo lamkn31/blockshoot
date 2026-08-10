@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -28,15 +29,20 @@ namespace Wayfu.Lamkn
         /// <summary>Index của level đang chơi trong Level List.</summary>
         public int CurrentIndex { get; private set; }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            // Chờ toàn bộ object có sẵn trong scene chạy Start xong trước khi dựng level.
+            // Một số component trên prefab obstacle phụ thuộc manager/scene bootstrap;
+            // build ngay trong Start khiến lần vào đầu chưa init, còn Retry thì lại đúng.
+            yield return null;
+
 #if UNITY_EDITOR
             var forced = ConsumeToolLevel();
             if (forced != null)
             {
                 Debug.Log($"[LevelController] Level Tool ghim level: {forced.name}");
                 PlayLevelNow(forced);
-                return;
+                yield break;
             }
 #endif
             LoadCurrent();
