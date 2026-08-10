@@ -610,7 +610,12 @@ namespace Wayfu.Lamkn
                 float distance = GameSettings.Instance != null ? Mathf.Max(0f, GameSettings.Instance.GunPathGoInDistanceBeforeEnd) : 0f;
                 distance = Mathf.Min(total - 0.001f, Mathf.Max(distance, _follower.moveSpeed * Time.deltaTime * 1.5f));
                 float remaining = total - Mathf.Repeat(_follower.CurrentDistance, total);
-                if (distance > 0f && remaining <= distance)
+                // Depending on Unity's per-script Update order, the follower can
+                // advance and wrap from path_end to path_0 before this Gun checks
+                // `remaining`.  Detecting the completed lap closes that race and
+                // guarantees the GoIn/re-emerge cycle still starts.
+                bool crossedPathEnd = _follower.LapCount > _lastLap;
+                if ((distance > 0f && remaining <= distance) || crossedPathEnd)
                 {
                     _pathCycleTransition = true;
                     StartCoroutine(CyclePathAnimation(_follower.targetPath, _follower.moveSpeed));
@@ -648,6 +653,10 @@ namespace Wayfu.Lamkn
         private IEnumerator CyclePathAnimation(RoundedPolylinePath path, float speed)
         {
             if (_follower != null) _follower.enabled = false;
+            // A delayed shoot-to-idle coroutine can otherwise finish during GoIn
+            // and overwrite the end-of-loop animation, leaving this transition
+            // visually (and sometimes logically) stuck at path_end.
+            if (_animRoutine != null) { StopCoroutine(_animRoutine); _animRoutine = null; }
             _pathEntryAnimating = true;
             bool done = false;
             PlayGoInThen(() => done = true);
@@ -656,12 +665,29 @@ namespace Wayfu.Lamkn
             // Hết đạn khi tới path_end → biến mất luôn, không loop lại.
             if (!HasBullets)
             {
-                Die();
-                yield break;
+                // CONNECT guns keep running and occupying their path slot while
+                // another member still has bullets. The manager only kills this
+                // gun when the last member of the group becomes empty.
+                if (Data != null && Data.ConnectGroup != 0 && SlotManager.IsActive)
+                {
+                    SlotManager.Instance.OnConnectGunEmptied(this);
+                    if (_state == GunState.Dead) yield break;
+                }
+                else
+                {
+                    Die();
+                    yield break;
+                }
             }
 
             // Gun connect phải đồng bộ ở cuối vòng: tất cả member chạy xong GoIn
             // rồi mới cùng teleport/tái xuất để không bị lệch nhịp giữa các gun.
+            // Return to path_0 as soon as GoIn finishes. A CONNECT peer may still
+            // be completing its own GoIn, but that barrier must not leave this gun
+            // visibly stranded at path_end while it waits.
+            SetHiddenDuringPathEntry(true);
+            transform.position = path.GetPointAtDistance(0f);
+
             if (Data != null && Data.ConnectGroup != 0 && SlotManager.IsActive)
                 yield return SlotManager.Instance.WaitForConnectCycle(this);
 
@@ -983,7 +1009,13 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>Hủy gun ngay (SlotManager gọi khi cả nhóm connect đã hết đạn).</summary>
-        public void Kill() => Die();
+        public void Kill()
+        {
+            // Several CONNECT members can finish during the same frame. A pooled
+            // gun must only be released once, even if group cleanup reaches it again.
+            if (_state == GunState.Dead) return;
+            Die();
+        }
 
         private void DieWithGoIn()
         {
@@ -1153,6 +1185,7 @@ namespace Wayfu.Lamkn
 
         private void Die()
         {
+            if (_state == GunState.Dead) return;
             _state = GunState.Dead;
             // Gun may run out of ammo after only partially clearing a cell.  That
             // cell remains on the board, so release both barrel claims before
@@ -1221,8 +1254,8 @@ namespace Wayfu.Lamkn
         {
             //if (_state == GunState.Dead) return;
 
-            //DrawBarrelArc(_right);
-            //DrawBarrelArc(_left);
+            DrawBarrelArc(_right);
+            DrawBarrelArc(_left);
 
             //if (_state != GunState.OnPath) return;
             //DrawTargetLine(_right, "R");

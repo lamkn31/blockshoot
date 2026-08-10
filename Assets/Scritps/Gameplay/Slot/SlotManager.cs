@@ -20,6 +20,7 @@ namespace Wayfu.Lamkn
         private readonly List<GunSlot> _activeSlots = new List<GunSlot>();
         private readonly List<GameObject> _fallbackCreated = new List<GameObject>();
         private readonly HashSet<Gun> _movingToLoop = new HashSet<Gun>();
+        private const float ConnectCycleBarrierTimeout = 1.5f;
 
         // 1 nhóm gun connect (cùng ConnectGroup id, ở các slot khác nhau). Mỗi CẶP gun kề = 1 ConnectLine
         // (2 gun → 1 line; 3 gun → 2 line nối chuỗi).
@@ -131,6 +132,7 @@ namespace Wayfu.Lamkn
 
             int release = group.CycleRelease + 1;
             group.CycleReady.Add(gun);
+            float timeoutAt = Time.time + ConnectCycleBarrierTimeout;
 
             bool complete = true;
             foreach (var member in group.Members)
@@ -150,6 +152,14 @@ namespace Wayfu.Lamkn
             while (group.CycleRelease < release)
             {
                 if (gun == null || gun.IsDead) yield break;
+                // A missing/stalled member must not strand every remaining gun at
+                // path_0 forever. The current gun may safely continue its loop;
+                // the next completed cycle will rebuild the barrier normally.
+                if (Time.time >= timeoutAt)
+                {
+                    group.CycleReady.Remove(gun);
+                    yield break;
+                }
                 yield return null;
             }
         }
