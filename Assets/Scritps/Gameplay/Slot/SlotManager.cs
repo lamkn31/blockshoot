@@ -285,21 +285,48 @@ namespace Wayfu.Lamkn
         private void TryDeployConnectGroup(int id)
         {
             var members = new List<Gun>();
+            var memberIndexes = new Dictionary<Gun, int>();
             foreach (var slot in _activeSlots)
             {
                 if (slot?.Guns == null) continue;
-                foreach (var g in slot.Guns)
-                    if (g != null && g.Data != null && g.Data.ConnectGroup == id) members.Add(g);
+                for (int i = 0; i < slot.Guns.Count; i++)
+                {
+                    var g = slot.Guns[i];
+                    if (g == null || g.Data == null || g.Data.ConnectGroup != id) continue;
+                    members.Add(g);
+                    memberIndexes[g] = i;
+                }
             }
             if (members.Count == 0) return;
 
-            // TẤT CẢ phải là gun đầu (index 0) của slot mình.
-            foreach (var g in members)
-                if (g.Slot == null || g.Slot.FrontGun != g) return;
+            // Trong mỗi slot, cả phần của group phải nằm liền nhau từ index 0.
+            var memberSet = new HashSet<Gun>(members);
+            var removeCounts = new Dictionary<GunSlot, int>();
+            foreach (var slot in _activeSlots)
+            {
+                if (slot?.Guns == null) continue;
+
+                int countInSlot = 0;
+                foreach (var g in slot.Guns)
+                    if (g != null && memberSet.Contains(g)) countInSlot++;
+                if (countInSlot == 0) continue;
+
+                // Members in the same slot may deploy together when they occupy the
+                // entire contiguous prefix (indexes 0..N-1). A non-member in front
+                // still blocks the connected group as usual.
+                for (int i = 0; i < countInSlot; i++)
+                    if (!memberSet.Contains(slot.Guns[i])) return;
+
+                removeCounts[slot] = countInSlot;
+            }
 
             // PathManager serves _queue as FIFO.  Enqueue the highest slot first so
             // connected guns leave in the same, deterministic high-to-low slot order.
-            members.Sort((a, b) => b.Slot.SlotIndex.CompareTo(a.Slot.SlotIndex));
+            members.Sort((a, b) =>
+            {
+                int slotOrder = b.Slot.SlotIndex.CompareTo(a.Slot.SlotIndex);
+                return slotOrder != 0 ? slotOrder : memberIndexes[a].CompareTo(memberIndexes[b]);
+            });
 
             var pm = PathManager.Instance;
             if (pm == null || !pm.CanAcceptCount(_movingToLoop.Count + members.Count))
@@ -311,7 +338,8 @@ namespace Wayfu.Lamkn
             // Remove every member before it is visible to PathManager, then queue the
             // complete ordered group in one operation.  SimulateQueueCrowd therefore
             // sees only the final ranks, never a transient single-gun queue.
-            foreach (var g in members) g.Slot.RemoveFront();
+            foreach (var pair in removeCounts)
+                for (int i = 0; i < pair.Value; i++) pair.Key.RemoveFront();
             pm.RequestDeployGroup(members);
             GameController.Instance?.OnBoardChanged();
         }
