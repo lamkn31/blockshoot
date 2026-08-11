@@ -286,7 +286,7 @@ MonoBehaviour:
   modelRotation: {x: 0, y: 0, z: 0}
   meshLengthScale: 100
   pipeCornerSampleStep: 8
-  waterSurfaceOffset: -0.6
+  waterSurfaceOffset: 0
   entryRevealDistance: 0.2
   spawnBubbles: 1
   bubbleSpawnInterval: 0.8
@@ -946,7 +946,17 @@ PrefabInstance:
     - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
       propertyPath: _fx.Array.size
-      value: 7
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[0].type
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[1].type
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
@@ -970,6 +980,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
+      propertyPath: _fx.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 5798905484589415371, guid: af8b0add0cd37d648b67c34db3cfaa4f,
+        type: 3}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[0].shared
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[1].prefab
+      value: 
+      objectReference: {fileID: 7357678549009853919, guid: 0fb979f0473be4342aa934a54d93de42,
+        type: 3}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
       propertyPath: _fx.Array.data[6].prefab
       value: 
       objectReference: {fileID: 214258185039192972, guid: 6c4300962818caf468862589652a047e,
@@ -985,6 +1012,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7553881251408586405, guid: beb83023721f7de4e9bda6634f23aaed,
         type: 3}
+    - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
+        type: 3}
+      propertyPath: _fx.Array.data[0].prewarm
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2711358698328308532, guid: ea16eda710f85c842ae4339aeeb7539e,
         type: 3}
       propertyPath: _fx.Array.data[6].prewarm

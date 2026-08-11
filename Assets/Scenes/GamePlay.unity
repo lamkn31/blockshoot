@@ -567,6 +567,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5104072945514023567, guid: 3e26a1cf0b592074db846574e0d6ebf7,
+        type: 3}
+      propertyPath: _fx.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 5933703724477033645, guid: 6f49a2d4af245204b88a55dc547dd3e9,
+        type: 3}
     - target: {fileID: 8763046310201374150, guid: 3e26a1cf0b592074db846574e0d6ebf7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -615,11 +621,6 @@ PrefabInstance:
     - target: {fileID: 8763046310201374150, guid: 3e26a1cf0b592074db846574e0d6ebf7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095252506902563192, guid: 3e26a1cf0b592074db846574e0d6ebf7,
-        type: 3}
-      propertyPath: waterSurfaceOffset
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

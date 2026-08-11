@@ -120,6 +120,10 @@ namespace Wayfu.Lamkn
         public RoundedPolylinePath Path => _path;
         /// <summary>Độ nâng của gun/queue so với đường tâm path, khớp mặt nước đã dựng.</summary>
         public float GunSurfaceOffset => waterSurfaceOffset;
+        /// <summary>Vị trí miệng TunnelIn; path kín/fallback dùng điểm vào path trên mặt nước.</summary>
+        public Vector3 TunnelInPosition => _tunnelIn != null ? _tunnelIn.transform.position : PathSurfacePoint(_frontStationDistance);
+        /// <summary>Hướng miệng TunnelIn; PooledFx cộng Euler offset riêng lên rotation này.</summary>
+        public Quaternion TunnelInRotation => _tunnelIn != null ? _tunnelIn.transform.rotation : TunnelInFallbackRotation();
 
         /// <summary>Dựng path từ level rồi nạp config gun. Gọi thay cho Init(path) cũ.</summary>
         public void Build(LevelData level)
@@ -811,6 +815,18 @@ namespace Wayfu.Lamkn
                 ? _path.GetPointAtDistance(distance) + Vector3.up * waterSurfaceOffset
                 : Vector3.up * waterSurfaceOffset;
         }
+
+        private Quaternion TunnelInFallbackRotation()
+        {
+            if (_path == null) return Quaternion.identity;
+            Vector3 from = PathSurfacePoint(_frontStationDistance);
+            Vector3 direction = PathSurfacePoint(_frontStationDistance + 0.1f) - from;
+            direction.y = 0f;
+            return direction.sqrMagnitude > 1e-6f
+                ? Quaternion.LookRotation(direction.normalized, Vector3.up)
+                : Quaternion.identity;
+        }
+
 
         /// <summary>
         /// Cập nhật CHỖ ĐỨNG (anchor) của cả đám đông: gun _queue[i] → ô rank i (nén front-first, không lỗ). Khi
