@@ -179,6 +179,12 @@ namespace Wayfu.Lamkn
             PlaySfx(collideClip);
         }
 
+        /// <summary>Âm thanh block bị đạn phá. Dùng collideClip đang được gán trên prefab SoundController.</summary>
+        public void PlayBlockDestroyedSound()
+        {
+            PlaySfx(collideClip);
+        }
+
         public void ToggleSfx()
         {
             IsSfxEnabled = !IsSfxEnabled;

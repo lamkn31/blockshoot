@@ -396,7 +396,12 @@ namespace Wayfu.Lamkn
         // Được gọi từ GunClickRelay (collider ở child) hoặc trực tiếp nếu collider nằm cùng GO.
         public void HandleClick()
         {
-            if (_state == GunState.InSlot) SlotManager.Instance?.OnGunClicked(this);
+            if (_state != GunState.InSlot) return;
+
+            // Âm thanh chạm gun riêng với tap nền màn hình. Chỉ phát khi gun còn ở slot,
+            // tránh phát lại nếu người chơi click một gun đã deploy/đang di chuyển.
+            SoundController.Instance?.PlayTouchSound();
+            SlotManager.Instance?.OnGunClicked(this);
         }
 
         public bool TryPlayClickThen(Action onComplete)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.EventSystems;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Wayfu.Lamkn
@@ -470,7 +471,10 @@ namespace Wayfu.Lamkn
             var ps = effect.GetComponent<ParticleSystem>();
             if (ps != null) { ps.Clear(); ps.Play(); }
 
-            SoundController.Instance?.PlayTapSound();
+            // Tap nền màn hình dùng clip riêng. UI button đã tự phát buttonClip và Gun
+            // phát touchClip trong Gun.HandleClick(), nên không chồng thêm tapClip.
+            if (ShouldPlayBackgroundTapSound(screenPos))
+                SoundController.Instance?.PlayTapSound();
 
             StartCoroutine(ReturnToPoolRoutine(effect, 1.0f));
         }
@@ -479,6 +483,16 @@ namespace Wayfu.Lamkn
         {
             yield return new WaitForSecondsRealtime(delay);
             ReturnToPool(effect);
+        }
+
+        private static bool ShouldPlayBackgroundTapSound(Vector3 screenPos)
+        {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return false;
+
+            var cam = Camera.main;
+            if (cam == null) return true;
+            var ray = cam.ScreenPointToRay(screenPos);
+            return !Physics.Raycast(ray, out var hit) || hit.collider.GetComponentInParent<Gun>() == null;
         }
 
         #endregion
