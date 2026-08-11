@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +33,22 @@ namespace Wayfu.Lamkn
             public int CycleRelease;
         }
         private readonly List<ConnectGroup> _connectGroups = new List<ConnectGroup>();
+
+        /// <summary>Bắn ra khi 1 gun VỪA được người chơi chọn và deploy khỏi slot (dùng cho Tutorial —
+        /// vd bước "chọn gun đầu tiên" hoàn tất khi gun đó rời slot). Tham số = gun vừa deploy.</summary>
+        public static event Action<Gun> GunDeployed;
+
+        /// <summary>Gun đầu (FrontGun) của slot active ĐẦU TIÊN còn gun — "gun đầu tiên" mà Tutorial chỉ vào.
+        /// null nếu chưa có slot/gun nào.</summary>
+        public Gun FirstGun
+        {
+            get
+            {
+                foreach (var slot in _activeSlots)
+                    if (slot != null && slot.FrontGun != null) return slot.FrontGun;
+                return null;
+            }
+        }
 
         /// <summary>True once no gun remains in any active slot; queued/path guns do not count.</summary>
         public bool AreAllSlotsEmpty
@@ -264,6 +281,7 @@ namespace Wayfu.Lamkn
             if (gun == null || gun.IsDead) return;
             slot.RemoveFront();
             SendGunToLoop(slotIndex, gun);
+            GunDeployed?.Invoke(gun); // Tutorial nghe: gun vừa được chọn & rời slot
             GameController.Instance?.OnBoardChanged();
         }
 

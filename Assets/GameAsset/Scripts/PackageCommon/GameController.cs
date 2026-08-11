@@ -28,6 +28,10 @@ namespace Wayfu.Lamkn
         public event Action OnWin;
         public event Action OnLose;
 
+        /// <summary>Bắn ra mỗi khi một màn vừa dựng xong (first load / Retry / Next) — lúc này slot đã điền
+        /// gun, bàn chơi sẵn sàng. TutorialController nghe để bắt đầu tutorial theo level.</summary>
+        public event Action LevelLoaded;
+
         private int _blocksAtStart; // mốc để tính % hoàn thành hiện trên popup Lose
 
         // Spine cảnh báo độ khó đang chờ loading đóng mới được diễn.
@@ -48,6 +52,7 @@ namespace Wayfu.Lamkn
             _blocksAtStart = GridBlockManager.Instance != null ? GridBlockManager.Instance.RemainingBlocks : 0;
             ShowGamePlayHud();
             Popup?.SetBlockProgress(0, _blocksAtStart); // thanh tiến trình phá block về 0/total
+            LevelLoaded?.Invoke(); // bàn chơi + slot đã sẵn sàng → Tutorial có thể bắt đầu
         }
 
         /// <summary>Gọi sau mỗi thay đổi bàn chơi (deploy gun / bắn / cột bị phá).</summary>
@@ -256,7 +261,7 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>Index nội bộ đếm từ 0, người chơi thì đếm từ 1.</summary>
-        private int DisplayLevel => (Level != null ? Level.CurrentIndex : 0) + 1;
+        public int DisplayLevel => (Level != null ? Level.CurrentIndex : 0) + 1;
 
         // Không dùng thẳng .Instance: Singleton.Instance log error khi scene chưa có object đó.
         private static LevelController Level => LevelController.IsActive ? LevelController.Instance : null;
