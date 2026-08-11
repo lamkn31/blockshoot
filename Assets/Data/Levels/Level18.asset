@@ -936,11 +936,11 @@ MonoBehaviour:
       IceThreshold: 1000
     PendingRefill: []
   - Shape: 1
-    Side: 1
+    Side: 0
     Center: {x: -4.574702, y: 0, z: -13.703167}
     Rotation: 179.81659
     CellDirectionOffset: 0
-    DefaultDirection: 0
+    DefaultDirection: 1
     BaseRadius: 0
     Columns: 6
     RowSpacing: 1
@@ -952,8 +952,8 @@ MonoBehaviour:
     CellScale: {x: 1, y: 1, z: 1}
     StackSpacing: 0
     Layout: 0
-    ShootableEdges: 0
-    Collapse2D: 1
+    ShootableEdges: -1
+    Collapse2D: 0
     CustomCollapseDirections: 0
     GenerateFoundation: 0
     FoundationSourceMesh: {fileID: 0}

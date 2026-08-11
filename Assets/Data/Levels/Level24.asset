@@ -18,86 +18,4806 @@ MonoBehaviour:
   MechanicNames: []
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
-  PathWaypoints: []
-  IsClosed: 1
+  PathWaypoints:
+  - {x: 7.567523, y: 0, z: -26.4334}
+  - {x: 0.61282134, y: 0, z: -26.4334}
+  - {x: 0.61282134, y: 0, z: -5.6554337}
+  - {x: -7.084382, y: 0, z: -5.736416}
+  IsClosed: 0
   PathStyle: 0
-  CornerRadius: 1
+  CornerRadius: 3
   SlotCount: 3
   Slots:
   - Guns:
-    - Color: 2
+    - Color: 3
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 4
+    - Color: 7
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 2
+    - Color: 3
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 8
+    - Color: 13
       CountBullet: 90
       Hidden: 0
       ConnectGroup: 0
-    - Color: 4
+    - Color: 7
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-    - Color: 9
+    - Color: 1
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
   - Guns:
-    - Color: 4
+    - Color: 7
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-    - Color: 9
+    - Color: 1
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 6
+    - Color: 14
       CountBullet: 120
       Hidden: 0
       ConnectGroup: 0
-    - Color: 8
+    - Color: 13
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
   - Guns:
-    - Color: 9
+    - Color: 1
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 2
+    - Color: 3
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 6
+    - Color: 14
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 9
+    - Color: 1
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 9
+    - Color: 1
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
   HoleCapacity: 3
-  Grids: []
+  Grids:
+  - Shape: 1
+    Side: 1
+    Center: {x: -1.8239135, y: 0, z: -17.555904}
+    Rotation: 269.5409
+    CellDirectionOffset: 0
+    DefaultDirection: 0
+    BaseRadius: 0
+    Columns: 20
+    RowSpacing: 1
+    Rows: 7
+    ArcAngle: 90
+    SpiralGrowth: 0
+    BlockWidth: 0
+    Spacing: 1
+    CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0
+    Layout: 0
+    ShootableEdges: 0
+    Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0
+    FoundationThickness: 0
+    FoundationYOffset: 0
+    FoundationSegments: 0
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0
+    SplineWaypoints: []
+    SplineClosed: 0
+    SplineStyle: 0
+    SplineCornerRadius: 5
+    Cells:
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 1
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 1
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 1
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 2
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 2
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 2
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 3
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 3
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 3
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 4
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 4
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 4
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 5
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 5
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 5
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 6
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 19
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 89.10797
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    PendingRefill: []
+  - Shape: 1
+    Side: 2
+    Center: {x: 2.8832831, y: 0, z: -14.986008}
+    Rotation: 90.00003
+    CellDirectionOffset: 0
+    DefaultDirection: 0
+    BaseRadius: 0
+    Columns: 19
+    RowSpacing: 1
+    Rows: 7
+    ArcAngle: 90
+    SpiralGrowth: 0
+    BlockWidth: 0
+    Spacing: 1
+    CellScale: {x: 1, y: 1, z: 1}
+    StackSpacing: 0
+    Layout: 0
+    ShootableEdges: 0
+    Collapse2D: 0
+    CustomCollapseDirections: 0
+    GenerateFoundation: 0
+    FoundationSourceMesh: {fileID: 0}
+    FoundationMaterial: {fileID: 0}
+    FoundationMargin: 0
+    FoundationThickness: 0
+    FoundationYOffset: 0
+    FoundationSegments: 0
+    FoundationWaypoints: []
+    FoundationStyle: 0
+    FoundationCornerRadius: 0
+    SplineWaypoints: []
+    SplineClosed: 0
+    SplineStyle: 0
+    SplineCornerRadius: 5
+    Cells:
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 0
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 1
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 1
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 1
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 1
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 2
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 2
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 13
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 2
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 3
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 3
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 3
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 4
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 4
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 4
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 5
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 5
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 3
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 3
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 3
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 14
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 7
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 5
+      BlockStackCt: 3
+      Shootable: 1
+      Type: 1
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue:
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 1
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      - Color: 14
+        BlockStackCt: 3
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 0
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 1
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 2
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 3
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 4
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 5
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 6
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 7
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 8
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 9
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 10
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 11
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 12
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 13
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 14
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 15
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 16
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 17
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    - Color: 1
+      CellPos: {x: 0, y: 0, z: 0}
+      CellScale: {x: 1, y: 1, z: 1}
+      BlockCol: 18
+      SpawnerDepth: 6
+      BlockStackCt: 0
+      Shootable: 1
+      Type: 0
+      SpawnerReach: 0
+      Spawner8Directions: 0
+      Queue: []
+      SpawnerDirectionAngleZ: 269.46182
+      UseCustomDirection: 0
+      AllowCollapseIntoAfterQueueEmpty: 0
+      Iced: 0
+      IceThreshold: 0
+    PendingRefill: []
   CameraOrthoSize: 9
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
-  Sign:
-    Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
-    Pos: {x: 8.8, y: 0, z: -30}
-    Scale: {x: 1, y: 1, z: 1}
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -4.780365, y: 0, z: -27.051798}
+    RotationY: 90.000046
+    Scale: {x: 1.0188063, y: 1, z: 1.7566686}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -4.7876935, y: 0, z: -8.999538}
+    RotationY: 90.000046
+    Scale: {x: 1.0110098, y: 1, z: 1.7225451}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 5.377123, y: 0, z: -6.8333206}
+    RotationY: 90.000046
+    Scale: {x: 1.0934848, y: 1, z: 1.4399714}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 6.3491273, y: 0, z: -24.783651}
+    RotationY: 90.000046
+    Scale: {x: 0.7951164, y: 1, z: 0.9892985}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

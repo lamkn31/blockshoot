@@ -19,13 +19,13 @@ MonoBehaviour:
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
   PathWaypoints:
-  - {x: -7.6854386, y: 0, z: -26.571}
-  - {x: -1.23722, y: 0, z: -26.17213}
+  - {x: -7.0695357, y: 0, z: -26.571}
+  - {x: -1.235892, y: 0, z: -26.453491}
   - {x: 2.6643445, y: 0, z: -21.486322}
   - {x: 0.9794417, y: 0, z: -16.503311}
   - {x: -3.1968272, y: 0, z: -10.154068}
-  - {x: 7.0322742, y: 0, z: -10.154068}
-  - {x: 7.238349, y: 0, z: -5.544403}
+  - {x: 6.1779504, y: 0, z: -9.891994}
+  - {x: 7.199929, y: 0, z: -9.09824}
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 3
@@ -64,7 +64,7 @@ MonoBehaviour:
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-    - Color: 9
+    - Color: 4
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-    - Color: 9
+    - Color: 4
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 0
-    - Color: 4
+    - Color: 9
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
@@ -583,9 +583,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -597,9 +597,9 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -623,9 +623,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -637,9 +637,9 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -663,9 +663,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -703,13 +703,13 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 4
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -723,7 +723,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -743,27 +743,27 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
       - Color: 6
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -783,15 +783,15 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
+      - Color: 13
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -823,23 +823,23 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
-      - Color: 4
+      - Color: 13
         BlockStackCt: 3
-      - Color: 4
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -863,23 +863,23 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
+      - Color: 13
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -2737,15 +2737,15 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
       - Color: 6
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -2773,21 +2773,21 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
-      - Color: 6
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
       - Color: 6
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -2827,7 +2827,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 4
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -2837,7 +2837,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -2865,7 +2865,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2875,11 +2875,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 4
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2909,15 +2909,15 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
-      - Color: 6
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -2943,25 +2943,25 @@ MonoBehaviour:
       Queue:
       - Color: 6
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -3003,7 +3003,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -3031,21 +3031,21 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
       - Color: 13
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -3087,7 +3087,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 4
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -3113,23 +3113,23 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 6
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -3151,27 +3151,27 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 6
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 9
-        BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 6
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 9
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 4
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -3197,13 +3197,13 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
+      - Color: 13
+        BlockStackCt: 3
       - Color: 4
-        BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
-      - Color: 13
-        BlockStackCt: 3
-      - Color: 13
         BlockStackCt: 3
       - Color: 4
         BlockStackCt: 3
@@ -3213,7 +3213,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -3241,11 +3241,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 4
-        BlockStackCt: 3
-      - Color: 4
+      - Color: 13
         BlockStackCt: 3
       - Color: 13
+        BlockStackCt: 3
+      - Color: 4
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -3255,7 +3255,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -3295,7 +3295,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -3337,7 +3337,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 4
         BlockStackCt: 3
-      - Color: 13
+      - Color: 4
         BlockStackCt: 3
       - Color: 9
         BlockStackCt: 3
@@ -4040,8 +4040,8 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 1
-    Center: {x: 0.03823908, y: 0, z: -18.220848}
+    Side: 2
+    Center: {x: 0.22172625, y: 0, z: -18.748108}
     Rotation: 89.79415
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -7057,15 +7057,15 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 4
         BlockStackCt: 3
@@ -7095,7 +7095,7 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -7107,9 +7107,9 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
-      - Color: 13
+      - Color: 6
         BlockStackCt: 3
       - Color: 13
         BlockStackCt: 3
@@ -7135,15 +7135,27 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
       type: 3}
-    Pos: {x: 5.300335, y: 1.25, z: -26.169353}
+    Pos: {x: 5.2193127, y: 1.25, z: -26.800613}
     RotationY: 89.76743
     Scale: {x: 0.95352256, y: 0.4, z: 1.3961953}
     TargetCellIndex: -1
     Strength: 1
-  Sign:
-    Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
-    Pos: {x: 8.8, y: 0, z: -30}
-    Scale: {x: 1, y: 1, z: 1}
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 4.26837, y: 0, z: -11.544393}
+    RotationY: 89.20675
+    Scale: {x: 1.0190955, y: 1, z: 1.7602739}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 5.8778915, y: 0, z: -6.5538387}
+    RotationY: 0
+    Scale: {x: 0.90942305, y: 1, z: 0.7814853}
+    TargetCellIndex: -1
+    Strength: 1
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

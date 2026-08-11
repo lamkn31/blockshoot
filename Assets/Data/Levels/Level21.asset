@@ -874,7 +874,7 @@ MonoBehaviour:
       AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
-    - Color: 14
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -890,7 +890,7 @@ MonoBehaviour:
       AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
-    - Color: 14
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -1209,9 +1209,9 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 2
+      - Color: 14
         BlockStackCt: 4
-      - Color: 2
+      - Color: 14
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
@@ -2193,11 +2193,11 @@ MonoBehaviour:
       Queue:
       - Color: 3
         BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
       - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
@@ -2259,11 +2259,11 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 7
         BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
       - Color: 4
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
@@ -2315,9 +2315,9 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 2
+      - Color: 9
         BlockStackCt: 4
-      - Color: 2
+      - Color: 9
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
