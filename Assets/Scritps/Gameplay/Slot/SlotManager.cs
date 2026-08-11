@@ -260,6 +260,11 @@ namespace Wayfu.Lamkn
             return false;                                           // hai gun đang ở trạng thái khác nhau → tạm tắt
         }
 
+        // Rung phản hồi khi click gun: ĐI ĐƯỢC (deploy thành công) → nhẹ; KHÔNG đi được (path đầy /
+        // bị gun trước chặn / nhóm connect chưa đủ điều kiện) → mạnh.
+        private static void VibrateCanGo() => VibrationController.Instance?.Vibrate(VibrationStyle.Light);
+        private static void VibrateCantGo() => VibrationController.Instance?.Vibrate(VibrationStyle.Medium);
+
         public void OnGunClicked(Gun gun)
         {
             if (gun == null) return;
@@ -268,20 +273,22 @@ namespace Wayfu.Lamkn
             if (gun.Data != null && gun.Data.ConnectGroup != 0) { TryDeployConnectGroup(gun.Data.ConnectGroup); return; }
 
             var slot = gun.Slot;
-            if (slot == null || slot.FrontGun != gun) return;              // chỉ gun đầu slot
+            if (slot == null || slot.FrontGun != gun) { VibrateCantGo(); return; } // không phải gun đầu → bị chặn
             if (PathManager.Instance == null) return;
             if (!PathManager.Instance.CanAcceptCount(_movingToLoop.Count + 1))
             {
                 // Chỉ báo click khi gun chưa thể rời slot vì path đã đầy.
                 gun.TryPlayClickThen(null);
+                VibrateCantGo();
                 return;
             }
 
             int slotIndex = slot.SlotIndex;
-            if (gun == null || gun.IsDead) return;
+            if (gun.IsDead) return;
             slot.RemoveFront();
             SendGunToLoop(slotIndex, gun);
             GunDeployed?.Invoke(gun); // Tutorial nghe: gun vừa được chọn & rời slot
+            VibrateCanGo();           // gun đi được → rung nhẹ
             GameController.Instance?.OnBoardChanged();
         }
 
@@ -334,7 +341,7 @@ namespace Wayfu.Lamkn
                 // entire contiguous prefix (indexes 0..N-1). A non-member in front
                 // still blocks the connected group as usual.
                 for (int i = 0; i < countInSlot; i++)
-                    if (!memberSet.Contains(slot.Guns[i])) return;
+                    if (!memberSet.Contains(slot.Guns[i])) { VibrateCantGo(); return; } // bị gun ngoài nhóm chặn
 
                 removeCounts[slot] = countInSlot;
             }
@@ -350,6 +357,7 @@ namespace Wayfu.Lamkn
             var pm = PathManager.Instance;
             if (pm == null || !pm.CanAcceptCount(_movingToLoop.Count + members.Count))
             {
+                VibrateCantGo();                              // nhóm không đủ chỗ → không đi được → rung mạnh
                 GameController.Instance?.NotifyConnectStuck(); // vượt sức chứa → bế tắc thì thua
                 return;
             }
@@ -360,6 +368,7 @@ namespace Wayfu.Lamkn
             foreach (var pair in removeCounts)
                 for (int i = 0; i < pair.Value; i++) pair.Key.RemoveFront();
             pm.RequestDeployGroup(members);
+            VibrateCanGo();           // cả nhóm connect đi được → rung nhẹ
             GameController.Instance?.OnBoardChanged();
         }
 
