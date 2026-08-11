@@ -16,10 +16,15 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
-  PathWaypoints: []
-  IsClosed: 1
+  PathWaypoints:
+  - {x: -8.254503, y: 0, z: -27.035553}
+  - {x: -5.5668874, y: 0, z: -25.958885}
+  - {x: -2.8966994, y: 0, z: -19.691093}
+  - {x: 3.6471174, y: 0, z: -12.627708}
+  - {x: 7.42514, y: 0, z: -4.7247124}
+  IsClosed: 0
   PathStyle: 0
-  CornerRadius: 1
+  CornerRadius: 3
   SlotCount: 4
   Slots:
   - Guns:
