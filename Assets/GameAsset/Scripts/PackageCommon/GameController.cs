@@ -160,6 +160,7 @@ namespace Wayfu.Lamkn
         {
             if (State != GameState.Playing) return;
             var pm = PathManager.Instance;
+            if (GridBlockManager.Instance != null && GridBlockManager.Instance.PendingHitCount > 0) return;
             if (pm != null && pm.GunCount > 0 && !pm.AnyGunHasTarget()) Lose();
         }
 
@@ -213,6 +214,9 @@ namespace Wayfu.Lamkn
             }
             if (!pm.IsFull) return;            // chỉ xét khi path đã đầy gun
             if (anyTarget) return;             // còn gun bắn được → chưa thua
+            // Đạn đã đặt chỗ cho stack cuối phải được bay tới đích trước khi
+            // xét deadlock. Lose sẽ dừng gameplay và làm các viên này đứng im.
+            if (grid != null && grid.PendingHitCount > 0) return;
             Lose();
         }
 

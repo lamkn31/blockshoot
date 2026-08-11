@@ -34,6 +34,8 @@ namespace Wayfu.Lamkn
             // True while the origin cell merely renders Queue.Peek(). It becomes
             // a real block only when the final head is explicitly released.
             public bool OriginCellIsPreview;
+            public BlockCell OriginPreviewCell;
+            public int OriginPreviewGeneration;
             public bool AllowCollapseIntoAfterQueueEmpty;
             public int Reach;     // SpawnerLine: số ô tối đa (0 = tới mép grid)
             public int StepRow, StepCol; // SpawnerLine: bước đi 1 ô theo hướng nhả
@@ -161,6 +163,8 @@ namespace Wayfu.Lamkn
                                 ? Spawner8Directions.All : cellData.Spawner8Directions,
                             Line = line,
                             OriginCellIsPreview = eight || line,
+                            OriginPreviewCell = (eight || line) ? row[e] : null,
+                            OriginPreviewGeneration = (eight || line) && row[e] != null ? row[e].Generation : 0,
                             AllowCollapseIntoAfterQueueEmpty = cellData.AllowCollapseIntoAfterQueueEmpty,
                             Reach = cellData.SpawnerReach,
                         };
@@ -683,6 +687,7 @@ namespace Wayfu.Lamkn
         // Arc-ArcLength → cột lệch (4/5/6) nên chỉ dồn được theo HÀNG như cũ.
         private void CollapseFront(GridRuntime gr)
         {
+            var totalsBeforeCollapse = RuntimeTotals(gr);
             // Lặp tới khi ổn định. Mỗi vòng chạy CẢ 3 cấp — nhưng quyền lấp Ô TRANH CHẤP là PER-Ô theo
             // KHOẢNG CÁCH (OwnerOf): ô chịu ảnh hưởng của nhiều spawner thì thuộc về nguồn GẦN nhất
             // (tính bằng số Ô); bằng khoảng cách thì Spawner thường > SpawnerLine > Spawner8. Nguồn cạn
@@ -741,6 +746,81 @@ namespace Wayfu.Lamkn
             }
             // Số hàng giữ NGUYÊN (không xoá hàng rỗng) để Row của SpawnerSource luôn trỏ đúng ô.
             RefreshSpawnerIndicators(gr);
+            RestoreCollapseDeficits(gr, totalsBeforeCollapse);
+        }
+
+        // A collapse may move cells and transfer queue heads into live cells,
+        // but it must never change the logical amount of any color. Keep this
+        // invariant local to one grid so mixed Spawner/Line/Spawner8 passes
+        // cannot silently lose their final stack.
+        private static Dictionary<TypeColor, int> RuntimeTotals(GridRuntime gr)
+        {
+            var totals = new Dictionary<TypeColor, int>();
+            void Add(TypeColor color, int count)
+            {
+                if (count <= 0) return;
+                totals.TryGetValue(color, out int current);
+                totals[color] = current + count;
+            }
+
+            for (int r = 0; r < gr.Rows.Count; r++)
+                for (int c = 0; c < gr.Rows[r].Length; c++)
+                {
+                    var cell = gr.Rows[r][c];
+                    if (cell != null && !IsQueuedStaticSource(gr, r, c))
+                        Add(cell.Color, cell.StackCount);
+                }
+            foreach (var src in gr.Sources)
+                foreach (var item in src.Queue)
+                    if (item != null) Add(item.Color, item.BlockStackCt);
+            if (gr.Pending != null)
+                foreach (var item in gr.Pending)
+                    if (item != null) Add(item.Color, item.BlockStackCt);
+            return totals;
+        }
+
+        private void RestoreCollapseDeficits(GridRuntime gr, Dictionary<TypeColor, int> before)
+        {
+            var after = RuntimeTotals(gr);
+            foreach (var pair in before)
+            {
+                after.TryGetValue(pair.Key, out int current);
+                int missing = pair.Value - current;
+                if (missing <= 0) continue;
+
+                bool restored = false;
+                for (int r = gr.Rows.Count - 1; r >= 0 && !restored; r--)
+                    for (int c = gr.Rows[r].Length - 1; c >= 0; c--)
+                    {
+                        if (gr.Rows[r][c] != null || IsHole(gr, r, c) || IsSpawnerCell(gr, r, c)) continue;
+                        var data = new BlockCellData
+                        {
+                            Color = pair.Key,
+                            BlockStackCt = missing,
+                            BlockCol = c,
+                            SpawnerDepth = r,
+                            SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(r, c) - gr.Data.CellDirectionOffset,
+                        };
+                        gr.Rows[r][c] = CreateCell(gr, $"Cell_conservation_r{r}_e{c}",
+                            BoardPos(gr.Data.CellPosAt(r, c, gr.Rows[r].Length)), data);
+                        restored = true;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                        Debug.LogWarning($"[CollapseBalance] Restored color={pair.Key}, blocks={missing}, " +
+                                         $"grid={gr.Root.name}, row={r}, col={c}", this);
+#endif
+                        break;
+                    }
+
+                if (!restored)
+                {
+                    if (gr.Pending == null) gr.Pending = new Queue<PendingBlockData>();
+                    gr.Pending.Enqueue(new PendingBlockData { Color = pair.Key, BlockStackCt = missing });
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                    Debug.LogWarning($"[CollapseBalance] Requeued color={pair.Key}, blocks={missing}, " +
+                                     $"grid={gr.Root.name}", this);
+#endif
+                }
+            }
         }
 
         // Cell nằm ở Ô GỐC của Spawner đổi liên tục (cell cũ dồn đi, cell mới nhả ra) → mỗi lần dồn xong
@@ -1508,13 +1588,16 @@ namespace Wayfu.Lamkn
                 // The displayed head has just been emitted elsewhere. It is a
                 // duplicate preview regardless of whether this source position
                 // is allowed to accept collapse after exhaustion.
-                if (cell != null)
-                { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
-                src.OriginCellIsPreview = false;
+                ClearOriginPreview(gr, src);
                 ReleaseExhaustedSpawnerCell(gr, src);
                 return;
             }
             if (cell == null) return;
+            // Never rebuild a different real cell that happened to enter the
+            // authored source coordinate during a custom/multi-axis collapse.
+            if (src.OriginCellIsPreview
+                && (cell != src.OriginPreviewCell || cell.Generation != src.OriginPreviewGeneration))
+                return;
             var head = src.Queue.Peek();
             var data = new BlockCellData
             {
@@ -1531,6 +1614,34 @@ namespace Wayfu.Lamkn
             cell.Build(data, gr.Data.EffectiveStackSpacing, gr.Data.CellScale, this);
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
             src.OriginCellIsPreview = true;
+            src.OriginPreviewCell = cell;
+            src.OriginPreviewGeneration = cell.Generation;
+        }
+
+        // Remove exactly the preview object registered by this source. On a
+        // multi-direction grid another real cell may already occupy the authored
+        // origin coordinate; deleting by [Row,Col] would lose that real stack.
+        private static void ClearOriginPreview(GridRuntime gr, SpawnerSource src)
+        {
+            var preview = src.OriginPreviewCell;
+            if (preview != null && preview.Generation == src.OriginPreviewGeneration)
+            {
+                for (int r = 0; r < gr.Rows.Count; r++)
+                {
+                    var row = gr.Rows[r];
+                    for (int c = 0; c < row.Length; c++)
+                    {
+                        if (row[c] != preview) continue;
+                        row[c] = null;
+                        preview.Despawn();
+                        r = gr.Rows.Count;
+                        break;
+                    }
+                }
+            }
+            src.OriginCellIsPreview = false;
+            src.OriginPreviewCell = null;
+            src.OriginPreviewGeneration = 0;
         }
 
         // Gỡ 1 nguồn tĩnh đã cạn. Với source cho phép collapse, marker được nhả và
@@ -1541,15 +1652,7 @@ namespace Wayfu.Lamkn
             // Queue.Count cannot distinguish a stale preview from a released
             // final block when several source types feed the same grid. Destroy
             // only a cell explicitly tracked as a preview; otherwise retain it.
-            if (src.OriginCellIsPreview
-                && src.Row >= 0 && src.Row < gr.Rows.Count
-                && src.Col >= 0 && src.Col < gr.Rows[src.Row].Length)
-            {
-                var preview = gr.Rows[src.Row][src.Col];
-                if (preview != null) preview.Despawn();
-                gr.Rows[src.Row][src.Col] = null;
-                src.OriginCellIsPreview = false;
-            }
+            if (src.OriginCellIsPreview) ClearOriginPreview(gr, src);
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
             // Arc rows can have different element counts, so the direct pull
@@ -1574,7 +1677,41 @@ namespace Wayfu.Lamkn
         private void ReleaseStaticSourceAtOrigin(GridRuntime gr, int i)
         {
             var src = gr.Sources[i];
+            // The final queue item is represented by the registered preview.
+            // If another source/collapse pass already cleared that preview,
+            // materialize Queue.Peek() now before removing the source; otherwise
+            // removing Sources also drops the final authored stack (Level 13:
+            // one Orange stack of 3).
+            BlockCell finalCell = null;
+            if (src.Row >= 0 && src.Row < gr.Rows.Count
+                && src.Col >= 0 && src.Col < gr.Rows[src.Row].Length)
+                finalCell = gr.Rows[src.Row][src.Col];
+            bool validPreview = finalCell != null
+                && finalCell == src.OriginPreviewCell
+                && finalCell.Generation == src.OriginPreviewGeneration;
+            if (!validPreview && finalCell == null && src.Queue.Count > 0)
+            {
+                var head = src.Queue.Peek();
+                if (head != null && head.BlockStackCt > 0)
+                {
+                    var data = new BlockCellData
+                    {
+                        Color = head.Color,
+                        BlockStackCt = head.BlockStackCt,
+                        BlockCol = src.Col,
+                        SpawnerDepth = src.Row,
+                        SpawnerDirectionAngleZ = src.DirAngle,
+                        Type = BlockCellType.Normal,
+                    };
+                    finalCell = CreateCell(gr, $"Cell_final_r{src.Row}_e{src.Col}",
+                        BoardPos(gr.Data.CellPosAt(src.Row, src.Col, gr.Rows[src.Row].Length)), data);
+                    finalCell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
+                    gr.Rows[src.Row][src.Col] = finalCell;
+                }
+            }
             src.OriginCellIsPreview = false;
+            src.OriginPreviewCell = null;
+            src.OriginPreviewGeneration = 0;
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
             // Legacy one-axis grids already compact through AdvanceOnce. Moving
