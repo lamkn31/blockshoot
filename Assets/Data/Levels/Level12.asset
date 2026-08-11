@@ -16,6 +16,8 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
+  OverrideGunFireRange: 0
+  CustomGunFireRange: 3
   PathWaypoints:
   - {x: 2.9114401, y: 0, z: -30.035284}
   - {x: 2.2777996, y: 0, z: -23.761919}
@@ -1722,7 +1724,7 @@ MonoBehaviour:
       Queue:
       - Color: 3
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -1746,7 +1748,7 @@ MonoBehaviour:
       Queue:
       - Color: 3
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -1770,7 +1772,7 @@ MonoBehaviour:
       Queue:
       - Color: 3
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -1794,7 +1796,7 @@ MonoBehaviour:
       Queue:
       - Color: 3
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -1818,7 +1820,7 @@ MonoBehaviour:
       Queue:
       - Color: 3
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2336,9 +2338,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2358,9 +2360,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2380,9 +2382,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2402,9 +2404,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -2424,9 +2426,9 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
-      - Color: 3
+      - Color: 6
         BlockStackCt: 3
       - Color: 6
         BlockStackCt: 3
@@ -5234,11 +5236,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 115.415215
       UseCustomDirection: 0
@@ -5262,11 +5264,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 115.415146
       UseCustomDirection: 0
@@ -5290,11 +5292,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 115.41523
       UseCustomDirection: 0
@@ -5318,11 +5320,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 115.41523
       UseCustomDirection: 0
@@ -5346,11 +5348,11 @@ MonoBehaviour:
         BlockStackCt: 3
       - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
-      - Color: 6
+      - Color: 3
         BlockStackCt: 3
       SpawnerDirectionAngleZ: 115.41523
       UseCustomDirection: 0
