@@ -16,6 +16,8 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
+  OverrideGunFireRange: 0
+  CustomGunFireRange: 3
   PathWaypoints:
   - {x: -7.148185, y: 0, z: -28.703684}
   - {x: -0.95771134, y: 0, z: -28.759413}
@@ -104,7 +106,7 @@ MonoBehaviour:
   Grids:
   - Shape: 1
     Side: 2
-    Center: {x: -5.206492, y: 0, z: -15.096527}
+    Center: {x: -4.9500647, y: 0, z: -15.05154}
     Rotation: 90.51881
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -13601,7 +13603,7 @@ MonoBehaviour:
     Strength: 1
   - Type: 0
     Prefab: {fileID: 817997986985095117, guid: 8aac217d40589334ab2b59880d8e45bd, type: 3}
-    Pos: {x: 2.8673246, y: 0, z: -16.935616}
+    Pos: {x: 2.988758, y: 0, z: -16.95158}
     RotationY: 180
     Scale: {x: 1.2298586, y: 1, z: 1.2058023}
     TargetCellIndex: -1

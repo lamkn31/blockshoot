@@ -789,7 +789,7 @@ namespace Wayfu.Lamkn
             if (_showRange && _pathSamples != null && _pathSamples.Length >= 2)
             {
                 var gs = GameSettings.Instance;
-                float rng = gs != null ? gs.GunFireRange : 3f;
+                float rng = _target.ResolveGunFireRange(gs);
                 float spread = Mathf.Clamp(gs != null ? gs.GunFireAngle : 360f, 0f, 180f);
                 float front = gs != null ? gs.FrontStationDistance : 0f;
                 Vector3 ctr = PathPointAt(front);
@@ -2759,6 +2759,11 @@ namespace Wayfu.Lamkn
                 EditorGUILayout.PropertyField(_so.FindProperty("CurGameDifficulty"));
                 EditorGUILayout.PropertyField(_so.FindProperty("HoleCapacity"),
                     new GUIContent("Hole Capacity", "Stack mỗi cell khi Generate Cells."));
+                var overrideRange = _so.FindProperty("OverrideGunFireRange");
+                EditorGUILayout.PropertyField(overrideRange, new GUIContent("Custom Gun Range"));
+                if (overrideRange.boolValue)
+                    EditorGUILayout.PropertyField(_so.FindProperty("CustomGunFireRange"),
+                        new GUIContent("Gun Fire Range"));
             }
             EditorGUILayout.EndVertical();
         }

@@ -16,12 +16,13 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
+  OverrideGunFireRange: 0
+  CustomGunFireRange: 3
   PathWaypoints:
-  - {x: 5.7522125, y: 0, z: -26.35397}
-  - {x: 1.4456092, y: 0, z: -26.290272}
-  - {x: -6.0356607, y: 0, z: -25.869411}
-  - {x: 4.089033, y: 0, z: -15.838024}
-  - {x: -7.502192, y: 0, z: -4.2417374}
+  - {x: 7.080791, y: 0, z: -26.304764}
+  - {x: -7.1377535, y: 0, z: -26.304764}
+  - {x: 3.7317326, y: 0, z: -16.07098}
+  - {x: -6.612378, y: 0, z: -5.6431503}
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 5
@@ -77,8 +78,8 @@ MonoBehaviour:
   HoleCapacity: 3
   Grids:
   - Shape: 2
-    Side: 2
-    Center: {x: -0.08052304, y: 0, z: -1.0799255}
+    Side: 1
+    Center: {x: 0.13776056, y: 0, z: -1.0596962}
     Rotation: 0
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -6992,7 +6993,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 2
     Side: 2
-    Center: {x: -3.5809534, y: 0, z: -2.6603394}
+    Center: {x: -3.8275864, y: 0, z: -2.6473885}
     Rotation: 0
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -12148,7 +12149,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 2446919911074528429, guid: 43c2e6ec5c5ca2b46b5c6ef655ecef1e,
       type: 3}
-    Pos: {x: -4.217247, y: 0, z: -15.5949}
+    Pos: {x: -4.4057937, y: 0, z: -15.313736}
     RotationY: 179.26074
     Scale: {x: 1.0491251, y: 1, z: 1.1582108}
     TargetCellIndex: -1
@@ -12164,9 +12165,9 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 2114476061937131861, guid: 69b582c7b700fa24abd240b73d839710,
       type: 3}
-    Pos: {x: 1.6234279, y: 0, z: -15.275362}
-    RotationY: 177.32925
-    Scale: {x: 0.99919355, y: 1, z: 1.2323953}
+    Pos: {x: 2.0212278, y: 0, z: -15.103621}
+    RotationY: 178
+    Scale: {x: 1.0717081, y: 1, z: 1.2374988}
     TargetCellIndex: -1
     Strength: 1
   GunPrefab: {fileID: 0}

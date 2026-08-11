@@ -16,6 +16,8 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
+  OverrideGunFireRange: 1
+  CustomGunFireRange: 5
   PathWaypoints:
   - {x: -6.6341176, y: 0, z: -27.693281}
   - {x: -0.7299552, y: 0, z: -27.693281}
@@ -3341,7 +3343,7 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: -1
     Collapse2D: 0
-    CustomCollapseDirections: 0
+    CustomCollapseDirections: 13
     GenerateFoundation: 0
     FoundationSourceMesh: {fileID: 0}
     FoundationMaterial: {fileID: 0}

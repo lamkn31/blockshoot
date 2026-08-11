@@ -394,6 +394,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: FxIntersection
       objectReference: {fileID: 0}
+    - target: {fileID: 1363240615227607120, guid: 63eb9b1ad73a1004182a2e9de4480ec1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7613560540849036756, guid: 63eb9b1ad73a1004182a2e9de4480ec1,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9127988525405851501, guid: 63eb9b1ad73a1004182a2e9de4480ec1,
         type: 3}
       propertyPath: m_LocalPosition.x

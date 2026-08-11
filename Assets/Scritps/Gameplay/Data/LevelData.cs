@@ -18,6 +18,18 @@ namespace Wayfu.Lamkn
         public int NumberOfColors;
         public string[] MechanicNames;
 
+        [Header("Gun Range Override")]
+        [Tooltip("Tắt = dùng GunFireRange trong GameSettings. Bật = level này dùng range riêng bên dưới.")]
+        public bool OverrideGunFireRange;
+        [Min(0.01f), Tooltip("Range riêng chỉ áp dụng khi Override Gun Fire Range được bật.")]
+        public float CustomGunFireRange = 3f;
+
+        public float ResolveGunFireRange(GameSettings settings)
+        {
+            if (OverrideGunFireRange) return Mathf.Max(0.01f, CustomGunFireRange);
+            return settings != null ? settings.GunFireRange : 3f;
+        }
+
         [Header("Path shape (loop) — riêng theo level")]
         public List<Vector3> PathWaypoints = new List<Vector3>();
         public bool IsClosed = true;

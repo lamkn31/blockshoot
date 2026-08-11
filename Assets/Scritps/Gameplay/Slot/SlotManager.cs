@@ -49,6 +49,7 @@ namespace Wayfu.Lamkn
             var gs = GameSettings.Instance;
             float spacing = gs != null ? gs.SlotGunSpacing : 1f;   // config chung
             var fire = GunFireConfig.FromSettings(gs);
+            fire.Range = level.ResolveGunFireRange(gs);
 
             FillSlots(level, spacing, fire);
             BuildConnectGroups();
