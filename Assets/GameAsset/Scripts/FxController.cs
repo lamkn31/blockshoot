@@ -13,6 +13,8 @@ namespace Wayfu.Lamkn
         MovingTimer = 5, // xe ambulance timer moving
         BlockHit = 6, // block trúng đạn vỡ — phát tại vị trí block, tô theo màu block
         BulletTrail = 7, // FX nước bám theo viên đạn đang bay (Projectiles_water) — rig trail dùng chung
+        WaterGoout = 8, // FX nước bắn ra khi gun loop
+        WaterLan = 9,   // FX mặt nước phát tại vị trí gun khi bắt đầu GoOut
     }
 
     // Quản lý pool FX + phát FX tại vị trí cần. Toàn bộ prefab FX khai báo TẠI ĐÂY (không để ở car).

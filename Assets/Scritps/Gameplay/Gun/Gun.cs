@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using System;
 using System.Threading;
+using Sirenix.OdinInspector;
+
 
 
 #if UNITY_EDITOR
@@ -80,6 +82,12 @@ namespace Wayfu.Lamkn
         private bool _pathCycleTransition;
         private float _lastRightShotTime = -999f;
         private float _lastLeftShotTime = -999f;
+
+        [Header("GoOut FX")]
+        [Tooltip("Thời gian chờ sau khi bắt đầu GoOut để hiện lại số đạn và phát fx-water lan tại đúng mốc này.")]
+        [SerializeField, Min(0f)] private float goOutWaterLanDelay;
+        private Coroutine _goOutWaterFxRoutine;
+        private Coroutine _labelRevealRoutine;
 
         [Header("Laser (chỉ dùng khi FireMode = Laser)")]
         [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
@@ -330,6 +338,8 @@ namespace Wayfu.Lamkn
             ResetBarrel(_left);
             ArmForNewLap();
             if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
+            if (_goOutWaterFxRoutine != null) { StopCoroutine(_goOutWaterFxRoutine); _goOutWaterFxRoutine = null; }
+            if (_labelRevealRoutine != null) { StopCoroutine(_labelRevealRoutine); _labelRevealRoutine = null; }
 
             // Item pooled tái dùng: gun vừa chạy trên path mang theo rotation của khúc đường CUỐI
             // (RoundedPolylineFollower ghi thẳng vào root). Không reset thì vào màn/retry mỗi khẩu trong
@@ -417,20 +427,19 @@ namespace Wayfu.Lamkn
         }
 
         public void PlayClickAnimation() => PlayNamedAnimation(clickState);
-        public void PlayGoInAnimation()
-        {
-            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
-            PlayNamedAnimation(goInState);
-        }
-        public void PlayGoOutAnimation() => PlayNamedAnimation(goOutState);
+        public void PlayGoInAnimation() => PlayGoInThen(null);
+        public void PlayGoOutAnimation() => PlayGoOutThen(null);
 
-        public void PlayGoInThen(Action onComplete)
+        // revealLabel=false khi GoIn chỉ là nửa đầu của chu kỳ path_end -> path_0;
+        // label phải chờ GoOut, nếu không sẽ nháy một frame ở giữa hai animation.
+        public void PlayGoInThen(Action onComplete, bool revealLabel = true)
         {
+            // Nếu vừa có GoOut trước đó, không cho timer WaterLan cũ bật text giữa GoIn.
+            if (_labelRevealRoutine != null) { StopCoroutine(_labelRevealRoutine); _labelRevealRoutine = null; }
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             if (stickmanAnimator == null || string.IsNullOrEmpty(goInState))
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
+                if (revealLabel) ShowBulletLabel();
                 onComplete?.Invoke();
                 return;
             }
@@ -438,8 +447,7 @@ namespace Wayfu.Lamkn
             // giữa GoIn và barrier của các gun còn lại.
             StartCoroutine(PlayAnimationThen(goInState, () =>
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
+                if (revealLabel) ShowBulletLabel();
                 onComplete?.Invoke();
             }, returnToIdle: false));
         }
@@ -447,19 +455,86 @@ namespace Wayfu.Lamkn
         public void PlayGoOutThen(Action onComplete)
         {
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+            ScheduleBulletLabelReveal();
             if (stickmanAnimator == null || string.IsNullOrEmpty(goOutState))
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
+                ScheduleGoOutWaterFx();
                 onComplete?.Invoke();
                 return;
             }
+            ScheduleGoOutWaterFx();
             StartCoroutine(PlayAnimationThen(goOutState, () =>
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
                 onComplete?.Invoke();
             }));
+        }
+
+        // Số đạn xuất hiện cùng mốc WaterLan của GoOut, không phụ thuộc độ dài animation.
+        private void ScheduleBulletLabelReveal()
+        {
+            if (_labelRevealRoutine != null) StopCoroutine(_labelRevealRoutine);
+            if (goOutWaterLanDelay <= 0f)
+            {
+                _labelRevealRoutine = null;
+                ShowBulletLabel();
+                return;
+            }
+            _labelRevealRoutine = StartCoroutine(RevealBulletLabelAfterDelay());
+        }
+
+        private IEnumerator RevealBulletLabelAfterDelay()
+        {
+            yield return new WaitForSeconds(goOutWaterLanDelay);
+            _labelRevealRoutine = null;
+            ShowBulletLabel();
+        }
+
+        private void ShowBulletLabel()
+        {
+            if (bulletLabel == null || Data == null || Data.CountBullet <= 0) return;
+            bulletLabel.gameObject.SetActive(true);
+            UpdateLabel();
+        }
+
+        private void ScheduleGoOutWaterFx()
+        {
+            if (_goOutWaterFxRoutine != null) StopCoroutine(_goOutWaterFxRoutine);
+            if (goOutWaterLanDelay <= 0f)
+            {
+                PlayGoOutWaterControllerFx();
+                _goOutWaterFxRoutine = null;
+                return;
+            }
+            _goOutWaterFxRoutine = StartCoroutine(PlayGoOutWaterFxAfterDelay());
+        }
+
+        private IEnumerator PlayGoOutWaterFxAfterDelay()
+        {
+            yield return new WaitForSeconds(goOutWaterLanDelay);
+            PlayGoOutWaterControllerFx();
+            _goOutWaterFxRoutine = null;
+        }
+
+        // FX được parent vào FxController tại thời điểm phát, nên đứng lại ở vị trí hiện tại của Gun.
+        private void PlayGoOutWaterControllerFx()
+        {
+            if (FxController.IsActive)
+                FxController.Instance.Play(FxType.WaterLan, transform.position, Quaternion.identity);
+        }
+
+        /// <summary>FX type 8 chỉ phát khi gun đã đi hết vòng và chuẩn bị quay lại path_0.</summary>
+        private void PlayWaterLoopControllerFx()
+        {
+            if (FxController.IsActive)
+            {
+                Vector3 position = PathManager.IsActive
+                    ? PathManager.Instance.TunnelInPosition
+                    : transform.position;
+                // FX type 8 dùng đúng Euler offset đã cấu hình trong PooledFx: (-90, 0, 0).
+                // Không lấy rotation của tunnel/gun để clone không nhận thêm yaw, pitch hoặc roll.
+                Quaternion rotation = Quaternion.identity;
+                FxController.Instance.Play(FxType.WaterGoout, position, rotation);
+            }
         }
 
         private void PlayNamedAnimation(string state)
@@ -594,8 +669,6 @@ namespace Wayfu.Lamkn
         private IEnumerator BeginPathFollowerAfterHold(RoundedPolylinePath path, float startDistance, float speed)
         {
             if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
-            if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-            UpdateLabel();
             BeginPathFollower(path, startDistance, speed);
         }
 
@@ -701,7 +774,7 @@ namespace Wayfu.Lamkn
             if (_animRoutine != null) { StopCoroutine(_animRoutine); _animRoutine = null; }
             _pathEntryAnimating = true;
             bool done = false;
-            PlayGoInThen(() => done = true);
+            PlayGoInThen(() => done = true, revealLabel: false);
             while (!done) yield return null;
 
             // Hết đạn khi tới path_end → biến mất luôn, không loop lại.
@@ -721,6 +794,9 @@ namespace Wayfu.Lamkn
                     yield break;
                 }
             }
+
+            // Gun còn đạn và sẽ quay lại path_0: phát type 8 tại TunnelIn.
+            PlayWaterLoopControllerFx();
 
             // Gun connect phải đồng bộ ở cuối vòng: tất cả member chạy xong GoIn
             // rồi mới cùng teleport/tái xuất để không bị lệch nhịp giữa các gun.
@@ -753,8 +829,6 @@ namespace Wayfu.Lamkn
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             PlayGoOutAnimation();
             if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
-            if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-            UpdateLabel();
             BeginPathFollower(path, 0f, speed);
         }
 
