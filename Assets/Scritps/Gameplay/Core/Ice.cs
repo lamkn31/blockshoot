@@ -20,8 +20,10 @@ namespace Wayfu.Lamkn
         private Material _sideMaterial;
         [SerializeField, Min(0f), Tooltip("Độ dài băng rủ xuống ở các cạnh ngoài của vùng Ice.")]
         private float _outerEdgeDrop = 0.65f;
-        [SerializeField, Min(0f), Tooltip("Đẩy thành băng ra ngoài footprint cell để không chồng mặt với block.")]
-        private float _outerEdgeOffset = 0.025f;
+        [SerializeField, Min(0f), Tooltip("Đẩy thành băng ra ngoài footprint cell; tăng để các cạnh chồng lên mặt trên, không hở seam.")]
+        private float _outerEdgeOffset = 0.08f;
+        [SerializeField, Min(0f), Tooltip("Phần mặt trên Ice phủ thêm ra ngoài mép thành mỗi phía, để che kín các góc bo.")]
+        private float _topSurfaceOverlap = 0.08f;
         [SerializeField, Tooltip("Chỉ xoay Z cho countdown khi asset chữ bị ngược/dọc. X luôn giữ 0.")]
         private float _countdownZRotation;
 
@@ -70,9 +72,13 @@ namespace Wayfu.Lamkn
             transform.rotation = FlatBase;
             transform.position = center;
 
-            var b = CombinedBounds(gameObject);
+            var b = VisualBounds();
+            // Thành bắt đầu từ footprint gốc rồi được đẩy ra _outerEdgeOffset.
+            // Mặt trên phải phủ thêm cả offset đó lẫn padding góc, nếu không thành sẽ lộ ra ngoài mặt trên.
+            float surfaceWidth = width + (_outerEdgeOffset + _topSurfaceOverlap) * 2f;
+            float surfaceDepth = depth + (_outerEdgeOffset + _topSurfaceOverlap) * 2f;
             float fx = Mathf.Max(1e-3f, b.size.x), fz = Mathf.Max(1e-3f, b.size.z);
-            float kx = width / fx, ky = depth / fz;
+            float kx = surfaceWidth / fx, ky = surfaceDepth / fz;
             transform.localScale = new Vector3(_origScale.x * kx, _origScale.y * ky, _origScale.z);
             transform.rotation = Quaternion.Euler(0f, yaw, 0f) * FlatBase; // phẳng + xoay theo grid
             transform.position = center;
@@ -163,7 +169,7 @@ namespace Wayfu.Lamkn
                 }
                 else
                 {
-                    var source = GetComponentInChildren<Renderer>(true);
+                    var source = FindIceRenderer();
                     _sideMaterial = source != null ? source.sharedMaterial : null;
                 }
                 _sideRenderer.sharedMaterial = _sideMaterial;
@@ -180,9 +186,9 @@ namespace Wayfu.Lamkn
             };
             var vertices = new Vector3[16];
             var uvs = new Vector2[16];
-            // Two-sided faces: this is a thin visual sheet and must remain textured/readable from
-            // both the outside and camera-facing side regardless of mesh winding.
-            var triangles = new int[48];
+            // Ice.mat renders both sides. Do not duplicate reversed triangles on the same vertices:
+            // their opposite normals cancel in RecalculateNormals(), producing black/flickering walls.
+            var triangles = new int[24];
             for (int edge = 0; edge < 4; edge++)
             {
                 int next = (edge + 1) % 4;
@@ -201,11 +207,9 @@ namespace Wayfu.Lamkn
                 vertices[v + 3] = transform.InverseTransformPoint(a + Vector3.down * edgeDrop);
                 uvs[v] = new Vector2(0, 1); uvs[v + 1] = new Vector2(1, 1);
                 uvs[v + 2] = new Vector2(1, 0); uvs[v + 3] = new Vector2(0, 0);
-                int t = edge * 12;
+                int t = edge * 6;
                 triangles[t] = v; triangles[t + 1] = v + 1; triangles[t + 2] = v + 2;
                 triangles[t + 3] = v; triangles[t + 4] = v + 2; triangles[t + 5] = v + 3;
-                triangles[t + 6] = v + 2; triangles[t + 7] = v + 1; triangles[t + 8] = v;
-                triangles[t + 9] = v + 3; triangles[t + 10] = v + 2; triangles[t + 11] = v;
             }
             var mesh = new Mesh { name = "IceOuterEdges" };
             mesh.vertices = vertices; mesh.uv = uvs; mesh.triangles = triangles;
@@ -214,12 +218,29 @@ namespace Wayfu.Lamkn
             _sideFilter.sharedMesh = mesh;
         }
 
-        private static Bounds CombinedBounds(GameObject go)
+        // Ignore the countdown TMP and the generated edge mesh: Ice must fit and shade from
+        // the actual visual model (IceModel / ice.fbx), not from text UI.
+        private Renderer FindIceRenderer()
         {
-            var rs = go.GetComponentsInChildren<Renderer>(true);
-            if (rs.Length == 0) return new Bounds(go.transform.position, Vector3.one);
-            Bounds b = rs[0].bounds;
-            for (int i = 1; i < rs.Length; i++) b.Encapsulate(rs[i].bounds);
+            foreach (var renderer in GetComponentsInChildren<Renderer>(true))
+            {
+                if (renderer == _sideRenderer || renderer.GetComponent<TMP_Text>() != null) continue;
+                return renderer;
+            }
+            return null;
+        }
+
+        private Bounds VisualBounds()
+        {
+            bool hasBounds = false;
+            Bounds b = default;
+            foreach (var renderer in GetComponentsInChildren<Renderer>(true))
+            {
+                if (renderer == _sideRenderer || renderer.GetComponent<TMP_Text>() != null) continue;
+                if (!hasBounds) { b = renderer.bounds; hasBounds = true; }
+                else b.Encapsulate(renderer.bounds);
+            }
+            if (!hasBounds) return new Bounds(transform.position, Vector3.one);
             return b;
         }
     }

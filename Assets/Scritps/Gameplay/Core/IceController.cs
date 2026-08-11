@@ -146,6 +146,8 @@ namespace Wayfu.Lamkn
                 Vector3 center = (grid.CellPos(r0, e0) + grid.CellPos(r0, e1)
                                   + grid.CellPos(r1, e0) + grid.CellPos(r1, e1)) * 0.25f;
                 center.y += lift; // đặt băng trên đỉnh block
+                float boardSurfaceOffset = GameSettings.Instance != null ? GameSettings.Instance.BoardSurfaceOffset : 0f;
+                center.y += boardSurfaceOffset;
                 float width = (e1 - e0 + 1) * colStep;
                 float depth = (r1 - r0 + 1) * rowStep;
                 bool main = i == 0; // rects[0] là khối LỚN nhất → hiện countdown
