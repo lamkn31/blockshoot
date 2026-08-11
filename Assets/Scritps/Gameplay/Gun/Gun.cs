@@ -84,9 +84,10 @@ namespace Wayfu.Lamkn
         private float _lastLeftShotTime = -999f;
 
         [Header("GoOut FX")]
-        [Tooltip("Thời gian chờ sau khi bắt đầu animation GoOut rồi mới phát fx-water lan.")]
+        [Tooltip("Thời gian chờ sau khi bắt đầu GoOut để hiện lại số đạn và phát fx-water lan tại đúng mốc này.")]
         [SerializeField, Min(0f)] private float goOutWaterLanDelay;
         private Coroutine _goOutWaterFxRoutine;
+        private Coroutine _labelRevealRoutine;
 
         [Header("Laser (chỉ dùng khi FireMode = Laser)")]
         [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
@@ -338,6 +339,7 @@ namespace Wayfu.Lamkn
             ArmForNewLap();
             if (_moveRoutine != null) { StopCoroutine(_moveRoutine); _moveRoutine = null; }
             if (_goOutWaterFxRoutine != null) { StopCoroutine(_goOutWaterFxRoutine); _goOutWaterFxRoutine = null; }
+            if (_labelRevealRoutine != null) { StopCoroutine(_labelRevealRoutine); _labelRevealRoutine = null; }
 
             // Item pooled tái dùng: gun vừa chạy trên path mang theo rotation của khúc đường CUỐI
             // (RoundedPolylineFollower ghi thẳng vào root). Không reset thì vào màn/retry mỗi khẩu trong
@@ -425,23 +427,19 @@ namespace Wayfu.Lamkn
         }
 
         public void PlayClickAnimation() => PlayNamedAnimation(clickState);
-        public void PlayGoInAnimation()
-        {
-            if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
-            PlayNamedAnimation(goInState);
-        }
-        public void PlayGoOutAnimation()
-        {
-            PlayGoOutThen(null);
-        }
+        public void PlayGoInAnimation() => PlayGoInThen(null);
+        public void PlayGoOutAnimation() => PlayGoOutThen(null);
 
-        public void PlayGoInThen(Action onComplete)
+        // revealLabel=false khi GoIn chỉ là nửa đầu của chu kỳ path_end -> path_0;
+        // label phải chờ GoOut, nếu không sẽ nháy một frame ở giữa hai animation.
+        public void PlayGoInThen(Action onComplete, bool revealLabel = true)
         {
+            // Nếu vừa có GoOut trước đó, không cho timer WaterLan cũ bật text giữa GoIn.
+            if (_labelRevealRoutine != null) { StopCoroutine(_labelRevealRoutine); _labelRevealRoutine = null; }
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             if (stickmanAnimator == null || string.IsNullOrEmpty(goInState))
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
+                if (revealLabel) ShowBulletLabel();
                 onComplete?.Invoke();
                 return;
             }
@@ -449,8 +447,7 @@ namespace Wayfu.Lamkn
             // giữa GoIn và barrier của các gun còn lại.
             StartCoroutine(PlayAnimationThen(goInState, () =>
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
+                if (revealLabel) ShowBulletLabel();
                 onComplete?.Invoke();
             }, returnToIdle: false));
         }
@@ -458,21 +455,45 @@ namespace Wayfu.Lamkn
         public void PlayGoOutThen(Action onComplete)
         {
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
+            ScheduleBulletLabelReveal();
             if (stickmanAnimator == null || string.IsNullOrEmpty(goOutState))
             {
                 ScheduleGoOutWaterFx();
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
                 onComplete?.Invoke();
                 return;
             }
             ScheduleGoOutWaterFx();
             StartCoroutine(PlayAnimationThen(goOutState, () =>
             {
-                if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-                UpdateLabel();
                 onComplete?.Invoke();
             }));
+        }
+
+        // Số đạn xuất hiện cùng mốc WaterLan của GoOut, không phụ thuộc độ dài animation.
+        private void ScheduleBulletLabelReveal()
+        {
+            if (_labelRevealRoutine != null) StopCoroutine(_labelRevealRoutine);
+            if (goOutWaterLanDelay <= 0f)
+            {
+                _labelRevealRoutine = null;
+                ShowBulletLabel();
+                return;
+            }
+            _labelRevealRoutine = StartCoroutine(RevealBulletLabelAfterDelay());
+        }
+
+        private IEnumerator RevealBulletLabelAfterDelay()
+        {
+            yield return new WaitForSeconds(goOutWaterLanDelay);
+            _labelRevealRoutine = null;
+            ShowBulletLabel();
+        }
+
+        private void ShowBulletLabel()
+        {
+            if (bulletLabel == null || Data == null || Data.CountBullet <= 0) return;
+            bulletLabel.gameObject.SetActive(true);
+            UpdateLabel();
         }
 
         private void ScheduleGoOutWaterFx()
@@ -648,8 +669,6 @@ namespace Wayfu.Lamkn
         private IEnumerator BeginPathFollowerAfterHold(RoundedPolylinePath path, float startDistance, float speed)
         {
             if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
-            if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-            UpdateLabel();
             BeginPathFollower(path, startDistance, speed);
         }
 
@@ -755,7 +774,7 @@ namespace Wayfu.Lamkn
             if (_animRoutine != null) { StopCoroutine(_animRoutine); _animRoutine = null; }
             _pathEntryAnimating = true;
             bool done = false;
-            PlayGoInThen(() => done = true);
+            PlayGoInThen(() => done = true, revealLabel: false);
             while (!done) yield return null;
 
             // Hết đạn khi tới path_end → biến mất luôn, không loop lại.
@@ -810,8 +829,6 @@ namespace Wayfu.Lamkn
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             PlayGoOutAnimation();
             if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
-            if (bulletLabel != null) bulletLabel.gameObject.SetActive(true);
-            UpdateLabel();
             BeginPathFollower(path, 0f, speed);
         }
 
