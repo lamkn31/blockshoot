@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using BusGame.Gameplay;
 using UnityEngine;
 
@@ -39,6 +41,73 @@ namespace Wayfu.Lamkn
         private bool _loseCheckPending;
         private bool _waitingLoading;
         private bool _reportedOutOfGunBalance;
+        private bool _reportedEndgameBalance;
+        private bool _reportedEndgameDeadlock;
+        private bool _runtimeBalanceWasOk = true;
+
+        /// <summary>
+        /// Prints the real runtime balance per color. A color is balanced when
+        /// bullets still held by live guns + bullets already in flight equals
+        /// all live/queued blocks of that color.
+        /// </summary>
+        public bool LogRuntimeColorBalance(string reason, UnityEngine.Object context = null, bool emit = true)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            var gunCount = new Dictionary<TypeColor, int>();
+            var bullets = new Dictionary<TypeColor, int>();
+            // Read only guns owned by the current runtime managers. A scene scan
+            // either misses temporarily inactive tunnel guns or includes stale
+            // inactive objects retained by the pool from a previous run.
+            var runtimeGuns = new HashSet<Gun>();
+            if (SlotManager.IsActive) SlotManager.Instance.CollectRuntimeGuns(runtimeGuns);
+            if (PathManager.IsActive) PathManager.Instance.CollectRuntimeGuns(runtimeGuns);
+            foreach (var gun in runtimeGuns)
+            {
+                if (gun == null || gun.IsDead || gun.Data == null) continue;
+                var color = gun.Data.Color;
+                gunCount.TryGetValue(color, out int gc);
+                gunCount[color] = gc + 1;
+                bullets.TryGetValue(color, out int bc);
+                bullets[color] = bc + Mathf.Max(0, gun.Data.CountBullet);
+            }
+
+            var grid = GridBlockManager.Instance;
+            var blocks = grid != null ? grid.RemainingBlocksByColor() : new Dictionary<TypeColor, int>();
+            var flying = grid != null ? grid.PendingHitsByColor() : new Dictionary<TypeColor, int>();
+            var colors = new HashSet<TypeColor>(gunCount.Keys);
+            colors.UnionWith(bullets.Keys);
+            colors.UnionWith(blocks.Keys);
+            colors.UnionWith(flying.Keys);
+            var ordered = new List<TypeColor>(colors);
+            ordered.Sort((a, b) => ((int)a).CompareTo((int)b));
+
+            bool allMatch = true;
+            var sb = new StringBuilder($"[RuntimeBalance] {reason}");
+            foreach (var color in ordered)
+            {
+                gunCount.TryGetValue(color, out int guns);
+                bullets.TryGetValue(color, out int held);
+                flying.TryGetValue(color, out int inFlight);
+                blocks.TryGetValue(color, out int remaining);
+                bool match = held + inFlight == remaining;
+                allMatch &= match;
+                // Keep the complete snapshot on ONE console line so Unity's log
+                // list shows the numbers without requiring the entry to be selected.
+                sb.Append($" | {color}: guns={guns}, bullets={held}, inFlight={inFlight}, " +
+                          $"blocks={remaining}, balance={held + inFlight} {(match ? "OK" : "MISMATCH")}");
+            }
+            sb.Append($" | overall={(allMatch ? "OK" : "MISMATCH")}, slotsEmpty=" +
+                      $"{(SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty)}");
+            if (emit)
+            {
+                if (allMatch) Debug.Log(sb.ToString(), context);
+                else Debug.LogWarning(sb.ToString(), context);
+            }
+            return allMatch;
+#else
+            return true;
+#endif
+        }
 
         /// <summary>
         /// <see cref="LevelController.Build"/> gọi ở CUỐI, sau khi bàn chơi đã dựng xong — nên đây cũng
@@ -48,11 +117,14 @@ namespace Wayfu.Lamkn
         {
             State = GameState.Playing;
             _reportedOutOfGunBalance = false;
+            _reportedEndgameBalance = false;
+            _reportedEndgameDeadlock = false;
             // Chốt tổng block NGAY sau khi dựng: lúc này RemainingBlocks đang là 100%.
             _blocksAtStart = GridBlockManager.Instance != null ? GridBlockManager.Instance.RemainingBlocks : 0;
             ShowGamePlayHud();
             Popup?.SetBlockProgress(0, _blocksAtStart); // thanh tiến trình phá block về 0/total
             LevelLoaded?.Invoke(); // bàn chơi + slot đã sẵn sàng → Tutorial có thể bắt đầu
+            _runtimeBalanceWasOk = LogRuntimeColorBalance("Level started", this);
         }
 
         /// <summary>Gọi sau mỗi thay đổi bàn chơi (deploy gun / bắn / cột bị phá).</summary>
@@ -65,6 +137,17 @@ namespace Wayfu.Lamkn
             GridBlockManager.Instance?.UpdateIce(destroyed);   // tan trạng thái băng của cell (cho bắn được)
             IceController.Instance?.UpdateIce(destroyed);       // countdown + xoá Ice hình khi đủ ngưỡng
             Popup?.SetBlockProgress(destroyed, _blocksAtStart); // cập nhật thanh tiến trình phá block
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            bool balanceNow = LogRuntimeColorBalance("Board changed", this, emit: false);
+            if (_runtimeBalanceWasOk && !balanceNow)
+                LogRuntimeColorBalance("FIRST OK -> MISMATCH transition", this);
+            _runtimeBalanceWasOk = balanceNow;
+#endif
+            if (!_reportedEndgameBalance && SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty)
+            {
+                _reportedEndgameBalance = true;
+                LogRuntimeColorBalance("Entered endgame (all slots empty)", this);
+            }
             if (CheckWin()) return;
             RequestLoseCheck();
         }
@@ -112,8 +195,15 @@ namespace Wayfu.Lamkn
             var pm = PathManager.Instance;
             if (pm == null) return;
             var grid = GridBlockManager.Instance;
+            bool slotsEmpty = SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty;
+            bool anyTarget = pm.AnyGunHasTarget();
+            if (!_reportedEndgameDeadlock && slotsEmpty && pm.GunCount > 0 && !anyTarget)
+            {
+                _reportedEndgameDeadlock = true;
+                LogRuntimeColorBalance("Endgame has no matching gun target", this);
+            }
             if (!_reportedOutOfGunBalance && pm.GunCount == 0
-                && SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+                && slotsEmpty
                 && grid != null && grid.RemainingBlocks > 0)
             {
                 _reportedOutOfGunBalance = true;
@@ -121,7 +211,7 @@ namespace Wayfu.Lamkn
                                  grid.RemainingBlocksByColorReport());
             }
             if (!pm.IsFull) return;            // chỉ xét khi path đã đầy gun
-            if (pm.AnyGunHasTarget()) return;  // còn gun bắn được → chưa thua
+            if (anyTarget) return;             // còn gun bắn được → chưa thua
             Lose();
         }
 

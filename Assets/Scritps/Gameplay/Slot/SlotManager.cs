@@ -60,6 +60,20 @@ namespace Wayfu.Lamkn
             }
         }
 
+        /// <summary>Add every gun owned by the current level's slots/transit state.</summary>
+        public void CollectRuntimeGuns(HashSet<Gun> result)
+        {
+            if (result == null) return;
+            foreach (var slot in _activeSlots)
+            {
+                if (slot?.Guns == null) continue;
+                foreach (var gun in slot.Guns)
+                    if (gun != null && !gun.IsDead) result.Add(gun);
+            }
+            foreach (var gun in _movingToLoop)
+                if (gun != null && !gun.IsDead) result.Add(gun);
+        }
+
         public void Build(LevelData level)
         {
             Clear();

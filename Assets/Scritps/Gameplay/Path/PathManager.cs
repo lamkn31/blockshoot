@@ -118,6 +118,19 @@ namespace Wayfu.Lamkn
         public int GunCount => _guns.Count;
         public int QueueCount => _queue.Count;
         public RoundedPolylinePath Path => _path;
+
+        /// <summary>Add every gun owned by the current path/queue/gate state.</summary>
+        public void CollectRuntimeGuns(HashSet<Gun> result)
+        {
+            if (result == null) return;
+            foreach (var gun in _guns)
+                if (gun != null && !gun.IsDead) result.Add(gun);
+            foreach (var gun in _queue)
+                if (gun != null && !gun.IsDead) result.Add(gun);
+            if (_gateGun != null && !_gateGun.IsDead) result.Add(_gateGun);
+            foreach (var req in _emerge)
+                if (req?.Gun != null && !req.Gun.IsDead) result.Add(req.Gun);
+        }
         /// <summary>Độ nâng của gun/queue so với đường tâm path, khớp mặt nước đã dựng.</summary>
         public float GunSurfaceOffset => waterSurfaceOffset;
         /// <summary>Vị trí miệng TunnelIn; path kín/fallback dùng điểm vào path trên mặt nước.</summary>

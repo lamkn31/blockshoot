@@ -146,6 +146,8 @@ namespace Wayfu.Lamkn
         }
         /// <summary>Số block chưa bị đạn "đặt chỗ" (đạn đang bay) — gun chỉ bắn khi còn &gt; 0.</summary>
         public int Available => _blocks.Count - _pendingHits;
+        /// <summary>Số đạn đã trừ khỏi gun nhưng vẫn đang bay tới cell này.</summary>
+        public int PendingHits => _pendingHits;
         public bool IsEmpty => _blocks.Count == 0;
 
         public void Build(BlockCellData data, float stackSpacing, Vector3 blockScale, GridBlockManager manager)

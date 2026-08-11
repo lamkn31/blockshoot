@@ -880,6 +880,11 @@ namespace Wayfu.Lamkn
                 {
                     var cell = cur[e];
                     if (cell == null) continue;
+                    // UpdateStaticSourceDisplay rebuilds the visible queue head
+                    // as a Normal cell. It is still owned by Spawner8/Line and
+                    // must not move until that source is released; otherwise the
+                    // moved copy remains in src.Queue and is emitted a second time.
+                    if (IsQueuedStaticSource(gr, r, e)) continue;
                     if (IsCellDirectionDifferent(gr, cell, CollapseReferenceAngle(gr)) != (priority == 0)) continue;
                     if (cell.Indestructible) continue; // nguồn Spawner8 đứng yên, không dồn lên
 
@@ -997,6 +1002,7 @@ namespace Wayfu.Lamkn
                 for (int e = 0; e < cur.Length; e++)
                 {
                     var cell = cur[e];
+                    if (IsQueuedStaticSource(gr, r, e)) continue;
                     if (cell == null || cell.Indestructible) continue;
                     int slot = -1;
                     for (int n = 0; n < next.Length; n++)
@@ -1110,10 +1116,16 @@ namespace Wayfu.Lamkn
             if (sr < 0 || sr >= gr.Rows.Count) return false;
             var srow = gr.Rows[sr];
             if (sc < 0 || sc >= srow.Length) return false;
+            // Spawner8/SpawnerLine display the current queue head at their
+            // source position. UpdateStaticSourceDisplay rebuilds that display
+            // as a Normal cell, so Indestructible alone cannot protect it.
+            // Pulling it away without dequeuing src.Queue duplicates the head:
+            // one copy moves with the grid and another is emitted later.
+            if (IsQueuedStaticSource(gr, sr, sc)) return false;
             var cell = srow[sc];
             // Spawner thường phải được phép dồn như cell bình thường để mở ô gốc
             // và tiếp tục nhả queue. Spawner8/SpawnerLine còn bất tử thì vẫn bị
-            // chặn bởi Indestructible.
+            // chặn bởi source check ở trên (và Indestructible khi vừa Build).
             if (cell == null || cell.Indestructible) return false;
             srow[sc] = null;
             gr.Rows[r][e] = cell;
@@ -1536,12 +1548,103 @@ namespace Wayfu.Lamkn
         }
 
         // The last Spawner8 item remains in the source slot as an ordinary cell.
-        // Do not despawn or pull into this slot until a later normal collapse.
-        private static void ReleaseStaticSourceAtOrigin(GridRuntime gr, int i)
+        // The normal collapse pass may already have run before the queue reaches
+        // this state, so compact that final cell immediately. Otherwise it stays
+        // stranded at the old source until another unrelated cell is destroyed.
+        private void ReleaseStaticSourceAtOrigin(GridRuntime gr, int i)
         {
             var src = gr.Sources[i];
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
+            CompactReleasedFinalCell(gr, src);
+        }
+
+        // Move only the released final item through vacancies in the configured
+        // collapse directions. Re-running AdvanceOnce here would also advance
+        // every unrelated segment an extra step in the same destruction event.
+        private void CompactReleasedFinalCell(GridRuntime gr, SpawnerSource src)
+        {
+            int r = src.Row, c = src.Col;
+            if (r < 0 || r >= gr.Rows.Count || c < 0 || c >= gr.Rows[r].Length) return;
+            var cell = gr.Rows[r][c];
+            if (cell == null || cell.Indestructible) return;
+
+            for (int guard = 0; guard < 64; guard++)
+            {
+                int nr = r, nc = c;
+                var directions = gr.Data.CustomCollapseDirections;
+                if (directions != GridCollapseDirections.None)
+                {
+                    // Keep the same priority as AdvanceCustomDirections.
+                    if ((directions & GridCollapseDirections.Front) != 0 && r > 0
+                        && CanEnter(gr, r - 1, c, gr.Rows[r - 1]))
+                        nr = r - 1;
+                    else if ((directions & GridCollapseDirections.Back) != 0 && r + 1 < gr.Rows.Count
+                        && CanEnter(gr, r + 1, c, gr.Rows[r + 1]))
+                        nr = r + 1;
+                    else if ((directions & GridCollapseDirections.Left) != 0 && CanEnter(gr, r, c - 1, gr.Rows[r]))
+                        nc = c - 1;
+                    else if ((directions & GridCollapseDirections.Right) != 0 && CanEnter(gr, r, c + 1, gr.Rows[r]))
+                        nc = c + 1;
+                    else break;
+                }
+                else
+                {
+                    // Static Spawner8 sources currently occur on rectangular grids;
+                    // preserve the grid's legacy/default collapse direction as well.
+                    if (UsesHorizontalCollapseAxis(gr)) nc = c - HorizontalCollapseStep(gr);
+                    else nr = r + (ReverseGridDirection(gr) ? 1 : -1);
+                    if (nr < 0 || nr >= gr.Rows.Count || nc < 0 || nc >= gr.Rows[nr].Length
+                        || !CanEnter(gr, nr, nc, gr.Rows[nr])) break;
+                }
+
+                if (!GravityMayFill(gr, nr, nc)) break;
+                gr.Rows[r][c] = null;
+                gr.Rows[nr][nc] = cell;
+                r = nr; c = nc;
+                cell.SetColumn(c);
+            }
+
+            cell.MoveTo(BoardPos(gr.Data.CellPosAt(r, c, gr.Rows[r].Length)), CollapseDuration);
+            CompactVacancyBehindReleasedSource(gr, src.Row, src.Col);
+        }
+
+        // The released item can cross several existing gaps. Close the vacancy
+        // left at its former source by pulling the contiguous trailing chain one
+        // cell at a time, so the row/column remains solid after the queue ends.
+        private void CompactVacancyBehindReleasedSource(GridRuntime gr, int r, int c)
+        {
+            for (int guard = 0; guard < 64; guard++)
+            {
+                int sr = r, sc = c;
+                var directions = gr.Data.CustomCollapseDirections;
+                bool pulled;
+                if (directions != GridCollapseDirections.None)
+                {
+                    pulled = false;
+                    if ((directions & GridCollapseDirections.Front) != 0 && TryPull(gr, r, c, r + 1, c))
+                    { sr = r + 1; pulled = true; }
+                    else if ((directions & GridCollapseDirections.Back) != 0 && TryPull(gr, r, c, r - 1, c))
+                    { sr = r - 1; pulled = true; }
+                    else if ((directions & GridCollapseDirections.Left) != 0 && TryPull(gr, r, c, r, c + 1))
+                    { sc = c + 1; pulled = true; }
+                    else if ((directions & GridCollapseDirections.Right) != 0 && TryPull(gr, r, c, r, c - 1))
+                    { sc = c - 1; pulled = true; }
+                }
+                else if (UsesHorizontalCollapseAxis(gr))
+                {
+                    sc = c + HorizontalCollapseStep(gr);
+                    pulled = TryPull(gr, r, c, r, sc);
+                }
+                else
+                {
+                    sr = r + (ReverseGridDirection(gr) ? -1 : 1);
+                    pulled = TryPull(gr, r, c, sr, c);
+                }
+
+                if (!pulled) break;
+                r = sr; c = sc;
+            }
         }
 
         // A static source can disappear after the normal collapse pass has
@@ -1575,7 +1678,13 @@ namespace Wayfu.Lamkn
         private static void ReleaseExhaustedSpawnerCell(GridRuntime gr, SpawnerSource src)
         {
             if (!src.AllowCollapseIntoAfterQueueEmpty) return;
-            if (src.Row < 0 || src.Row >= gr.Rows.Count - 1 || src.Col < 0
+            bool hasHorizontalCollapse = gr.Data.Collapse2D || UsesHorizontalCollapseAxis(gr)
+                || (gr.Data.CustomCollapseDirections & (GridCollapseDirections.Left | GridCollapseDirections.Right)) != 0;
+            // A source on the final row used to stay reserved because a purely
+            // forward grid has nothing behind it. Multi-direction grids can still
+            // fill that slot horizontally, so retaining the marker creates a
+            // permanent interior hole (Level 13 Grid 2, cells 83-86).
+            if (src.Row < 0 || (src.Row >= gr.Rows.Count - 1 && !hasHorizontalCollapse) || src.Col < 0
                 || src.Col >= gr.SpawnerCells[src.Row].Length) return;
             gr.SpawnerCells[src.Row][src.Col] = false;
         }
@@ -1712,8 +1821,8 @@ namespace Wayfu.Lamkn
 
         public bool AllCleared => _everHadBlocks && RemainingBlocks == 0;
 
-        /// <summary>Runtime diagnostic for an out-of-guns board state.</summary>
-        public string RemainingBlocksByColorReport()
+        /// <summary>Runtime block totals by color, including live cells and every pending spawner/refill item.</summary>
+        public Dictionary<TypeColor, int> RemainingBlocksByColor()
         {
             var totals = new Dictionary<TypeColor, int>();
             void Add(TypeColor color, int amount)
@@ -1739,6 +1848,28 @@ namespace Wayfu.Lamkn
                         if (item != null) Add(item.Color, item.BlockStackCt);
             }
 
+            return totals;
+        }
+
+        /// <summary>Projectiles already deducted from guns but not yet applied to their target blocks.</summary>
+        public Dictionary<TypeColor, int> PendingHitsByColor()
+        {
+            var totals = new Dictionary<TypeColor, int>();
+            foreach (var gr in _grids)
+                foreach (var row in gr.Rows)
+                    foreach (var cell in row)
+                    {
+                        if (cell == null || cell.PendingHits <= 0) continue;
+                        totals.TryGetValue(cell.Color, out int current);
+                        totals[cell.Color] = current + cell.PendingHits;
+                    }
+            return totals;
+        }
+
+        /// <summary>Runtime diagnostic for an out-of-guns board state.</summary>
+        public string RemainingBlocksByColorReport()
+        {
+            var totals = RemainingBlocksByColor();
             var parts = new List<string>();
             foreach (var pair in totals) parts.Add($"{pair.Key}={pair.Value}");
             return parts.Count == 0 ? "none" : string.Join(", ", parts);

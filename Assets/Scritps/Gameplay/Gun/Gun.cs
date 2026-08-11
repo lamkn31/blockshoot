@@ -1126,9 +1126,8 @@ namespace Wayfu.Lamkn
         private void OnEmptied()
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            if (Data != null && GridBlockManager.Instance != null)
-                Debug.Log($"[Balance] Gun emptied: color={Data.Color}; remaining blocks: " +
-                          GridBlockManager.Instance.RemainingBlocksByColorReport(), this);
+            GameController.Instance?.LogRuntimeColorBalance(
+                $"Gun emptied: color={(Data != null ? Data.Color.ToString() : "unknown")}", this);
 #endif
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             if (Data.ConnectGroup != 0 && SlotManager.IsActive)
