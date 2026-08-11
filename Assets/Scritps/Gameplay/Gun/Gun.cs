@@ -268,8 +268,27 @@ namespace Wayfu.Lamkn
         {
             if (!_hasTrail) return;
             _trailEmission.enabled = false;
-            moveTrail.Clear();
+            // Gun được tái sử dụng qua pool sẽ bị tắt GameObject, khiến particle system
+            // dừng. LateUpdate sẽ Play lại khi gun thực sự chạy.
+            moveTrail.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             _trailPrimed = false; // frame sau lấy lại mốc _lastTrailPos, không tính delta qua lần teleport
+        }
+
+        // Gọi ngay khi gun bắt đầu một phase có thể di chuyển. Quan trọng với object
+        // lấy lại từ pool: Awake không chạy lại, nên ParticleSystem có thể đang Stop.
+        private void PrepareMoveTrail()
+        {
+            if (!_hasTrail || moveTrail.isPlaying) return;
+            moveTrail.Play(true);
+        }
+
+        // Bật trước frame transform bắt đầu đổi vị trí. Điều này đặc biệt cần cho
+        // nhánh slot -> path_0 đi thẳng, vì nó không đi qua OnQueued.
+        private void BeginMoveTrail()
+        {
+            if (!_hasTrail) return;
+            _trailEmission.enabled = true;
+            PrepareMoveTrail();
         }
 
         // Đo tốc độ bằng delta vị trí giữa 2 frame → hoạt động đồng nhất cho MỌI nguồn di chuyển
@@ -287,9 +306,14 @@ namespace Wayfu.Lamkn
 
             // Bật vệt khi đang chạy trong dải tốc độ hợp lệ. Loại: gun chết, đang chơi anim vào path
             // (đứng yên), và cú nhảy vị trí quá nhanh (deploy về pos 0 / chui hầm) = teleport.
-            bool moving = _state != GunState.Dead && !_pathEntryAnimating
-                          && speed >= trailMinSpeed && speed <= trailTeleportSpeed;
+            // Mọi chuyển động nhìn thấy được đều phát FxIntersection: slot -> queue,
+            // queue dồn hàng, và queue -> path_0. _pathEntryAnimating vẫn được phép
+            // vì nó bao gồm đoạn trượt vào path_0; chỉ loại cú teleport thật sự.
+            bool moving = _state != GunState.Dead && speed >= trailMinSpeed
+                          && (_state == GunState.Queued
+                              || speed <= trailTeleportSpeed);
             if (_trailEmission.enabled != moving) _trailEmission.enabled = moving;
+            if (moving) PrepareMoveTrail();
         }
 
         public void Init(GunData data, GunFireConfig fire)
@@ -450,6 +474,7 @@ namespace Wayfu.Lamkn
         public void OnQueued()
         {
             _state = GunState.Queued;
+            BeginMoveTrail();
             Slot = null;
             transform.SetParent(null);
             ResetBarrel(_right);
@@ -482,6 +507,7 @@ namespace Wayfu.Lamkn
         public void OnDeployed()
         {
             _state = GunState.OnPath;
+            BeginMoveTrail();
             _pathEntryAnimating = true;
             Slot = null;
             transform.SetParent(null);
