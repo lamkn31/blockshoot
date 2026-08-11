@@ -23,7 +23,8 @@ MonoBehaviour:
   - {x: -7.0511885, y: 0, z: -20.884666}
   - {x: -5.54188, y: 0, z: -16.294954}
   - {x: -3.5189774, y: 0, z: -12.518557}
-  - {x: 4.3343434, y: 0, z: -12.280729}
+  - {x: 0.018785417, y: 0, z: -11.007193}
+  - {x: 4.249112, y: 0, z: -12.312002}
   - {x: 5.76277, y: 0, z: -16.443617}
   - {x: 6.957159, y: 0, z: -20.86033}
   - {x: 6.987347, y: 0, z: -27.082333}
@@ -12857,11 +12858,103 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
+<<<<<<< Updated upstream
   Obstacles: []
   Sign:
     Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
     Pos: {x: 8.8, y: 0, z: -30}
     Scale: {x: 1, y: 1, z: 1}
+=======
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 3880441430053725302, guid: 1480c44753663ee40a4bd719d71706d6,
+      type: 3}
+    Pos: {x: 0, y: 0, z: -6.34}
+    RotationY: 0
+    Scale: {x: 1.173076, y: 1, z: 0.82395494}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3330962480086696267, guid: fb895029a408f1841b2764a8f5e5e825,
+      type: 3}
+    Pos: {x: 0, y: 0, z: -19}
+    RotationY: 0
+    Scale: {x: 1.3, y: 1, z: 1.15}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 4.60294, y: 0, z: -21.131174}
+    RotationY: 0
+    Scale: {x: 0.5460064, y: 1, z: 0.95}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -4.7426887, y: 0, z: -21.14596}
+    RotationY: 0
+    Scale: {x: 0.5460064, y: 1, z: 0.95}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -2.7162046, y: 0, z: -16.203201}
+    RotationY: 0
+    Scale: {x: 0.523247, y: 1, z: 0.4835687}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 2.5889828, y: 0, z: -16.226364}
+    RotationY: 0
+    Scale: {x: 0.523247, y: 1, z: 0.4835687}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 3.5991383, y: 0, z: -18.171387}
+    RotationY: 0
+    Scale: {x: 0.523247, y: 1, z: 0.4835687}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -3.7498062, y: 0, z: -18.207684}
+    RotationY: 0
+    Scale: {x: 0.523247, y: 1, z: 0.4835687}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -5.75, y: 0, z: -24.685163}
+    RotationY: 0
+    Scale: {x: 0.5460064, y: 1, z: 0.7310953}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: 5.622636, y: 0, z: -24.685163}
+    RotationY: 0
+    Scale: {x: 0.5460064, y: 1, z: 0.7310953}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7715462441154322229, guid: 0dc8f155f3674954cb099023e6625033,
+      type: 3}
+    Pos: {x: -0.059144974, y: 0, z: -26.335745}
+    RotationY: 90
+    Scale: {x: 0.54818726, y: 1, z: 0.99303675}
+    TargetCellIndex: -1
+    Strength: 1
+>>>>>>> Stashed changes
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

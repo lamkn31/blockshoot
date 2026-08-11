@@ -6094,25 +6094,57 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
       type: 3}
-    Pos: {x: 4.61186, y: 0, z: -26.465317}
+    Pos: {x: 4.772341, y: 0, z: -26.073597}
     RotationY: 90
-    Scale: {x: 1.320754, y: 1.1, z: 1.7636197}
+    Scale: {x: 0.70514196, y: 1.1, z: 1.804672}
     TargetCellIndex: -1
     Strength: 1
   - Type: 0
     Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
       type: 3}
-    Pos: {x: -5.058996, y: 0, z: -26.465317}
+    Pos: {x: -5.103877, y: 0, z: -26.16333}
     RotationY: 90
-    Scale: {x: 1.3207512, y: 1.1, z: 1.6763992}
+    Scale: {x: 0.64814436, y: 1.1, z: 1.697533}
     TargetCellIndex: -1
     Strength: 1
   - Type: 0
     Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
       type: 3}
-    Pos: {x: -5.578577, y: 0, z: -20.30032}
+    Pos: {x: -5.1340613, y: 0, z: -20.630257}
     RotationY: 90
-    Scale: {x: 1.3110458, y: 1.1, z: 1.4190788}
+    Scale: {x: 0.62580127, y: 1.1, z: 1.6974801}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3880441430053725302, guid: b0aecaadffb2a4c49b4f2e295d06153a,
+      type: 3}
+    Pos: {x: -9.823511, y: 0, z: -1.8341751}
+    RotationY: 314.7988
+    Scale: {x: 0.99527353, y: 1, z: 0.7144155}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3880441430053725302, guid: b0aecaadffb2a4c49b4f2e295d06153a,
+      type: 3}
+    Pos: {x: 0.52418566, y: 0, z: -13.284153}
+    RotationY: -90
+    Scale: {x: 0.99527353, y: 1, z: 0.7144155}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3330962480086696267, guid: 3f3e95205ffb32e4db79be8edce28b00,
+      type: 3}
+    Pos: {x: -5.7942734, y: 0, z: -23.527447}
+    RotationY: -90
+    Scale: {x: 1.2535985, y: 1, z: 0.9152064}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 3330962480086696267, guid: 3f3e95205ffb32e4db79be8edce28b00,
+      type: 3}
+    Pos: {x: 5.31202, y: 0, z: -23.640327}
+    RotationY: 90
+    Scale: {x: 1.1869864, y: 1, z: 0.9171433}
     TargetCellIndex: -1
     Strength: 1
   Sign:
