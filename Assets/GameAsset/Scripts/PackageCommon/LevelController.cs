@@ -170,6 +170,7 @@ namespace Wayfu.Lamkn
         {
             if (level.BoardProps == null || level.BoardProps.Count == 0) return;
             _propsRoot = new GameObject("BoardProps").transform;
+            _propsRoot.SetParent(transform, true); // GamePlay được load additive; tránh root rơi vào StartGame đang active.
             foreach (var p in level.BoardProps)
             {
                 if (p?.PropPrefab == null) continue;
@@ -186,10 +187,16 @@ namespace Wayfu.Lamkn
         {
             if (level.Obstacles == null || level.Obstacles.Count == 0) return;
             _obstaclesRoot = new GameObject("Obstacles").transform;
+            // Scene GamePlay được load additive trong khi StartGame còn active. Root
+            // không parent sẽ bị tạo vào StartGame rồi mất khi loading hoàn tất và
+            // StartGame unload; parent vào LevelController để nó luôn thuộc GamePlay.
+            _obstaclesRoot.SetParent(transform, true);
             foreach (var o in level.Obstacles)
             {
                 if (o?.Prefab == null) continue;
-                var go = Instantiate(o.Prefab, o.Pos, Quaternion.Euler(0f, o.RotationY, 0f), _obstaclesRoot);
+                float surfaceOffset = GameSettings.Instance != null ? GameSettings.Instance.BoardSurfaceOffset : 0f;
+                var go = Instantiate(o.Prefab, o.Pos + Vector3.up * surfaceOffset,
+                                     Quaternion.Euler(0f, o.RotationY, 0f), _obstaclesRoot);
                 Vector3 s = o.Scale == Vector3.zero ? Vector3.one : o.Scale;
                 go.transform.localScale = Vector3.Scale(go.transform.localScale, s);
                 // Đăng ký collider để gun không bắn xuyên obstacle (LOS trong GridBlockManager.FindTargetCell).

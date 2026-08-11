@@ -543,7 +543,7 @@ namespace Wayfu.Lamkn
             }
 
             // playEmerge: đặt về pos 0 TRƯỚC rồi mới GoOut (không thì GoOut chơi ở vị trí cũ lúc follower tắt).
-            if (path != null) transform.position = path.GetPointAtDistance(startDistance);
+            if (path != null) transform.position = PathSurfacePoint(path, startDistance);
             // playEmerge: gun hiện ở path_0, hold ngắn rồi chạy trong lúc GoOut tiếp diễn (gun loop tái xuất).
             StartPathFollower(path, startDistance, speed, playEmerge);
         }
@@ -556,7 +556,7 @@ namespace Wayfu.Lamkn
         private IEnumerator MoveIntoPathThenFollow(RoundedPolylinePath path, float startDistance, float pathSpeed, float moveSpeed)
         {
             _pathEntryAnimating = true;
-            Vector3 target = path != null ? path.GetPointAtDistance(startDistance) : transform.position;
+            Vector3 target = path != null ? PathSurfacePoint(path, startDistance) : transform.position;
             Vector3 start = transform.position;
             float dist = Vector3.Distance(start, target);
             float dur = moveSpeed > 0.01f ? dist / moveSpeed : 0f;
@@ -621,8 +621,15 @@ namespace Wayfu.Lamkn
             _lapStartStamp = Time.time; // mốc "ready" ban đầu: mọi cell đang có coi như đã đứng sẵn
             ArmForNewLap(); // vào path tại pos 0 = bắt đầu lượt bắn đầu tiên
             _basePathSpeed = speed;
-            if (_follower != null) { _follower.Init(path, startDistance, speed * EndgameSpeedMultiplier); _follower.enabled = true; }
-            else if (path != null) transform.position = path.GetPointAtDistance(startDistance); // gun ko có follower
+            float surfaceOffset = PathManager.IsActive ? PathManager.Instance.GunSurfaceOffset : 0f;
+            if (_follower != null) { _follower.Init(path, startDistance, speed * EndgameSpeedMultiplier, surfaceOffset); _follower.enabled = true; }
+            else if (path != null) transform.position = PathSurfacePoint(path, startDistance); // gun ko có follower
+        }
+
+        private static Vector3 PathSurfacePoint(RoundedPolylinePath path, float distance)
+        {
+            float offset = PathManager.IsActive ? PathManager.Instance.GunSurfaceOffset : 0f;
+            return path.GetPointAtDistance(distance) + Vector3.up * offset;
         }
 
         private void Update()
@@ -721,14 +728,14 @@ namespace Wayfu.Lamkn
             // be completing its own GoIn, but that barrier must not leave this gun
             // visibly stranded at path_end while it waits.
             SetHiddenDuringPathEntry(true);
-            transform.position = path.GetPointAtDistance(0f);
+            transform.position = PathSurfacePoint(path, 0f);
 
             if (Data != null && Data.ConnectGroup != 0 && SlotManager.IsActive)
                 yield return SlotManager.Instance.WaitForConnectCycle(this);
 
             // Đã chui vào hầm ở cuối path: ẩn hẳn rồi teleport về cửa (pos 0), NHƯNG chưa tái xuất ngay.
             SetHiddenDuringPathEntry(true);
-            transform.position = path.GetPointAtDistance(0f);
+            transform.position = PathSurfacePoint(path, 0f);
 
             // Xin PathManager cho tái xuất. Nếu còn gun slot đang chờ vào thì gun này ẩn hẳn tại cửa đợi
             // slot vào HẾT mới tới lượt (ưu tiên slot). Không có PathManager → tái xuất ngay (fallback).

@@ -31,5 +31,6 @@ MonoBehaviour:
   FrontStationDistance: 0
   BulletSpeed: 35
   EndgameSpeedMultiplier: 1.5
+  BoardSurfaceOffset: 1.1
   BlockStackSpacing: 1
   BlockCollapseDuration: 0.2

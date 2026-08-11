@@ -632,7 +632,7 @@ namespace Wayfu.Lamkn
             _gsSO.Update();
             foreach (var name in new[] { "CoreType", "SlotGunSpacing", "FirstGunSpacing", "GunGoInDistanceBeforeEnd", "GunPathGoInDistanceBeforeEnd", "PathWidth", "MaxGunOnPath", "GunSpeed", "GunSpacing",
                 "FireInterval", "FireMode", "BurstSpawnStacked", "BurstRowLead", "GunFireRange",
-                "GunFireAngle", "FrontStationDistance", "BulletSpeed", "EndgameSpeedMultiplier", "BlockStackSpacing",
+                "GunFireAngle", "FrontStationDistance", "BulletSpeed", "EndgameSpeedMultiplier", "BoardSurfaceOffset", "BlockStackSpacing",
                 "BlockCollapseDuration" })
                 EditorGUILayout.PropertyField(_gsSO.FindProperty(name));
             _gsSO.ApplyModifiedProperties();

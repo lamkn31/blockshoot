@@ -12,6 +12,7 @@ public class RoundedPolylineFollower : MonoBehaviour
 
     private float currentDistance = 0f; // Khoảng cách vật thể đã đi được trên đường
     private float startDistance = 0f;   // Điểm VÀO path — mốc đếm vòng
+    private float verticalOffset;
 
     /// <summary>Arc-length hiện tại trên path (chưa wrap). PathManager đọc để tính khoảng cách giữa các gun.</summary>
     public float CurrentDistance => currentDistance;
@@ -32,13 +33,14 @@ public class RoundedPolylineFollower : MonoBehaviour
     }
 
     /// <summary>Gắn path + vị trí bắt đầu + tốc độ (gọi khi gun được deploy lên path).</summary>
-    public void Init(RoundedPolylinePath path, float startDistance, float speed)
+    public void Init(RoundedPolylinePath path, float startDistance, float speed, float pathVerticalOffset = 0f)
     {
         targetPath = path;
         currentDistance = startDistance;
         this.startDistance = startDistance;
         moveSpeed = speed;
-        if (targetPath != null) transform.position = targetPath.GetPointAtDistance(currentDistance);
+        verticalOffset = pathVerticalOffset;
+        if (targetPath != null) transform.position = PathPoint(currentDistance);
     }
 
     private void Start()
@@ -56,7 +58,7 @@ public class RoundedPolylineFollower : MonoBehaviour
         }
 
         // Đặt vị trí ban đầu
-        transform.position = targetPath.GetPointAtDistance(currentDistance);
+        transform.position = PathPoint(currentDistance);
     }
 
     private void Update()
@@ -67,15 +69,17 @@ public class RoundedPolylineFollower : MonoBehaviour
         currentDistance += moveSpeed * Time.deltaTime;
 
         // Cập nhật tọa độ mới bằng hàm nội suy nhị phân
-        Vector3 newPosition = targetPath.GetPointAtDistance(currentDistance);
+        Vector3 newPosition = PathPoint(currentDistance);
         transform.position = newPosition;
 
         // Tính hướng đi tiếp theo (nhìn trước 0.05 mét) để xoay mặt theo đường ray — trên SÀN XZ.
-        Vector3 lookAheadPos = targetPath.GetPointAtDistance(currentDistance + 0.05f);
+        Vector3 lookAheadPos = PathPoint(currentDistance + 0.05f);
         Vector3 direction = lookAheadPos - transform.position;
         direction.y = 0f;
         if (direction.sqrMagnitude > 1e-6f)
             transform.rotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
     }
+
+    private Vector3 PathPoint(float distance) => targetPath.GetPointAtDistance(distance) + Vector3.up * verticalOffset;
 }
 }

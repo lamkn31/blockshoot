@@ -118,6 +118,8 @@ namespace Wayfu.Lamkn
         public int GunCount => _guns.Count;
         public int QueueCount => _queue.Count;
         public RoundedPolylinePath Path => _path;
+        /// <summary>Độ nâng của gun/queue so với đường tâm path, khớp mặt nước đã dựng.</summary>
+        public float GunSurfaceOffset => waterSurfaceOffset;
 
         /// <summary>Dựng path từ level rồi nạp config gun. Gọi thay cho Init(path) cũ.</summary>
         public void Build(LevelData level)
@@ -516,14 +518,13 @@ namespace Wayfu.Lamkn
 
             float maxStep = slotToEntrySpeed * EndgameSpeedMultiplier * dt;
             float sep = crowdMinSeparation;
-            Vector3 entrance = _path != null ? _path.GetPointAtDistance(_frontStationDistance) : Vector3.zero;
+            Vector3 entrance = PathSurfacePoint(_frontStationDistance);
 
             for (int i = 0; i < n; i++)
             {
                 var gun = _queue[i];
                 if (gun == null) continue;
                 Vector3 pos = gun.transform.position;
-                float keepY = pos.y;
 
                 // (1) Bay tới anchor (giới hạn bước = tốc độ chờ) — tới nơi thì bước nhỏ dần rồi dừng.
                 Vector3 seek = Vector3.zero;
@@ -559,7 +560,9 @@ namespace Wayfu.Lamkn
                 { _queueArrived.Add(gun); arrived = true; }
 
                 Vector3 next = arrived ? ClampToWait(moved) : moved; // chỉ gun đã vào vùng mới bị kẹp biên
-                next.y = keepY;
+                // Queue cũng đứng trên mặt nước. Chỉ các gun đã rời slot mới đi
+                // qua đây, nên không ảnh hưởng độ cao gun trong GunSlot.
+                next.y = hasTarget ? target.y : pos.y;
                 gun.transform.position = next;
 
                 // Quay mặt VỀ CỬA (pos 0) — chờ hướng về đường, vào là chạy thẳng theo tiếp tuyến path.
@@ -796,9 +799,17 @@ namespace Wayfu.Lamkn
             if (!float.IsInfinity(depth)) depthPos = Mathf.Min(depthPos, Mathf.Max(0f, depth - _clusterSpacing * 0.5f));
 
             Vector3 anchor = near + widthDir * across + depthDir * depthPos;
+            anchor += Vector3.up * waterSurfaceOffset;
             if (clusterJitter > 0f && _queueJitter.TryGetValue(gun, out var j))
                 anchor += (widthDir * j.x + depthDir * j.y) * clusterJitter;
             return ClampToWait(anchor);
+        }
+
+        private Vector3 PathSurfacePoint(float distance)
+        {
+            return _path != null
+                ? _path.GetPointAtDistance(distance) + Vector3.up * waterSurfaceOffset
+                : Vector3.up * waterSurfaceOffset;
         }
 
         /// <summary>

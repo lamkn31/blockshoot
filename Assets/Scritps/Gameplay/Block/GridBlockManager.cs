@@ -75,6 +75,7 @@ namespace Wayfu.Lamkn
 
         private readonly List<GridRuntime> _grids = new List<GridRuntime>();
         private bool _everHadBlocks;
+        private float _boardSurfaceOffset;
 
         // Wall/obstacle chắn tia bắn: collider của các obstacle sinh theo level (LevelController đăng ký sau
         // khi spawn). Gun không được CHỐT cell nếu đường thẳng gun→cell bị 1 obstacle nào cắt ngang (LOS).
@@ -94,12 +95,14 @@ namespace Wayfu.Lamkn
             var gs = GameSettings.Instance;
             _collapseDurationBase = gs != null ? gs.BlockCollapseDuration : 0.25f;
             _frontRowFirst = gs != null && gs.CoreType == CoreGameType.FrontRowFirst;
+            _boardSurfaceOffset = gs != null ? gs.BoardSurfaceOffset : 0f;
 
             foreach (var grid in level.Grids)
             {
                 if (grid == null) continue;
                 var gridGo = new GameObject("Grid");
                 gridGo.transform.SetParent(transform);
+                gridGo.transform.position = Vector3.up * _boardSurfaceOffset;
 
                 var gr = new GridRuntime
                 {
@@ -124,7 +127,7 @@ namespace Wayfu.Lamkn
                         // Designer xoá ô này (stack <= 0) → LỖ vĩnh viễn: không dựng cell, và về sau cũng
                         // không cho cell nào dồn/refill vào (xem AdvanceOnce, TryRefill).
                         if (cellData == null || cellData.BlockStackCt <= 0) { holes[e] = true; continue; }
-                        row[e] = CreateCell(gr, $"Cell_r{r}_e{e}", grid.CellPos(r, e), cellData);
+                        row[e] = CreateCell(gr, $"Cell_r{r}_e{e}", BoardPos(grid.CellPos(r, e)), cellData);
 
                         if (!cellData.Type.IsSpawner()) continue;
                         bool eight = cellData.Type == BlockCellType.Spawner8;
@@ -196,6 +199,8 @@ namespace Wayfu.Lamkn
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
             return cell;
         }
+
+        private Vector3 BoardPos(Vector3 position) => position + Vector3.up * _boardSurfaceOffset;
 
         /// <summary>
         /// Hướng dồn/nhả của cell. Rect: tính thẳng từ grid (mọi cell chung 1 hướng) nên xoay grid là
@@ -893,7 +898,7 @@ namespace Wayfu.Lamkn
                     cur[e] = null;
                     cell.SetColumn(slot);
                     // Không gỡ PendingEntry ở đây: transform còn đang trượt. MoveTo tự gỡ khi tới nơi.
-                    cell.MoveTo(gr.Data.CellPosAt(r - 1, slot, prev.Length), CollapseDuration);
+                    cell.MoveTo(BoardPos(gr.Data.CellPosAt(r - 1, slot, prev.Length)), CollapseDuration);
                     moved = true;
                 }
             }
@@ -1001,7 +1006,7 @@ namespace Wayfu.Lamkn
                     }
                     if (slot < 0) continue;
                     next[slot] = cell; cur[e] = null; cell.SetColumn(slot);
-                    cell.MoveTo(gr.Data.CellPosAt(r + 1, slot, next.Length), CollapseDuration);
+                    cell.MoveTo(BoardPos(gr.Data.CellPosAt(r + 1, slot, next.Length)), CollapseDuration);
                     moved = true;
                 }
             }
@@ -1113,7 +1118,7 @@ namespace Wayfu.Lamkn
             srow[sc] = null;
             gr.Rows[r][e] = cell;
             cell.SetColumn(e);
-            cell.MoveTo(gr.Data.CellPosAt(r, e, gr.Rows[r].Length), CollapseDuration);
+            cell.MoveTo(BoardPos(gr.Data.CellPosAt(r, e, gr.Rows[r].Length)), CollapseDuration);
             return true;
         }
 
@@ -1164,7 +1169,7 @@ namespace Wayfu.Lamkn
                     gr.Rows[br][bc] = null;
                     row[c] = cell;
                     cell.SetColumn(c);
-                    cell.MoveTo(gr.Data.CellPosAt(r, c, row.Length), CollapseDuration);
+                    cell.MoveTo(BoardPos(gr.Data.CellPosAt(r, c, row.Length)), CollapseDuration);
                     moved = true;
                 }
             }
@@ -1333,7 +1338,7 @@ namespace Wayfu.Lamkn
                     gr.Rows[pr][pc] = null;
                     gr.Rows[r][c] = pcell;
                     pcell.SetColumn(c);
-                    pcell.MoveTo(gr.Data.CellPosAt(r, c, gr.Rows[r].Length), CollapseDuration);
+                    pcell.MoveTo(BoardPos(gr.Data.CellPosAt(r, c, gr.Rows[r].Length)), CollapseDuration);
                     changed = true;
                 }
                 if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
@@ -1466,8 +1471,8 @@ namespace Wayfu.Lamkn
                 SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(r, c) - gr.Data.CellDirectionOffset,
             };
             var row = gr.Rows[r];
-            var cell = CreateCell(gr, $"Cell_spawn_r{r}_e{c}", spawnPos, data);
-            cell.MoveTo(gr.Data.CellPosAt(r, c, row.Length), _collapseDuration); // tự khoá ngắm khi trượt
+            var cell = CreateCell(gr, $"Cell_spawn_r{r}_e{c}", BoardPos(spawnPos), data);
+            cell.MoveTo(BoardPos(gr.Data.CellPosAt(r, c, row.Length)), _collapseDuration); // tự khoá ngắm khi trượt
             row[c] = cell;
             src.Queue.Dequeue(); // đã nhả đầu ra ngoài
             return true;
@@ -1624,8 +1629,8 @@ namespace Wayfu.Lamkn
                 SpawnerDirectionAngleZ = dirAngle - gr.Data.CellDirectionOffset,
             };
             var row_ = gr.Rows[row];
-            var cell = CreateCell(gr, $"Cell_spawn_r{row}_e{col}", spawnPos, data);
-            cell.MoveTo(gr.Data.CellPosAt(row, col, row_.Length), _collapseDuration); // tự khoá ngắm khi trượt
+            var cell = CreateCell(gr, $"Cell_spawn_r{row}_e{col}", BoardPos(spawnPos), data);
+            cell.MoveTo(BoardPos(gr.Data.CellPosAt(row, col, row_.Length)), _collapseDuration); // tự khoá ngắm khi trượt
             row_[col] = cell;
             return true;
         }
@@ -1661,8 +1666,8 @@ namespace Wayfu.Lamkn
                     SpawnerDirectionAngleZ = gr.Data.DefaultCellAngle(rowIndex, e) - gr.Data.CellDirectionOffset,
                 };
 
-                row[e] = CreateCell(gr, $"Cell_refill_r{rowIndex}_e{e}", spawnPos, data);
-                row[e].MoveTo(pos, _collapseDuration); // MoveTo tự khoá ngắm tới khi cell trượt xong
+                row[e] = CreateCell(gr, $"Cell_refill_r{rowIndex}_e{e}", BoardPos(spawnPos), data);
+                row[e].MoveTo(BoardPos(pos), _collapseDuration); // MoveTo tự khoá ngắm tới khi cell trượt xong
                 fed = true;
             }
             return fed;
