@@ -19,6 +19,10 @@ namespace Wayfu.Lamkn
         [Tooltip("Số coin thưởng hiện trên popup Win.")]
         [SerializeField] private int winReward = 100;
 
+        [Header("Feature Unlock (meta trên WinPopup như SmashFest)")]
+        [Tooltip("Gán FeatureUnlockConfig.asset. Để trống thì WinPopup chỉ hiện meta mặc định (không có feature).")]
+        [SerializeField] private FeatureUnlockSO featureConfig;
+
         public GameState State { get; private set; } = GameState.None;
 
         public event Action OnWin;
@@ -120,7 +124,59 @@ namespace Wayfu.Lamkn
         {
             State = GameState.Win;
             OnWin?.Invoke();
-            Popup?.ShowWin($"LEVEL {DisplayLevel}", winReward, 0, Next);
+            // Cấu hình meta feature-unlock trên WinPopup theo level VỪA thắng rồi mới show (như SmashFest).
+            ShowWinWithFeature($"LEVEL {DisplayLevel}", DisplayLevel);
+        }
+
+        // Đảm bảo WinPopup đã tạo → cấu hình meta feature theo level vừa thắng → show (flow port từ SmashFest).
+        private async void ShowWinWithFeature(string title, int beatenLevel)
+        {
+            var pc = Popup;
+            if (pc == null) return;
+            WinPopup winPopup = await pc.EnsureWinAsync();
+            if (winPopup != null) ConfigureWinPopupFeature(winPopup, beatenLevel);
+            pc.ShowWin(title, winReward, 0, Next);
+        }
+
+        // Cấu hình meta feature-unlock trên WinPopup theo level hiện tại (port từ SmashFest.GameController).
+        public void ConfigureWinPopupFeature(WinPopup popup, int currentLevel)
+        {
+            if (popup == null) return;
+
+            FeatureUnlockSO cfg = featureConfig;
+            if (cfg == null)
+            {
+                popup.SetMetaMode(WinPopup.VictoryMetaMode.None);
+                popup.SetFeatureInfo(null, null, null);
+                return;
+            }
+
+            FeatureUnlockEntry feature = cfg.GetFeatureForLevel(currentLevel);
+            if (feature == null)
+            {
+                popup.SetMetaMode(WinPopup.VictoryMetaMode.None);
+                popup.SetFeatureInfo(null, null, null);
+                return;
+            }
+
+            // Nếu prevLevel thuộc feature khác (hoặc chưa có) thì slider start từ 0,
+            // tránh nhảy giật khi vừa chuyển sang feature mới.
+            int prevLevel = currentLevel - 1;
+            FeatureUnlockEntry prevFeature = cfg.GetFeatureForLevel(prevLevel);
+            float fromP = prevFeature == feature ? cfg.GetProgressFor(prevFeature, prevLevel) : 0f;
+            float toP = cfg.GetProgressFor(feature, currentLevel);
+
+            if (currentLevel == feature.unlockLevel)
+            {
+                // Đạt unlock level: animate tới 100% rồi swap sang ShowMeta.
+                popup.SetProgressThenShow(fromP, toP);
+            }
+            else
+            {
+                popup.SetProgress(fromP, toP);
+                popup.SetMetaMode(WinPopup.VictoryMetaMode.Progress);
+            }
+            popup.SetFeatureInfo(feature.icon, feature.titleImage, feature.title, feature.description);
         }
 
         private void Lose()

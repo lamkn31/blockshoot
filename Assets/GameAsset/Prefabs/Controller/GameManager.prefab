@@ -286,7 +286,7 @@ MonoBehaviour:
   modelRotation: {x: 0, y: 0, z: 0}
   meshLengthScale: 100
   pipeCornerSampleStep: 8
-  waterSurfaceOffset: -0.6
+  waterSurfaceOffset: 0
   entryRevealDistance: 0.2
   spawnBubbles: 1
   bubbleSpawnInterval: 0.8
@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winReward: 100
+  featureConfig: {fileID: 11400000, guid: 1544bfe9ec02db644bf12d5449bab2db, type: 2}
 --- !u!1 &7651166080501121240
 GameObject:
   m_ObjectHideFlags: 0

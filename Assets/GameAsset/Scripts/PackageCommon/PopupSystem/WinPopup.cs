@@ -19,6 +19,7 @@ namespace Wayfu.Lamkn
         [SerializeField] private TMP_Text rewardText;
         [SerializeField] private TMP_Text txtCoinAll;
         [SerializeField] private Button nextButton;
+        [SerializeField] private GameObject fxWin;
 
         [Header("Home (optional)")]
         [SerializeField] private bool hasHomeButton = false;
@@ -96,6 +97,9 @@ namespace Wayfu.Lamkn
         #endregion
 
         #region Unity
+
+        // Win popup đóng chỉ fade, KHÔNG scale.
+        protected override bool ScaleOnHide => false;
 
         protected override void Awake()
         {
@@ -200,6 +204,9 @@ namespace Wayfu.Lamkn
             // Dọn state còn sót từ lần show trước (coroutine progress chạy dở, scale leftover...).
             // Re-show không reset sẽ kẹt slider hoặc meta cũ hiển thị nhầm.
             if (_progressCoroutine != null) { StopCoroutine(_progressCoroutine); _progressCoroutine = null; }
+            if (fxWin != null) {
+                fxWin.SetActive(true);
+            }
             _rewardAmount = reward;
             _totalCoinBefore = totalCoinBefore;
             _onNext = onNext;
@@ -239,6 +246,8 @@ namespace Wayfu.Lamkn
         private void PlayRibbonAnim()
         {
             if (ribbonSpine == null || string.IsNullOrEmpty(ribbonWinAnim)) return;
+            // Bật GameObject ribbon khi popup show (đã bị tắt lúc Hide lần trước).
+            if (!ribbonSpine.gameObject.activeSelf) ribbonSpine.gameObject.SetActive(true);
             // Popup vừa được SetActive → SkeletonGraphic có thể CHƯA init trong cùng frame → ép init.
             if (ribbonSpine.AnimationState == null) ribbonSpine.Initialize(false);
             var state = ribbonSpine.AnimationState;
@@ -272,6 +281,12 @@ namespace Wayfu.Lamkn
         {
             // Stop progress coroutine để không ghi đè slider sau khi popup đã đóng.
             if (_progressCoroutine != null) { StopCoroutine(_progressCoroutine); _progressCoroutine = null; }
+            // Nếu đang ở defaultMeta (không có feature) → tắt defaultMeta TRƯỚC khi fade để đóng.
+            if (_metaMode == VictoryMetaMode.None && defaultMeta != null && defaultMeta.activeSelf)
+                defaultMeta.SetActive(false);
+            // Tắt GameObject ribbon TRƯỚC khi fade để đóng.
+            if (ribbonSpine != null && ribbonSpine.gameObject.activeSelf) ribbonSpine.gameObject.SetActive(false);
+            if (fxWin != null) fxWin.SetActive(false);
             base.Hide();
             SoundController.Instance.PlayDefaultBGM();
         }

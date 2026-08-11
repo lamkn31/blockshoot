@@ -115,11 +115,16 @@ namespace Wayfu.Lamkn
             _canvasGroup.blocksRaycasts = false;
             _isShown = false;
 
-            // Đóng: gọi ĐỒNG THỜI fade nền →0 và scale popup →0.
+            // Đóng: fade nền →0; scale popup →0 chỉ khi ScaleOnHide (lớp con có thể tắt).
             PlayBackgroundFade(FadeAlpha, 0f, fadeOutDuration);
-            Vector3 fromScale = contentPanel != null ? contentPanel.localScale : Vector3.one;
-            PlayContentScale(fromScale, Vector3.zero, contentScaleDuration);
-            FireWhenDone(Mathf.Max(fadeOutDuration, contentScaleDuration), () =>
+            float hideDuration = fadeOutDuration;
+            if (ScaleOnHide)
+            {
+                Vector3 fromScale = contentPanel != null ? contentPanel.localScale : Vector3.one;
+                PlayContentScale(fromScale, Vector3.zero, contentScaleDuration);
+                hideDuration = Mathf.Max(fadeOutDuration, contentScaleDuration);
+            }
+            FireWhenDone(hideDuration, () =>
             {
                 gameObject.SetActive(false);
                 OnHideCompleted();
@@ -128,6 +133,9 @@ namespace Wayfu.Lamkn
 
         protected virtual void OnShowCompleted() { }
         protected virtual void OnHideCompleted() { }
+
+        /// <summary>Lớp con override = false để KHÔNG scale popup khi đóng (chỉ fade).</summary>
+        protected virtual bool ScaleOnHide => true;
 
         #endregion
 
