@@ -47,6 +47,7 @@ namespace Wayfu.Lamkn
         private float _arcPeak;     // độ cao đỉnh vòng cung của cú bắn này
         private bool _lingering;    // đã trúng block, đang đứng im chờ biến mất
         private float _lingerTimer; // đếm ngược thời gian đứng im còn lại
+        private bool _reservationOutstanding;
 
         public void OnInitializedInPool(Pooler<Bullet> pool) => _pool = pool;
 
@@ -104,6 +105,7 @@ namespace Wayfu.Lamkn
 
             _cell = target;
             _cellGen = target != null ? target.Generation : 0;
+            _reservationOutstanding = target != null;
             _color = color;
             _speed = speed;
             _active = true;
@@ -178,6 +180,9 @@ namespace Wayfu.Lamkn
                 transform.position = target;
                 ShedTrail(target, Vector3.zero);
                 _active = false;
+                // ApplyHit giảm pending ở đường trúng bình thường. Xoá cờ trước
+                // để Despawn sau linger không trả reservation lần thứ hai.
+                _reservationOutstanding = false;
                 if (_hitBottom) _cell.ApplyHitBottom(); else _cell.ApplyHit(); // trừ 1 block + huỷ pending
                 GameController.Instance?.OnBoardChanged();
                 // Trúng block: TẮT FX nước, ẩn thân đạn, đứng im tại điểm trúng vài giây rồi mới trả về pool.
@@ -239,6 +244,11 @@ namespace Wayfu.Lamkn
 
         private void Despawn()
         {
+            // Nếu đạn bị huỷ trước khi chạm, trả lại reservation cho đúng cell
+            // cũ. Nếu Generation đã đổi thì Build đã tự reset pending của cell.
+            if (_reservationOutstanding && _cell != null && _cell.Generation == _cellGen)
+                _cell.CancelReservedHit();
+            _reservationOutstanding = false;
             _active = false;
             _lingering = false;
             _cell = null;

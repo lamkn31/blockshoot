@@ -3343,7 +3343,7 @@ MonoBehaviour:
     Layout: 0
     ShootableEdges: -1
     Collapse2D: 0
-    CustomCollapseDirections: 13
+    CustomCollapseDirections: 1
     GenerateFoundation: 0
     FoundationSourceMesh: {fileID: 0}
     FoundationMaterial: {fileID: 0}

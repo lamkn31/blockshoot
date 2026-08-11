@@ -31,6 +31,9 @@ namespace Wayfu.Lamkn
             public bool EightWay; // Spawner8: nhả vào ô trống ở 8 ô quanh ô gốc
             public Spawner8Directions EightDirections;
             public bool Line;     // SpawnerLine: nhả theo 1 đường (StepRow,StepCol) tới Reach ô
+            // True while the origin cell merely renders Queue.Peek(). It becomes
+            // a real block only when the final head is explicitly released.
+            public bool OriginCellIsPreview;
             public bool AllowCollapseIntoAfterQueueEmpty;
             public int Reach;     // SpawnerLine: số ô tối đa (0 = tới mép grid)
             public int StepRow, StepCol; // SpawnerLine: bước đi 1 ô theo hướng nhả
@@ -157,6 +160,7 @@ namespace Wayfu.Lamkn
                             EightDirections = cellData.Spawner8Directions == Spawner8Directions.None
                                 ? Spawner8Directions.All : cellData.Spawner8Directions,
                             Line = line,
+                            OriginCellIsPreview = eight || line,
                             AllowCollapseIntoAfterQueueEmpty = cellData.AllowCollapseIntoAfterQueueEmpty,
                             Reach = cellData.SpawnerReach,
                         };
@@ -422,7 +426,12 @@ namespace Wayfu.Lamkn
                         if (!endgame && !IsShootableFromGun(gr, r, e, from)) continue;
                         Vector3 d = cell.transform.position - from; d.y = 0f;
                         float sqr = d.sqrMagnitude;
-                        if (sqr > detectSqr) continue;
+                        // Endgame is the cleanup phase: there are no more guns in
+                        // slots that could alter the board composition. A final
+                        // exposed cell may be stranded deeper than GunFireRange
+                        // (notably Level 6), so keeping the range gate here makes
+                        // a perfectly matching gun/block pair loop forever.
+                        if (!endgame && sqr > detectSqr) continue;
                         // Trong quạt của nòng ⇔ ĐÚNG SƯỜN (dot với vector sườn cùng dấu) VÀ lệch khỏi
                         // hướng trước mặt không quá spreadAngle (dot(forward, d̂) >= cos spread).
                         // sqr>eps để cell trùng vị trí gun không chia cho 0 (luôn coi là trong quạt).
@@ -1496,8 +1505,12 @@ namespace Wayfu.Lamkn
             var cell = gr.Rows[src.Row][src.Col];
             if (src.Queue.Count == 0)
             {
-                if (src.AllowCollapseIntoAfterQueueEmpty && cell != null)
+                // The displayed head has just been emitted elsewhere. It is a
+                // duplicate preview regardless of whether this source position
+                // is allowed to accept collapse after exhaustion.
+                if (cell != null)
                 { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
+                src.OriginCellIsPreview = false;
                 ReleaseExhaustedSpawnerCell(gr, src);
                 return;
             }
@@ -1517,6 +1530,7 @@ namespace Wayfu.Lamkn
             };
             cell.Build(data, gr.Data.EffectiveStackSpacing, gr.Data.CellScale, this);
             cell.SetMultiSide(gr.Data.ShootableEdges != GridEdges.None);
+            src.OriginCellIsPreview = true;
         }
 
         // Gỡ 1 nguồn tĩnh đã cạn. Với source cho phép collapse, marker được nhả và
@@ -1524,11 +1538,17 @@ namespace Wayfu.Lamkn
         private void RemoveStaticSource(GridRuntime gr, int i)
         {
             var src = gr.Sources[i];
-            if (src.Row < gr.Rows.Count && src.Col < gr.Rows[src.Row].Length)
+            // Queue.Count cannot distinguish a stale preview from a released
+            // final block when several source types feed the same grid. Destroy
+            // only a cell explicitly tracked as a preview; otherwise retain it.
+            if (src.OriginCellIsPreview
+                && src.Row >= 0 && src.Row < gr.Rows.Count
+                && src.Col >= 0 && src.Col < gr.Rows[src.Row].Length)
             {
-                var cell = gr.Rows[src.Row][src.Col];
-                if (src.AllowCollapseIntoAfterQueueEmpty && cell != null)
-                { cell.Despawn(); gr.Rows[src.Row][src.Col] = null; }
+                var preview = gr.Rows[src.Row][src.Col];
+                if (preview != null) preview.Despawn();
+                gr.Rows[src.Row][src.Col] = null;
+                src.OriginCellIsPreview = false;
             }
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
@@ -1554,9 +1574,19 @@ namespace Wayfu.Lamkn
         private void ReleaseStaticSourceAtOrigin(GridRuntime gr, int i)
         {
             var src = gr.Sources[i];
+            src.OriginCellIsPreview = false;
             ReleaseExhaustedSpawnerCell(gr, src);
             gr.Sources.RemoveAt(i);
-            CompactReleasedFinalCell(gr, src);
+            // Legacy one-axis grids already compact through AdvanceOnce. Moving
+            // the released head again inside the same destruction event lets it
+            // cross a gap while that pass is still being resolved; Level 6 could
+            // consequently lose one DarkGreen stack (exactly 3 blocks). Immediate
+            // compaction is only needed for multi-direction grids, where another
+            // exposed axis may have created the vacancy (Level 13 Grid 2).
+            if (gr.Data.Collapse2D
+                || gr.Data.CustomCollapseDirections != GridCollapseDirections.None
+                || UsesHorizontalCollapseAxis(gr))
+                CompactReleasedFinalCell(gr, src);
         }
 
         // Move only the released final item through vacancies in the configured
@@ -1864,6 +1894,19 @@ namespace Wayfu.Lamkn
                         totals[cell.Color] = current + cell.PendingHits;
                     }
             return totals;
+        }
+
+        public int PendingHitCount
+        {
+            get
+            {
+                int total = 0;
+                foreach (var gr in _grids)
+                    foreach (var row in gr.Rows)
+                        foreach (var cell in row)
+                            if (cell != null) total += Mathf.Max(0, cell.PendingHits);
+                return total;
+            }
         }
 
         /// <summary>Runtime diagnostic for an out-of-guns board state.</summary>

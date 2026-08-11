@@ -245,6 +245,12 @@ namespace Wayfu.Lamkn
         /// <summary>Đặt chỗ 1 đạn đang bay tới cell này.</summary>
         public void ReserveHit() => _pendingHits++;
 
+        /// <summary>Trả lại chỗ đã giữ khi projectile bị huỷ trước lúc gây damage.</summary>
+        public void CancelReservedHit()
+        {
+            if (_pendingHits > 0) _pendingHits--;
+        }
+
         /// <summary>Đạn tới nơi: trừ 1 pending + phá 1 block.</summary>
         public void ApplyHit()
         {

@@ -1085,11 +1085,11 @@ namespace Wayfu.Lamkn
         {
             if (cell == null || cell.Generation != b.TargetGen) return false;
             Vector3 d = cell.transform.position - transform.position; d.y = 0f;
-            if (d.sqrMagnitude > _fire.Range * _fire.Range) return false;
             // Endgame target selection allows every live matching cell in range;
-            // do not drop that target on the next frame because it is behind or
-            // on the other side of the moving gun.
+            // do not drop that target on the next frame because it is outside the
+            // normal range, behind, or on the other side of the moving gun.
             if (SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty) return true;
+            if (d.sqrMagnitude > _fire.Range * _fire.Range) return false;
             if (Vector3.Dot(transform.right, d) * b.Sign < 0f) return false;
             return Vector3.Dot(transform.forward, d) >= -0.001f;
         }

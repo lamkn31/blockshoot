@@ -204,7 +204,8 @@ namespace Wayfu.Lamkn
             }
             if (!_reportedOutOfGunBalance && pm.GunCount == 0
                 && slotsEmpty
-                && grid != null && grid.RemainingBlocks > 0)
+                && grid != null && grid.RemainingBlocks > 0
+                && grid.PendingHitCount == 0)
             {
                 _reportedOutOfGunBalance = true;
                 Debug.LogWarning($"[Balance] No guns remain but board still has {grid.RemainingBlocks} blocks: " +
