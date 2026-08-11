@@ -16,6 +16,8 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
+  OverrideGunFireRange: 0
+  CustomGunFireRange: 3
   PathWaypoints:
   - {x: -0.09425777, y: 0, z: -28.252329}
   - {x: -0.12654257, y: 0, z: -24.896975}
@@ -8325,6 +8327,10 @@ MonoBehaviour:
     Scale: {x: 0.62122524, y: 1, z: 1.2425772}
     TargetCellIndex: -1
     Strength: 1
+  Sign:
+    Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
+    Pos: {x: 8.8, y: 0, z: -30}
+    Scale: {x: 1, y: 1, z: 1}
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

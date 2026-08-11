@@ -774,6 +774,14 @@ namespace Wayfu.Lamkn
         public Vector3 PropScale = Vector3.one;
     }
 
+    [Serializable]
+    public class SignData
+    {
+        [HideInInspector] public GameObject Prefab;
+        public Vector3 Pos = new Vector3(8.8f, 0f, -30f);
+        public Vector3 Scale = Vector3.one;
+    }
+
     /// <summary>Obstacle đặt trên board: 1 model 3D có vị trí/xoay/scale riêng, spawn khi Play.</summary>
     [Serializable]
     public class BlockObstacleData

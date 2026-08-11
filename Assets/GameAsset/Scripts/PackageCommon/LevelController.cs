@@ -146,6 +146,7 @@ namespace Wayfu.Lamkn
             SlotManager.Instance.Build(_level);
             SpawnBoardProps(_level);
             SpawnObstacles(_level);
+            SpawnSign(_level);
             IceController.Instance?.Build(_level); // tự sinh Ice phủ các vùng cell băng (theo IceThreshold)
             GameController.Instance.StartLevel(); // bàn chơi xong → GameController vào Playing + dựng HUD
         }
@@ -154,6 +155,7 @@ namespace Wayfu.Lamkn
 
         private Transform _propsRoot;
         private Transform _obstaclesRoot;
+        private Transform _signRoot;
 
         private void ClearAll()
         {
@@ -163,6 +165,7 @@ namespace Wayfu.Lamkn
             SlotManager.Instance?.Clear();
             if (_propsRoot != null) Destroy(_propsRoot.gameObject);
             if (_obstaclesRoot != null) Destroy(_obstaclesRoot.gameObject);
+            if (_signRoot != null) Destroy(_signRoot.gameObject);
             if (IceController.IsActive) IceController.Instance.Clear();
         }
 
@@ -202,6 +205,21 @@ namespace Wayfu.Lamkn
                 // Đăng ký collider để gun không bắn xuyên obstacle (LOS trong GridBlockManager.FindTargetCell).
                 GridBlockManager.Instance?.RegisterObstacle(go);
             }
+        }
+
+        private void SpawnSign(LevelData level)
+        {
+            var data = level.Sign;
+            var prefab = data != null && data.Prefab != null
+                ? data.Prefab
+                : (GameSettings.Instance != null ? GameSettings.Instance.DefaultSignPrefab : null);
+            if (data == null || prefab == null) return;
+
+            _signRoot = new GameObject("Sign").transform;
+            _signRoot.SetParent(transform, true);
+            float offset = GameSettings.Instance != null ? GameSettings.Instance.BoardSurfaceOffset : 0f;
+            var go = Instantiate(prefab, data.Pos + Vector3.up * offset, Quaternion.identity, _signRoot);
+            go.transform.localScale = data.Scale == Vector3.zero ? Vector3.one : data.Scale;
         }
 
         private void EnsureManagers()

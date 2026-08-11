@@ -32,5 +32,7 @@ MonoBehaviour:
   BulletSpeed: 35
   EndgameSpeedMultiplier: 1.5
   BoardSurfaceOffset: 1.1
+  DefaultSignPrefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9,
+    type: 3}
   BlockStackSpacing: 1
   BlockCollapseDuration: 0.2

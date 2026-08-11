@@ -76,6 +76,7 @@ namespace Wayfu.Lamkn
         [Header("Block")]
         [Tooltip("Nâng toàn bộ grid block và obstacle trên map lên theo trục Y khi khởi tạo. Không ảnh hưởng gun, slot hoặc path.")]
         public float BoardSurfaceOffset = 0f;
+        public GameObject DefaultSignPrefab;
         [Tooltip("Khoảng cách giữa các block trong 1 stack (theo trục Y).")]
         public float BlockStackSpacing = 0.5f;
         [Tooltip("Tốc độ dồn hàng: thời gian (giây) cell trượt từ ô cũ sang ô mới. NHỎ = dồn NHANH.")]

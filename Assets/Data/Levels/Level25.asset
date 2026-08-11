@@ -16,6 +16,8 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
+  OverrideGunFireRange: 0
+  CustomGunFireRange: 3
   PathWaypoints: []
   IsClosed: 1
   PathStyle: 0
@@ -136,6 +138,10 @@ MonoBehaviour:
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
   Obstacles: []
+  Sign:
+    Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
+    Pos: {x: 8.8, y: 0, z: -30}
+    Scale: {x: 1, y: 1, z: 1}
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

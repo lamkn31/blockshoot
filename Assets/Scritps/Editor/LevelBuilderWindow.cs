@@ -74,6 +74,8 @@ namespace Wayfu.Lamkn
         private bool _foundationInsertMode;
         // Obstacle: kéo trên map. handle 0 = di chuyển (tâm), 1 = xoay (Y), 2 = scale (góc).
         private int _dragObstacle = -1, _dragObHandle = -1;
+        private bool _dragSign;
+        private Vector3 _dragSignStart;
         private Vector3 _dragObStart;                 // Pos lúc bắt đầu kéo — để Shift khóa trục
 
         // Whole-layout move gizmo state (shown after selecting every grid + path waypoint).
@@ -217,7 +219,7 @@ namespace Wayfu.Lamkn
         }
 
         // Foldout: thu gọn từng nhóm cho panel phải ngắn lại (chỉ GRIDS mở sẵn).
-        private bool _foldMeta, _foldPath, _foldObstacles = true, _foldWaypoints, _foldSlots, _foldGrids = true;
+        private bool _foldMeta, _foldPath, _foldObstacles = true, _foldSign = true, _foldWaypoints, _foldSlots, _foldGrids = true;
         private readonly List<bool> _foldGrid = new List<bool>();   // theo từng grid
         private readonly List<bool> _foldSlot = new List<bool>();   // theo từng slot
 
@@ -1227,6 +1229,7 @@ namespace Wayfu.Lamkn
 
             // Obstacle: vẽ footprint + handle TRƯỚC marquee để handle nuốt click trước khi quét chọn.
             if (_showObstacles) DrawObstacles(area, Proj, Front, Line);
+            DrawSignHandle(area, Proj, Front, Line);
 
             // Cuối cùng: quét chọn / click chọn. Đặt sau mọi handle nên nếu handle đã e.Use() thì bỏ qua.
             DrawWholeLayoutMoveHandle(area, Proj);
@@ -2035,6 +2038,45 @@ namespace Wayfu.Lamkn
 
         private static readonly Color ObstacleCol = new Color(0.9f, 0.55f, 0.2f, 1f);
 
+        private void DrawSignHandle(Rect area, System.Func<Vector3, Vector2> Proj, System.Func<Vector3, bool> Front,
+                                    System.Action<Vector2, Vector2> Line)
+        {
+            if (_target?.Sign == null || _so == null) return;
+            Vector3 pos = _target.Sign.Pos; pos.y = 0f;
+            if (!Front(pos)) return;
+            Vector2 point = Proj(pos);
+            if (!area.Contains(point)) return;
+            Vector3 fp = ModelFootprint(_target.Sign.Prefab);
+            Vector3 scale = _target.Sign.Scale == Vector3.zero ? Vector3.one : _target.Sign.Scale;
+            float hx = Mathf.Max(0.1f, fp.x * Mathf.Abs(scale.x)) * 0.5f;
+            float hz = Mathf.Max(0.1f, fp.z * Mathf.Abs(scale.z)) * 0.5f;
+            Vector3 c0 = pos + new Vector3(-hx, 0f, -hz), c1 = pos + new Vector3(hx, 0f, -hz);
+            Vector3 c2 = pos + new Vector3(hx, 0f, hz), c3 = pos + new Vector3(-hx, 0f, hz);
+            Handles.color = new Color(0.25f, 0.9f, 1f, 0.95f);
+            Line(Proj(c0), Proj(c1)); Line(Proj(c1), Proj(c2)); Line(Proj(c2), Proj(c3)); Line(Proj(c3), Proj(c0));
+            var label = new GUIStyle(EditorStyles.miniBoldLabel) { alignment = TextAnchor.MiddleCenter };
+            label.normal.textColor = new Color(0.25f, 0.9f, 1f, 1f);
+            GUI.Label(new Rect(point.x - 40f, point.y - 24f, 80f, 16f), "SIGN", label);
+            var rect = new Rect(point.x - 7f, point.y - 7f, 14f, 14f);
+            EditorGUI.DrawRect(rect, _dragSign ? Color.yellow : new Color(0.25f, 0.9f, 1f, 0.95f));
+            EditorGUIUtility.AddCursorRect(rect, MouseCursor.MoveArrow);
+            var e = Event.current;
+            if (e.type == EventType.MouseDown && e.button == 0 && !e.alt && rect.Contains(e.mousePosition))
+            {
+                _dragSign = true; _dragSignStart = _target.Sign.Pos; e.Use();
+            }
+            if (!_dragSign) return;
+            if (e.type == EventType.MouseDrag)
+            {
+                var pp = _so.FindProperty("Sign").FindPropertyRelative("Pos");
+                Vector3 next = InverseV(e.mousePosition);
+                Vector3 old = pp.vector3Value;
+                pp.vector3Value = new Vector3(next.x, old.y, next.z);
+                e.Use(); Repaint();
+            }
+            else if (e.type == EventType.MouseUp) { _dragSign = false; e.Use(); }
+        }
+
         /// <summary>
         /// Vẽ obstacle trên map: footprint hình chữ nhật = kích thước MODEL (bounds) × Scale, xoay quanh Y
         /// theo RotationY. Kèm 3 handle kéo được: TÂM (hồng, di chuyển) · XOAY (xanh lá) · SCALE (xanh
@@ -2671,6 +2713,7 @@ namespace Wayfu.Lamkn
             EditorGUILayout.Space(4); DrawMetaSection();
             EditorGUILayout.Space(4); DrawPathSection();
             EditorGUILayout.Space(4); DrawObstaclesSection();
+            EditorGUILayout.Space(4); DrawSignSection();
             EditorGUILayout.Space(4); DrawSlotsSection();
             EditorGUILayout.Space(4); DrawGridsSection();
             EditorGUILayout.EndScrollView();
@@ -3158,6 +3201,26 @@ namespace Wayfu.Lamkn
 
         // OBSTACLES: list model đặt trên board. "+ Obstacle" thả 1 cái ở tâm view; kéo trên map để
         // di chuyển/xoay/scale (xem DrawObstacles). Kích thước footprint = bounds model × Scale.
+        private void DrawSignSection()
+        {
+            var sign = _so.FindProperty("Sign");
+            EditorGUILayout.BeginVertical("box");
+            _foldSign = EditorGUILayout.Foldout(_foldSign, "SIGN", true, EditorStyles.foldoutHeader);
+            if (_foldSign)
+            {
+                if (sign == null)
+                {
+                    EditorGUILayout.HelpBox("Sign data will be created when this level is saved.", MessageType.Info);
+                }
+                else
+                {
+                    EditorGUILayout.PropertyField(sign.FindPropertyRelative("Pos"), new GUIContent("Position"));
+                    EditorGUILayout.PropertyField(sign.FindPropertyRelative("Scale"), new GUIContent("Scale"));
+                }
+            }
+            EditorGUILayout.EndVertical();
+        }
+
         private void DrawObstaclesSection()
         {
             var obs = _so.FindProperty("Obstacles");
@@ -4132,6 +4195,12 @@ namespace Wayfu.Lamkn
             string path = AssetDatabase.GenerateUniqueAssetPath($"{folder}/Level{_levels.Count + 1}.asset");
             var asset = CreateInstance<LevelData>();
             asset.GunPrefab = _defaultGunPrefab; asset.BlockPrefab = _defaultBlockPrefab;
+            asset.Sign = new SignData
+            {
+                Prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/GameAsset/Prefabs/PixelShoot/InGame/Sign.prefab"),
+                Pos = new Vector3(8.8f, 0f, -30f),
+                Scale = Vector3.one
+            };
             AssetDatabase.CreateAsset(asset, path); AssetDatabase.SaveAssets();
             // Tự thêm vào LevelList để level mới hiện luôn trong list gộp (không phải Fill from folder lại).
             var list = LevelList.Instance;

@@ -62,6 +62,7 @@ namespace Wayfu.Lamkn
         [Header("Props / Obstacles")]
         public List<GameBoardPropData> BoardProps = new List<GameBoardPropData>();
         public List<BlockObstacleData> Obstacles = new List<BlockObstacleData>();
+        public SignData Sign = new SignData();
 
         [Header("Prefabs (optional — null thì fallback primitive, đều dùng Pooler)")]
         public Gun GunPrefab;
