@@ -57,6 +57,12 @@ namespace Wayfu.Lamkn
         [Tooltip("Hiện text 'tap to continue' (scale phập phồng) khi step Click đang chờ tap. Chỉ dùng cho step banner timer.")]
         public bool showTapToContinue = false;
 
+        [Header("Popup Text Des (mô tả) — vị trí")]
+        [Tooltip("Bật: đặt Popup Text Des tại textDesScreenPos (screen px). Tắt: giữ nguyên vị trí trong prefab.")]
+        public bool useTextDesScreenPos = false;
+        [Tooltip("Vị trí (screen px) đặt Popup Text Des khi bật useTextDesScreenPos.")]
+        public Vector2 textDesScreenPos;
+
         public TutorialAdvanceMode advanceMode = TutorialAdvanceMode.Click;
         public float autoDelay = 1.5f;
         public float delayBeforeShow = 0f;

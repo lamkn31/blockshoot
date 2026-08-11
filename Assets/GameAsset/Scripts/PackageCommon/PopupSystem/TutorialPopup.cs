@@ -367,7 +367,7 @@ namespace Wayfu.Lamkn
 
                 // popupTextDes: CHỈ hiện (scale 0→1) khi step có HIỂN THỊ TAY và CÓ guideText (thông tin des).
                 bool handShown = handController != null || handImage != null;
-                ShowPopupTextDes(handShown && !string.IsNullOrEmpty(step.guideText));
+                ShowPopupTextDes(handShown && !string.IsNullOrEmpty(step.guideText), step);
             }
             else
             {
@@ -466,12 +466,29 @@ namespace Wayfu.Lamkn
             if (!active) { HidePopupTextDes(); ShowTapToContinue(false); }
         }
 
-        /// <summary>Hiện/ẩn popupTextDes. Khi hiện: bật + scale 0→1 (unscaled). Khi ẩn: scale 0 + tắt.</summary>
-        private void ShowPopupTextDes(bool show)
+        /// <summary>Hiện/ẩn popupTextDes. Khi hiện: (định vị theo step nếu có) + scale 0→1 (unscaled).
+        /// Khi ẩn: scale 0 + tắt.</summary>
+        private void ShowPopupTextDes(bool show, TutorialStep step = null)
         {
             if (popupTextDes == null) return;
             if (!show) { HidePopupTextDes(); return; }
+            // Đặt vị trí trước khi scale-in (nếu step yêu cầu) — vd nâng des lên trên đống object.
+            if (step != null && step.useTextDesScreenPos)
+                PositionRectAtScreen(popupTextDes, step.textDesScreenPos);
             StartCoroutine(ScaleInRoutine(popupTextDes, popupTextDesScaleDuration));
+        }
+
+        /// <summary>Đặt một RectTransform tại vị trí screen (quy đổi screen → world trên mặt phẳng parent,
+        /// dùng camera từ root canvas nên đúng mọi render mode). Dùng chung cho popupTextDes/overlay.</summary>
+        private void PositionRectAtScreen(RectTransform rt, Vector2 screenPos)
+        {
+            if (rt == null) return;
+            var plane = (rt.parent as RectTransform) ?? rt;
+            var canvas = rt.GetComponentInParent<Canvas>();
+            var root = canvas != null ? (canvas.rootCanvas != null ? canvas.rootCanvas : canvas) : null;
+            Camera uiCam = (root != null && root.renderMode != RenderMode.ScreenSpaceOverlay) ? root.worldCamera : null;
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(plane, screenPos, uiCam, out var world))
+                rt.position = world;
         }
 
         private void HidePopupTextDes()
