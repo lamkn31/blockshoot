@@ -1427,7 +1427,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 9
         BlockStackCt: 3
@@ -1653,7 +1653,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 9
         BlockStackCt: 3
@@ -1877,7 +1877,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 6
         BlockStackCt: 3
@@ -2101,7 +2101,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 6
         BlockStackCt: 3
@@ -2325,7 +2325,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 9
         BlockStackCt: 3
@@ -2547,7 +2547,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 8
         BlockStackCt: 3
@@ -2769,7 +2769,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 6
         BlockStackCt: 3
@@ -3213,7 +3213,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 9
         BlockStackCt: 3
@@ -3435,7 +3435,7 @@ MonoBehaviour:
       Shootable: 1
       Type: 2
       SpawnerReach: 0
-      Spawner8Directions: 199
+      Spawner8Directions: -1
       Queue:
       - Color: 7
         BlockStackCt: 3

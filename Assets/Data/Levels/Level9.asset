@@ -16,8 +16,8 @@ MonoBehaviour:
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
-  OverrideGunFireRange: 0
-  CustomGunFireRange: 3
+  OverrideGunFireRange: 1
+  CustomGunFireRange: 5
   PathWaypoints:
   - {x: 3.182782, y: 0, z: -29.423908}
   - {x: 3.224098, y: 0, z: -17.232933}
@@ -25,7 +25,7 @@ MonoBehaviour:
   - {x: -1.9798616, y: 0, z: -9.096826}
   - {x: -6.709461, y: 0, z: -9.096826}
   - {x: -6.709461, y: 0, z: -16.110317}
-  - {x: -2.6747046, y: 0, z: -16.110317}
+  - {x: -2.6487808, y: 0, z: -14.462269}
   - {x: -2.6747046, y: 0, z: -22.570946}
   - {x: -6.7081575, y: 0, z: -22.570946}
   IsClosed: 0
