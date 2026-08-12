@@ -1489,9 +1489,21 @@ namespace Wayfu.Lamkn
                 for (int k = 0; k < EightNeighbors.GetLength(0) && src.Queue.Count > 0; k++)
                 {
                     int dr = EightNeighbors[k, 0], dc = EightNeighbors[k, 1];
-                    if ((src.EightDirections & Spawner8DirectionFor(k)) == 0) continue;
-                    if (gr.Data.CustomCollapseDirections != GridCollapseDirections.None
-                        && !AllowsCustomDirection(gr.Data.CustomCollapseDirections, dr, dc)) continue;
+                    var customDirections = gr.Data.CustomCollapseDirections;
+                    bool forceSingleCustomDirection = HasSingleCustomDirection(customDirections);
+                    // A grid with exactly one custom collapse direction turns a
+                    // Spawner8 into a one-cell source in that same direction.
+                    // Its local Spawner8 mask must not prevent the grid override.
+                    if (forceSingleCustomDirection)
+                    {
+                        if (!AllowsCustomDirection(customDirections, dr, dc)) continue;
+                    }
+                    else
+                    {
+                        if ((src.EightDirections & Spawner8DirectionFor(k)) == 0) continue;
+                        if (customDirections != GridCollapseDirections.None
+                            && !AllowsCustomDirection(customDirections, dr, dc)) continue;
+                    }
                     // A one-direction grid never expands a Spawner8 sideways or
                     // backwards: only its three forward neighbours are valid.
                     if (!gr.Data.Collapse2D
@@ -1523,6 +1535,12 @@ namespace Wayfu.Lamkn
                 if (src.Queue.Count == 0) RemoveStaticSource(gr, i);
             }
             return fed;
+        }
+
+        private static bool HasSingleCustomDirection(GridCollapseDirections directions)
+        {
+            int value = (int)directions;
+            return value != 0 && (value & (value - 1)) == 0;
         }
 
         private static bool AllowsCustomDirection(GridCollapseDirections directions, int dr, int dc)

@@ -20,7 +20,7 @@ MonoBehaviour:
   CustomGunFireRange: 3
   PathWaypoints:
   - {x: 6.5400696, y: 0, z: -29.438925}
-  - {x: 6.7514243, y: 0, z: -19.840986}
+  - {x: 7.039907, y: 0, z: -20.798668}
   - {x: -0.67139286, y: 0, z: -21.72614}
   - {x: -6.5180364, y: 0, z: -19.629879}
   - {x: -6.6051846, y: 0, z: -12.498724}
@@ -29,7 +29,7 @@ MonoBehaviour:
   - {x: 4.8266115, y: 0, z: -5.5621815}
   IsClosed: 0
   PathStyle: 0
-  CornerRadius: 3
+  CornerRadius: 1.9
   SlotCount: 3
   Slots:
   - Guns:
