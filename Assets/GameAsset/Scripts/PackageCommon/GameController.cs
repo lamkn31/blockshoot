@@ -44,6 +44,41 @@ namespace Wayfu.Lamkn
         private bool _reportedOutOfGunBalance;
         private bool _reportedEndgameBalance;
         private bool _reportedEndgameDeadlock;
+        private float _holdScreenStartedAt = -1f;
+
+        public bool IsHoldScreenSpeedBoostActive
+        {
+            get
+            {
+                var settings = GameSettings.Instance;
+                return State == GameState.Playing
+                       && settings != null
+                       && settings.EnableHoldScreenSpeedBoost
+                       && _holdScreenStartedAt >= 0f
+                       && Time.unscaledTime - _holdScreenStartedAt >= settings.HoldScreenSpeedBoostDelay;
+            }
+        }
+
+        private void Update()
+        {
+            var settings = GameSettings.Instance;
+            if (State != GameState.Playing || settings == null || !settings.EnableHoldScreenSpeedBoost)
+            {
+                _holdScreenStartedAt = -1f;
+                return;
+            }
+
+            bool holdingScreen = Input.GetMouseButton(0) && !(PopupController.IsActive && PopupController.Instance.BlockGameInput);
+            if (holdingScreen)
+            {
+                if (_holdScreenStartedAt < 0f) _holdScreenStartedAt = Time.unscaledTime;
+            }
+            else
+            {
+                _holdScreenStartedAt = -1f;
+            }
+        }
+
         private bool _runtimeBalanceWasOk = true;
 
         /// <summary>

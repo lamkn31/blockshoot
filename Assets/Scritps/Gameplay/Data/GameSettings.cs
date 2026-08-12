@@ -78,6 +78,16 @@ namespace Wayfu.Lamkn
         [Min(0f)] public float LoseDelay = 0f;
 
         [Header("Block")]
+        [Header("Speed Boost")]
+        [Tooltip("Hệ số tốc độ khi path đã đầy MaxGunOnPath. Áp dụng cho gun chạy path, nhịp bắn và bullet. 1 = tắt.")]
+        [Min(1f)] public float FullPathSpeedMultiplier = 1f;
+        [Tooltip("Bật giữ màn hình để tăng tốc gameplay.")]
+        public bool EnableHoldScreenSpeedBoost;
+        [Tooltip("Giữ màn hình liên tục trong số giây này để kích hoạt boost.")]
+        [Min(0f)] public float HoldScreenSpeedBoostDelay = 0.5f;
+        [Tooltip("Hệ số tốc độ khi boost giữ màn hình đang kích hoạt. 1 = tắt.")]
+        [Min(1f)] public float HoldScreenSpeedMultiplier = 1f;
+
         [Tooltip("Nâng toàn bộ grid block và obstacle trên map lên theo trục Y khi khởi tạo. Không ảnh hưởng gun, slot hoặc path.")]
         public float BoardSurfaceOffset = 0f;
         public GameObject DefaultSignPrefab;

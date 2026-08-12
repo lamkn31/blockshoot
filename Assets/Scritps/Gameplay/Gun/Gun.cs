@@ -205,10 +205,23 @@ namespace Wayfu.Lamkn
 
         /// <summary>Góc toả tối đa của 1 nòng: quá 180° là đã kín nửa mặt phẳng của nó, không thêm được gì.</summary>
         private float Spread => Mathf.Clamp(_fire.Angle, 0f, 180f);
+        private float SpeedMultiplier
+        {
+            get
+            {
+                var settings = GameSettings.Instance;
+                if (settings == null) return 1f;
 
-        private float EndgameSpeedMultiplier => SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
-            ? Mathf.Max(1f, GameSettings.Instance != null ? GameSettings.Instance.EndgameSpeedMultiplier : 1f)
-            : 1f;
+                float multiplier = SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+                    ? Mathf.Max(1f, settings.EndgameSpeedMultiplier)
+                    : 1f;
+                if (PathManager.IsActive && PathManager.Instance.IsFull)
+                    multiplier *= Mathf.Max(1f, settings.FullPathSpeedMultiplier);
+                if (GameController.IsActive && GameController.Instance.IsHoldScreenSpeedBoostActive)
+                    multiplier *= Mathf.Max(1f, settings.HoldScreenSpeedMultiplier);
+                return multiplier;
+            }
+        }
 
         public void OnInitializedInPool(Pooler<Gun> pool) => _pool = pool;
 
@@ -705,7 +718,7 @@ namespace Wayfu.Lamkn
             ArmForNewLap(); // vào path tại pos 0 = bắt đầu lượt bắn đầu tiên
             _basePathSpeed = speed;
             float surfaceOffset = PathManager.IsActive ? PathManager.Instance.GunSurfaceOffset : 0f;
-            if (_follower != null) { _follower.Init(path, startDistance, speed * EndgameSpeedMultiplier, surfaceOffset); _follower.enabled = true; }
+            if (_follower != null) { _follower.Init(path, startDistance, speed * SpeedMultiplier, surfaceOffset); _follower.enabled = true; }
             else if (path != null) transform.position = PathSurfacePoint(path, startDistance); // gun ko có follower
         }
 
@@ -725,7 +738,7 @@ namespace Wayfu.Lamkn
                 return;
             }
             if (_follower != null && _basePathSpeed > 0f)
-                _follower.moveSpeed = _basePathSpeed * EndgameSpeedMultiplier;
+                _follower.moveSpeed = _basePathSpeed * SpeedMultiplier;
             if (_pathEntryAnimating) return;
 
             if (!_pathCycleTransition && _follower != null && _follower.targetPath != null)
@@ -997,7 +1010,7 @@ namespace Wayfu.Lamkn
                 b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false; b.BeamHold = 0f;
             }
 
-            b.FireTimer -= Time.deltaTime;
+            b.FireTimer -= Time.deltaTime * SpeedMultiplier;
             // Bắn cell đang bám (kể cả khi đã hết lượt — cell dở phải được bắn hết). Chỉ bắn khi cell
             // còn block CHƯA bị đạn đang bay đặt chỗ (tránh bắn dư). KHÔNG bắn ở frame vừa chốt target:
             // cell lộ ra thoáng qua lúc dồn hàng (transient) sẽ bị thay ở frame sau → không phí đạn bắn nhầm.
@@ -1215,7 +1228,7 @@ namespace Wayfu.Lamkn
             }
 
             if (bullet != null)
-                bullet.Launch(from, b.Target, _fire.BulletSpeed * EndgameSpeedMultiplier, Data.Color, aim, hitBottom);
+                bullet.Launch(from, b.Target, _fire.BulletSpeed * SpeedMultiplier, Data.Color, aim, hitBottom);
             else
             {
                 if (hitBottom) b.Target.ApplyHitBottom(); else b.Target.ApplyHit(); // fallback không có pool
