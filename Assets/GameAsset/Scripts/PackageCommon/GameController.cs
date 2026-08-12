@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using BusGame.Gameplay;
 using UnityEngine;
 
@@ -279,10 +280,18 @@ namespace Wayfu.Lamkn
             popup.SetFeatureInfo(feature.icon, feature.titleImage, feature.title, feature.description);
         }
 
-        private void Lose()
+        private async void Lose()
         {
             State = GameState.Lose;
             OnLose?.Invoke();
+
+            // Chờ delay trước khi show popup (0 = show ngay, không có overhead).
+            float loseDelay = GameSettings.Instance != null ? GameSettings.Instance.LoseDelay : 0f;
+            if (loseDelay > 0f)
+                await Task.Delay((int)(loseDelay * 1000));
+
+            // Guard: nếu state thay đổi trong lúc delay (vd Retry nhanh tay) → bỏ qua show popup.
+            if (State != GameState.Lose) return;
 
             // % block đã phá, để popup Lose cho thấy còn thiếu bao nhiêu.
             int left = GridBlockManager.Instance != null ? GridBlockManager.Instance.RemainingBlocks : 0;

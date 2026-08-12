@@ -284,7 +284,11 @@ namespace Wayfu.Lamkn
             if (gun == null) return;
 
             // Gun CONNECT: chỉ deploy khi CẢ NHÓM đang ở index 0, và cả nhóm vào path cùng lúc.
-            if (gun.Data != null && gun.Data.ConnectGroup != 0) { TryDeployConnectGroup(gun.Data.ConnectGroup); return; }
+            if (gun.Data != null && gun.Data.ConnectGroup != 0)
+            {
+                TryDeployConnectGroup(gun.Data.ConnectGroup, gun);
+                return;
+            }
 
             var slot = gun.Slot;
             if (slot == null || slot.FrontGun != gun) { VibrateCantGo(); return; } // không phải gun đầu → bị chặn
@@ -322,7 +326,7 @@ namespace Wayfu.Lamkn
 
         // Deploy CẢ NHÓM connect: mọi member phải đang ở index 0 (front) slot; path phải đủ chỗ cho cả nhóm.
         // Vượt sức chứa → không move; nếu bế tắc (gun trên path không bắn được) → thua.
-        private void TryDeployConnectGroup(int id)
+        private void TryDeployConnectGroup(int id, Gun clickedGun)
         {
             var members = new List<Gun>();
             var memberIndexes = new Dictionary<Gun, int>();
@@ -355,7 +359,12 @@ namespace Wayfu.Lamkn
                 // entire contiguous prefix (indexes 0..N-1). A non-member in front
                 // still blocks the connected group as usual.
                 for (int i = 0; i < countInSlot; i++)
-                    if (!memberSet.Contains(slot.Guns[i])) { VibrateCantGo(); return; } // bị gun ngoài nhóm chặn
+                    if (!memberSet.Contains(slot.Guns[i]))
+                    {
+                        clickedGun?.TryPlayClickThen(null);
+                        VibrateCantGo();
+                        return;
+                    } // bị gun ngoài nhóm chặn
 
                 removeCounts[slot] = countInSlot;
             }
@@ -371,8 +380,9 @@ namespace Wayfu.Lamkn
             var pm = PathManager.Instance;
             if (pm == null || !pm.CanAcceptCount(_movingToLoop.Count + members.Count))
             {
-                VibrateCantGo();                              // nhóm không đủ chỗ → không đi được → rung mạnh
-                GameController.Instance?.NotifyConnectStuck(); // vượt sức chứa → bế tắc thì thua
+                clickedGun?.TryPlayClickThen(null);
+                VibrateCantGo();
+                GameController.Instance?.NotifyConnectStuck();
                 return;
             }
 

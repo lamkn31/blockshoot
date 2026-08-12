@@ -398,6 +398,11 @@ namespace Wayfu.Lamkn
         {
             if (_state != GunState.InSlot) return;
 
+            // OnMouseDown là Physics event — không bị Unity EventSystem chặn tự động khi có
+            // Canvas UI phía trên. Phải tự guard: bỏ qua click khi có overlay đang che màn hình
+            // (loading, setting, difficulty notification, win/lose popup, reason-lose banner…).
+            if (PopupController.IsActive && PopupController.Instance.BlockGameInput) return;
+
             // Âm thanh chạm gun riêng với tap nền màn hình. Chỉ phát khi gun còn ở slot,
             // tránh phát lại nếu người chơi click một gun đã deploy/đang di chuyển.
             SoundController.Instance?.PlayTouchSound();

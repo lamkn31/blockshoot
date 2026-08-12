@@ -73,6 +73,10 @@ namespace Wayfu.Lamkn
         [Tooltip("Hệ số tốc độ khi tất cả GunSlot đã hết gun. Áp dụng cho gun chạy path, bullet và tốc độ dồn cell. 1 = tắt.")]
         [Min(1f)] public float EndgameSpeedMultiplier = 1f;
 
+        [Header("Lose")]
+        [Tooltip("Delay (giây) từ khi xác định thua đến khi show popup Lose. 0 = show ngay.")]
+        [Min(0f)] public float LoseDelay = 0f;
+
         [Header("Block")]
         [Tooltip("Nâng toàn bộ grid block và obstacle trên map lên theo trục Y khi khởi tạo. Không ảnh hưởng gun, slot hoặc path.")]
         public float BoardSurfaceOffset = 0f;
