@@ -17,7 +17,7 @@ MonoBehaviour:
   NumberOfColors: 0
   MechanicNames: []
   OverrideGunFireRange: 1
-  CustomGunFireRange: 5
+  CustomGunFireRange: 4
   PathWaypoints:
   - {x: -6.6341176, y: 0, z: -27.693281}
   - {x: -0.7299552, y: 0, z: -27.693281}
