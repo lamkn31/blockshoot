@@ -32,9 +32,9 @@ MonoBehaviour:
   BulletSpeed: 35
   EndgameSpeedMultiplier: 1.5
   LoseDelay: 2
-  FullPathSpeedMultiplier: 1.5
+  FullPathSpeedMultiplier: 2
   EnableHoldScreenSpeedBoost: 1
-  HoldScreenSpeedBoostDelay: 1
+  HoldScreenSpeedBoostDelay: 0.5
   HoldScreenSpeedMultiplier: 2
   BoardSurfaceOffset: 1.1
   DefaultSignPrefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9,
