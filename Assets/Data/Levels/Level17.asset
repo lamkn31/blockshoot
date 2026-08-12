@@ -19,14 +19,14 @@ MonoBehaviour:
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
   PathWaypoints:
-  - {x: -7.689615, y: 0, z: -29.2771}
-  - {x: 2.9378552, y: 0, z: -29.427689}
-  - {x: 2.427992, y: 0, z: -21.554203}
-  - {x: 7.046705, y: 0, z: -21.554203}
-  - {x: 6.993341, y: 0, z: -16.280005}
+  - {x: 2.8937726, y: 0, z: -27.886723}
+  - {x: 2.909662, y: 0, z: -25.11058}
+  - {x: 2.950301, y: 0, z: -20.522224}
+  - {x: 5.91346, y: 0, z: -19.705544}
+  - {x: 6.194458, y: 0, z: -15.822031}
   - {x: -5.3936596, y: 0, z: -16.093637}
-  - {x: -5.0421433, y: 0, z: -11.352964}
-  - {x: -8.302915, y: 0, z: -11.246279}
+  - {x: -5.0921636, y: 0, z: -12.406782}
+  - {x: -7.5578923, y: 0, z: -11.442301}
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 3
@@ -134,7 +134,7 @@ MonoBehaviour:
   HoleCapacity: 3
   Grids:
   - Shape: 1
-    Side: 2
+    Side: 1
     Center: {x: 0.054216657, y: 0, z: -13.685699}
     Rotation: 0
     CellDirectionOffset: 0
@@ -4921,8 +4921,8 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 2
-    Center: {x: 4.688177, y: 0, z: -26.917992}
-    Rotation: 89.54899
+    Center: {x: 5.2310977, y: 0, z: -24.935207}
+    Rotation: 91.55699
     CellDirectionOffset: 0
     DefaultDirection: 0
     BaseRadius: 0
@@ -5519,8 +5519,8 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: 0.72803754, y: 0, z: -22.095205}
-    Rotation: 270.53342
+    Center: {x: 0.8645859, y: 0, z: -22.216927}
+    Rotation: 270.489
     CellDirectionOffset: 0
     DefaultDirection: 0
     BaseRadius: 0
@@ -7245,8 +7245,8 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: 0.6991932, y: 0, z: -23.077475}
-    Rotation: 270.53342
+    Center: {x: 0.88125986, y: 0, z: -23.077475}
+    Rotation: 269.80865
     CellDirectionOffset: 270
     DefaultDirection: 0
     BaseRadius: 0
@@ -8992,7 +8992,7 @@ MonoBehaviour:
   Obstacles: []
   Sign:
     Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
-    Pos: {x: 8.8, y: 0, z: -30}
+    Pos: {x: 9.235207, y: 0, z: -30.37876}
     Scale: {x: 1, y: 1, z: 1}
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
