@@ -80,7 +80,7 @@ MonoBehaviour:
   Grids:
   - Shape: 2
     Side: 1
-    Center: {x: -2.924942, y: 0, z: -25.77782}
+    Center: {x: -2.4837954, y: 0, z: -25.783775}
     Rotation: 178.10922
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -1018,7 +1018,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 2
     Side: 2
-    Center: {x: 0.9708885, y: 0, z: -23.8685}
+    Center: {x: 1.2506863, y: 0, z: -23.818584}
     Rotation: 270
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -1852,7 +1852,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 1
     Side: 1
-    Center: {x: 4.4480653, y: 0, z: -9.367584}
+    Center: {x: 3.8716118, y: 0, z: -9.38068}
     Rotation: 270
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -3814,7 +3814,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 3880441430053725302, guid: 1d024217d360a114cbef179aeec90f30,
       type: 3}
-    Pos: {x: 4.3068953, y: 0, z: -22.332636}
+    Pos: {x: 4.608658, y: 0, z: -22.360254}
     RotationY: 0
     Scale: {x: 1.199643, y: 1, z: 1.2775024}
     TargetCellIndex: -1
@@ -3830,7 +3830,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 5674219504691922035, guid: 4fcd5876bb6d31a4186743170a74934d,
       type: 3}
-    Pos: {x: -0.90529394, y: 0, z: -9.609915}
+    Pos: {x: -1.5491436, y: 0, z: -9.494522}
     RotationY: 0
     Scale: {x: 1.2819053, y: 1, z: 1.2523831}
     TargetCellIndex: -1
@@ -3846,7 +3846,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 7715462441154322229, guid: 0dc8f155f3674954cb099023e6625033,
       type: 3}
-    Pos: {x: -0.94859505, y: 0, z: -14.6552725}
+    Pos: {x: -1.5386258, y: 0, z: -14.626686}
     RotationY: 270.03116
     Scale: {x: 0.7409687, y: 1, z: 1.003928}
     TargetCellIndex: -1
@@ -3854,7 +3854,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 6054179251720648522, guid: b300a44c8110c6c40b5aaec06ba4b5d4,
       type: 3}
-    Pos: {x: -2.2359006, y: 0, z: -20.288572}
+    Pos: {x: -1.7589574, y: 0, z: -20.21396}
     RotationY: 179.27415
     Scale: {x: 0.778794, y: 1, z: 1.4087268}
     TargetCellIndex: -1
