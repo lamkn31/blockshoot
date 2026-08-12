@@ -382,7 +382,6 @@ namespace Wayfu.Lamkn
             {
                 clickedGun?.TryPlayClickThen(null);
                 VibrateCantGo();
-                GameController.Instance?.NotifyConnectStuck();
                 return;
             }
 
