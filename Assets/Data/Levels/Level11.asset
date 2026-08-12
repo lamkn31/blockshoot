@@ -19,7 +19,7 @@ MonoBehaviour:
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
   PathWaypoints:
-  - {x: 6.3407354, y: 0, z: -25.430746}
+  - {x: 6.175859, y: 0, z: -27.012718}
   - {x: -7.788299, y: 0, z: -27.091982}
   - {x: 6.6649437, y: 0, z: -6.0462437}
   IsClosed: 0

@@ -117,7 +117,7 @@ MonoBehaviour:
       CountBullet: 80
       Hidden: 0
       ConnectGroup: 0
-  HoleCapacity: 3
+  HoleCapacity: 4
   Grids:
   - Shape: 1
     Side: 1
@@ -874,7 +874,7 @@ MonoBehaviour:
       AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
-    - Color: 2
+    - Color: 14
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 0
@@ -890,7 +890,7 @@ MonoBehaviour:
       AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
-    - Color: 2
+    - Color: 14
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 1
@@ -1125,67 +1125,75 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 1
         BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 7
+      - Color: 1
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 2
+      - Color: 6
         BlockStackCt: 4
-      - Color: 2
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 4
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 6
+      - Color: 4
         BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
+      - Color: 4
         BlockStackCt: 4
       - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
-      - Color: 9
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 89.99981
       UseCustomDirection: 0
@@ -1203,21 +1211,15 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 8
+      - Color: 4
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
@@ -1225,45 +1227,59 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 7
+      - Color: 4
         BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
+      - Color: 4
         BlockStackCt: 4
       - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
-      - Color: 3
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 89.99981
       UseCustomDirection: 0
@@ -1281,67 +1297,75 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
+      - Color: 6
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 4
-        BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 6
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 6
+      - Color: 4
         BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
+      - Color: 4
         BlockStackCt: 4
       - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
-      - Color: 3
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 89.99981
       UseCustomDirection: 0
@@ -1363,63 +1387,71 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 8
+      - Color: 6
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 7
+      - Color: 4
         BlockStackCt: 4
-      - Color: 7
+      - Color: 4
         BlockStackCt: 4
-      - Color: 7
+      - Color: 8
         BlockStackCt: 4
-      - Color: 2
+      - Color: 4
         BlockStackCt: 4
-      - Color: 2
+      - Color: 8
         BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 14
+      - Color: 4
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
-      - Color: 3
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 89.99981
       UseCustomDirection: 0
@@ -1441,63 +1473,71 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
+      - Color: 6
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 2
+      - Color: 4
         BlockStackCt: 4
-      - Color: 2
+      - Color: 4
         BlockStackCt: 4
-      - Color: 2
+      - Color: 8
         BlockStackCt: 4
-      - Color: 9
+      - Color: 4
         BlockStackCt: 4
-      - Color: 9
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 4
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
-      - Color: 9
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
         BlockStackCt: 4
-      - Color: 3
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 89.99981
       UseCustomDirection: 0
@@ -2191,49 +2231,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
       - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
         BlockStackCt: 4
       - Color: 7
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 3
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2251,49 +2287,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 1
+      - Color: 9
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
       - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2311,49 +2343,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 3
+      - Color: 8
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 9
+      - Color: 8
         BlockStackCt: 4
-      - Color: 9
+      - Color: 8
         BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
+      - Color: 1
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 4
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 1
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       - Color: 7
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 3
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2371,49 +2399,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 1
+      - Color: 14
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2431,56 +2455,52 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 1
+      - Color: 14
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
       - Color: 3
         BlockStackCt: 4
       - Color: 3
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
       AllowCollapseIntoAfterQueueEmpty: 1
       Iced: 0
       IceThreshold: 0
-    - Color: 8
+    - Color: 2
       CellPos: {x: 0, y: 0, z: 0}
       CellScale: {x: 1, y: 1, z: 1}
       BlockCol: 5
@@ -2493,15 +2513,11 @@ MonoBehaviour:
       Queue:
       - Color: 2
         BlockStackCt: 4
-      - Color: 1
+      - Color: 2
         BlockStackCt: 4
-      - Color: 3
+      - Color: 2
         BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
+      - Color: 8
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
@@ -2509,31 +2525,31 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
-      - Color: 4
+      - Color: 3
         BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 1
+      - Color: 14
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
-      - Color: 3
+      - Color: 1
         BlockStackCt: 4
-      - Color: 3
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2551,7 +2567,25 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 1
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
         BlockStackCt: 4
       - Color: 9
         BlockStackCt: 4
@@ -2563,37 +2597,15 @@ MonoBehaviour:
         BlockStackCt: 4
       - Color: 6
         BlockStackCt: 4
-      - Color: 6
+      - Color: 2
         BlockStackCt: 4
-      - Color: 4
+      - Color: 2
         BlockStackCt: 4
-      - Color: 4
+      - Color: 2
         BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 1
+      - Color: 2
         BlockStackCt: 4
       - Color: 7
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 3
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2611,49 +2623,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 6
+      - Color: 3
         BlockStackCt: 4
-      - Color: 14
+      - Color: 1
         BlockStackCt: 4
-      - Color: 14
+      - Color: 1
         BlockStackCt: 4
-      - Color: 6
+      - Color: 1
         BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 6
-        BlockStackCt: 4
-      - Color: 6
+      - Color: 1
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 8
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 1
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       - Color: 7
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 3
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2671,49 +2679,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
-      - Color: 8
+      - Color: 3
         BlockStackCt: 4
-      - Color: 9
+      - Color: 3
         BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 8
+      - Color: 3
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 14
-        BlockStackCt: 4
-      - Color: 14
+      - Color: 3
         BlockStackCt: 4
       - Color: 4
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
-      - Color: 8
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 14
+        BlockStackCt: 4
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 1
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       - Color: 7
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 3
+      - Color: 7
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0
@@ -2731,49 +2735,45 @@ MonoBehaviour:
       SpawnerReach: 0
       Spawner8Directions: 0
       Queue:
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
+      - Color: 3
+        BlockStackCt: 4
       - Color: 8
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 9
         BlockStackCt: 4
       - Color: 8
         BlockStackCt: 4
       - Color: 4
+        BlockStackCt: 4
+      - Color: 8
+        BlockStackCt: 4
+      - Color: 4
+        BlockStackCt: 4
+      - Color: 3
         BlockStackCt: 4
       - Color: 14
         BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 8
-        BlockStackCt: 4
-      - Color: 8
+      - Color: 9
         BlockStackCt: 4
       - Color: 1
         BlockStackCt: 4
       - Color: 1
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 6
+        BlockStackCt: 4
+      - Color: 2
+        BlockStackCt: 4
+      - Color: 2
         BlockStackCt: 4
       - Color: 7
         BlockStackCt: 4
       - Color: 2
         BlockStackCt: 4
       - Color: 2
-        BlockStackCt: 4
-      - Color: 4
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 3
-        BlockStackCt: 4
-      - Color: 1
-        BlockStackCt: 4
-      - Color: 9
-        BlockStackCt: 4
-      - Color: 2
-        BlockStackCt: 4
-      - Color: 3
         BlockStackCt: 4
       SpawnerDirectionAngleZ: 0.5103567
       UseCustomDirection: 0

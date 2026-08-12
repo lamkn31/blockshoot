@@ -19,10 +19,10 @@ MonoBehaviour:
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
   PathWaypoints:
-  - {x: 2.9114401, y: 0, z: -30.035284}
-  - {x: 2.2777996, y: 0, z: -23.761919}
-  - {x: -3.7975628, y: 0, z: -16.965364}
-  - {x: 1.8161448, y: 0, z: -4.822418}
+  - {x: 2.8687987, y: 0, z: -28.167572}
+  - {x: 2.2777996, y: 0, z: -22.797075}
+  - {x: -3.7975628, y: 0, z: -16.00052}
+  - {x: 1.8161448, y: 0, z: -3.8575745}
   IsClosed: 0
   PathStyle: 0
   CornerRadius: 3
@@ -90,7 +90,7 @@ MonoBehaviour:
   Grids:
   - Shape: 2
     Side: 2
-    Center: {x: -1.7067295, y: 0, z: -15.638565}
+    Center: {x: -1.7067295, y: 0, z: -14.673721}
     Rotation: 0
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -2828,7 +2828,7 @@ MonoBehaviour:
     PendingRefill: []
   - Shape: 2
     Side: 1
-    Center: {x: -4.2045193, y: 0, z: -18.191605}
+    Center: {x: -4.2045193, y: 0, z: -17.22676}
     Rotation: 202.71169
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -5868,7 +5868,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 3330962480086696267, guid: ece0ea511e1e4084f8fa721339b046ce,
       type: 3}
-    Pos: {x: -2.5287538, y: 0, z: -15.333794}
+    Pos: {x: -2.5287538, y: 0, z: -14.36895}
     RotationY: 0
     Scale: {x: 1.2, y: 1, z: 1.2}
     TargetCellIndex: -1
@@ -5876,7 +5876,7 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 3880441430053725302, guid: a75eff93b1f4e204baeefa5d73bfa835,
       type: 3}
-    Pos: {x: 3.980729, y: 0, z: -17.3788}
+    Pos: {x: 3.980729, y: 0, z: -16.413956}
     RotationY: 0
     Scale: {x: 1.2, y: 1, z: 1.2}
     TargetCellIndex: -1
