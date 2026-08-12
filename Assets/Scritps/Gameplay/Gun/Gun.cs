@@ -47,6 +47,8 @@ namespace Wayfu.Lamkn
         [SerializeField] private Renderer[] colorRenderers;
         [Tooltip("Các object hiển thị sẽ tắt khi gun đang chuyển vào path. Root Gun không được đưa vào đây để follower vẫn chạy.")]
         [SerializeField] private GameObject[] entryHiddenObjects;
+        [Tooltip("FX blink chỉ phát khi gun ẨN được dồn từ index 1 lên index 0 trong slot.")]
+        [SerializeField] private ParticleSystem blinkFx;
 
         [Header("Vệt di chuyển (trail)")]
         [Tooltip("ParticleSystem vệt bám gun khi DI CHUYỂN (kéo thả child trong prefab). Bỏ trống → tắt " +
@@ -112,6 +114,7 @@ namespace Wayfu.Lamkn
         public bool IsDead => _state == GunState.Dead;
         /// <summary>Gun đang chơi anim vào/ra cửa path (GoOut/GoIn) — PathManager dùng để giữ gate 1 gun/lượt.</summary>
         public bool PathEntryAnimating => _pathEntryAnimating;
+        public bool IsHiddenDuringPathEntry { get; private set; }
         /// <summary>Số VÒNG đã chạy trên path (mốc để biết gun vừa lap qua điểm path0). 0 khi ở slot.</summary>
         public int LapCount => _follower != null ? _follower.LapCount : 0;
 
@@ -399,11 +402,18 @@ namespace Wayfu.Lamkn
         }
 
         /// <summary>Slot báo gun này có đang ở VỊ TRÍ ĐẦU (index 0) không → gun ẩn lộ/che màu theo đó.</summary>
-        public void SetAtFront(bool front)
+public void SetAtFront(bool front)
         {
             if (_atFront == front) return;
             _atFront = front;
             if (Data != null && Data.Hidden) ApplyColorVisual();
+        }
+
+public void PlayBlinkFxIfHidden()
+        {
+            if (Data == null || !Data.Hidden || blinkFx == null) return;
+            blinkFx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            blinkFx.Play(true);
         }
 
         // Được gọi từ GunClickRelay (collider ở child) hoặc trực tiếp nếu collider nằm cùng GO.
@@ -588,6 +598,7 @@ namespace Wayfu.Lamkn
 
         public void SetHiddenDuringPathEntry(bool hidden)
         {
+            IsHiddenDuringPathEntry = hidden;
             if (entryHiddenObjects != null && entryHiddenObjects.Length > 0)
             {
                 foreach (var obj in entryHiddenObjects)
@@ -829,22 +840,27 @@ namespace Wayfu.Lamkn
             SetHiddenDuringPathEntry(true);
             transform.position = PathSurfacePoint(path, 0f);
 
-            if (Data != null && Data.ConnectGroup != 0 && SlotManager.IsActive)
-                yield return SlotManager.Instance.WaitForConnectCycle(this);
-
-            // Đã chui vào hầm ở cuối path: ẩn hẳn rồi teleport về cửa (pos 0), NHƯNG chưa tái xuất ngay.
-            SetHiddenDuringPathEntry(true);
-            transform.position = PathSurfacePoint(path, 0f);
-
-            // Xin PathManager cho tái xuất. Nếu còn gun slot đang chờ vào thì gun này ẩn hẳn tại cửa đợi
-            // slot vào HẾT mới tới lượt (ưu tiên slot). Không có PathManager → tái xuất ngay (fallback).
-            bool granted = false;
-            if (PathManager.IsActive) PathManager.Instance.RequestEmerge(this, () => granted = true);
-            else granted = true;
-            while (!granted)
+            bool isConnect = Data != null && Data.ConnectGroup != 0;
+            if (isConnect && SlotManager.IsActive)
             {
-                if (_state != GunState.OnPath) yield break; // gun bị hủy/clear trong lúc chờ → thôi
-                yield return null;
+                // WaitForConnectCycle handles barrier + group RequestEmergeGroup.
+                // When it returns, PathManager has already granted this gun.
+                yield return SlotManager.Instance.WaitForConnectCycle(this);
+            }
+            else
+            {
+                // Non-connect gun: request individual emerge from PathManager.
+                SetHiddenDuringPathEntry(true);
+                transform.position = PathSurfacePoint(path, 0f);
+
+                bool granted = false;
+                if (PathManager.IsActive) PathManager.Instance.RequestEmerge(this, () => granted = true);
+                else granted = true;
+                while (!granted)
+                {
+                    if (_state != GunState.OnPath) yield break;
+                    yield return null;
+                }
             }
 
             // Tới lượt: hiện hình lại và GoOut khỏi cửa.

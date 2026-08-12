@@ -86,15 +86,31 @@ namespace Wayfu.Lamkn
             _guns.RemoveAt(0);
             for (int i = 0; i < _guns.Count; i++)
             {
-                _guns[i].MoveTo(SlotPos(i), shiftDuration); // dồn gun sau lên
-                _guns[i].transform.localScale = Vector3.one * (i == 0 ? FrontGunScale : InSlotScale);
+                bool becomesFront = i == 0;
+                var gun = _guns[i];
+                if (gun == null) continue;
+
+                // Gun vừa ở index 1: phát blink và lộ màu thật tại chỗ trước khi trượt lên index 0.
+                if (becomesFront)
+                {
+                    gun.PlayBlinkFxIfHidden();
+                    gun.SetAtFront(true);
+                }
+                else
+                {
+                    gun.SetAtFront(false);
+                }
+
+                gun.MoveTo(SlotPos(i), shiftDuration);
+                gun.transform.localScale = Vector3.one * (becomesFront ? FrontGunScale : InSlotScale);
             }
-            RefreshReveal(); // gun mới lên đầu (index 0) → lộ màu nếu là gun ẩn
             return front;
         }
 
         // Gun được trả về pool qua PoolManager.ReturnAll khi rebuild — ở đây chỉ xoá list.
         public void Clear() => _guns.Clear();
+
+
 
         private void OnDrawGizmos()
         {
