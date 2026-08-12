@@ -69,7 +69,7 @@ MonoBehaviour:
   muzzleLeft: {fileID: 9123826817185035384}
   targetLostGrace: 0.4
   bulletLabel: {fileID: 985889518328377816}
-  hiddenMaterial: {fileID: 2100000, guid: 68435d06caba6c246b1ff5de78a826f6, type: 2}
+  hiddenMaterial: {fileID: 2100000, guid: 21eda39985ea8164d8cf440abd7b5534, type: 2}
   colorRenderers:
   - {fileID: 4654034432380433214}
   entryHiddenObjects:
