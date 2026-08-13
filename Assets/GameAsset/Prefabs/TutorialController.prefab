@@ -42,17 +42,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 630225db2a8841119da765ac4e34f189, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   gameController: {fileID: 0}
   gameplayCamera: {fileID: 0}
   debugLog: 1
   tutorialCanvas: {fileID: 0}
   objectStencilMask: {fileID: 2100000, guid: 9b5c4d3e6f708192a3b4c5d6e7f8a9b0, type: 2}
   tutorials:
-  - levelNumber: 1
+  - type: 0
+    tutorialImage: {fileID: 0}
+    levelNumber: 1
     guideText: Tap to select the gun!
-    handAnimation:
+    handAnimation: 
+    handScreenOffset: {x: 0, y: 0}
+    positionTextDesAboveGun: 1
+    textDesScreenOffset: {x: 0, y: 300}
+    stencilGun: 1
+  - type: 1
+    tutorialImage: {fileID: 21300000, guid: c0b6ad9c50d181a4a9e51617de541d8c, type: 3}
+    levelNumber: 5
+    guideText: Tap to select the gun!
+    handAnimation: 
     handScreenOffset: {x: 0, y: 0}
     positionTextDesAboveGun: 1
     textDesScreenOffset: {x: 0, y: 300}

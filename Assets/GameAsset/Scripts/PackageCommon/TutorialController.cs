@@ -28,9 +28,20 @@ namespace Wayfu.Lamkn
     {
         public static TutorialController Instance { get; private set; }
 
+        public enum LevelTutorialType
+        {
+            ClickGun,
+            ShowImage
+        }
+
         [Serializable]
         public class LevelTutorial
         {
+            [Tooltip("Loại tutorial: chỉ vào gun hoặc hiện ảnh và đóng khi click màn hình.")]
+            public LevelTutorialType type = LevelTutorialType.ClickGun;
+
+            [Tooltip("Ảnh hiển thị khi Type = ShowImage. Người chơi click bất kỳ đâu để đóng.")]
+            public Sprite tutorialImage;
             [Tooltip("Level (1-based) sẽ hiện tutorial này.")]
             public int levelNumber = 1;
             [TextArea(1, 3)]
@@ -164,7 +175,29 @@ namespace Wayfu.Lamkn
             yield return new WaitForEndOfFrame();
             Canvas.ForceUpdateCanvases();
 
-            // Gun đầu tiên (front gun của slot active đầu tiên). Chưa có gun → không chạy tutorial.
+            if (cfg.type == LevelTutorialType.ShowImage)
+            {
+                if (cfg.tutorialImage == null)
+                {
+                    Debug.LogWarning($"[Tutorial] Level {cfg.levelNumber} uses ShowImage but has no tutorial image.", this);
+                    _running = false;
+                    _active = null;
+                    yield break;
+                }
+
+                var imageStep = new TutorialStep
+                {
+                    id = $"level{cfg.levelNumber}_image",
+                    showBanner = true,
+                    bannerSprite = cfg.tutorialImage,
+                    showHand = false,
+                    advanceMode = TutorialAdvanceMode.Click
+                };
+
+                popup.StartTutorial(new List<TutorialStep> { imageStep }, OnTutorialDone, OnTutorialShown);
+                yield break;
+            }
+
             _targetGun = SlotManager.IsActive ? SlotManager.Instance.FirstGun : null;
             if (_targetGun == null) { _running = false; _active = null; yield break; }
 
@@ -188,16 +221,13 @@ namespace Wayfu.Lamkn
                 showHand = true,
                 handScreenPos = handPos,
                 handAnimation = cfg.handAnimation,
-                advanceMode = TutorialAdvanceMode.Action, // chờ người chơi CHỌN gun (GunDeployed) mới advance
+                advanceMode = TutorialAdvanceMode.Action,
                 useTextDesScreenPos = cfg.positionTextDesAboveGun,
                 textDesScreenPos = textDesPos,
             };
 
-            // Nghe sự kiện chọn gun để hoàn tất bước.
             SlotManager.GunDeployed += HandleGunDeployed;
             _hooked = true;
-
-            // onShown: tối nền + gắn stencil cho gun NGAY khi popup hiện (trước anim scale-in).
             popup.StartTutorial(new List<TutorialStep> { step }, OnTutorialDone, OnTutorialShown);
         }
 
@@ -210,7 +240,8 @@ namespace Wayfu.Lamkn
                 EnsureCanvasCamera();
                 tutorialCanvas.Show();
             }
-            if (_active != null && _active.stencilGun) ApplyStencilToGun();
+            if (_active != null && _active.type == LevelTutorialType.ClickGun && _active.stencilGun)
+                ApplyStencilToGun();
         }
 
         private void EnsureCanvasCamera()

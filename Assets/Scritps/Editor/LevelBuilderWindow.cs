@@ -3249,19 +3249,23 @@ namespace Wayfu.Lamkn
                         EditorStyles.miniButton, GUILayout.Width(24)) != selNow)
                     _selObstacle = selNow ? -1 : i;
                 GUI.backgroundColor = bg;
-                EditorGUILayout.LabelField($"#{i} · {(prefab != null ? prefab.name : "(chưa có model)")}", EditorStyles.boldLabel);
+                string obstacleLabel = $"#{i} · " + (prefab != null ? prefab.name : "(chưa có model)");
+                el.isExpanded = EditorGUILayout.Foldout(el.isExpanded, obstacleLabel, true);
                 var o = MiniButtons(i, obs.arraySize);
                 if (o != ListOp.None) { pend = i; op = o; }
                 EditorGUILayout.EndHorizontal();
 
-                EditorGUILayout.PropertyField(el.FindPropertyRelative("Prefab"), new GUIContent("Model"));
-                EditorGUILayout.PropertyField(el.FindPropertyRelative("Pos"), new GUIContent("Vị trí"));
-                EditorGUILayout.PropertyField(el.FindPropertyRelative("RotationY"), new GUIContent("Xoay Y (°)"));
-                EditorGUILayout.PropertyField(el.FindPropertyRelative("Scale"), new GUIContent("Scale"));
-                if (GUILayout.Button("Reset Scale = 1 (kích thước model)"))
-                    el.FindPropertyRelative("Scale").vector3Value = Vector3.one;
-                EditorGUILayout.PropertyField(el.FindPropertyRelative("Type"));
-                EditorGUILayout.PropertyField(el.FindPropertyRelative("Strength"));
+                if (el.isExpanded)
+                {
+                    EditorGUILayout.PropertyField(el.FindPropertyRelative("Prefab"), new GUIContent("Model"));
+                    EditorGUILayout.PropertyField(el.FindPropertyRelative("Pos"), new GUIContent("Vị trí"));
+                    EditorGUILayout.PropertyField(el.FindPropertyRelative("RotationY"), new GUIContent("Xoay Y (°)"));
+                    EditorGUILayout.PropertyField(el.FindPropertyRelative("Scale"), new GUIContent("Scale"));
+                    if (GUILayout.Button("Reset Scale = 1 (kích thước model)"))
+                        el.FindPropertyRelative("Scale").vector3Value = Vector3.one;
+                    EditorGUILayout.PropertyField(el.FindPropertyRelative("Type"));
+                    EditorGUILayout.PropertyField(el.FindPropertyRelative("Strength"));
+                }
                 EditorGUILayout.EndVertical();
             }
             if (pend >= 0)
@@ -3286,6 +3290,7 @@ namespace Wayfu.Lamkn
             el.FindPropertyRelative("Type").enumValueIndex = 0;
             el.FindPropertyRelative("TargetCellIndex").intValue = -1;
             el.FindPropertyRelative("Strength").intValue = 1;
+            el.isExpanded = true;
             _selObstacle = idx;
             _foldObstacles = true;
         }
