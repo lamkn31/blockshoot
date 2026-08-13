@@ -8989,7 +8989,63 @@ MonoBehaviour:
   ScreenAspect: {x: 9, y: 16}
   CameraCenter: {x: 0, y: 0, z: 0}
   BoardProps: []
-  Obstacles: []
+  Obstacles:
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 22.727875, y: -0.75, z: -28.600744}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 0.1402043, y: -0.75, z: -28.541386}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 6874092038023635365, guid: 800588c7707de2a489e6da612d28a4ba,
+      type: 3}
+    Pos: {x: 9.544543, y: 0, z: -24.49108}
+    RotationY: 1.1141912
+    Scale: {x: 1.7300179, y: 1, z: 0.72145545}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 6874092038023635365, guid: 800588c7707de2a489e6da612d28a4ba,
+      type: 3}
+    Pos: {x: -6.9803834, y: 0, z: -4.669908}
+    RotationY: 359.69946
+    Scale: {x: 2.114725, y: 1, z: 1.0195637}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 6874092038023635365, guid: 800588c7707de2a489e6da612d28a4ba,
+      type: 3}
+    Pos: {x: 2.347863, y: 0, z: -9.511295}
+    RotationY: 359.69946
+    Scale: {x: 2.2010028, y: 1, z: 1.0864217}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 6874092038023635365, guid: 800588c7707de2a489e6da612d28a4ba,
+      type: 3}
+    Pos: {x: -3.5288472, y: 0, z: -22.431871}
+    RotationY: 1.1141912
+    Scale: {x: 1.7441969, y: 1, z: 1.0784245}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -3.752921, y: 0, z: -12.220037}
+    RotationY: 0
+    Scale: {x: 1.0155236, y: 1, z: 0.96495247}
+    TargetCellIndex: -1
+    Strength: 1
   Sign:
     Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
     Pos: {x: 9.235207, y: 0, z: -30.37876}

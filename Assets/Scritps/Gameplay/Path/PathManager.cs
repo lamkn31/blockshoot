@@ -81,10 +81,24 @@ namespace Wayfu.Lamkn
         // gun slot ĐANG đợi lúc nó xin (snapshot WaitFor) — nhường xong nhóm đó là ra ngay, gun slot tới
         // SAU xếp phía sau nó (không để dòng gun slot mới chen liên tục làm gun loop kẹt mãi ở cửa).
         // The last gun leaves its slot before it is staged in _queue, so this
-        // applies to both slot -> queue and queue -> path_0 movement.
-        private float EndgameSpeedMultiplier => SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
-            ? Mathf.Max(1f, GameSettings.Instance != null ? GameSettings.Instance.EndgameSpeedMultiplier : 1f)
-            : 1f;
+        // multiplier applies consistently to slot -> queue, queue -> path_0,`n        // and path movement (including hold-screen speed boost).
+        private float MovementSpeedMultiplier
+        {
+            get
+            {
+                var settings = GameSettings.Instance;
+                if (settings == null) return 1f;
+
+                float multiplier = SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty
+                    ? Mathf.Max(1f, settings.EndgameSpeedMultiplier)
+                    : 1f;
+                if (IsFull)
+                    multiplier *= Mathf.Max(1f, settings.FullPathSpeedMultiplier);
+                if (GameController.IsActive && GameController.Instance.IsHoldScreenSpeedBoostActive)
+                    multiplier *= Mathf.Max(1f, settings.HoldScreenSpeedMultiplier);
+                return multiplier;
+            }
+        }
 
         private Gun _gateGun;                                             // gun đang transit; null = cửa rảnh
         private readonly List<EmergeReq> _emerge = new List<EmergeReq>(); // gun loop ẩn ở cửa chờ tái xuất (FIFO)
@@ -549,7 +563,7 @@ namespace Wayfu.Lamkn
             float dt = Time.deltaTime;
             if (dt <= 0f) return;
 
-            float maxStep = slotToEntrySpeed * EndgameSpeedMultiplier * dt;
+            float maxStep = slotToEntrySpeed * MovementSpeedMultiplier * dt;
             float sep = crowdMinSeparation;
             Vector3 entrance = PathSurfacePoint(_frontStationDistance);
 
@@ -685,7 +699,7 @@ namespace Wayfu.Lamkn
             // entryMoveSpeed = slotToEntrySpeed: đoạn trượt vào pos 0 chạy nhanh liền mạch với lúc bay ra
             // khỏi slot, không bò chậm ở tốc độ path rồi mới vào (tránh cảm giác đứng đợi ở cửa).
             gun.DeployOnPath(_path, _frontStationDistance, _gunSpeed, playEmerge: false,
-                entryMoveSpeed: slotToEntrySpeed * EndgameSpeedMultiplier);
+                entryMoveSpeed: slotToEntrySpeed * MovementSpeedMultiplier);
         }
 
         /// <summary>Mở cửa cho gun loop đầu hàng tái xuất: nó tự hiện hình + GoOut trong callback.</summary>

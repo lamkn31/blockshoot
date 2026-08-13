@@ -5516,7 +5516,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 1
+    Side: 2
     Center: {x: 4.4993916, y: 0, z: -13.362282}
     Rotation: 124.71569
     CellDirectionOffset: 0
@@ -13064,6 +13064,14 @@ MonoBehaviour:
     Pos: {x: 2.255021, y: 0, z: -23.981184}
     RotationY: 79.45596
     Scale: {x: 0.70108414, y: 1, z: 1.0013449}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 3.3740966, y: -0.75, z: -28.479927}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
     TargetCellIndex: -1
     Strength: 1
   Sign:

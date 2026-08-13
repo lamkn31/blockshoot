@@ -19,10 +19,10 @@ MonoBehaviour:
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
   PathWaypoints:
-  - {x: 6.5400696, y: 0, z: -29.438925}
-  - {x: 7.039907, y: 0, z: -20.798668}
-  - {x: -0.67139286, y: 0, z: -21.72614}
-  - {x: -6.5180364, y: 0, z: -19.629879}
+  - {x: 6.67904, y: 0, z: -29.003551}
+  - {x: 7.0675244, y: 0, z: -20.635572}
+  - {x: -2.3105612, y: 0, z: -21.867247}
+  - {x: -6.8340173, y: 0, z: -19.09058}
   - {x: -6.6051846, y: 0, z: -12.498724}
   - {x: -2.5147452, y: 0, z: -9.174856}
   - {x: 2.0334098, y: 0, z: -6.052847}
@@ -4386,8 +4386,8 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 1
-    Side: 1
-    Center: {x: -1.236802, y: 0, z: -21.231035}
+    Side: 2
+    Center: {x: -1.480904, y: 0, z: -21.181705}
     Rotation: 180.83733
     CellDirectionOffset: 0
     DefaultDirection: 0
@@ -6479,9 +6479,9 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 3330962480086696267, guid: 9e7147988fa326f42ad913abf14ebd67,
       type: 3}
-    Pos: {x: -0.32, y: 0, z: -23.95}
+    Pos: {x: -0.41433635, y: 0, z: -24.14618}
     RotationY: 0.7386512
-    Scale: {x: 1.2701898, y: 1, z: 1.1969092}
+    Scale: {x: 1.2417651, y: 1, z: 1.2512261}
     TargetCellIndex: -1
     Strength: 1
   - Type: 0
@@ -6527,9 +6527,17 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 6054179251720648522, guid: b300a44c8110c6c40b5aaec06ba4b5d4,
       type: 3}
-    Pos: {x: 5.431689, y: 0, z: -25.801226}
+    Pos: {x: 5.2046475, y: 0, z: -25.894579}
     RotationY: 0.6024262
-    Scale: {x: 0.7168248, y: 1, z: 0.77544534}
+    Scale: {x: 0.6979981, y: 1, z: 0.8048397}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7715462441154322229, guid: 0dc8f155f3674954cb099023e6625033,
+      type: 3}
+    Pos: {x: -1.2249403, y: 0, z: -29.042347}
+    RotationY: 90.66
+    Scale: {x: 1.0191504, y: 1, z: 1.1223572}
     TargetCellIndex: -1
     Strength: 1
   Sign:
