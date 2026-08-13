@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b4429a5846abd4b99ca05c60e3832b, type: 3}
   m_Name: Level23
   m_EditorClassIdentifier: 
-  CurGameDifficulty: 0
+  CurGameDifficulty: 3
   SkipLevelLoop: 0
   NumberOfColors: 0
   MechanicNames: []
@@ -10025,19 +10025,15 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
       type: 3}
-    Pos: {x: -7.1365266, y: 0, z: -24.639423}
-    RotationY: 0
-    Scale: {x: 3.0314066, y: 1, z: 0.1378011}
-    TargetCellIndex: -1
-    Strength: 1
-  - Type: 0
-    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
-      type: 3}
     Pos: {x: 2.544138, y: 0, z: -26.673546}
     RotationY: 0
     Scale: {x: 17.133411, y: 1, z: 0.1506487}
     TargetCellIndex: -1
     Strength: 1
+  Sign:
+    Prefab: {fileID: 0}
+    Pos: {x: 8.8, y: 0, z: -30}
+    Scale: {x: 1, y: 1, z: 1}
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

@@ -19,7 +19,7 @@ MonoBehaviour:
   OverrideGunFireRange: 0
   CustomGunFireRange: 3
   PathWaypoints:
-  - {x: -7.6275587, y: 0, z: -27.651712}
+  - {x: -7.621881, y: 0, z: -27.309986}
   - {x: -0.46879473, y: 0, z: -27.657444}
   - {x: -0.5540444, y: 0, z: -16.833359}
   - {x: 6.713784, y: 0, z: -17.02853}
@@ -3857,6 +3857,14 @@ MonoBehaviour:
     Pos: {x: -1.7589574, y: 0, z: -20.21396}
     RotationY: 179.27415
     Scale: {x: 0.778794, y: 1, z: 1.4087268}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 11.937251, y: -0.75, z: -29.205162}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
     TargetCellIndex: -1
     Strength: 1
   Sign:

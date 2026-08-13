@@ -44,12 +44,12 @@ MonoBehaviour:
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 1
-    - Color: 9
-      CountBullet: 60
-      Hidden: 0
-      ConnectGroup: 0
     - Color: 6
       CountBullet: 30
+      Hidden: 0
+      ConnectGroup: 0
+    - Color: 9
+      CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
     - Color: 6
@@ -93,8 +93,8 @@ MonoBehaviour:
       CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
-    - Color: 13
-      CountBullet: 120
+    - Color: 4
+      CountBullet: 60
       Hidden: 0
       ConnectGroup: 0
     - Color: 6
@@ -138,8 +138,8 @@ MonoBehaviour:
       CountBullet: 30
       Hidden: 0
       ConnectGroup: 3
-    - Color: 4
-      CountBullet: 60
+    - Color: 13
+      CountBullet: 120
       Hidden: 0
       ConnectGroup: 0
   - Guns:
@@ -7156,6 +7156,10 @@ MonoBehaviour:
     Scale: {x: 0.90942305, y: 1, z: 0.7814853}
     TargetCellIndex: -1
     Strength: 1
+  Sign:
+    Prefab: {fileID: 0}
+    Pos: {x: 8.8, y: 0, z: -30}
+    Scale: {x: 1, y: 1, z: 1}
   GunPrefab: {fileID: 0}
   BlockCellPrefab: {fileID: 0}
   BlockPrefab: {fileID: 0}

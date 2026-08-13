@@ -7798,9 +7798,9 @@ MonoBehaviour:
   - Type: 0
     Prefab: {fileID: 7917115439556375520, guid: 9272e565e40ee1642ae86263389c6472,
       type: 3}
-    Pos: {x: -6.4679437, y: 0, z: -19.383352}
+    Pos: {x: -6.4813943, y: 0, z: -19.072147}
     RotationY: 0
-    Scale: {x: 0.7659531, y: 1, z: 0.8255758}
+    Scale: {x: 0.761458, y: 1, z: 0.9773396}
     TargetCellIndex: -1
     Strength: 1
   - Type: 0
@@ -7865,6 +7865,30 @@ MonoBehaviour:
     Pos: {x: -3.4107904, y: 0, z: -24.500698}
     RotationY: 90
     Scale: {x: 0.65101033, y: 1, z: 1.1015798}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 1068837180821787520, guid: 40fcbc0297c5377458f0e131b641fdb2,
+      type: 3}
+    Pos: {x: -6.4318714, y: 0, z: -17.5988}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 22.777359, y: -0.75, z: -29.677225}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 1.2872616, y: -0.75, z: -29.675169}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
     TargetCellIndex: -1
     Strength: 1
   Sign:

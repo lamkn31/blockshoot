@@ -5732,7 +5732,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 2
-    Side: 2
+    Side: 1
     Center: {x: 4.6894517, y: 0, z: -3.1474724}
     Rotation: 0
     CellDirectionOffset: 0
@@ -11929,21 +11929,6 @@ MonoBehaviour:
     TargetCellIndex: -1
     Strength: 1
   - Type: 0
-    Prefab: {fileID: 6001335565754704171, guid: 16cb283e4fdfb3c4990a186cd1cc3154,
-      type: 3}
-    Pos: {x: 2.0628314, y: 0, z: -25.07305}
-    RotationY: 0
-    Scale: {x: 32.88479, y: 1, z: 0.73720556}
-    TargetCellIndex: -1
-    Strength: 1
-  - Type: 0
-    Prefab: {fileID: 0}
-    Pos: {x: -0.022320298, y: 0, z: -18.932236}
-    RotationY: 0
-    Scale: {x: 1, y: 1, z: 1}
-    TargetCellIndex: -1
-    Strength: 1
-  - Type: 0
     Prefab: {fileID: 7715462441154322229, guid: 0dc8f155f3674954cb099023e6625033,
       type: 3}
     Pos: {x: 1.6274287, y: 0, z: -25.389637}
@@ -11957,6 +11942,14 @@ MonoBehaviour:
     Pos: {x: -1.847959, y: 0, z: -7.69171}
     RotationY: 90
     Scale: {x: 0.87832403, y: 1, z: 1.0640199}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 4.497601, y: -0.75, z: -29.160732}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
     TargetCellIndex: -1
     Strength: 1
   Sign:

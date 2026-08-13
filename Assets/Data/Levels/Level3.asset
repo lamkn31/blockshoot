@@ -78,7 +78,7 @@ MonoBehaviour:
   HoleCapacity: 3
   Grids:
   - Shape: 2
-    Side: 1
+    Side: 2
     Center: {x: 0.13776056, y: 0, z: -1.0596962}
     Rotation: 0
     CellDirectionOffset: 0
@@ -6992,7 +6992,7 @@ MonoBehaviour:
       IceThreshold: 0
     PendingRefill: []
   - Shape: 2
-    Side: 2
+    Side: 1
     Center: {x: -3.8275864, y: 0, z: -2.6473885}
     Rotation: 0
     CellDirectionOffset: 0
@@ -12168,6 +12168,14 @@ MonoBehaviour:
     Pos: {x: 2.0212278, y: 0, z: -15.103621}
     RotationY: 178
     Scale: {x: 1.0717081, y: 1, z: 1.2374988}
+    TargetCellIndex: -1
+    Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 5.4147897, y: -0.75, z: -28.047314}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
     TargetCellIndex: -1
     Strength: 1
   Sign:

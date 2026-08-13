@@ -13632,6 +13632,14 @@ MonoBehaviour:
     Scale: {x: 0.75419915, y: 1, z: 1.2383668}
     TargetCellIndex: -1
     Strength: 1
+  - Type: 0
+    Prefab: {fileID: 7383574002632404935, guid: 3cda6dee639acc043870a6d83db30eca,
+      type: 3}
+    Pos: {x: 12.804136, y: -0.75, z: -30.13723}
+    RotationY: 90
+    Scale: {x: 1, y: 1, z: 1}
+    TargetCellIndex: -1
+    Strength: 1
   Sign:
     Prefab: {fileID: 800666365161284888, guid: 8332a857c4c79294ba9c0e26f28e1bf9, type: 3}
     Pos: {x: 8.8, y: 0, z: -30}
