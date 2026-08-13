@@ -103,6 +103,7 @@ namespace Wayfu.Lamkn
             if (IsShowing)
             {
                 ShowInstant();
+                PlayTitleAnim();
                 if (logoTransform != null) logoTransform.localScale = Vector3.one;
                 StartLabelDots(label);
             }
@@ -117,19 +118,24 @@ namespace Wayfu.Lamkn
         // Chạy anim spine "title" khi show loading — KHÔNG loop (chạy 1 lần rồi giữ frame cuối).
         private void PlayTitleAnim()
         {
-            if(logoTitle != null)
-                logoTitle.SetActive(false);
-            if(titleSpine != null)
-                titleSpine.gameObject.SetActive(true);
-            if (titleSpine == null || string.IsNullOrEmpty(titleAnim)) return;
+            // Chưa gắn SkeletonGraphic thì dùng logo tĩnh làm fallback và giữ nó suốt loading.
+            // Logo chỉ biến mất cùng root CanvasGroup khi Hide() fade toàn bộ popup.
+            bool hasSpine = titleSpine != null && !string.IsNullOrEmpty(titleAnim);
+            if (logoTitle != null) logoTitle.SetActive(!hasSpine);
+            if (titleSpine != null) titleSpine.gameObject.SetActive(hasSpine);
+            if (!hasSpine) return;
             // Tắt auto-play "Starting Animation" khi enable (nguồn gây flash lúc mở lại) — mình tự điều khiển.
             titleSpine.startingAnimation = null;
-            titleSpine.freeze = false; // mở băng (đã freeze lúc đóng)
-            if (titleSpine.AnimationState == null) titleSpine.Initialize(false); // ép init khi vừa active
+            titleSpine.freeze = false;
+            if (titleSpine.AnimationState == null) titleSpine.Initialize(false);
             var state = titleSpine.AnimationState;
-            if (state == null) return;
-            state.SetAnimation(0, titleAnim, false); // loop = false
-            // Áp pose + rebuild mesh NGAY (deltaTime=0, không tua) → chạy anim tức thì, hết bị "cache" frame cũ.
+            if (state == null)
+            {
+                if (logoTitle != null) logoTitle.SetActive(true);
+                titleSpine.gameObject.SetActive(false);
+                return;
+            }
+            state.SetAnimation(0, titleAnim, false);
             titleSpine.Update(0f);
             titleSpine.UpdateMesh();
         }

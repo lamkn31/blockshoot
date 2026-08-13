@@ -16,7 +16,21 @@ MonoBehaviour:
   - isEnabled: 1
     id: 
     title: New Feature
-    description: Wooden crate for birds, shoot it!
+    description: Hidden
     icon: {fileID: 21300000, guid: c0b6ad9c50d181a4a9e51617de541d8c, type: 3}
     titleImage: {fileID: 21300000, guid: 4b1e7d2e55b965849add46c698f9c71e, type: 3}
-    unlockLevel: 5
+    unlockLevel: 4
+  - isEnabled: 1
+    id: 
+    title: New Feature
+    description: Connect
+    icon: {fileID: 21300000, guid: 380bbc6f644d9a34eb502371fcb10ba9, type: 3}
+    titleImage: {fileID: 0}
+    unlockLevel: 9
+  - isEnabled: 1
+    id: 
+    title: New Feature
+    description: Ice
+    icon: {fileID: 21300000, guid: 17102d9bbd8d9e14c8c2a0e7f7b71140, type: 3}
+    titleImage: {fileID: 0}
+    unlockLevel: 14

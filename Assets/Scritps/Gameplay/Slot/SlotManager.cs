@@ -204,6 +204,24 @@ namespace Wayfu.Lamkn
                 }
                 yield return null;
             }
+            // Barrier chỉ đồng bộ thời điểm cả nhóm hoàn tất GoIn. Nếu mọi member cùng tiếp tục ngay,
+            // tất cả follower đều reset về distance 0 trong cùng frame và chồng lên nhau tại seam.
+            // Tái xuất theo thứ tự deploy high-to-low slot, cách nhau đúng một GunSpacing trên path.
+            int releaseOrder = 0;
+            for (int i = group.Members.Count - 1; i >= 0; i--)
+            {
+                var member = group.Members[i];
+                if (member == null || member.IsDead || !member.IsOnPath) continue;
+                if (member == gun) break;
+                releaseOrder++;
+            }
+            if (releaseOrder > 0)
+            {
+                var settings = GameSettings.Instance;
+                float spacing = settings != null ? Mathf.Max(0f, settings.GunSpacing) : 1.2f;
+                float speed = settings != null ? Mathf.Max(0.01f, settings.GunSpeed) : 3f;
+                yield return new WaitForSeconds(releaseOrder * spacing / speed);
+            }
         }
 
         // Gom các gun cùng ConnectGroup id (≠0) thành nhóm; tạo LineRenderer cho nhóm ≥2 gun.
