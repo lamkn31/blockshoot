@@ -538,6 +538,10 @@ namespace Wayfu.Lamkn
 
                 var cell = owner.Rows[row][col];
                 if (cell == null || cell.Color != seed.Color || cell.IsEmpty) continue;
+                // Connected burst chỉ đi qua cell thực sự có thể nhận đạn. Preview nguồn tĩnh,
+                // ô không shootable và cell đang chuyển trạng thái phải chặn khối tại vị trí đó.
+                if (IsQueuedStaticSource(owner, row, col) || !IsPositionShootable(owner, row, col)
+                    || cell.Indestructible || cell.Frozen || cell.PendingEntry || cell.Available <= 0) continue;
 
                 Vector3 offset = cell.transform.position - from;
                 offset.y = 0f;

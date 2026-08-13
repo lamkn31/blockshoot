@@ -88,6 +88,7 @@ namespace Wayfu.Lamkn
         private Coroutine _moveRoutine;
         private Coroutine _tiltRoutine;
         private int _pendingHits;
+        private bool _clearDeferred;
         private float _stackSpacing;
         private Vector3 _blockScale = Vector3.one;
         private Pooler<BlockCell> _pool;
@@ -163,6 +164,7 @@ namespace Wayfu.Lamkn
             Frozen = data.Iced && data.IceThreshold > 0; // băng ngưỡng 0 = tan ngay, coi như không băng
             IceThreshold = data.IceThreshold;
             _pendingHits = 0;
+            _clearDeferred = false;
             _claim = null;                   // item pooled tái dùng → xoá claim của cell cũ
             Generation++;                    // object pool tái dùng → đây là 1 cell MỚI
             SettleStamp = 0f;                // cell dựng lúc build = đã đứng sẵn từ đầu (không tính "vừa sập")
@@ -249,16 +251,20 @@ namespace Wayfu.Lamkn
         public void CancelReservedHit()
         {
             if (_pendingHits > 0) _pendingHits--;
+            TryCompleteDeferredClear();
         }
 
         /// <summary>Đạn tới nơi: trừ 1 pending + phá 1 block.</summary>
         public void ApplyHit()
         {
             if (_pendingHits > 0) _pendingHits--;
-            _manager?.OnCellHit(this); // báo TRƯỚC khi phá: các cell kề bên ngả theo hướng va chạm
-            HitOnce();
+            if (_blocks.Count > 0)
+            {
+                _manager?.OnCellHit(this);
+                HitOnce();
+            }
+            TryCompleteDeferredClear();
         }
-
         private void HitOnce()
         {
             // Every caller follows the same order: bottom block first.
@@ -270,10 +276,13 @@ namespace Wayfu.Lamkn
         public void ApplyHitBottom()
         {
             if (_pendingHits > 0) _pendingHits--;
-            _manager?.OnCellHit(this); // báo TRƯỚC khi phá: các cell kề bên ngả theo hướng va chạm
-            HitBottomOnce();
+            if (_blocks.Count > 0)
+            {
+                _manager?.OnCellHit(this);
+                HitBottomOnce();
+            }
+            TryCompleteDeferredClear();
         }
-
         private void HitBottomOnce()
         {
             if (_blocks.Count == 0) return;
@@ -284,6 +293,18 @@ namespace Wayfu.Lamkn
 
             // Dồn các block còn lại xuống: block ở list-index j nằm đúng độ cao j (stack liền từ đáy).
             if (_blocks.Count > 0) return;
+            if (_pendingHits > 0)
+            {
+                _clearDeferred = true;
+                return;
+            }
+            if (_manager != null) _manager.OnCellCleared(this);
+        }
+
+        private void TryCompleteDeferredClear()
+        {
+            if (!_clearDeferred || _pendingHits > 0 || _blocks.Count > 0) return;
+            _clearDeferred = false;
             if (_manager != null) _manager.OnCellCleared(this);
         }
 
