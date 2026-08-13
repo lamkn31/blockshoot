@@ -301,7 +301,7 @@ namespace Wayfu.Lamkn
             Vector3 fwd = cell != null ? cell.transform.forward : -gr.Data.Forward;
             fwd.y = 0f;
             fwd = fwd.sqrMagnitude < 1e-6f ? Vector3.forward : fwd.normalized;
-            Vector3 rgt = Vector3.Cross(Vector3.up, fwd);   // local +X trên sàn
+            Vector3 rgt = GridRowRight(gr, r, e);   // local +X trên sàn
             Vector3 toGun = from - cellPos; toGun.y = 0f;   // hướng từ cell ra gun
 
             // Lộ ra ở cạnh đang bật VÀ gun nằm về phía NGOÀI cạnh đó (dot với pháp tuyến ngoài > 0).
@@ -2154,5 +2154,28 @@ namespace Wayfu.Lamkn
                     foreach (var cell in row)
                         if (cell != null && cell.Frozen && cell.IceThreshold <= destroyed) cell.Melt();
         }
-    }
+
+
+private static Vector3 GridRowRight(GridRuntime gr, int row, int element)
+        {
+            int count = gr.Rows[row].Length;
+            Vector3 direction;
+
+            if (count <= 1)
+            {
+                direction = Vector3.Cross(Vector3.up, gr.Data.Forward);
+            }
+            else
+            {
+                int previous = Mathf.Max(0, element - 1);
+                int next = Mathf.Min(count - 1, element + 1);
+                direction = gr.Data.CellPos(row, next) - gr.Data.CellPos(row, previous);
+            }
+
+            direction.y = 0f;
+            if (direction.sqrMagnitude < 1e-6f)
+                direction = Vector3.Cross(Vector3.up, gr.Data.Forward);
+            return direction.normalized;
+        }
+}
 }

@@ -81,6 +81,7 @@ namespace Wayfu.Lamkn
         private bool _clickInProgress;
         private bool _emptyAnimationInProgress;
         private bool _pathEntryAnimating;
+        private bool _waitForPathMovementBeforeShoot;
         private bool _pathCycleTransition;
         private float _lastRightShotTime = -999f;
         private float _lastLeftShotTime = -999f;
@@ -725,7 +726,11 @@ public void PlayBlinkFxIfHidden()
             if (_follower != null && _basePathSpeed > 0f)
                 _follower.moveSpeed = _basePathSpeed * SpeedMultiplier;
             if (_pathEntryAnimating) return;
-
+            if (_waitForPathMovementBeforeShoot)
+            {
+                if (_follower == null || _follower.CurrentDistance <= 0.001f) return;
+                _waitForPathMovementBeforeShoot = false;
+            }
             if (!_pathCycleTransition && _follower != null && _follower.targetPath != null)
             {
                 float total = _follower.targetPath.TotalLength;
@@ -837,6 +842,7 @@ public void PlayBlinkFxIfHidden()
             if (bulletLabel != null) bulletLabel.gameObject.SetActive(false);
             PlayGoOutAnimation();
             if (pathEntryHoldDuration > 0f) yield return new WaitForSeconds(pathEntryHoldDuration);
+            _waitForPathMovementBeforeShoot = true;
             BeginPathFollower(path, 0f, speed);
         }
 
