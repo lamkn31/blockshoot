@@ -30,6 +30,7 @@ namespace Wayfu.Lamkn
             public List<Gun> Members = new List<Gun>();
             public List<ConnectLine> Lines = new List<ConnectLine>();
             public readonly HashSet<Gun> CycleReady = new HashSet<Gun>();
+            public readonly HashSet<Gun> CycleGranted = new HashSet<Gun>();
             public int CycleRelease;
         }
         private readonly List<ConnectGroup> _connectGroups = new List<ConnectGroup>();
@@ -187,16 +188,33 @@ namespace Wayfu.Lamkn
             }
             if (complete)
             {
+                var readyMembers = new List<Gun>();
+                for (int i = group.Members.Count - 1; i >= 0; i--)
+                {
+                    var member = group.Members[i];
+                    if (member != null && !member.IsDead && member.IsOnPath && group.CycleReady.Contains(member))
+                        readyMembers.Add(member);
+                }
+
                 group.CycleReady.Clear();
                 group.CycleRelease = release;
+
+                if (PathManager.IsActive)
+                {
+                    PathManager.Instance.RequestEmergeGroup(readyMembers, granted =>
+                    {
+                        if (granted != null) group.CycleGranted.Add(granted);
+                    });
+                }
+                else
+                {
+                    foreach (var member in readyMembers) group.CycleGranted.Add(member);
+                }
             }
 
             while (group.CycleRelease < release)
             {
                 if (gun == null || gun.IsDead) yield break;
-                // A missing/stalled member must not strand every remaining gun at
-                // path_0 forever. The current gun may safely continue its loop;
-                // the next completed cycle will rebuild the barrier normally.
                 if (Time.time >= timeoutAt)
                 {
                     group.CycleReady.Remove(gun);
@@ -204,23 +222,11 @@ namespace Wayfu.Lamkn
                 }
                 yield return null;
             }
-            // Barrier chỉ đồng bộ thời điểm cả nhóm hoàn tất GoIn. Nếu mọi member cùng tiếp tục ngay,
-            // tất cả follower đều reset về distance 0 trong cùng frame và chồng lên nhau tại seam.
-            // Tái xuất theo thứ tự deploy high-to-low slot, cách nhau đúng một GunSpacing trên path.
-            int releaseOrder = 0;
-            for (int i = group.Members.Count - 1; i >= 0; i--)
+
+            while (!group.CycleGranted.Remove(gun))
             {
-                var member = group.Members[i];
-                if (member == null || member.IsDead || !member.IsOnPath) continue;
-                if (member == gun) break;
-                releaseOrder++;
-            }
-            if (releaseOrder > 0)
-            {
-                var settings = GameSettings.Instance;
-                float spacing = settings != null ? Mathf.Max(0f, settings.GunSpacing) : 1.2f;
-                float speed = settings != null ? Mathf.Max(0.01f, settings.GunSpeed) : 3f;
-                yield return new WaitForSeconds(releaseOrder * spacing / speed);
+                if (gun == null || gun.IsDead) yield break;
+                yield return null;
             }
         }
 
@@ -266,12 +272,12 @@ namespace Wayfu.Lamkn
                 {
                     var line = grp.Lines[i];
                     if (line == null) continue;
-                    bool vis = ConnectVisible(grp.Members[i], grp.Members[i + 1]);
+                    bool vis = ConnectVisible(grp, grp.Members[i], grp.Members[i + 1]);
                     if (line.gameObject.activeSelf != vis) line.gameObject.SetActive(vis);
                 }
         }
 
-        private static bool ConnectVisible(Gun a, Gun b)
+        private static bool ConnectVisible(ConnectGroup group, Gun a, Gun b)
         {
             if (a == null || b == null || a.IsDead || b.IsDead) return false;
             bool aSlot = a.Slot != null, bSlot = b.Slot != null;
@@ -283,6 +289,11 @@ namespace Wayfu.Lamkn
                 && (a.IsQueued || b.IsQueued)) return true;
             if (!aSlot && !bSlot && a.IsOnPath && b.IsOnPath)
             {
+                // Keep every line in the CONNECT group hidden while any member has
+                // finished GoIn and is waiting at the cycle barrier. The final member
+                // clears CycleReady only after the whole group has returned to path_0,
+                // so the wires reconnect before the normal staggered GoOut sequence.
+                if (group != null && group.CycleReady.Count > 0) return false;
                 // PathEntryAnimating covers the endpoint transitions: entering/leaving
                 // path_0 and GoIn at path_end.  When both members are there, hiding
                 // the line prevents it from being drawn through the tunnel.
@@ -297,6 +308,13 @@ namespace Wayfu.Lamkn
         private static void VibrateCanGo() => VibrationController.Instance?.Vibrate(VibrationStyle.Light);
         private static void VibrateCantGo() => VibrationController.Instance?.Vibrate(VibrationStyle.Medium);
 
+        private static void RejectGunClick(Gun gun)
+        {
+            gun?.TryPlayClickThen(null);
+            VibrateCantGo();
+        }
+
+
         public void OnGunClicked(Gun gun)
         {
             if (gun == null) return;
@@ -309,13 +327,12 @@ namespace Wayfu.Lamkn
             }
 
             var slot = gun.Slot;
-            if (slot == null || slot.FrontGun != gun) { VibrateCantGo(); return; } // không phải gun đầu → bị chặn
-            if (PathManager.Instance == null) return;
+            if (slot == null || slot.FrontGun != gun) { RejectGunClick(gun); return; } // không phải gun đầu → bị chặn
+            if (PathManager.Instance == null) { RejectGunClick(gun); return; }
             if (!PathManager.Instance.CanAcceptCount(_movingToLoop.Count + 1))
             {
                 // Chỉ báo click khi gun chưa thể rời slot vì path đã đầy.
-                gun.TryPlayClickThen(null);
-                VibrateCantGo();
+                RejectGunClick(gun);
                 return;
             }
 
@@ -379,8 +396,7 @@ namespace Wayfu.Lamkn
                 for (int i = 0; i < countInSlot; i++)
                     if (!memberSet.Contains(slot.Guns[i]))
                     {
-                        clickedGun?.TryPlayClickThen(null);
-                        VibrateCantGo();
+                        RejectGunClick(clickedGun);
                         return;
                     } // bị gun ngoài nhóm chặn
 
@@ -398,8 +414,7 @@ namespace Wayfu.Lamkn
             var pm = PathManager.Instance;
             if (pm == null || !pm.CanAcceptCount(_movingToLoop.Count + members.Count))
             {
-                clickedGun?.TryPlayClickThen(null);
-                VibrateCantGo();
+                RejectGunClick(clickedGun);
                 return;
             }
 

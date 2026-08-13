@@ -504,14 +504,30 @@ namespace Wayfu.Lamkn
         public void RequestEmerge(Gun gun, Action onGranted)
         {
             if (gun == null) { onGranted?.Invoke(); return; }
-            _emergeWaiting.Add(gun);
-            // Snapshot hàng chờ HIỆN TẠI: gun loop này chỉ nhường đúng các gun slot đang đợi lúc này.
-            _emerge.Add(new EmergeReq
+            RequestEmergeGroup(new[] { gun }, grantedGun => onGranted?.Invoke());
+        }
+
+        /// <summary>
+        /// Xếp cả nhóm CONNECT tái xuất thành một batch liên tiếp. Mọi member dùng
+        /// cùng snapshot queue nên gun khác không thể chen vào giữa nhóm; ServiceGate
+        /// vẫn cấp từng gun và giữ đúng GunSpacing tại path_0.
+        /// </summary>
+        public void RequestEmergeGroup(IList<Gun> guns, System.Action<Gun> onGranted)
+        {
+            if (guns == null || guns.Count == 0) return;
+
+            var waitFor = new HashSet<Gun>(_queue);
+            foreach (var gun in guns)
             {
-                Gun = gun,
-                OnGranted = onGranted,
-                WaitFor = new HashSet<Gun>(_queue)
-            });
+                if (gun == null || gun.IsDead || _emergeWaiting.Contains(gun)) continue;
+                _emergeWaiting.Add(gun);
+                _emerge.Add(new EmergeReq
+                {
+                    Gun = gun,
+                    OnGranted = () => onGranted?.Invoke(gun),
+                    WaitFor = new HashSet<Gun>(waitFor)
+                });
+            }
         }
 
         private void Update()
