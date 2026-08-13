@@ -36,11 +36,8 @@ namespace Wayfu.Lamkn
     /// <para><b>Single</b>: mỗi nhịp FireInterval nhả 1 viên, gặm dần cho tới khi cell sạch.</para>
     /// <para><b>BurstPerCell</b>: chốt cell xong nhả LUÔN 1 loạt đúng bằng số block còn lại của cell,
     /// mỗi viên bay tới 1 block trong stack → cả cell vỡ trong 1 lượt.</para>
-    /// <para><b>Laser</b>: KHÔNG bắn viên đạn — vẽ 1 TIA liền mạch từ nòng (left/right) tới cell đang
-    /// bám, gặm block liên tục theo FireInterval. Cell vỡ xong tia NỐI LIỀN sang cell kế trong tầm nên
-    /// nhìn không ngắt quãng (xem Gun.UpdateBeam / LaserHit).</para>
     /// </summary>
-    public enum GunFireMode { Single, BurstPerCell, Laser }
+    public enum GunFireMode { Single, BurstPerCell }
 
     /// <summary>
     /// Bó config bắn của gun: đọc 1 lần từ <see cref="GameSettings"/> rồi truyền xuống slot → gun.
@@ -55,6 +52,7 @@ namespace Wayfu.Lamkn
         public float Angle;
         public float BulletSpeed;
         public GunFireMode Mode;
+        public int BurstMaxCells;
         public bool BurstSpawnStacked;
         public float BurstRowLead;
 
@@ -66,6 +64,7 @@ namespace Wayfu.Lamkn
             Angle = gs != null ? gs.GunFireAngle : 360f,
             BulletSpeed = gs != null ? gs.BulletSpeed : 14f,
             Mode = gs != null ? gs.FireMode : GunFireMode.Single,
+            BurstMaxCells = gs != null ? Mathf.Max(1, gs.BurstMaxCells) : 3,
             BurstSpawnStacked = gs != null && gs.BurstSpawnStacked,
             BurstRowLead = gs != null ? gs.BurstRowLead : 0f,
         };

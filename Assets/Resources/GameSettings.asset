@@ -24,9 +24,10 @@ MonoBehaviour:
   WaitClusterSpacing: 2
   FireInterval: 0.1
   FireMode: 1
+  BurstMaxCells: 3
   BurstSpawnStacked: 1
   BurstRowLead: 0.2
-  GunFireRange: 10
+  GunFireRange: 7
   GunFireAngle: 60
   FrontStationDistance: 0
   BulletSpeed: 35

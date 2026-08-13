@@ -92,11 +92,6 @@ MonoBehaviour:
   bothHandWindow: 0.04
   shootAnimationDuration: 0.45
   goOutWaterLanDelay: 0.4
-  laserMaterial: {fileID: 2100000, guid: 1255821fc076ad943979a92690b2088c, type: 2}
-  laserWidth: 0.4
-  laserAimHeight: 0.25
-  laserLinger: 0.065
-  laserCellTime: 0.045
 --- !u!65 &9084109210422844194
 BoxCollider:
   m_ObjectHideFlags: 0

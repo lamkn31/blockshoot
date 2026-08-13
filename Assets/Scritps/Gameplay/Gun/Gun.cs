@@ -91,20 +91,6 @@ namespace Wayfu.Lamkn
         private Coroutine _goOutWaterFxRoutine;
         private Coroutine _labelRevealRoutine;
 
-        [Header("Laser (chỉ dùng khi FireMode = Laser)")]
-        [Tooltip("Material của tia laser. Bỏ trống → dùng material màu Bullet của TypeColor gun (như đạn).")]
-        [SerializeField] private Material laserMaterial;
-        [Tooltip("Độ dày tia laser (world units).")]
-        [SerializeField] private float laserWidth = 0.15f;
-        [Tooltip("Nâng điểm cuối tia lên so với gốc cell (world units) — ngắm vào thân stack cho đẹp.")]
-        [SerializeField] private float laserAimHeight = 0.25f;
-        [Tooltip("Giữ tia thêm ngần này (giây) sau khi cell vỡ, trong lúc chờ chốt cell kế → tia NỐI LIỀN, " +
-                 "không chớp tắt giữa 2 cell. Nên ≥ 2-3 frame (~0.05). Quá lớn thì tia còn treo khi thật " +
-                 "sự hết target.")]
-        [SerializeField] private float laserLinger = 0.06f;
-        [Tooltip("Thời gian CỐ ĐỊNH (giây) để laser nổ HẾT 1 cell, chia đều cho số block trong cell → cell " +
-                 "cao hay thấp đều nổ trong ngần này (thay cho FireInterval mỗi block). Nhỏ = nổ nhanh.")]
-        [SerializeField] private float laserCellTime = 0.15f;
 
         /// <summary>Arc-length hiện tại trên path — PathManager đọc để giữ khoảng cách giữa các gun.</summary>
         public float PathDistance => _follower != null ? _follower.CurrentDistance : 0f;
@@ -140,14 +126,12 @@ namespace Wayfu.Lamkn
 
             var right = GridBlockManager.Instance.FindTargetCell(
                 Data.Color, from, forward, _right.Sign, range, angle,
-                null, _right.Muzzle != null ? _right.Muzzle.position : (Vector3?)null,
-                -1f, this);
+                null, _right.Muzzle != null ? _right.Muzzle.position : (Vector3?)null, this);
             if (right != null) return true;
 
             var left = GridBlockManager.Instance.FindTargetCell(
                 Data.Color, from, forward, _left.Sign, range, angle,
-                null, _left.Muzzle != null ? _left.Muzzle.position : (Vector3?)null,
-                -1f, this);
+                null, _left.Muzzle != null ? _left.Muzzle.position : (Vector3?)null, this);
             return left != null;
         }
 
@@ -159,9 +143,6 @@ namespace Wayfu.Lamkn
         private RoundedPolylineFollower _follower;
         private float _basePathSpeed;
         private int _lastLap;             // vòng path đã chạy, mốc để mở khoá bắn
-        private float _lapStartStamp;     // Time.time lúc bắt đầu lap hiện tại — mốc PER-GUN phân biệt cell
-                                          // "đã đứng sẵn" (SettleStamp ≤ mốc) vs "vừa sập trong lap này". Reset
-                                          // mỗi lap → cell sập lap trước thành ready. (dùng cho laser readyBefore)
         private bool _atFront;            // gun đang ở VỊ TRÍ ĐẦU (index 0) của slot → gun ẩn lộ màu thật
         private bool _firedRightThisFrame, _firedLeftThisFrame;
 
@@ -187,10 +168,6 @@ namespace Wayfu.Lamkn
                                        // "bắn dở" (phải bắn hết) với cell mới chỉ CHỐT (qua vòng là bỏ)
             public bool MultiSide;    // target hiện/vừa rồi thuộc grid bị path bao nhiều mặt → gun đang đi
                                       // vòng quanh nó, KHÔNG tự khoá "1 lượt/vòng" mà bắt tiếp mặt kế
-            public LineRenderer Beam; // tia laser của nòng (mode Laser) — tạo lười, tái dùng theo item pool
-            public Vector3 BeamTo;    // điểm cuối tia lần vẽ gần nhất — giữ trong lúc linger (chuyển cell)
-            public float BeamHold;    // còn giữ tia bao lâu dù đã mất target (bắc cầu qua lúc chốt cell kế)
-            public float LaserInterval; // nhịp gặm/block của cell ĐANG bám = laserCellTime / số block lúc chốt
             public bool LeftoverDump;   // cell hiện KHÔNG đủ đạn phá hết → dồn đạn lẻ vào, phá từ block ĐÁY
         }
 
@@ -725,7 +702,6 @@ public void PlayBlinkFxIfHidden()
             _pathCycleTransition = false;
             _pathEntryAnimating = false;
             _lastLap = 0;   // follower.Init đưa LapCount về 0 — mốc đếm vòng bắt đầu từ đây
-            _lapStartStamp = Time.time; // mốc "ready" ban đầu: mọi cell đang có coi như đã đứng sẵn
             ArmForNewLap(); // vào path tại pos 0 = bắt đầu lượt bắn đầu tiên
             _basePathSpeed = speed;
             float surfaceOffset = PathManager.IsActive ? PathManager.Instance.GunSurfaceOffset : 0f;
@@ -744,8 +720,6 @@ public void PlayBlinkFxIfHidden()
             if (_state != GunState.OnPath)
             {
                 // Không trên path (trong slot / chờ / chết) → tắt tia nếu đang bật.
-                DisableBeam(_right);
-                DisableBeam(_left);
                 return;
             }
             if (_follower != null && _basePathSpeed > 0f)
@@ -780,7 +754,6 @@ public void PlayBlinkFxIfHidden()
             if (lap != _lastLap)
             {
                 _lastLap = lap;
-                _lapStartStamp = Time.time; // gun đi hết path vòng lại → RESET mốc ready: cell sập lap trước
                                             // giờ tính là đã đứng sẵn (ưu tiên như thường trở lại)
                 ArmForNewLap();
             }
@@ -792,10 +765,6 @@ public void PlayBlinkFxIfHidden()
             TickBarrel(_left, _right);
             if (_firedRightThisFrame) _lastRightShotTime = Time.time;
             if (_firedLeftThisFrame) _lastLeftShotTime = Time.time;
-
-            // Vẽ tia laser SAU khi 2 nòng đã cập nhật target (mode Laser); mode khác thì tia luôn tắt.
-            UpdateBeam(_right);
-            UpdateBeam(_left);
             PlayShootAnimation();
         }
 
@@ -917,10 +886,7 @@ public void PlayBlinkFxIfHidden()
             // Mode ĐẠN: cell "đặt chỗ hết" (Available<=0) coi như đã XONG với nòng này — mọi block đã có
             // đạn đang bay nhắm tới, không cần bắn thêm phát nào. Nhả ra NGAY để chốt cell kế trong tầm,
             // KHÔNG chờ đạn bay tới phá xong cell mới bắn tiếp (yêu cầu: đạn chưa nổ vẫn bắn cell bên cạnh).
-            // Cell fully-reserved bị FindTargetCell bỏ qua nên không bị chốt lại chính nó. Laser không áp:
-            // laser phá tức thì (không ReserveHit) nên cell tự rỗng, HasLiveTarget về false ngay.
-            bool targetSpent = _fire.Mode != GunFireMode.Laser
-                               && HasLiveTarget(b) && b.Target.Available <= 0;
+            bool targetSpent = HasLiveTarget(b) && b.Target.Available <= 0;
             if (!HasLiveTarget(b) || targetSpent)
             {
                 if (b.Target != null) b.Target.ReleaseClaim(b); // nhả claim cell cũ để gun khác chốt được
@@ -932,14 +898,10 @@ public void PlayBlinkFxIfHidden()
                 // KHÓA NGAY — khỏi chờ gun chạy hết 1 vòng path mới bắt được cell đã vào range từ lâu.
                 // losFrom = vị trí NÒNG bên này: CELL KHÁC đứng chắn chỉ chặn nòng có tia muzzle→cell
                 // bị cắt, nòng bên kia không vướng vẫn bắn được (range/quạt vẫn tính từ tâm gun như cũ).
-                // Laser: ưu tiên cell đã đứng sẵn TỪ ĐẦU LAP của gun này (SettleStamp ≤ _lapStartStamp),
-                // cell vừa sập trong lap này bắn sau. readyBefore = -1 (tắt) cho mode đạn. PER-GUN + reset
-                // mỗi lap: xem _lapStartStamp.
-                float readyBefore = _fire.Mode == GunFireMode.Laser ? _lapStartStamp : -1f;
                 var cand = GridBlockManager.Instance?.FindTargetCell(
                     Data.Color, transform.position, transform.forward, b.Sign, _fire.Range, _fire.Angle,
                     other.Target, b.Muzzle != null ? b.Muzzle.position : (Vector3?)null,
-                    readyBefore, b /*claimant: cell nòng khác đã chốt thì bỏ*/);
+                    b /*claimant: cell nòng khác đã chốt thì bỏ*/);
                 if (cand != null && !b.Armed) { b.Armed = true; b.HadTarget = false; b.IdleTimer = 0f; }
 
                 if (b.Armed)
@@ -951,7 +913,7 @@ public void PlayBlinkFxIfHidden()
                     // NHƯỜNG ĐẠN: nòng kia đang bám cell thì phải chừa đủ đạn cho nó bắn dứt điểm cell đó.
                     // Không đủ đạn nuốt TRỌN cell này thì:
                     //  • Nòng kia ĐANG bận (reserved>0): THÔI CHỐT — chừa đạn cho nó, tránh 2 nòng cùng bắn
-                    //    lẻ 2 cell rồi chẳng cell nào vỡ (áp dụng cả đạn lẫn laser).
+                    //    lẻ 2 cell rồi chẳng cell nào vỡ.
                     //  • Nòng kia RẢNH (reserved==0): VẪN chốt và dồn nốt số đạn LẺ còn lại vào cell gần nhất
                     //    (vd còn 1 mà cell 3 block thì bắn 1 vào đó) — bắn dở còn hơn gun chết với đạn thừa.
                     int reserved = NeedOf(other);
@@ -963,21 +925,13 @@ public void PlayBlinkFxIfHidden()
                     if (cand != null && !cand.TryClaim(b)) cand = null;
 
                     // Cell còn nhiều block hơn số đạn còn lại (chỉ xảy ra khi nòng kia rảnh, reserved==0) →
-                    // đây là ĐẠN LẺ: dồn vào cell nhưng phá từ block ĐÁY (xem Fire/LaserHit).
+                    // đây là ĐẠN LẺ: dồn vào cell nhưng phá từ block ĐÁY.
                     b.LeftoverDump = cand != null && cand.Available > Data.CountBullet - reserved;
 
                     b.Target = cand;
                     b.TargetGen = cand != null ? cand.Generation : 0;
                     justAcquired = cand != null;
                     if (cand != null) b.MultiSide = cand.MultiSideGrid;
-
-                    // Laser: chốt cell mới → chia thời gian nổ CỐ ĐỊNH (laserCellTime) đều cho số block
-                    // của cell lúc này, ra nhịp gặm/block. Cell cao/thấp đều nổ trong laserCellTime.
-                    if (cand != null && _fire.Mode == GunFireMode.Laser)
-                    {
-                        b.LaserInterval = laserCellTime / Mathf.Max(1, cand.StackCount);
-                        b.FireTimer = 0f; // bắn phát đầu ngay frame kế (không dính nhịp cell trước)
-                    }
 
                     // sawCell (không phải b.Target): nòng nhường đạn vẫn coi như "còn thấy grid" → không
                     // tính là hết lượt, để khi nòng kia bắn xong và đạn rảnh ra thì nó vào cuộc được ngay.
@@ -1000,11 +954,6 @@ public void PlayBlinkFxIfHidden()
                     }
                 }
             }
-
-            // LASER: kiểm LOS lại — CHỈ khi CHƯA bắn phát nào (!FiredAtTarget). Bị chắn thì buông để không
-            // BẮT ĐẦU bắn xuyên qua cell; frame sau chọn cell nhìn thấy trực tiếp.
-            // Đã bắn ÍT NHẤT 1 phát rồi thì PHẢI phá TRỌN cell (không phá lẻ) — không buông giữa chừng dù
-            // gun di chuyển làm cell khác lọt vào giữa. laserCellTime ngắn nên cửa sổ bị che giữa chừng rất nhỏ.
             // A locked target is not allowed to survive after the gun has passed
             // it on the current path segment, or after it leaves range.
             // A target not hit yet must stay in the current range/forward zone.
@@ -1012,37 +961,18 @@ public void PlayBlinkFxIfHidden()
             if (b.Target != null && !b.FiredAtTarget && !CanKeepTarget(b.Target, b))
             {
                 b.Target.ReleaseClaim(b);
-                b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false; b.BeamHold = 0f;
+                b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false;
                 b.LeftoverDump = false;
-            }
-
-            if (_fire.Mode == GunFireMode.Laser && b.Target != null && !b.FiredAtTarget
-                && !(SlotManager.IsActive && SlotManager.Instance.AreAllSlotsEmpty)
-                && GridBlockManager.Instance != null
-                && GridBlockManager.Instance.IsCellBlockedFrom(
-                    b.Muzzle != null ? b.Muzzle.position : transform.position, b.Target))
-            {
-                b.Target.ReleaseClaim(b); // nhả claim để gun/nòng khác nhìn thấy cell này thì chốt được
-                b.Target = null; b.TargetGen = 0; b.FiredAtTarget = false; b.BeamHold = 0f;
             }
 
             b.FireTimer -= Time.deltaTime * SpeedMultiplier;
             // Bắn cell đang bám (kể cả khi đã hết lượt — cell dở phải được bắn hết). Chỉ bắn khi cell
             // còn block CHƯA bị đạn đang bay đặt chỗ (tránh bắn dư). KHÔNG bắn ở frame vừa chốt target:
             // cell lộ ra thoáng qua lúc dồn hàng (transient) sẽ bị thay ở frame sau → không phí đạn bắn nhầm.
-            if (b.Target != null && !justAcquired && b.FireTimer <= 0f
-                && (_fire.Mode == GunFireMode.Laser ? b.Target.StackCount > 0 : b.Target.Available > 0))
+            if (b.Target != null && !justAcquired && b.FireTimer <= 0f && b.Target.Available > 0)
             {
-                if (_fire.Mode == GunFireMode.Laser)
-                {
-                    LaserHit(b);                 // tia gặm 1 block, không sinh viên đạn
-                    b.FireTimer = b.LaserInterval; // nhịp = laserCellTime / số block → cả cell nổ đúng laserCellTime
-                }
-                else
-                {
-                    Fire(b);
-                    b.FireTimer = _fire.Interval;
-                }
+                Fire(b);
+                b.FireTimer = _fire.Interval;
             }
         }
 
@@ -1057,8 +987,6 @@ public void PlayBlinkFxIfHidden()
             b.IdleTimer = 0f;
             b.FiredAtTarget = false;
             b.MultiSide = false;
-            b.BeamHold = 0f; // gun tái dùng: không treo tia laser của lượt trước
-            b.LaserInterval = 0f;
             b.LeftoverDump = false;
         }
 
@@ -1130,27 +1058,44 @@ public void PlayBlinkFxIfHidden()
 
         private void Fire(Barrel b)
         {
-            b.FiredAtTarget = true; // từ giờ cell này là "bắn dở" — phải bắn hết, không được bỏ giữa chừng
-
-            // BurstPerCell: nhả TRỌN 1 loạt đúng bằng số block cell còn nợ (Available), mỗi viên nhắm 1
-            // block trong stack → cả cell vỡ trong 1 lượt. Kẹp theo CountBullet phòng khi băng không đủ.
-            int shots = Mathf.Min(b.Target.Available, Data.CountBullet);
-
-            if (b.LeftoverDump)
+            b.FiredAtTarget = true;
+            if (_fire.Mode == GunFireMode.Single)
             {
-                // ĐẠN LẺ không đủ phá hết cell → bắn vào block ĐÁY (dưới cùng lên): viên i nhắm block i.
-                for (int i = 0; i < shots; i++) FireOne(b, i);
+                FireCell(b, b.Target, 1);
             }
             else
             {
-                // Block bị phá từ TRÊN xuống (xem BlockCell.HitOnce) → viên đầu nhắm block trên cùng, viên
-                // sau lùi dần xuống. Chốt 'top' trước vòng lặp: ReserveHit không đổi StackCount nên đứng yên.
-                int top = Mathf.Max(0, b.Target.StackCount - 1);
-                for (int i = 0; i < shots; i++) FireOne(b, Mathf.Max(0, top - i));
+                var group = GridBlockManager.Instance != null
+                    ? GridBlockManager.Instance.GetConnectedShootGroup(b.Target, transform.position, _fire.Range)
+                    : null;
+                if (group == null || group.Count == 0)
+                    FireCell(b, b.Target, Data.CountBullet);
+                else
+                {
+                    int firedCellCount = 0;
+                    foreach (var cell in group)
+                    {
+                        if (Data.CountBullet <= 0 || firedCellCount >= _fire.BurstMaxCells) break;
+                        if (cell == null || cell.Available <= 0 || !cell.ClaimFreeFor(b)) continue;
+                        bool claimedHere = cell != b.Target && cell.TryClaim(b);
+                        if (cell != b.Target && !claimedHere) continue;
+                        int bulletsBefore = Data.CountBullet;
+                        FireCell(b, cell, Data.CountBullet);
+                        if (Data.CountBullet < bulletsBefore) firedCellCount++;
+                        if (claimedHere) cell.ReleaseClaim(b);
+                    }
+                }
             }
 
             UpdateLabel();
             if (Data.CountBullet <= 0) OnEmptied();
+        }
+
+        private void FireCell(Barrel b, BlockCell cell, int bulletBudget)
+        {
+            if (cell == null || bulletBudget <= 0) return;
+            int shots = Mathf.Min(cell.Available, Mathf.Min(Data.CountBullet, bulletBudget));
+            for (int i = 0; i < shots; i++) FireOne(b, cell, i);
         }
 
         public bool HasBullets => Data != null && Data.CountBullet > 0;
@@ -1218,133 +1163,31 @@ public void PlayBlinkFxIfHidden()
             return dir / dist * Mathf.Min(_fire.BurstRowLead * blockIndex, dist * 0.8f);
         }
 
-        private void FireOne(Barrel b, int blockIndex)
+        private void FireOne(Barrel b, BlockCell target, int blockIndex)
         {
+            if (target == null || target.Available <= 0 || Data.CountBullet <= 0) return;
             if (ReferenceEquals(b, _right)) _firedRightThisFrame = true;
             else if (ReferenceEquals(b, _left)) _firedLeftThisFrame = true;
             Data.CountBullet--;
-            b.Target.ReserveHit();
-            // Re-evaluate after reserving this projectile.  If the remaining
-            // bullets cannot clear the remaining stack, this is leftover ammo and
-            // must always take the bottom block first.
-            // Every cell is destroyed from its bottom block upward.
+            target.ReserveHit();
             bool hitBottom = true;
 
             var bullet = PoolManager.Instance != null ? PoolManager.Instance.GetBullet() : null;
-            Vector3 aim = hitBottom ? b.Target.BottomBlockOffset() : b.Target.StackOffset(blockIndex);
+            Vector3 aim = hitBottom ? target.BottomBlockOffset() : target.StackOffset(blockIndex);
             Vector3 from = b.Muzzle != null ? b.Muzzle.position : transform.position;
-
-            // BurstSpawnStacked: sinh viên đạn sẵn ở ĐÚNG độ cao của block nó nhắm → cả loạt xếp thành
-            // cột ngay tại nòng rồi bay NGANG sang, không toả chéo. Chỉ có nghĩa khi bắn loạt: mode
-            // Single luôn chỉ 1 viên nhắm block trên cùng, nâng nó lên chỉ làm đạn xuất phát lơ lửng.
             if (_fire.BurstSpawnStacked && _fire.Mode == GunFireMode.BurstPerCell)
             {
                 from += aim;
-                from += RowLeadOffset(b.Target.transform.position + aim, from, blockIndex);
+                from += RowLeadOffset(target.transform.position + aim, from, blockIndex);
             }
 
             if (bullet != null)
-                bullet.Launch(from, b.Target, _fire.BulletSpeed * SpeedMultiplier, Data.Color, aim, hitBottom);
+                bullet.Launch(from, target, _fire.BulletSpeed * SpeedMultiplier, Data.Color, aim, hitBottom);
             else
             {
-                if (hitBottom) b.Target.ApplyHitBottom(); else b.Target.ApplyHit(); // fallback không có pool
+                if (hitBottom) target.ApplyHitBottom(); else target.ApplyHit();
                 GameController.Instance?.OnBoardChanged();
             }
-        }
-
-        /// <summary>
-        /// 1 nhịp laser: gặm NGAY 1 block của cell đang bám (không sinh viên, tia chạm tức thì). Cell vỡ
-        /// hết thì frame sau TickBarrel tự chốt cell kế trong tầm → tia nối liền sang, nhìn không ngắt.
-        /// Mỗi block vẫn trừ 1 CountBullet như đạn thường; hết đạn thì gun rời/huỷ như cũ.
-        /// </summary>
-        private void LaserHit(Barrel b)
-        {
-            if (ReferenceEquals(b, _right)) _firedRightThisFrame = true;
-            else if (ReferenceEquals(b, _left)) _firedLeftThisFrame = true;
-            b.FiredAtTarget = true;
-            // Laser follows the same bottom-to-top destruction order as bullets.
-            // Same policy as BurstPerCell: if this gun can clear the whole
-            // cell, fire all required hits in one laser pulse.  Otherwise keep
-            // the partial-cell case as individual bottom-block hits.
-            // One laser tick consumes one bullet and one block.  The interval is
-            // assigned on acquisition as laserCellTime / block count, so the
-            // inspector's laserCellTime controls the full, smooth cell clear.
-            Data.CountBullet--;
-            b.Target.ApplyHitBottom();
-            // Không ReserveHit: tia không có thời gian bay nên phá thẳng. Đạn lẻ → phá block ĐÁY.
-            GameController.Instance?.OnBoardChanged();
-            UpdateLabel();
-            if (Data.CountBullet <= 0) OnEmptied();
-        }
-
-        /// <summary>
-        /// Vẽ tia laser của nòng: từ muzzle (điểm left/right) tới cell đang bám. Chỉ hiện khi mode = Laser,
-        /// gun trên path và nòng có target sống; ngoài ra tắt. Màu tia theo TypeColor gun (như đạn) nếu
-        /// không gán laserMaterial riêng.
-        /// </summary>
-        private void UpdateBeam(Barrel b)
-        {
-            if (_fire.Mode != GunFireMode.Laser || _state != GunState.OnPath)
-            {
-                DisableBeam(b);
-                return;
-            }
-            Vector3 from = b.Muzzle != null ? b.Muzzle.position : transform.position;
-
-            if (HasLiveTarget(b))
-            {
-                // Có target → vẽ tia tới cell và NẠP LẠI linger. Điểm cuối lưu lại để lúc mất target
-                // (cell vừa vỡ, chưa kịp chốt cell kế) vẫn giữ được tia bắc cầu qua.
-                b.BeamTo = b.Target.transform.position + b.Target.BottomBlockOffset()
-                    + Vector3.up * laserAimHeight;
-                b.BeamHold = laserLinger;
-            }
-            else if (b.BeamHold > 0f)
-            {
-                // Mất target trong khoảnh khắc chuyển cell → GIỮ tia (điểm cuối cũ) tới khi hết linger,
-                // gốc tia vẫn bám muzzle nên nhìn như tia liền mạch đang quét sang, không chớp tắt.
-                b.BeamHold -= Time.deltaTime;
-            }
-            else
-            {
-                DisableBeam(b);
-                return;
-            }
-
-            EnsureBeam(b);
-            var mat = laserMaterial != null
-                ? laserMaterial
-                : GlobalConfigManager.MaterialOf(Data.Color, TypeObject.Bullet);
-            if (mat != null && b.Beam.sharedMaterial != mat) b.Beam.sharedMaterial = mat;
-            b.Beam.enabled = true;
-            b.Beam.SetPosition(0, from);
-            b.Beam.SetPosition(1, b.BeamTo);
-        }
-
-        private void DisableBeam(Barrel b)
-        {
-            if (b.Beam != null && b.Beam.enabled) b.Beam.enabled = false;
-        }
-
-        // Tạo LineRenderer 1 lần cho nòng (item pooled tái dùng lại). Toạ độ world nên không lệ thuộc scale
-        // gun; parent vào gun để tự dọn khi gun despawn.
-        private void EnsureBeam(Barrel b)
-        {
-            if (b.Beam != null) return;
-            var go = new GameObject("LaserBeam");
-            go.transform.SetParent(transform, false);
-            var lr = go.AddComponent<LineRenderer>();
-            lr.useWorldSpace = true;
-            lr.positionCount = 2;
-            lr.widthMultiplier = laserWidth;
-            lr.numCapVertices = 4;
-            lr.numCornerVertices = 0;
-            lr.textureMode = LineTextureMode.Stretch;
-            lr.alignment = LineAlignment.View;
-            lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            lr.receiveShadows = false;
-            lr.enabled = false;
-            b.Beam = lr;
         }
 
         private void Die()
@@ -1356,8 +1199,6 @@ public void PlayBlinkFxIfHidden()
             // pooling this gun; otherwise every later gun rejects it as claimed.
             ResetBarrel(_right);
             ResetBarrel(_left);
-            DisableBeam(_right); // tắt tia trước khi trả gun về pool (item pooled tái dùng)
-            DisableBeam(_left);
             ResetMoveTrail();    // tắt + xoá vệt trước khi despawn, không để hạt treo lơ lửng
             PathManager.Instance?.RemoveGun(this);
             GameController.Instance?.OnBoardChanged();

@@ -361,7 +361,6 @@ namespace Wayfu.Lamkn
         /// quét). Cell chắn chỉ chặn nòng có tia bị cắt — nòng bên kia không vướng vẫn bắn bình thường.
         /// Bỏ trống thì dùng <paramref name="from"/> (tâm gun).
         /// </summary>
-        /// <paramref name="readyBefore"/>: ≥0 bật chế độ ưu tiên PER-GUN (dùng cho LASER) — cell có
         /// <see cref="BlockCell.SettleStamp"/> ≤ mốc này (= đã đứng sẵn từ đầu lap của gun) được ưu tiên
         /// hơn cell vừa SẬP trong lap (SettleStamp &gt; mốc); cùng nhóm mới xét gần nhất. &lt;0 = tắt, dùng
         /// CoreType (NearestCell / FrontRowFirst) như đạn thường.
@@ -369,13 +368,11 @@ namespace Wayfu.Lamkn
         /// cũng vậy) chốt, để 2 gun không cùng bắn 1 cell (đổ đạn trùng → số đạn bị lẻ). null = không xét.
         public BlockCell FindTargetCell(TypeColor color, Vector3 from, Vector3 forward, float side,
                                         float detectRange, float spreadAngle, BlockCell exclude = null,
-                                        Vector3? losFrom = null, float readyBefore = -1f, object claimant = null)
+                                        Vector3? losFrom = null, object claimant = null)
         {
             Vector3 losOrigin = losFrom ?? from;
-            bool useReady = readyBefore >= 0f;   // laser: ưu tiên theo lúc cell sập (per-gun), không theo Depth
             BlockCell best = null;
             int bestDepth = int.MaxValue;   // chỉ dùng khi _frontRowFirst; theo Depth GỐC, không phải row runtime
-            bool bestFell = true;           // chỉ dùng khi useReady; true = "vừa sập" (kém ưu tiên nhất)
             float bestSqr = float.MaxValue;
             float detectSqr = detectRange * detectRange;
 
@@ -461,14 +458,8 @@ namespace Wayfu.Lamkn
                         // Depth chứ KHÔNG dùng row runtime: cell sập xuống dồn ra hàng 0 vẫn giữ Depth cũ
                         // (≥1) nên luôn thua cell front gốc dù đã ngang hàng row 0 và ở gần hơn.
                         int depth = cell.Depth;
-                        // Laser (useReady): cell "đã đứng sẵn từ đầu lap" (fell=false) luôn thắng cell
-                        // "vừa sập trong lap" (fell=true); cùng nhóm mới xét gần nhất. Đạn thường thì theo
-                        // CoreType (FrontRowFirst dùng Depth, còn lại dùng gần nhất).
-                        bool fell = useReady && cell.SettleStamp > readyBefore;
                         bool better;
-                        if (useReady)
-                            better = (!fell && bestFell) || (fell == bestFell && sqr < bestSqr);
-                        else if (_frontRowFirst)
+                        if (_frontRowFirst)
                             better = depth < bestDepth || (depth == bestDepth && sqr < bestSqr);
                         else
                             better = sqr < bestSqr;
@@ -483,7 +474,7 @@ namespace Wayfu.Lamkn
                         Vector3 aimPoint = cell.transform.position
                             + cell.transform.forward * (0.5f * Mathf.Max(0.01f, gr.Data.RowSpacing));
                         if (!endgame && IsLineBlockedByCell(losOrigin, cell, aimPoint)) continue;
-                        bestDepth = depth; bestSqr = sqr; bestFell = fell; best = cell;
+                        bestDepth = depth; bestSqr = sqr; best = cell;
                     }
                 }
             }
@@ -502,10 +493,88 @@ namespace Wayfu.Lamkn
         /// KHÔNG được suy footprint từ mình BlockWidth — phải dùng pitch.</para>
         /// </summary>
         /// <summary>
-        /// Kiểm lại LOS cho 1 target ĐÃ chốt (laser gọi mỗi frame): có cell khác chắn giữa <paramref name="from"/>
-        /// (muzzle) và target không. Gun di chuyển làm cell lọt vào giữa thì trả true → gun buông target,
-        /// không bắn xuyên. Dùng tâm cell làm điểm ngắm (ô kề sát target đã được loại trong IsLineBlockedByCell).
+        /// Lấy khối cell cùng màu liên thông 4 hướng chứa seed. Ô màu khác hoặc ô trống ngăn cách khối.
+        /// Chỉ trả về cell nằm trong range tính từ gun; ưu tiên cell liền kề gần seed nhất.
         /// </summary>
+        public List<BlockCell> GetConnectedShootGroup(BlockCell seed, Vector3 from, float range)
+        {
+            var result = new List<BlockCell>();
+            if (seed == null || seed.IsEmpty) return result;
+
+            GridRuntime owner = null;
+            int seedRow = -1;
+            int seedCol = -1;
+            foreach (var grid in _grids)
+            {
+                for (int row = 0; row < grid.Rows.Count && owner == null; row++)
+                {
+                    var cells = grid.Rows[row];
+                    for (int col = 0; col < cells.Length; col++)
+                    {
+                        if (cells[col] != seed) continue;
+                        owner = grid;
+                        seedRow = row;
+                        seedCol = col;
+                        break;
+                    }
+                }
+                if (owner != null) break;
+            }
+            if (owner == null) return result;
+
+            var positions = new Dictionary<BlockCell, Vector2Int>();
+            var visited = new HashSet<Vector2Int>();
+            var queue = new Queue<Vector2Int>();
+            var start = new Vector2Int(seedRow, seedCol);
+            queue.Enqueue(start);
+            visited.Add(start);
+
+            while (queue.Count > 0)
+            {
+                Vector2Int position = queue.Dequeue();
+                int row = position.x;
+                int col = position.y;
+                if (row < 0 || row >= owner.Rows.Count || col < 0 || col >= owner.Rows[row].Length) continue;
+
+                var cell = owner.Rows[row][col];
+                if (cell == null || cell.Color != seed.Color || cell.IsEmpty) continue;
+
+                Vector3 offset = cell.transform.position - from;
+                offset.y = 0f;
+                if (offset.sqrMagnitude <= range * range)
+                {
+                    result.Add(cell);
+                    positions[cell] = position;
+                }
+                Enqueue(row - 1, col);
+                Enqueue(row + 1, col);
+                Enqueue(row, col - 1);
+                Enqueue(row, col + 1);
+            }
+
+            result.Sort((a, b) =>
+            {
+                Vector2Int pa = positions[a];
+                Vector2Int pb = positions[b];
+                int distanceA = Mathf.Abs(pa.x - seedRow) + Mathf.Abs(pa.y - seedCol);
+                int distanceB = Mathf.Abs(pb.x - seedRow) + Mathf.Abs(pb.y - seedCol);
+                if (distanceA != distanceB) return distanceA.CompareTo(distanceB);
+                float worldDistanceA = (a.transform.position - from).sqrMagnitude;
+                float worldDistanceB = (b.transform.position - from).sqrMagnitude;
+                if (!Mathf.Approximately(worldDistanceA, worldDistanceB))
+                    return worldDistanceA.CompareTo(worldDistanceB);
+                if (pa.x != pb.x) return pa.x.CompareTo(pb.x);
+                return pa.y.CompareTo(pb.y);
+            });
+            return result;
+
+            void Enqueue(int row, int col)
+            {
+                var position = new Vector2Int(row, col);
+                if (visited.Add(position)) queue.Enqueue(position);
+            }
+        }
+
         public bool IsCellBlockedFrom(Vector3 from, BlockCell target)
         {
             if (target == null) return false;

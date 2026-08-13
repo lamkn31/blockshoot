@@ -35,12 +35,11 @@ namespace Wayfu.Lamkn
         [Min(0f)] public float WaitClusterSpacing = 1.5f;
         public float FireInterval = 0.25f;
         [Tooltip("Single = mỗi nhịp FireInterval nhả 1 viên, gặm dần cho tới khi cell sạch.\n" +
-                 "BurstPerCell = chốt cell xong nhả LUÔN cả loạt đúng bằng số block còn lại của cell, mỗi " +
-                 "viên bay tới 1 block trong stack → cả cell vỡ trong 1 lượt. FireInterval khi đó chỉ là " +
-                 "nhịp nghỉ giữa 2 CELL, không phải giữa 2 viên.\n" +
-                 "Laser = KHÔNG bắn viên; vẽ tia liền mạch từ nòng tới cell, gặm 1 block mỗi FireInterval, " +
-                 "cell vỡ xong tia nối liền sang cell kế (nhìn không ngắt quãng).")]
+                 "BurstPerCell = mỗi trigger bắn toàn bộ khối cell cùng màu liên thông. Khi thiếu đạn, " +
+                 "ưu tiên các ô cùng cột với seed, sau đó các ô cùng hàng, rồi tới phần còn lại.")]
         public GunFireMode FireMode = GunFireMode.Single;
+        [Tooltip("Số cell tối đa được gom và bắn trong một trigger BurstPerCell. Các cell được lấy theo thứ tự gần seed nhất.")]
+        [Min(1)] public int BurstMaxCells = 3;
         [Tooltip("CHỈ dùng khi FireMode = BurstPerCell.\n" +
                  "Tắt = cả loạt sinh CHỤM tại 1 điểm ở nòng rồi toả ra từng block.\n" +
                  "Bật = mỗi viên sinh sẵn ở đúng ĐỘ CAO của block nó nhắm (spacing trục Y lấy luôn của " +
